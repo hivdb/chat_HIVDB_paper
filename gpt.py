@@ -20,15 +20,16 @@ def query_gpt(system_prompt, paper_content, df, save_path):
 
 
         ## Set the API key and model name
-        MODEL="gpt-4o"
+        MODEL="gpt-4-turbo-2024-04-09"
         client = OpenAI(api_key=os.getenv('GPT-4O-KEY'))
 
         completion = client.chat.completions.create(
-        model=MODEL,
-        messages=[
-            {"role": "system", "content": system_prompt}, # <-- This is the system message that provides context to the model
-            {"role": "user", "content": formatted_user_prompt}  # <-- This is the user message for which the model will generate a response
-        ]
+            model=MODEL,
+            messages=[
+                {"role": "system", "content": system_prompt}, # <-- This is the system message that provides context to the model
+                {"role": "user", "content": formatted_user_prompt}  # <-- This is the user message for which the model will generate a response
+            ],
+            temperature=0
         )
 
         print("Assistant: " + completion.choices[0].message.content)
