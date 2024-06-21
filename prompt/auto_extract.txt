@@ -1,0 +1,11 @@
+Given the following research paper text:
+```
+{paper_content}
+```
+
+Extract the most relevant and meaningful sentences that answer or provide information related to the following question:
+{question}
+
+The extracted sentences in markdown list format should be:
+
+If no sentences were found, return `None`

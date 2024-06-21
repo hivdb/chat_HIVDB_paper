@@ -1,0 +1,8 @@
+Paper: {paper_content}
+
+Question: {question}
+
+Using the information provided in the paper, and answer the question.
+Additional Requirements: {requirements}
+
+Also provide the list of sentences you used as reference under "Reference: "
