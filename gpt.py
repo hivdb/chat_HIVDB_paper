@@ -30,10 +30,16 @@ def query_gpt(system_prompt, paper_content, df, save_path):
             temperature=0
         )
 
-        #print("Assistant: " + completion.choices[0].message.content)
+        print("Assistant: " + completion.choices[0].message.content)
+        print('-----🦙\n')
 
         df.at[i, 'Answer'] = completion.choices[0].message.content.split("Reference:")[0]
-        df.at[i, 'Reference Sentences'] = completion.choices[0].message.content.split("Reference:")[1]
+        if len(completion.choices[0].message.content.split("Reference:"))>1:
+            df.at[i, 'Reference Sentences'] = completion.choices[0].message.content.split("Reference:")[1]
+        else:
+            print(completion.choices)
+            df.at[i, 'Reference Sentences'] = ' '
+            print('-----🦇\n')
 
     df.to_excel(save_path, index=False,engine='xlsxwriter') #to prevent encode errors use xlsxwriter
     return df
@@ -57,15 +63,16 @@ df = pd.read_excel(excel_path)
 
 PATH="/Users/pavs/Dropbox/ChatGPT/Project two/paper Pavs/"
 for folder in os.listdir(PATH):
-    for filename in os.listdir(PATH+folder):
-        if filename.endswith('.md'):
-            # Construct full file path
-            paper_path = os.path.join(PATH + folder + '/' + filename)
-            pmid = filename.split(".")[0]
-            pmid = pmid.split("(")[0]
-            os.mkdir(PATH+folder+'/output/')
-            save_path = PATH + folder + '/output/'+pmid+'_answers_Jun24.xlsx'
-            print(paper_path,save_path)
-            with open(paper_path, 'r', encoding='utf-8') as file:
-                paper_content = file.read()
-                query_gpt(system_prompt, paper_content, df, save_path)
+    if '.DS_Store' not in folder:
+        for filename in os.listdir(PATH+folder):
+            if filename.endswith('.md'):
+                # Construct full file path
+                paper_path = os.path.join(PATH + folder + '/' + filename)
+                pmid = filename.split(".")[0]
+                pmid = pmid.split("(")[0]
+                os.mkdir(PATH+folder+'/output/')
+                save_path = PATH + folder + '/output/'+pmid+'_answers_Jun24.xlsx'
+                print(paper_path,save_path)
+                with open(paper_path, 'r', encoding='utf-8') as file:
+                    paper_content = file.read()
+                    query_gpt(system_prompt, paper_content, df, save_path)
