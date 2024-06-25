@@ -4,6 +4,7 @@ import glob
 from pypdf import PdfReader, PdfWriter
 import shutil
 from pathlib import Path
+import re
 
 def split_pdf(filename, input_pdf_path, output_dir):
     # Create a PdfReader object
@@ -50,9 +51,30 @@ def organize_pdfs(pdf_directory):
 def merge_markdown(filename, gpt_mode):
     file_list = glob.glob(f'papers/{filename}/individual_pages/{filename}_*.markdown')
     mode = "No GPT-4o"
+    content = ""
     if gpt_mode: mode = "GPT-4o"
     with open(f'papers/{filename}/{filename}({mode}).md', 'wb') as outfile:
-        for filename in sorted(file_list, key=lambda x: int(os.path.basename(x).split('_')[-1].split('.')[0])):
+        for filenum in sorted(file_list, key=lambda x: int(os.path.basename(x).split('_')[-1].split('.')[0])):
             # print(filename)
-            with open(filename, 'rb') as infile:
+            with open(filenum, 'rb') as infile:
                 outfile.write(infile.read())
+                outfile.write(b'\n') 
+    # remove references
+    pattern = re.compile(r'reference', re.IGNORECASE)
+    with open(f'papers/{filename}/{filename}({mode}).md', 'r') as file:
+        content = file.read()
+        
+
+    # Find all matches and print their positions
+    for match in pattern.finditer(content):
+        last_match = match
+
+    last_match_position = last_match.start()
+
+    if last_match_position != -1:
+        # Truncate the content after the last occurrence of the search string
+        new_content = content[:last_match_position]
+
+    # Write the truncated content back to the file
+    with open(f'papers/{filename}/{filename}({mode}).md', 'w') as file:
+        file.write(new_content)
