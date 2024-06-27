@@ -1,12 +1,12 @@
 SELECT
-    CASE
-        WHEN COUNT(1) > 0 THEN 'Yes'
-        ELSE 'No'
-    END
+    DISTINCT drug.DrugName
 FROM
+    tblDrugRegimens drug,
     tblRxHistory rx,
     tblIsolates iso
 WHERE
+    drug.RxHistoryID = rx.RxHistoryID
+    AND
     rx.PtID = iso.PtID
     AND
     iso.IsolateID IN (
@@ -20,5 +20,5 @@ WHERE
     )
     AND
     iso.IsolateDate >= rx.StartDate
-    AND RegimenName NOT IN ('None', 'Unknown')
+
 ;

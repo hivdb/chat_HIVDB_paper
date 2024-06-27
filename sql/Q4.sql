@@ -1,7 +1,7 @@
 SELECT
-    DISTINCT AccessionID
+    DISTINCT Species
 FROM
-    tblSequences
+    tblSpecies
 WHERE
     IsolateID IN (
         SELECT IsolateID
@@ -12,8 +12,4 @@ WHERE
             WHERE MedlineID = {pubmed_id}
         )
     )
-    AND
-    AccessionID IS NOT NULL
-ORDER BY
-    AccessionID
 ;

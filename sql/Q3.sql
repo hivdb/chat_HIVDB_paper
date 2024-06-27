@@ -1,8 +1,5 @@
 SELECT
-    CASE
-        WHEN COUNT(1) > 0 THEN 'Yes'
-        ELSE 'No'
-    END
+    DISTINCT AccessionID
 FROM
     tblSequences
 WHERE
@@ -17,4 +14,6 @@ WHERE
     )
     AND
     AccessionID IS NOT NULL
+ORDER BY
+    AccessionID
 ;

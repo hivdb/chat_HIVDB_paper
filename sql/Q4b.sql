@@ -1,5 +1,5 @@
 SELECT
-    DISTINCT Gene
+    DISTINCT Species
 FROM
     _InVitroIso
 WHERE

@@ -1,7 +1,7 @@
 SELECT
-    DISTINCT Species
+    DISTINCT Gene
 FROM
-    tblSpecies
+    tblIsolates
 WHERE
     IsolateID IN (
         SELECT IsolateID

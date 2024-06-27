@@ -1,5 +1,5 @@
 SELECT
-    DISTINCT CloneMethod
+    DISTINCT Source
 FROM
     tblClinIsolates
 WHERE

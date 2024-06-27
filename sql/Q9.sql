@@ -1,5 +1,5 @@
 SELECT
-    DISTINCT SeqMethod
+    DISTINCT CloneMethod
 FROM
     tblClinIsolates
 WHERE

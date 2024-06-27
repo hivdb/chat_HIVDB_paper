@@ -161,6 +161,8 @@ def work():
     sql_list = load_sql()
 
     for idx, p in enumerate(papers):
+
+        # Q0 is for switch main tables
         sql = sql_list[0]['sql'].format(pubmed_id=p['MedlineID'])
 
         result = read_query(db, sql)

@@ -1,21 +1,16 @@
 SELECT
-    DISTINCT Region
+    DISTINCT YEAR(IsolateDate)
 FROM
-    tblPatients
+    tblIsolates
 WHERE
-    PtID IN (
-        SELECT PtID
-        FROM tblIsolates
-        WHERE
-        IsolateID IN (
-            SELECT IsolateID
-            FROM tblRefLink
-            WHERE RefID IN (
-                SELECT RefID
-                FROM tblReferences
-                WHERE MedlineID = {pubmed_id}
-            )
+    IsolateID IN (
+        SELECT IsolateID
+        FROM tblRefLink
+        WHERE RefID IN (
+            SELECT RefID
+            FROM tblReferences
+            WHERE MedlineID = {pubmed_id}
         )
     )
-ORDER BY Region
+ORDER BY IsolateDate
 ;

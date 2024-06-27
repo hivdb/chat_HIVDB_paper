@@ -1,7 +1,7 @@
 SELECT
-    DISTINCT YEAR(IsolateDate)
+    DISTINCT SeqMethod
 FROM
-    tblIsolates
+    tblClinIsolates
 WHERE
     IsolateID IN (
         SELECT IsolateID
@@ -12,5 +12,4 @@ WHERE
             WHERE MedlineID = {pubmed_id}
         )
     )
-ORDER BY IsolateDate
 ;
