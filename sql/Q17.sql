@@ -22,6 +22,8 @@ WHERE
                     SELECT RefID
                     FROM tblReferences
                     WHERE MedlineID = {pubmed_id}
+                    AND
+                    RefID != 169
                 )
             )
             AND

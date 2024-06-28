@@ -186,7 +186,7 @@ def work():
                 for r in result
             ])
 
-            if int(qid[1:]) in [10, 11, 12]:
+            if int(qid[1:]) in [8, 9, 10]:
                 answer = answer.replace(
                         'MC', 'molecular clone'
                     ).replace(
