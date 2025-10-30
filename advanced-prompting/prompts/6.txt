@@ -1,0 +1,15 @@
+Heuristics to identify countries of sequenced sample origin
+
+- If the paper states “samples/patients were recruited/enrolled/collected in <city/region>, <country>” or “participants were followed at <hospital/clinic> in <country>,” then consider that country as the sample origin.
+- If it lists specific clinics/hospitals (e.g., University Teaching Hospital Lusaka; Gondar University Hospital; YouAn Hospital, Beijing; Instituto Nacional do Tórax, Tegucigalpa), then infer the corresponding country (Zambia; Ethiopia; China; Honduras).
+- If it states “nationwide cohort/surveillance/registry in <country>” or “national reference laboratory of <country>,” then the country is the sample origin.
+- If it names a province/city uniquely tied to a country (e.g., KwaZulu-Natal, Soweto, Liaoning, Jiangsu, Zhejiang, Guangxi, Shanghai, Shenzhen, Hangzhou, Bushbuckridge, Mbeya, Rakai, Minho, Cyprus, Botswana localities), then map to South Africa/China/Portugal/Cyprus/Botswana, respectively.
+- If multicenter/enrollment sites across countries are explicitly listed (e.g., “enrolled at sites in Botswana, Brazil, India, South Africa, Tanzania, Thailand, Uganda, USA, Zimbabwe”), then list all named countries.
+- If the paper mentions “study conducted in <country>, samples shipped to <other country> for sequencing,” then use the collection country, not the sequencing lab’s country.
+- If it references a country-specific cohort name (e.g., SCOPE—San Francisco; ATHENA—Netherlands; SHCS—Switzerland; ANRS CO5 HIV-2—France; BHP—Botswana; UARTO—Uganda), then use the cohort’s country unless otherwise specified as multinational.
+- If participants are immigrants but samples were drawn in the host country (e.g., clinics in Italy/Spain/France), then the origin is the host country unless the study explicitly defines origin by “country of transmission” and analyzes sequences by that criterion.
+- If ethics approvals span many countries without explicit enrollment sites, do not infer origin from approvals alone.
+- If the study is in vitro only, uses lab strains, or is purely a review/meta-analysis without enumerated source countries, then answer “Not reported” (unless the paper explicitly lists contributing countries or totals like “111 countries”).
+- If sequences were retrieved from GenBank and the paper lists contributing countries, then report those; if only regions are given, report regions or “Not reported” for countries.
+
+Always confirm phrasing (recruited/collected/enrolled/followed at) and ensure countries reflect where samples were obtained, not where analyses occurred.
