@@ -303,3 +303,24 @@ TDF \(tenofovir disoproxil fumarate\), TFV \(tenofovir\), TAF \(tenofovir alafen
 \(atazanavir/ritonavir\), DRV\(/r\) \(darunavir\), NFV \(nelfinavir\), SQV \(saquinavir\), IDV \(indinavir\), FPV
 \(fosamprenavir\), TPV \(tipranavir\), RTV \(ritonavir\), RAL \(raltegravir\), EVG \(elvitegravir\), DTG \(dolutegravir\), BIC
 \(bictegravir\), CAB \(cabotegravir\), LEN \(lenacapavir\), MVC \(maraviroc\), IBA \(ibalizumab\)
+
+
+## For each question:
+
+Step 1: get the question, store as "question".
+Step 2: extract two or three sentences from the "paper content" that can be used to answer the question, separate them using '.', store as 'evidence'.
+Step 3: provide the rationale about how you found the answer from the content in details, store as 'rationale'.
+Step 4: answer the question, store as 'answer'.
+Step 5: format your answer in the format:
+
+"""
+Question: <question>
+
+Evidence: <evidence>
+
+Rationale: <rationale>
+
+Answer: <answer>
+"""
+
+Make sure you answer all the questions.

@@ -20,7 +20,14 @@ def load_prompt(prompt_path: Path) -> str:
 
 
 def build_prompt(prompt_text: str, article_text: str) -> str:
-    return f"{prompt_text}\n\n{article_text.strip()}\n\n{prompt_text}"
+    article_body = article_text.strip()
+    return (
+        f"{prompt_text}\n\n"
+        f"PAPER FULL TEXT\n\n"
+        f"{article_body}\n\n"
+        f"PAPER ENDED\n\n"
+        f"{prompt_text}"
+    )
 
 
 def collect_articles(papers_dir: Path) -> list[tuple[str, Path]]:
