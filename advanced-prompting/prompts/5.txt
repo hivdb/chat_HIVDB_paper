@@ -1,0 +1,19 @@
+Use these if-then rules to extract “How many individuals had samples obtained for HIV sequencing?” from the paper:
+
+- If the paper states “samples/plasma/blood were collected/obtained from X patients/participants/individuals/infants/children/adults,” then consider X as the answer.
+- If it says “plasma samples from X patients were obtained” or “clinical samples were obtained from X individuals,” then consider X.
+- If it states “genotypic resistance testing/genotyping/sequencing was performed on X participants/patients,” then consider X.
+- If it reports “sequences were obtained from X” or “successfully amplified/sequenced X,” then consider X (prefer “successfully sequenced” over “available” if both are given; else use “available for sequencing”).
+- If it specifies “one/single sequence per subject” with Y subjects, then consider Y.
+- If it gives “N sequences from M patients/individuals,” then consider M (unique individuals). If only N sequences are given without per-person detail, consider N only if text implies one per person.
+- If multiple timepoints are reported (baseline, week 48), use the number of unique participants who had sequencing at any defined timepoint; avoid summing timepoints unless the paper explicitly states they are distinct individuals.
+- If it specifies a subgroup with criteria (e.g., “participants with VL >1000 copies/mL”), and sequencing/genotyping was done in that subgroup, then consider the subgroup size actually sequenced/genotyped.
+- If both “enrolled N” and “sequenced M” are given, prefer M (those who had samples processed for sequencing). If “all enrolled had samples available for sequencing,” consider N.
+- If it states “panel of X isolates derived from plasma of treatment-naïve/experienced individuals,” then consider X (assuming one isolate per individual unless otherwise stated).
+- If it’s a case report or “we report a case/patient,” then consider 1.
+- If work is entirely in vitro/site-directed mutagenesis/recombinant clones/selection experiments without patient-derived specimens, then consider Not reported (or 0 if explicitly no human samples).
+- If data are solely compiled from databases (GenBank/LANL) without new sampling by the study, then consider Not reported unless the paper clearly counts unique individuals within its analyzed dataset as its study population.
+- If ranges like “X of Y successfully genotyped,” then consider X.
+- Sum across strata/sites only if the paper sums or clearly indicates distinct, non-overlapping groups.
+
+Always confirm the number refers to unique individuals with samples obtained for sequencing in this study.
