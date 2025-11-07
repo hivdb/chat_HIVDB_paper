@@ -63,7 +63,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--prompt",
         type=Path,
-        default=Path("Prompts_Nov5.md"),
+        default=Path("Prompts_Nov7b.md"),
         help="Path to the base prompt Markdown file.",
     )
     parser.add_argument(
@@ -75,7 +75,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("pmid_prompts.jsonl"),
+        default=Path("pmid_prompts_Nov7.jsonl"),
         help="Output JSONL file path.",
     )
     return parser.parse_args()

@@ -22,10 +22,11 @@ import pandas as pd
 
 
 MERGED_PATH = Path("advanced-prompting/merged_answers.xlsx")
-UPDATED_PATH = Path("eval/updated_human_answers.csv")
+# UPDATED_PATH = Path("eval/updated_human_answers.csv")
 GPT5_PATH = Path("eval/gpt5_responses.csv")
 JUDGE_RESULTS_PATH = Path("eval/judge_gpt5_results.csv")
 OUTPUT_METRICS = Path("eval/evaluation_metrics.csv")
+DETAIL_METRICS_HUMAN = Path("eval/detailed_evaluation.csv")
 OUTPUT_TABLE_DIR = Path("eval/figures")
 
 SPECIAL_NO = {
@@ -47,12 +48,15 @@ NO_SYNONYMS = {"no", "false", "not", "absent"}
 ARV_SYNONYMS = {
     "tfv": "tenofovir",
     "tdf": "tenofovir",
+    "tenofovir disoproxil fumarate": "tenofovir",
     "taf": "tenofovir alafenamide",
     "ftc": "emtricitabine",
     "3tc": "lamivudine",
+    "lamivudine (3tc)": "lamivudine",
     "azt": "zidovudine",
     "abc": "abacavir",
     "efv": "efavirenz",
+    "efavirenz (efv)": "efavirenz",
     "nvp": "nevirapine",
     "dtg": "dolutegravir",
     "ral": "raltegravir",
@@ -63,14 +67,41 @@ ARV_SYNONYMS = {
     "etv": "etravirine",
     "etr": "etravirine",
     "rpv": "rilpivirine",
+    "rilpivirine (rpv)": "rilpivirine",
+    "cab": "cabotegravir",
+    "cabotegravir (cab)": "cabotegravir",
     "d4t": "stavudine",
     "mvc": "maraviroc",
     "evg": "elvitegravir",
+    "elvitegravir (evg)": "elvitegravir",
+    "efv, nvp": "efavirenz | nevirapine",
 }
 
 LIST_DELIM = re.compile(r",|;|/|\band\b|\bor\b")
 NON_ALPHANUM = re.compile(r"[^a-z0-9\s]")
 LEADING_YES_NO = re.compile(r"^(yes|no)\b")
+def detect_terms(text: str, synonyms: dict[str, str], min_len: int = 3) -> List[str]:
+    lowered = text.lower()
+    found: set[str] = set()
+    for key, canonical in synonyms.items():
+        if len(key) < min_len:
+            continue
+        if re.search(rf"\b{re.escape(key)}\b", lowered):
+            found.add(canonical)
+    return sorted(found)
+GENE_SYNONYMS = {
+    "integrase": "in",
+    "in": "in",
+    "reverse transcriptase": "rt",
+    "rt": "rt",
+    "protease": "pr",
+    "pr": "pr",
+    "capsid": "ca",
+    "ca": "ca",
+    "full genome": "full genome",
+    "near full length genome": "nflg",
+    "nflg": "nflg",
+}
 
 MODEL_GROUPS = {
     "gpt4_family": ["GPT-4o base", "GPT-4o FT", "GPT-4o AP", "gpt5-mini"],
@@ -92,45 +123,12 @@ SCENARIOS = [
         ),
     },
     {
-        "title": "Updated Human Answer",
-        "reference": "Updated Human Answer",
-        "models": MODEL_GROUPS["gpt4_family"] + MODEL_GROUPS["llama_70b"],
-        "convert_special_no": True,
-        "footnote": (
-            "*AI Answers compared against Updated Human Answers after "
-            "normalizing case, stripping punctuation, sorting list-valued entries, "
-            "and collapsing None/Not reported/Not applicable/0 into 'No'."
-        ),
-    },
-    {
-        "title": "Updated Human Answer – literal",
-        "reference": "Updated Human Answer",
-        "models": ADDITIONAL_AP_MODELS,
-        "convert_special_no": False,
-        "footnote": (
-            "*AI Answers compared against Updated Human Answers after "
-            "normalizing case, stripping punctuation, sorting list-valued entries, "
-            "WITHOUT collapsing None/Not reported/Not applicable/0 into 'No'."
-        ),
-    },
-    {
         "title": "Human Answer – Yes/No questions",
         "reference": "Human Answer",
         "models": MODEL_GROUPS["gpt4_family"] + MODEL_GROUPS["llama_70b"],
         "convert_special_no": True,
         "footnote": (
             "*AI Answers compared against Human Answers after "
-            "collapsing None/Not reported/Not applicable/0 into 'No'."
-        ),
-        "filter_type": "Boolean",
-    },
-    {
-        "title": "Updated Human Answer – Yes/No questions",
-        "reference": "Updated Human Answer",
-        "models": MODEL_GROUPS["gpt4_family"] + MODEL_GROUPS["llama_70b"],
-        "convert_special_no": True,
-        "footnote": (
-            "*AI Answers compared against Updated Human Answers after "
             "collapsing None/Not reported/Not applicable/0 into 'No'."
         ),
         "filter_type": "Boolean",
@@ -150,7 +148,9 @@ def configure_logger() -> logging.Logger:
 def token_synonym(token: str) -> str:
     token = token.lower().strip()
     if token in ARV_SYNONYMS:
-        return ARV_SYNONYMS[token]
+        token = ARV_SYNONYMS[token]
+    if token in GENE_SYNONYMS:
+        token = GENE_SYNONYMS[token]
     return token
 
 
@@ -163,7 +163,7 @@ def normalize_list(text: str) -> str:
     cleaned = [part for part in cleaned if part]
     if not cleaned:
         return text
-    cleaned.sort()
+    cleaned = sorted(set(cleaned))
     return " | ".join(cleaned)
 
 
@@ -201,17 +201,34 @@ def canonicalize_answer(
         if convert_special_no and lowered == "0":
             return "no"
         return str(int(lowered))
+    if any(char.isdigit() for char in lowered) and " or " in lowered:
+        numbers = []
+        for token in re.split(r"[^\d]+", lowered):
+            if token.isdigit():
+                numbers.append(token)
+        if numbers:
+            return " or ".join(sorted(numbers))
 
     normalized = normalize_list(lowered)
-    normalized = NON_ALPHANUM.sub(" ", normalized).strip()
-    normalized = " ".join(normalized.split())
-    if convert_special_no and normalized in SPECIAL_NO:
+    if "|" in normalized:
+        sanitized = " | ".join(token.strip() for token in normalized.split("|"))
+    else:
+        normalized = NON_ALPHANUM.sub(" ", normalized).strip()
+        sanitized = " ".join(normalized.split())
+
+    if convert_special_no and sanitized in SPECIAL_NO:
         return "no"
-    if normalized in YES_SYNONYMS:
+    if sanitized in YES_SYNONYMS:
         return "yes"
-    if normalized in NO_SYNONYMS:
+    if sanitized in NO_SYNONYMS:
         return "no"
-    return normalized
+    arv_terms = detect_terms(raw, ARV_SYNONYMS)
+    if arv_terms:
+        return " | ".join(sorted(arv_terms))
+    gene_terms = detect_terms(sanitized, GENE_SYNONYMS, min_len=3)
+    if gene_terms:
+        return " | ".join(sorted(gene_terms))
+    return sanitized
 
 
 def load_data() -> pd.DataFrame:
@@ -221,16 +238,9 @@ def load_data() -> pd.DataFrame:
     gpt5 = pd.read_csv(GPT5_PATH, dtype={"PMID": str})
     gpt5 = gpt5.rename(columns={"Answer": "gpt5-mini"})
 
-    updated = pd.read_csv(UPDATED_PATH, dtype={"PMID": str})
-    updated = (
-        updated.sort_values(by=["PMID", "QID"])
-        .drop_duplicates(subset=["PMID", "QID"], keep="last")
-        .rename(columns={"Updated Human Answer": "Updated Human Answer"})
-    )
-
     df = merged.merge(gpt5[["PMID", "QID", "gpt5-mini"]], on=["PMID", "QID"], how="left")
-    if "Updated Human Answer" in updated.columns:
-        df = df.merge(updated[["PMID", "QID", "Updated Human Answer"]], on=["PMID", "QID"], how="left")
+    if "Updated Human Answer" not in df.columns:
+        df["Updated Human Answer"] = ""
     df["sample_id"] = df["PMID"].astype(str) + "-" + df["QID"].astype(str)
     return df
 
@@ -241,6 +251,12 @@ def load_judge_results() -> pd.DataFrame | None:
     df = pd.read_csv(JUDGE_RESULTS_PATH, dtype={"PMID": str})
     df["sample_id"] = df["PMID"].astype(str) + "-" + df["QID"].astype(str)
     return df
+
+
+def judge_lookup_map(judge_df: pd.DataFrame | None) -> dict[str, dict]:
+    if judge_df is None:
+        return {}
+    return judge_df.set_index("sample_id").to_dict("index")
 
 
 def evaluate_model(
@@ -279,6 +295,67 @@ def evaluate_model(
         "recall": recall,
         "f1": f1,
     }
+
+
+def compare_answers(
+    pred: str | float | None,
+    ref: str | float | None,
+    convert_special_no: bool,
+) -> bool:
+    if pred is None or (isinstance(pred, float) and math.isnan(pred)):
+        return False
+    if ref is None or (isinstance(ref, float) and math.isnan(ref)):
+        return False
+    pred_norm = canonicalize_answer(pred, convert_special_no=convert_special_no)
+    ref_norm = canonicalize_answer(ref, convert_special_no=convert_special_no)
+    if not pred_norm and not ref_norm:
+        return False
+    if pred_norm == ref_norm:
+        return True
+    # Handle numeric ranges: treat "6 or 7" as matching "6" or "7"
+    if " or " in ref_norm:
+        options = {opt.strip() for opt in ref_norm.split("or")}
+        if pred_norm in options:
+            return True
+    if " or " in pred_norm:
+        options = {opt.strip() for opt in pred_norm.split("or")}
+        if ref_norm in options:
+            return True
+    if "|" in pred_norm or "|" in ref_norm:
+        pred_set = {tok.strip() for tok in pred_norm.split("|") if tok.strip()}
+        ref_set = {tok.strip() for tok in ref_norm.split("|") if tok.strip()}
+        if pred_set and ref_set:
+            if pred_set == ref_set:
+                return True
+            if ref_set.issubset(pred_set):
+                return True
+    def normalize_gene_list(text: str) -> str:
+        parts = [part.strip() for part in text.split("|")]
+        mapped = []
+        for part in parts:
+            mapped.append(GENE_SYNONYMS.get(part, part))
+        mapped = [item for item in mapped if item]
+        if not mapped:
+            return ""
+        return " | ".join(sorted(mapped))
+
+    gene_pred = normalize_gene_list(pred_norm)
+    gene_ref = normalize_gene_list(ref_norm)
+    if gene_pred and gene_ref and gene_pred == gene_ref:
+        return True
+
+    return False
+
+
+def judge_value_for_scenario(
+    sample_id: str,
+    scenario_name: str,
+    judge_lookup: dict[str, dict],
+) -> bool | None:
+    info = judge_lookup.get(sample_id)
+    if not info:
+        return None
+    return info.get("judge_human_correct") if scenario_name.startswith("Human Answer") else None
 
 
 def macro_metrics(refs: List[str], preds: List[str]) -> Tuple[float, float, float]:
@@ -332,6 +409,41 @@ def evaluate_group(
     return pd.DataFrame(rows)
 
 
+def build_detail_rows(
+    data: pd.DataFrame,
+    scenario: dict,
+    judge_lookup: dict[str, dict],
+) -> List[dict]:
+    rows: List[dict] = []
+    models = scenario["models"]
+    ref_col = scenario["reference"]
+    convert = scenario["convert_special_no"]
+    scenario_name = scenario["title"]
+
+    for _, record in data.iterrows():
+        base = {
+            "Scenario": scenario_name,
+            "PMID": record["PMID"],
+            "QID": record["QID"],
+            "Question": record.get("Question", ""),
+            "Type": record.get("Type", ""),
+            "Human Answer": record.get("Human Answer", ""),
+            "Updated Human Answer": record.get("Updated Human Answer", ""),
+        }
+        sample_id = record.get("sample_id", "")
+        for model in models:
+            answer = record.get(model, "")
+            base[f"{model} Answer"] = answer
+            judge_val = judge_value_for_scenario(sample_id, scenario_name, judge_lookup)
+            if model == "gpt5-mini" and judge_val is not None:
+                correct = bool(judge_val)
+            else:
+                correct = compare_answers(answer, record.get(ref_col, ""), convert)
+            base[f"{model} Correct"] = int(bool(correct))
+        rows.append(base)
+    return rows
+
+
 def apply_judge_override(
     df: pd.DataFrame,
     scenario_name: str,
@@ -340,16 +452,9 @@ def apply_judge_override(
 ) -> None:
     if judge_df is None:
         return
-    if scenario_name in ("Human Answer", "Human Answer – Boolean Only"):
-        column = "judge_human_correct"
-    elif scenario_name in (
-        "Updated Human Answer",
-        "Updated Human Answer – literal",
-        "Updated Human Answer – Boolean Only",
-    ):
-        column = "judge_updated_correct"
-    else:
+    if not scenario_name.startswith("Human Answer"):
         return
+    column = "judge_human_correct"
 
     scenario_ids = set(scenario_records["sample_id"])
     subset = judge_df[judge_df["sample_id"].isin(scenario_ids) & judge_df[column].notna()]
@@ -428,11 +533,13 @@ def main() -> int:
 
     df = load_data()
     judge_df = load_judge_results()
+    judge_lookup = judge_lookup_map(judge_df)
     if args.limit is not None:
         df = df.head(args.limit)
 
     scenario_frames: List[pd.DataFrame] = []
     figure_specs: List[Tuple[str, str, pd.DataFrame]] = []
+    detail_rows: List[dict] = []
 
     for scenario in SCENARIOS:
         scenario_df = df
@@ -452,6 +559,7 @@ def main() -> int:
         if subset.empty:
             continue
         apply_judge_override(subset, scenario["title"], judge_df, scenario_df)
+        detail_rows.extend(build_detail_rows(scenario_df, scenario, judge_lookup))
         scenario_frames.append(subset)
         figure_specs.append((scenario["title"], scenario["footnote"], subset))
 
@@ -462,6 +570,13 @@ def main() -> int:
     combined = pd.concat(scenario_frames, ignore_index=True)
     combined.to_csv(OUTPUT_METRICS, index=False)
     logger.info("Wrote metrics to %s", OUTPUT_METRICS)
+
+    if detail_rows:
+        detail_df = pd.DataFrame(detail_rows)
+        detail_df.sort_values(["Scenario", "PMID", "QID"], inplace=True)
+        DETAIL_METRICS_HUMAN.parent.mkdir(parents=True, exist_ok=True)
+        detail_df.to_csv(DETAIL_METRICS_HUMAN, index=False)
+        logger.info("Wrote detail rows to %s", DETAIL_METRICS_HUMAN)
 
     if not HAS_MPL:
         logger.warning("matplotlib not available; skipping figure generation.")
