@@ -12,7 +12,7 @@ import pandas as pd
 
 PROMPTS_EXCEL = Path("S4Table.xlsx")
 RESPONSES_JSONL = Path("pmid_responses.jsonl")
-OUTPUT_EXCEL = Path("advanced_prompting_test_set.xlsx")
+OUTPUT_EXCEL = Path("gpt-4o-mini-2024-07-18_parsed.xlsx")
 
 
 def extract_answers(text: str) -> list[str]:

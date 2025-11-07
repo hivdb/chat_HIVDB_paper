@@ -1,21 +1,47 @@
 #!/usr/bin/env python3
-"""Call GPT-4o mini for each PubMed prompt and store responses incrementally."""
+"""Call GPT-4o mini for each PubMed prompt using a rate-limited worker pool."""
 
 from __future__ import annotations
 
+import asyncio
 import os
 import json
 import logging
+import time
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Iterable
 
-from openai import OpenAI
+from openai import AsyncOpenAI
 from dotenv import load_dotenv
+
+try:
+    import tiktoken
+except ImportError:  # pragma: no cover - optional dependency
+    tiktoken = None
 
 
 MODEL_NAME = "gpt-4o-mini-2024-07-18"
-PROMPTS_PATH = Path("pmid_prompts.jsonl")
-RESPONSES_PATH = Path("pmid_responses.jsonl")
-LOG_PATH = Path("pmid_responses.log")
+PROMPTS_PATH = Path("pmid_prompts_Nov7.jsonl")
+RESPONSES_PATH = Path("pmid_responses_Nov7.jsonl")
+LOG_PATH = Path("pmid_responses_Nov7.log")
+RATE_LIMIT_TOKENS_PER_MINUTE = 180_000_000
+DEFAULT_COMPLETION_BUDGET = 2_000
+MAX_WORKERS = int(os.environ.get("PMID_MAX_WORKERS", "8"))
+FAILED_RESPONSES = {"I'm unable to fulfill that request."}
+
+
+@dataclass(frozen=True)
+class PromptJob:
+    pmid: str
+    prompt: str
+    tokens: int
+
+
+@dataclass
+class Progress:
+    total: int
+    completed: int = 0
 
 
 def setup_logger() -> logging.Logger:
@@ -36,10 +62,11 @@ def setup_logger() -> logging.Logger:
     return logger
 
 
-def load_processed(path: Path) -> set[str]:
+def load_processed(path: Path) -> tuple[set[str], set[str]]:
     processed: set[str] = set()
+    retry: set[str] = set()
     if not path.exists():
-        return processed
+        return processed, retry
     with path.open("r", encoding="utf-8") as infile:
         for line in infile:
             if not line.strip():
@@ -49,54 +76,249 @@ def load_processed(path: Path) -> set[str]:
             except json.JSONDecodeError:
                 continue
             pmid = data.get("pmid")
-            if pmid:
-                processed.add(str(pmid))
-    return processed
+            if not pmid:
+                continue
+            pmid_str = str(pmid)
+            response_text = data.get("response")
+            if not response_text or response_text in FAILED_RESPONSES:
+                retry.add(pmid_str)
+                continue
+            processed.add(pmid_str)
+    return processed, retry
+
+
+def estimate_tokens(text: str, model_name: str = MODEL_NAME) -> int:
+    """Return an estimated token count for the provided text."""
+    if tiktoken is not None:
+        try:
+            encoding = tiktoken.encoding_for_model(model_name)
+        except KeyError:
+            encoding = tiktoken.get_encoding("cl100k_base")
+        return len(encoding.encode(text))
+    # Heuristic fallback: assume 4 characters per token.
+    return max(1, len(text) // 4)
+
+
+def load_pending_jobs(
+    prompts_path: Path, processed_pmids: Iterable[str], logger: logging.Logger
+) -> list[PromptJob]:
+    processed_set = set(processed_pmids)
+    jobs: list[PromptJob] = []
+    queued_pmids: set[str] = set()
+    with prompts_path.open("r", encoding="utf-8") as infile:
+        for line_no, line in enumerate(infile, start=1):
+            if not line.strip():
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                logger.warning("Skipping invalid JSON on line %d", line_no)
+                continue
+            pmid = str(record.get("pmid"))
+            if not pmid:
+                logger.warning("Missing PMID on line %d", line_no)
+                continue
+            if pmid in processed_set:
+                continue
+            if pmid in queued_pmids:
+                logger.warning(
+                    "Duplicate prompt for PMID %s on line %d; skipping", pmid, line_no
+                )
+                continue
+            prompt = record.get("prompt")
+            if not isinstance(prompt, str):
+                logger.warning("Missing prompt text for PMID %s", pmid)
+                continue
+            prompt_tokens = estimate_tokens(prompt)
+            total_budget = prompt_tokens + DEFAULT_COMPLETION_BUDGET
+            jobs.append(PromptJob(pmid=pmid, prompt=prompt, tokens=total_budget))
+            queued_pmids.add(pmid)
+    logger.info(
+        "Prepared %d pending PMIDs (estimated %d tokens)",
+        len(jobs),
+        sum(job.tokens for job in jobs),
+    )
+    return jobs
+
+
+class TokenBucket:
+    """Simple async-aware token bucket to enforce token-per-minute limits."""
+
+    def __init__(self, tokens_per_minute: int):
+        self.capacity = float(tokens_per_minute)
+        self.tokens = float(tokens_per_minute)
+        self.rate_per_second = float(tokens_per_minute) / 60.0
+        self.updated_at = time.monotonic()
+        self.lock = asyncio.Lock()
+
+    def _refill(self) -> None:
+        now = time.monotonic()
+        elapsed = now - self.updated_at
+        if elapsed <= 0:
+            return
+        self.tokens = min(self.capacity, self.tokens + elapsed * self.rate_per_second)
+        self.updated_at = now
+
+    async def consume(self, amount: int) -> None:
+        requested = float(amount)
+        if requested <= 0:
+            return
+        while True:
+            async with self.lock:
+                if requested > self.capacity:
+                    self.capacity = requested
+                self._refill()
+                if self.tokens >= requested:
+                    self.tokens -= requested
+                    return
+                deficit = requested - self.tokens
+            wait_time = deficit / self.rate_per_second if self.rate_per_second else 0.0
+            await asyncio.sleep(wait_time)
+
+
+async def worker(
+    worker_id: int,
+    queue: "asyncio.Queue[PromptJob | None]",
+    client: AsyncOpenAI,
+    responses_file,
+    token_bucket: TokenBucket,
+    write_lock: asyncio.Lock,
+    progress: Progress,
+    logger: logging.Logger,
+) -> None:
+    while True:
+        job = await queue.get()
+        if job is None:
+            queue.task_done()
+            logger.info("Worker %d exiting", worker_id)
+            return
+
+        await token_bucket.consume(job.tokens)
+        logger.info(
+            "Worker %d requesting PMID %s (token budget %d)",
+            worker_id,
+            job.pmid,
+            job.tokens,
+        )
+
+        try:
+            response = await client.responses.create(model=MODEL_NAME, input=job.prompt)
+            output_text = response.output_text
+        except Exception as exc:  # pragma: no cover - network failures
+            logger.exception(
+                "Worker %d API call failed for PMID %s: %s", worker_id, job.pmid, exc
+            )
+            queue.task_done()
+            continue
+
+        async with write_lock:
+            response_record = {"pmid": job.pmid, "response": output_text}
+            responses_file.write(json.dumps(response_record, ensure_ascii=False) + "\n")
+            responses_file.flush()
+            progress.completed += 1
+            current = progress.completed
+            total = progress.total
+        logger.info(
+            "Worker %d stored PMID %s (%d/%d complete)",
+            worker_id,
+            job.pmid,
+            current,
+            total,
+        )
+        queue.task_done()
+
+
+async def process_jobs(
+    jobs: list[PromptJob],
+    responses_file,
+    logger: logging.Logger,
+    api_key: str,
+) -> None:
+    if not jobs:
+        logger.info("No new PMIDs to process.")
+        return
+
+    client = AsyncOpenAI(api_key=api_key)
+    worker_count = max(1, min(MAX_WORKERS, len(jobs)))
+    queue: asyncio.Queue[PromptJob | None] = asyncio.Queue()
+    for job in jobs:
+        await queue.put(job)
+    for _ in range(worker_count):
+        await queue.put(None)
+
+    token_bucket = TokenBucket(RATE_LIMIT_TOKENS_PER_MINUTE)
+    write_lock = asyncio.Lock()
+    progress = Progress(total=len(jobs))
+
+    logger.info(
+        "Starting %d workers with rate limit %.1fM tokens/min",
+        worker_count,
+        RATE_LIMIT_TOKENS_PER_MINUTE / 1_000_000,
+    )
+
+    tasks = [
+        asyncio.create_task(
+            worker(
+                worker_id=i + 1,
+                queue=queue,
+                client=client,
+                responses_file=responses_file,
+                token_bucket=token_bucket,
+                write_lock=write_lock,
+                progress=progress,
+                logger=logger,
+            )
+        )
+        for i in range(worker_count)
+    ]
+
+    await queue.join()
+    for task in tasks:
+        await task
+    logger.info("Completed %d/%d PMIDs", progress.completed, progress.total)
 
 
 def main() -> int:
     load_dotenv()
-
-    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-
     logger = setup_logger()
+
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        logger.error("OPENAI_API_KEY is not set.")
+        return 1
 
     if not PROMPTS_PATH.exists():
         logger.error("Prompts file not found at %s", PROMPTS_PATH)
         return 1
 
-    processed_pmids = load_processed(RESPONSES_PATH)
-    logger.info("Loaded %d processed PMIDs", len(processed_pmids))
+    processed_pmids, retry_pmids = load_processed(RESPONSES_PATH)
+    logger.info(
+        "Loaded %d processed PMIDs (%d flagged for retry)",
+        len(processed_pmids),
+        len(retry_pmids),
+    )
 
-    with PROMPTS_PATH.open("r", encoding="utf-8") as prompts_file, RESPONSES_PATH.open(
-        "a", encoding="utf-8"
-    ) as responses_file:
-        for line_number, line in enumerate(prompts_file, start=1):
-            if not line.strip():
-                continue
-            record = json.loads(line)
-            pmid = str(record["pmid"])
+    pending_jobs = load_pending_jobs(PROMPTS_PATH, processed_pmids, logger)
+    if retry_pmids:
+        pending_pmids = {job.pmid for job in pending_jobs}
+        missing_retries = retry_pmids - pending_pmids
+        if missing_retries:
+            logger.warning(
+                "Retry PMIDs missing from prompts and will be skipped: %s",
+                ", ".join(sorted(missing_retries)),
+            )
+        else:
+            logger.info(
+                "All %d retry PMIDs queued for reprocessing.", len(retry_pmids)
+            )
+    if not pending_jobs:
+        logger.info("No new prompts to process.")
+        return 0
 
-            if pmid in processed_pmids:
-                logger.info("Skipping already processed PMID %s", pmid)
-                continue
+    with RESPONSES_PATH.open("a", encoding="utf-8") as responses_file:
+        asyncio.run(process_jobs(pending_jobs, responses_file, logger, api_key))
 
-            prompt = record["prompt"]
-            logger.info("Requesting response for PMID %s", pmid)
-
-            try:
-                response = client.responses.create(model=MODEL_NAME, input=prompt)
-            except Exception as exc:
-                logger.exception("API call failed for PMID %s: %s", pmid, exc)
-                continue
-
-            output_text = response.output_text
-            response_record = {"pmid": pmid, "response": output_text}
-            responses_file.write(json.dumps(response_record, ensure_ascii=False) + "\n")
-            responses_file.flush()
-            processed_pmids.add(pmid)
-            logger.info("Stored response for PMID %s", pmid)
-
+    logger.info("All pending PMIDs processed.")
     return 0
 
 
