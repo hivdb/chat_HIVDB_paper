@@ -113,6 +113,28 @@ SCENARIOS = [
             "WITHOUT collapsing None/Not reported/Not applicable/0 into 'No'."
         ),
     },
+    {
+        "title": "Human Answer – Yes/No questions",
+        "reference": "Human Answer",
+        "models": MODEL_GROUPS["gpt4_family"] + MODEL_GROUPS["llama_70b"],
+        "convert_special_no": True,
+        "footnote": (
+            "*AI Answers compared against Human Answers after "
+            "collapsing None/Not reported/Not applicable/0 into 'No'."
+        ),
+        "filter_type": "Boolean",
+    },
+    {
+        "title": "Updated Human Answer – Yes/No questions",
+        "reference": "Updated Human Answer",
+        "models": MODEL_GROUPS["gpt4_family"] + MODEL_GROUPS["llama_70b"],
+        "convert_special_no": True,
+        "footnote": (
+            "*AI Answers compared against Updated Human Answers after "
+            "collapsing None/Not reported/Not applicable/0 into 'No'."
+        ),
+        "filter_type": "Boolean",
+    },
 ]
 
 
@@ -209,6 +231,7 @@ def load_data() -> pd.DataFrame:
     df = merged.merge(gpt5[["PMID", "QID", "gpt5-mini"]], on=["PMID", "QID"], how="left")
     if "Updated Human Answer" in updated.columns:
         df = df.merge(updated[["PMID", "QID", "Updated Human Answer"]], on=["PMID", "QID"], how="left")
+    df["sample_id"] = df["PMID"].astype(str) + "-" + df["QID"].astype(str)
     return df
 
 
@@ -313,17 +336,23 @@ def apply_judge_override(
     df: pd.DataFrame,
     scenario_name: str,
     judge_df: pd.DataFrame | None,
+    scenario_records: pd.DataFrame,
 ) -> None:
     if judge_df is None:
         return
-    if scenario_name == "Human Answer":
+    if scenario_name in ("Human Answer", "Human Answer – Boolean Only"):
         column = "judge_human_correct"
-    elif scenario_name in ("Updated Human Answer", "Updated Human Answer – literal"):
+    elif scenario_name in (
+        "Updated Human Answer",
+        "Updated Human Answer – literal",
+        "Updated Human Answer – Boolean Only",
+    ):
         column = "judge_updated_correct"
     else:
         return
 
-    subset = judge_df[judge_df[column].notna()]
+    scenario_ids = set(scenario_records["sample_id"])
+    subset = judge_df[judge_df["sample_id"].isin(scenario_ids) & judge_df[column].notna()]
     if subset.empty:
         return
 
@@ -406,8 +435,15 @@ def main() -> int:
     figure_specs: List[Tuple[str, str, pd.DataFrame]] = []
 
     for scenario in SCENARIOS:
+        scenario_df = df
+        filter_type = scenario.get("filter_type")
+        if filter_type:
+            scenario_df = df[df["Type"] == filter_type]
+        if scenario_df.empty:
+            continue
+
         subset = evaluate_group(
-            df,
+            scenario_df,
             scenario["models"],
             scenario["reference"],
             scenario["convert_special_no"],
@@ -415,7 +451,7 @@ def main() -> int:
         )
         if subset.empty:
             continue
-        apply_judge_override(subset, scenario["title"], judge_df)
+        apply_judge_override(subset, scenario["title"], judge_df, scenario_df)
         scenario_frames.append(subset)
         figure_specs.append((scenario["title"], scenario["footnote"], subset))
 
