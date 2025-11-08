@@ -10,7 +10,7 @@ import argparse
 import csv
 import pathlib
 import re
-from typing import Dict, List
+from typing import Dict, List, Set, Tuple
 
 import pandas as pd
 
@@ -106,13 +106,13 @@ def parse_multiple_answer(cell: str) -> List[Dict[str, str]]:
     return results
 
 
-def load_qid_lookup(s2_table_path: pathlib.Path) -> Dict[str, str]:
-    """Build a lookup from question text to QID using S2Table.xlsx."""
+def load_qid_lookup(s2_table_path: pathlib.Path) -> Dict[str, Dict[str, str]]:
+    """Build a lookup from question text to the associated PMID/QID pair."""
     if not s2_table_path.exists():
         raise FileNotFoundError(f"Missing S2 table: {s2_table_path}")
 
     dataframe = pd.read_excel(s2_table_path)
-    lookup: Dict[str, str] = {}
+    lookup: Dict[str, Dict[str, str]] = {}
 
     for _, row in dataframe.iterrows():
         if pd.isna(row.get("Question")) or pd.isna(row.get("QID")):
@@ -120,12 +120,14 @@ def load_qid_lookup(s2_table_path: pathlib.Path) -> Dict[str, str]:
 
         question = clean_text(str(row["Question"]))
         qid = clean_text(str(row["QID"]))
+        pmid_value = row.get("PMID", "")
+        pmid = "" if pd.isna(pmid_value) else clean_text(str(pmid_value))
 
-        if question in lookup and lookup[question] != qid:
+        if question in lookup and lookup[question]["QID"] != qid:
             raise ValueError(
-                f"Conflicting QID assignments for question {question!r}: {lookup[question]} vs {qid}"
+                f"Conflicting QID assignments for question {question!r}: {lookup[question]['QID']} vs {qid}"
             )
-        lookup[question] = qid
+        lookup[question] = {"PMID": pmid, "QID": qid, "question": question}
 
     return lookup
 
@@ -140,18 +142,43 @@ def parse_file(
         reader = csv.DictReader(handle)
         for row in reader:
             pmid = clean_text(row.get("PMID", ""))
+
+            matched_pairs: Set[Tuple[str, str]] = set()
+
             parsed_questions = parse_multiple_answer(row.get("Multiple Answer", ""))
             print(f"PMID {pmid or '[unknown]'}: parsed {len(parsed_questions)} question(s)")
             for question in parsed_questions:
-                qid = qid_lookup.get(question["question"])
-                if qid is None:
+                qid_entry = qid_lookup.get(question["question"])
+                if qid_entry is None:
                     raise KeyError(
                         "Could not find QID for question {question!r}".format(
                             question=question["question"]
                         )
                     )
 
-                rows.append({"PMID": pmid, "QID": qid, **question})
+                matched_pairs.add((qid_entry["QID"], pmid))
+                rows.append(
+                    {
+                        "PMID": pmid,
+                        "QID": qid_entry["QID"],
+                        **question,
+                    }
+                )
+
+            for qid_entry in qid_lookup.values():
+                key = (qid_entry["QID"], pmid)
+                if key in matched_pairs:
+                    continue
+                rows.append(
+                    {
+                        "PMID": pmid,
+                        "QID": qid_entry["QID"],
+                        "question": qid_entry["question"],
+                        "evidence": "",
+                        "rationale": "",
+                        "answer": "",
+                    }
+                )
     fieldnames = ["PMID", "QID", "question", "evidence", "rationale", "answer"]
     with output_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
