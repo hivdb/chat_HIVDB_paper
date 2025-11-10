@@ -14,5 +14,5 @@ mismatches = human[human['legacy_correct'] != human['GPT-4o base Correct']]
 output = mismatches[['PMID','QID','Question','Human Answer',
                     'GPT-4o base Answer','legacy_correct','GPT-4o base Correct']].to_string(index=False)
 print(output)
-with open('mismatch_report.txt', 'w', encoding='utf-8') as outfile:
+with open('eval/mismatch_report.txt', 'w', encoding='utf-8') as outfile:
     outfile.write(output + '\n')
