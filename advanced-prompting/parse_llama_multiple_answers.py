@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Parse the `Multiple Answer` column in llama-3.1-70B data.
+"""Parse the `Multiple Answer` column in llama-3.1-8B data.
 
 The script expands each "Question" block into its own row containing the
 PMID, QID, question text, evidence, rationale, and answer.
@@ -176,7 +176,7 @@ def parse_file(
                         "question": qid_entry["question"],
                         "evidence": "",
                         "rationale": "",
-                        "answer": "",
+                        "answer": "No",
                     }
                 )
     fieldnames = ["PMID", "QID", "question", "evidence", "rationale", "answer"]
@@ -192,15 +192,15 @@ def build_parser() -> argparse.ArgumentParser:
         "input",
         type=pathlib.Path,
         nargs="?",
-        default=pathlib.Path("llama-3.1-70B.csv"),
-        help="Path to the input CSV file (default: llama-3.1-70B.csv)",
+        default=pathlib.Path("llama-3.1-8B.csv"),
+        help="Path to the input CSV file (default: llama-3.1-8B.csv)",
     )
     parser.add_argument(
         "output",
         type=pathlib.Path,
         nargs="?",
-        default=pathlib.Path("llama-3.1-70B_parsed.csv"),
-        help="Path to the output CSV file (default: llama-3.1-70B_parsed.csv)",
+        default=pathlib.Path("llama-3.1-8B_parsed.csv"),
+        help="Path to the output CSV file (default: llama-3.1-8B_parsed.csv)",
     )
     parser.add_argument(
         "--s2-table",
