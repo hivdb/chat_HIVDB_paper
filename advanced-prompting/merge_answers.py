@@ -10,7 +10,7 @@ import pandas as pd
 
 
 SOURCE_BASE = "all answers.xlsx"
-SOURCE_ADV = "advanced_prompting_test_set.xlsx"
+SOURCE_ADV = "gpt-4o-mini-2024-07-18_parsed.xlsx"
 SOURCE_LLAMA_8B = "llama-3.1-8B_parsed.csv"
 SOURCE_LLAMA_70B = "llama-3.1-70B_parsed.csv"
 OUTPUT_PATH = "merged_answers.xlsx"
