@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 """
-Generate a JSON Lines file that pairs each PubMed article with a
-prompt “sandwich” surrounding the article content.
+Generate JSON Lines files that pair each PubMed article with different
+prompt placements around the article content.
 
 Each JSON object contains:
     - pmid: the folder name within papers/ (PubMed ID)
-    - prompt: Prompts_Nov5.md + article markdown + Prompts_Nov5.md
+    - prompt: variants of Prompts_Nov5.md and the article markdown
 """
 from __future__ import annotations
 
 import argparse
 import json
 from pathlib import Path
+from typing import Callable
 
 
 def load_prompt(prompt_path: Path) -> str:
@@ -23,6 +24,26 @@ def build_prompt(prompt_text: str, article_text: str) -> str:
     article_body = article_text.strip()
     return (
         f"{prompt_text}\n\n"
+        f"PAPER FULL TEXT\n\n"
+        f"{article_body}\n\n"
+        f"PAPER ENDED\n\n"
+        f"{prompt_text}"
+    )
+
+
+def build_prompt_before(prompt_text: str, article_text: str) -> str:
+    article_body = article_text.strip()
+    return (
+        f"{prompt_text}\n\n"
+        f"PAPER FULL TEXT\n\n"
+        f"{article_body}\n\n"
+        f"PAPER ENDED\n\n"
+    )
+
+
+def build_prompt_after(prompt_text: str, article_text: str) -> str:
+    article_body = article_text.strip()
+    return (
         f"PAPER FULL TEXT\n\n"
         f"{article_body}\n\n"
         f"PAPER ENDED\n\n"
@@ -43,14 +64,22 @@ def collect_articles(papers_dir: Path) -> list[tuple[str, Path]]:
     return sorted(articles, key=lambda item: item[0])
 
 
-def generate_jsonl(prompt_path: Path, papers_dir: Path, output_path: Path) -> None:
+PromptBuilder = Callable[[str, str], str]
+
+
+def generate_jsonl(
+    prompt_path: Path,
+    papers_dir: Path,
+    output_path: Path,
+    prompt_builder: PromptBuilder = build_prompt,
+) -> None:
     base_prompt = load_prompt(prompt_path)
     articles = collect_articles(papers_dir)
 
     with output_path.open("w", encoding="utf-8") as outfile:
         for pmid, md_path in articles:
             article_text = md_path.read_text(encoding="utf-8")
-            prompt = build_prompt(base_prompt, article_text)
+            prompt = prompt_builder(base_prompt, article_text)
             record = {"pmid": pmid, "prompt": prompt}
             outfile.write(json.dumps(record, ensure_ascii=False))
             outfile.write("\n")
@@ -90,6 +119,12 @@ def main() -> int:
         raise FileNotFoundError(f"Papers directory not found: {args.papers}")
 
     generate_jsonl(args.prompt, args.papers, args.output)
+
+    before_output = args.output.parent / "pmid_prompts_before_Nov10.jsonl"
+    after_output = args.output.parent / "pmid_prompts_after_Nov10.jsonl"
+
+    generate_jsonl(args.prompt, args.papers, before_output, prompt_builder=build_prompt_before)
+    generate_jsonl(args.prompt, args.papers, after_output, prompt_builder=build_prompt_after)
     return 0
 
 
