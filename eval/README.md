@@ -26,7 +26,7 @@ This package scores multiple model outputs against human‐curated answers and p
 - Extra utilities detect negations, lab-only phrases, numeric mentions (digits or words), year references, and synonym-expanded list matches. These signals support lenient scoring.
 - `human_answer_counts` dispatches each question to a handler based on `Type`:
   * **Boolean:** Positive human answers grant TP if either the normalized token is `yes` or the raw model text contains scenario-specific positive cues; negatives are TN unless the model says `yes`.
-  * **List:** Non-empty human lists award TP for exact matches, full token coverage, partial matches over the 60 %/4-token threshold, or matching year mentions. Empty human answers become TN when the model is empty, negated, or restricted to lab-only contexts; otherwise FP.
+  * **List:** (Current strict mode) Non-empty human lists award TP **only** when every human token is reproduced after canonicalization. Partial/lenient matching and year-based shortcuts have been commented out for now, even though `LIST_PARTIAL_THRESHOLD` / `LIST_PARTIAL_MIN_TOKENS` remain defined in case we re-enable them. This means a model that supplies 7 of 9 antiretrovirals for PMID/QID `37495103/16` or 3 of 4 drug classes for `36931676/15` is now counted as FN until it returns the full list. Empty human answers become TN when the model is empty, negated, or restricted to lab-only contexts; otherwise FP.
   * **Number:** Non-zero references require any overlapping number between human/model texts (or exact list equivalence) to earn TP; zero/empty references produce TN when the model negates or is also zero.
   * **Generic fallback:** Empty human answers + empty/negated model → TN; otherwise TP requires list equality, else FN.
 

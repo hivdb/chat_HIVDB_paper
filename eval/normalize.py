@@ -356,8 +356,12 @@ def _score_list(
     matches, total = list_match_stats(ref_norm, pred_norm, pred_raw)
     match_ratio = matches / total if total else 0.0
     full_match = compare_lists(pred_norm, ref_norm) or (total and matches == total)
-    partial = total >= LIST_PARTIAL_MIN_TOKENS and match_ratio >= LIST_PARTIAL_THRESHOLD
-    has_year_reference = mentions_year(year_tokens(ref_norm), pred_norm, pred_raw)
+    # Partial list credit temporarily disabled: only perfect coverage counts.
+    # partial = total >= LIST_PARTIAL_MIN_TOKENS and match_ratio >= LIST_PARTIAL_THRESHOLD
+    partial = False
+    # Year reference shortcut also disabled to match stricter behavior.
+    # has_year_reference = mentions_year(year_tokens(ref_norm), pred_norm, pred_raw)
+    has_year_reference = False
 
     if not ref_empty:
         correct = full_match or partial or has_year_reference
