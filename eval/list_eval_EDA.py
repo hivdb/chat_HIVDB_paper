@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 """EDA utility for list-type answers.
 
-Loads eval/detailed_evaluation.csv, measures how many tokens appear in each
-list-type answer (human + models), computes overlap fractions against the
-human answer, and saves a violin plot to eval/figures/list-answer-overlaps.png.
+Loads eval/detailed_evaluation.csv, canonicalizes every answer column, and
+generates two violin plots:
+  1. Raw list lengths for all list-type rows (including “No/Not reported”).
+  2. Raw list lengths restricted to rows where the human answer contains
+     at least one token.
+
+Both plots annotate the mean overlap fraction between each model and the
+human list using the same lenient matching logic as evaluation.
 """
 
 from __future__ import annotations
@@ -32,14 +37,19 @@ ROOT = project_root()
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-from eval.normalize import (
+from eval.normalize import (  # noqa: E402  (deferred import)
     canonicalize_answer,
     human_tokens,
     list_match_stats,
-)  # noqa: E402  (deferred import)
+)
 
 
-def build_long_frame(df: pd.DataFrame, answer_cols: Iterable[str]) -> tuple[pd.DataFrame, dict[str, float]]:
+def compute_distributions(
+    df: pd.DataFrame,
+    answer_cols: Iterable[str],
+    *,
+    skip_empty_human: bool,
+) -> tuple[pd.DataFrame, dict[str, float]]:
     df = df.reset_index(drop=True)
     tall_records: list[dict[str, object]] = []
     overlap_values: dict[str, list[float]] = {col.replace(" Answer", ""): [] for col in answer_cols}
@@ -54,8 +64,10 @@ def build_long_frame(df: pd.DataFrame, answer_cols: Iterable[str]) -> tuple[pd.D
     }
 
     for idx, row in df.iterrows():
-        ref_norm = normalized_cols["Human Answer"].iloc[idx]
         ref_tokens = token_lists["Human Answer"].iloc[idx]
+        if skip_empty_human and not ref_tokens:
+            continue
+        ref_norm = normalized_cols["Human Answer"].iloc[idx]
         ref_total = len(ref_tokens)
 
         for col in answer_cols:
@@ -63,10 +75,9 @@ def build_long_frame(df: pd.DataFrame, answer_cols: Iterable[str]) -> tuple[pd.D
             tokens = token_lists[col].iloc[idx]
             tall_records.append({"Answer Source": source, "Item Count": len(tokens)})
 
-            if not ref_total:
+            if ref_total == 0:
                 overlap_values[source].append(float("nan"))
                 continue
-
             if source == "Human":
                 overlap_values[source].append(1.0)
                 continue
@@ -83,9 +94,9 @@ def build_long_frame(df: pd.DataFrame, answer_cols: Iterable[str]) -> tuple[pd.D
     return pd.DataFrame(tall_records), overlap_mean
 
 
-def plot_violin(plot_df: pd.DataFrame, overlaps: dict[str, float], output_path: Path) -> None:
+def plot_violin(plot_df: pd.DataFrame, overlaps: dict[str, float], output_path: Path, title: str) -> None:
     if plot_df.empty:
-        print("No list-type rows found; skipping plot.")
+        print(f"No list-type rows for '{title}'; skipping plot.")
         return
 
     sns.set_theme(style="whitegrid", context="talk")
@@ -112,13 +123,9 @@ def plot_violin(plot_df: pd.DataFrame, overlaps: dict[str, float], output_path: 
     order = [name for name in priority_order if name in sources] + [
         name for name in sources if name not in priority_order
     ]
+
     fig, ax = plt.subplots(figsize=(14, 6))
-    palette = []
-    for source in order:
-        if source == "Human":
-            palette.append("#c73832")
-        else:
-            palette.append("#4c72b0")
+    palette = ["#c73832" if source == "Human" else "#4c72b0" for source in order]
     vp = sns.violinplot(
         data=plot_df,
         x="Answer Source",
@@ -137,6 +144,7 @@ def plot_violin(plot_df: pd.DataFrame, overlaps: dict[str, float], output_path: 
         violin.set_facecolor(color)
         violin.set_edgecolor(color)
         violin.set_alpha(0.5)
+
     human_mean = plot_df.loc[plot_df["Answer Source"] == "Human", "Item Count"].mean()
     if pd.notna(human_mean):
         ax.axhline(
@@ -146,6 +154,7 @@ def plot_violin(plot_df: pd.DataFrame, overlaps: dict[str, float], output_path: 
             linewidth=1.5,
             label=f"Average Number of Items in Human Answer = {human_mean:.2f}",
         )
+
     max_count = plot_df["Item Count"].max()
     ax.set_ylim(0, max_count + 3)
     ax.text(
@@ -174,7 +183,8 @@ def plot_violin(plot_df: pd.DataFrame, overlaps: dict[str, float], output_path: 
             fontweight="semibold",
             color="#1f77b4",
         )
-    ax.set_title("")
+
+    # ax.set_title(title)
     ax.set_xlabel("Answer Source")
     ax.set_ylabel("Number of Items in 'List' Type Questions")
     ax.yaxis.set_major_locator(ticker.MultipleLocator(2))
@@ -182,10 +192,11 @@ def plot_violin(plot_df: pd.DataFrame, overlaps: dict[str, float], output_path: 
     if pd.notna(human_mean):
         ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.8))
     plt.tight_layout()
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output_path, dpi=300)
     plt.close(fig)
-    print(f"Saved violin plot with {len(plot_df):,} points across {len(order)} sources to {output_path}")
+    print(f"Saved '{title}' violin plot with {len(plot_df):,} points across {len(order)} sources to {output_path}")
 
 
 def parse_args() -> argparse.Namespace:
@@ -197,10 +208,10 @@ def parse_args() -> argparse.Namespace:
         help="CSV containing detailed evaluation rows.",
     )
     parser.add_argument(
-        "--output",
+        "--output-dir",
         type=Path,
-        default=ROOT / "eval" / "figures" / "list-answer-overlaps.png",
-        help="Where to save the violin plot.",
+        default=ROOT / "eval" / "figures",
+        help="Directory for saving plots (two files will be written).",
     )
     return parser.parse_args()
 
@@ -209,17 +220,21 @@ def main() -> int:
     args = parse_args()
     df = pd.read_csv(args.detail_path)
     list_df = df[df["Type"].fillna("").str.lower() == "list"].copy()
-    print(f"Loaded {len(df):,} rows; {len(list_df):,} list-type questions.")
+    print(f"Loaded {len(df):,} total rows; {len(list_df):,} list-type questions.")
     if list_df.empty:
-        print("No list-type questions found. Exiting.")
+        print("No list rows found. Exiting.")
         return 0
+
     answer_cols = [col for col in list_df.columns if col == "Human Answer" or col.endswith(" Answer")]
-    plot_df, overlap_means = build_long_frame(list_df, answer_cols)
-    print("Average overlap fraction vs. Human:")
-    for source, value in sorted(overlap_means.items()):
-        status = f"{value:.3f}" if pd.notna(value) else "NaN"
-        print(f"  {source}: {status}")
-    plot_violin(plot_df, overlap_means, args.output)
+
+    cases = [
+        ("All List Answers", False, args.output_dir / "list-answer-lengths_all.png"),
+        ("Non-empty Human List Answers", True, args.output_dir / "list-answer-lengths_nonempty.png"),
+    ]
+    for title, skip_empty, path in cases:
+        plot_df, overlaps = compute_distributions(list_df, answer_cols, skip_empty_human=skip_empty)
+        plot_violin(plot_df, overlaps, path, title)
+
     return 0
 
 
