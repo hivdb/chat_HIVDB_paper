@@ -26,6 +26,10 @@ from .constants import (
     YEAR_REGEX,
 )
 
+NEGATION_PATTERNS = [
+    re.compile(rf"\b{re.escape(phrase)}\b")
+    for phrase in NEGATION_PHRASES
+]
 
 # ---------------------------------------------------------------------------
 # Canonicalization helpers
@@ -192,7 +196,7 @@ def _expand_token_synonyms(token: str) -> set[str]:
 
 def contains_negation(pred_raw: str) -> bool:
     normalized = NON_ALPHANUM.sub(" ", str(pred_raw).lower()).strip()
-    return any(phrase in normalized for phrase in NEGATION_PHRASES)
+    return any(pattern.search(normalized) for pattern in NEGATION_PATTERNS)
 
 
 def lab_only_context(pred_raw: str) -> bool:
