@@ -148,10 +148,10 @@ def plot_violin(plot_df: pd.DataFrame, overlaps: dict[str, float], output_path: 
         )
     max_count = plot_df["Item Count"].max()
     ax.set_ylim(0, max_count + 3)
-    desc = ax.text(
+    ax.text(
         0.5,
         1.05,
-        "Overlap fraction = (Number of Items in Human Answer) ∩ (Number of Items in Model Answer) / (Number of Items in Human Answer)",
+        "Overlap fraction = <(#Items in Human Answer) ∩ (#Items in Model Answer)| / (#Items in Human Answer)>",
         transform=ax.transAxes,
         ha="center",
         va="bottom",
