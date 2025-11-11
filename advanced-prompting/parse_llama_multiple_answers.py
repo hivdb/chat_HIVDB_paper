@@ -150,11 +150,15 @@ def parse_file(
             for question in parsed_questions:
                 qid_entry = qid_lookup.get(question["question"])
                 if qid_entry is None:
-                    raise KeyError(
+                    print(
                         "Could not find QID for question {question!r}".format(
                             question=question["question"]
                         )
                     )
+                    continue
+
+                if (qid_entry["QID"], pmid) in matched_pairs:
+                    continue
 
                 matched_pairs.add((qid_entry["QID"], pmid))
                 rows.append(
@@ -192,14 +196,14 @@ def build_parser() -> argparse.ArgumentParser:
         "input",
         type=pathlib.Path,
         nargs="?",
-        default=pathlib.Path("llama-3.1-8B.csv"),
+        default=pathlib.Path("llama-3.1-70B_before.csv"),
         help="Path to the input CSV file (default: llama-3.1-8B.csv)",
     )
     parser.add_argument(
         "output",
         type=pathlib.Path,
         nargs="?",
-        default=pathlib.Path("llama-3.1-8B_parsed.csv"),
+        default=pathlib.Path("llama-3.1-70B_before_parsed.csv"),
         help="Path to the output CSV file (default: llama-3.1-8B_parsed.csv)",
     )
     parser.add_argument(
