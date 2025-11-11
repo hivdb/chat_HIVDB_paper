@@ -15,34 +15,22 @@ from pathlib import Path
 from typing import Callable, Dict, Iterable, List
 
 import pandas as pd
-try:
-    import tiktoken
-except ImportError:  # pragma: no cover - fallback when tiktoken unavailable
-    tiktoken = None
+import tiktoken
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
 from pydantic import BaseModel, Field, create_model
 
 
-MODEL_NAME = "gpt-5-mini"
+MODEL_NAME = "gpt-5-mini-2025-08-07"
 QUESTIONS_PATH = Path("advanced-prompting/merged_answers.xlsx")
 PAPERS_DIR = Path("advanced-prompting/papers")
+PROMPT_PATH = Path("eval/gpt-5-mini-prompt.md")
 OUTPUT_CSV = Path("eval/gpt5_responses.csv")
 RAW_JSONL = Path("eval/gpt5_responses.jsonl")
 TOTAL_QUESTIONS = 16
 TOKEN_BUFFER = 200
 RATE_LIMIT_TOKENS_PER_MIN = 180_000_000
 CSV_FIELDS = ["PMID", "QID", "Question", "Answer", "Evidence", "Rationale"]
-
-SYSTEM_PROMPT = (
-    "You are an expert HIV literature analyst. Answer each question strictly based on "
-    "the provided paper content. For every question, return JSON with keys "
-    f'"Question 1" through "Question {TOTAL_QUESTIONS}". '
-    "Each entry must include fields Question, Answer, Evidence, and Rationale. "
-    "Evidence must be 1-3 verbatim sentences copied from the paper that support the "
-    "answer. Rationale should be a concise explanation of how the evidence leads to "
-    "the answer."
-)
 
 
 class QAEntry(BaseModel):
@@ -72,6 +60,19 @@ def build_parsed_response_model(total_questions: int) -> type[BaseModel]:
 
 
 ParsedResponse = build_parsed_response_model(TOTAL_QUESTIONS)
+_SYSTEM_PROMPT: str | None = None
+
+
+def normalize_pmid(value: str) -> str:
+    stripped = value.strip()
+    try:
+        as_float = float(stripped)
+        as_int = int(as_float)
+        if as_float == float(as_int):
+            return str(as_int)
+    except ValueError:
+        pass
+    return stripped
 
 
 @dataclass(frozen=True)
@@ -127,20 +128,35 @@ def configure_logger() -> logging.Logger:
     return logging.getLogger("gpt5_eval")
 
 
+def load_system_prompt() -> str:
+    global _SYSTEM_PROMPT
+    if _SYSTEM_PROMPT is None:
+        if not PROMPT_PATH.exists():
+            raise FileNotFoundError(f"Prompt file missing: {PROMPT_PATH}")
+        _SYSTEM_PROMPT = PROMPT_PATH.read_text(encoding="utf-8").strip()
+    return _SYSTEM_PROMPT
+
+
 def load_question_table(path: Path) -> Dict[str, List[Question]]:
     df = pd.read_excel(path)
-    df["PMID"] = df["PMID"].astype(str)
+    df = df.dropna(subset=["PMID"])
+    df["PMID"] = df["PMID"].astype(str).map(normalize_pmid)
+    df = df[df["PMID"].str.lower() != "nan"]
     questions: Dict[str, List[Question]] = {}
 
     for pmid, group in df.groupby("PMID"):
         ordered = group.sort_values("QID")
         pmid_questions: List[Question] = []
-        for idx, row in enumerate(ordered.itertuples(index=False), start=1):
+        question_count = 0
+        for row in ordered.itertuples(index=False):
+            if pd.isna(row.QID):
+                continue
+            question_count += 1
             pmid_questions.append(
                 Question(
                     pmid=pmid,
                     qid=int(row.QID),
-                    question_num=idx,
+                    question_num=question_count,
                     text=str(row.Question).strip(),
                 )
             )
@@ -217,7 +233,8 @@ def prepare_jobs(
     logger: logging.Logger,
 ) -> List[PromptJob]:
     jobs: List[PromptJob] = []
-    system_tokens = token_counter(SYSTEM_PROMPT)
+    system_prompt = load_system_prompt()
+    system_tokens = token_counter(system_prompt)
 
     for pmid_index, (pmid, questions) in enumerate(question_table.items(), start=1):
         if limit is not None and len(jobs) >= limit:
@@ -265,10 +282,11 @@ def prepare_jobs(
 
 
 async def call_model_async(client: AsyncOpenAI, user_message: str) -> Dict[str, QAEntry]:
+    system_prompt = load_system_prompt()
     response = await client.responses.parse(
         model=MODEL_NAME,
         input=[
-            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_message},
         ],
         text_format=ParsedResponse,
@@ -413,6 +431,12 @@ def main() -> int:
 
     if not QUESTIONS_PATH.exists():
         logger.error("Question file missing: %s", QUESTIONS_PATH)
+        return 1
+
+    try:
+        load_system_prompt()
+    except FileNotFoundError as exc:
+        logger.error(str(exc))
         return 1
 
     question_table = load_question_table(QUESTIONS_PATH)

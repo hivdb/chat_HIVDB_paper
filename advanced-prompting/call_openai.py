@@ -7,28 +7,66 @@ import asyncio
 import os
 import json
 import logging
+import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
+import re
 
 from openai import AsyncOpenAI
 from dotenv import load_dotenv
 
-try:
-    import tiktoken
-except ImportError:  # pragma: no cover - optional dependency
-    tiktoken = None
+import tiktoken
 
 
 MODEL_NAME = "gpt-4o-mini-2024-07-18"
-PROMPTS_PATH = Path("pmid_prompts_Nov7.jsonl")
-RESPONSES_PATH = Path("pmid_responses_Nov7.jsonl")
-LOG_PATH = Path("pmid_responses_Nov7.log")
 RATE_LIMIT_TOKENS_PER_MINUTE = 180_000_000
 DEFAULT_COMPLETION_BUDGET = 2_000
 MAX_WORKERS = int(os.environ.get("PMID_MAX_WORKERS", "8"))
-FAILED_RESPONSES = {"I'm unable to fulfill that request."}
+EXPECTED_ANSWER_COUNT = 16
+MIN_RESPONSE_TOKENS = int(os.environ.get("PMID_MIN_RESPONSE_TOKENS", "200"))
+FAILED_RESPONSES = {
+    "I'm unable to fulfill that request.",
+    "I'm unable to help with that.",
+    "I'm unable to process or analyze the paper you provided as a full text.",
+    "I’m unable to help with that.",
+    "I’m unable to process or analyze the paper you provided as a full text.",
+}
+FAILURE_SUBSTRINGS = (
+    "i'm unable to help with that",
+    "i’m unable to help with that",
+    "i'm unable to process",
+    "i’m unable to process",
+    "unable to comply",
+    "cannot help with that",
+    "cannot process",
+)
+ANSWER_PATTERN = re.compile(r"Answer:\s*", re.IGNORECASE)
+
+
+@dataclass(frozen=True)
+class JobConfig:
+    label: str
+    prompts_path: Path
+    responses_path: Path
+    log_path: Path
+
+
+JOB_CONFIGS: tuple[JobConfig, ...] = (
+    JobConfig(
+        label="before",
+        prompts_path=Path("pmid_prompts_before_Nov10.jsonl"),
+        responses_path=Path("pmid_responses_before_Nov10.jsonl"),
+        log_path=Path("pmid_responses_before_Nov10.log"),
+    ),
+    JobConfig(
+        label="after",
+        prompts_path=Path("pmid_prompts_after_Nov10.jsonl"),
+        responses_path=Path("pmid_responses_after_Nov10.jsonl"),
+        log_path=Path("pmid_responses_after_Nov10.log"),
+    ),
+)
 
 
 @dataclass(frozen=True)
@@ -44,14 +82,15 @@ class Progress:
     completed: int = 0
 
 
-def setup_logger() -> logging.Logger:
-    logger = logging.getLogger("pmid_runner")
+def setup_logger(log_path: Path, label: str) -> logging.Logger:
+    logger_name = f"pmid_runner_{label}"
+    logger = logging.getLogger(logger_name)
     if logger.handlers:
         return logger
     logger.setLevel(logging.INFO)
-    formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
+    formatter = logging.Formatter(f"%(asctime)s %(levelname)s [{label}] %(message)s")
 
-    file_handler = logging.FileHandler(LOG_PATH, encoding="utf-8")
+    file_handler = logging.FileHandler(log_path, encoding="utf-8")
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 
@@ -80,7 +119,7 @@ def load_processed(path: Path) -> tuple[set[str], set[str]]:
                 continue
             pmid_str = str(pmid)
             response_text = data.get("response")
-            if not response_text or response_text in FAILED_RESPONSES:
+            if not response_text or is_failed_response(response_text):
                 retry.add(pmid_str)
                 continue
             processed.add(pmid_str)
@@ -97,6 +136,23 @@ def estimate_tokens(text: str, model_name: str = MODEL_NAME) -> int:
         return len(encoding.encode(text))
     # Heuristic fallback: assume 4 characters per token.
     return max(1, len(text) // 4)
+
+
+def is_failed_response(text: str) -> bool:
+    stripped = (text or "").strip()
+    if not stripped:
+        return True
+    if stripped in FAILED_RESPONSES:
+        return True
+    lower = stripped.lower()
+    if any(keyword in lower for keyword in FAILURE_SUBSTRINGS):
+        return True
+    answer_count = len(ANSWER_PATTERN.findall(stripped))
+    if answer_count < EXPECTED_ANSWER_COUNT:
+        return True
+    if estimate_tokens(stripped) < MIN_RESPONSE_TOKENS:
+        return True
+    return False
 
 
 def load_pending_jobs(
@@ -278,27 +334,21 @@ async def process_jobs(
     logger.info("Completed %d/%d PMIDs", progress.completed, progress.total)
 
 
-def main() -> int:
-    load_dotenv()
-    logger = setup_logger()
+def run_job_config(config: JobConfig, api_key: str) -> int:
+    logger = setup_logger(config.log_path, config.label)
 
-    api_key = os.environ.get("OPENAI_API_KEY")
-    if not api_key:
-        logger.error("OPENAI_API_KEY is not set.")
+    if not config.prompts_path.exists():
+        logger.error("Prompts file not found at %s", config.prompts_path)
         return 1
 
-    if not PROMPTS_PATH.exists():
-        logger.error("Prompts file not found at %s", PROMPTS_PATH)
-        return 1
-
-    processed_pmids, retry_pmids = load_processed(RESPONSES_PATH)
+    processed_pmids, retry_pmids = load_processed(config.responses_path)
     logger.info(
         "Loaded %d processed PMIDs (%d flagged for retry)",
         len(processed_pmids),
         len(retry_pmids),
     )
 
-    pending_jobs = load_pending_jobs(PROMPTS_PATH, processed_pmids, logger)
+    pending_jobs = load_pending_jobs(config.prompts_path, processed_pmids, logger)
     if retry_pmids:
         pending_pmids = {job.pmid for job in pending_jobs}
         missing_retries = retry_pmids - pending_pmids
@@ -315,11 +365,25 @@ def main() -> int:
         logger.info("No new prompts to process.")
         return 0
 
-    with RESPONSES_PATH.open("a", encoding="utf-8") as responses_file:
+    with config.responses_path.open("a", encoding="utf-8") as responses_file:
         asyncio.run(process_jobs(pending_jobs, responses_file, logger, api_key))
 
     logger.info("All pending PMIDs processed.")
     return 0
+
+
+def main() -> int:
+    load_dotenv()
+
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        print("OPENAI_API_KEY is not set.", file=sys.stderr)
+        return 1
+
+    exit_code = 0
+    for config in JOB_CONFIGS:
+        exit_code = max(exit_code, run_job_config(config, api_key))
+    return exit_code
 
 
 if __name__ == "__main__":

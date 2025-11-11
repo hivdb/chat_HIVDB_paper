@@ -11,6 +11,8 @@ import pandas as pd
 
 SOURCE_BASE = "all answers.xlsx"
 SOURCE_ADV = "gpt-4o-mini-2024-07-18_parsed.xlsx"
+SOURCE_ADV_BEFORE = "gpt-4o-mini-2024-07-18_before_parsed.xlsx"
+SOURCE_ADV_AFTER = "gpt-4o-mini-2024-07-18_after_parsed.xlsx"
 SOURCE_LLAMA_8B = "llama-3.1-8B_parsed.csv"
 SOURCE_LLAMA_8B_before = "llama-3.1-8B_before_parsed.csv"
 SOURCE_LLAMA_8B_after = "llama-3.1-8B_after_parsed.csv"
@@ -36,6 +38,8 @@ def main() -> None:
     base = _load_unique(SOURCE_BASE, usecols=None)
 
     adv = _load_unique(SOURCE_ADV, usecols=MERGE_KEYS + ["GPT-4o AP"])
+    adv_before = _load_unique(SOURCE_ADV_BEFORE, usecols=MERGE_KEYS + ["GPT-4o AP Before"])
+    adv_after = _load_unique(SOURCE_ADV_AFTER, usecols=MERGE_KEYS + ["GPT-4o AP After"])
     llama_8b = _load_unique(SOURCE_LLAMA_8B, usecols=MERGE_KEYS + ["answer"]).rename(columns={"answer": "llama-3.1-8B AP"})
     llama_8b_before = _load_unique(SOURCE_LLAMA_8B_before, usecols=MERGE_KEYS + ["answer"]).rename(columns={"answer": "llama-3.1-8B AP before"})
     llama_8b_after = _load_unique(SOURCE_LLAMA_8B_after, usecols=MERGE_KEYS + ["answer"]).rename(columns={"answer": "llama-3.1-8B AP after"})
@@ -45,6 +49,8 @@ def main() -> None:
     llama_70b_after = _load_unique(SOURCE_LLAMA_70B_after, usecols=MERGE_KEYS + ["answer"]).rename(columns={"answer": "llama-3.1-70B AP after"})
 
     merged = base.merge(adv, on=MERGE_KEYS, how="left")
+    merged = merged.merge(adv_before, on=MERGE_KEYS, how="left")
+    merged = merged.merge(adv_after, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b_before, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b_after, on=MERGE_KEYS, how="left")

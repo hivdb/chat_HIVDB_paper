@@ -9,9 +9,37 @@ DETAIL_METRICS_HUMAN = Path("eval/detailed_evaluation.csv")
 OUTPUT_TABLE_DIR = Path("eval/figures")
 
 MODEL_GROUPS = {
-    "gpt_family": ["gpt5-mini", "GPT-4o base", "GPT-4o FT", "GPT-4o AP"],
-    "llama_70b": ["Llama3.1-70B base", "Llama3.1-70B FT", "llama-3.1-70B AP"],
-    "llama_8b": ["Llama3.1-8B base", "Llama3.1-8B FT", "llama-3.1-8B AP"],
+    "gpt_family": [
+        "GPT-5 base",
+        "GPT-4o base",
+        "GPT-4o FT",
+        "GPT-4o AP Before",
+        "GPT-4o AP",
+        "GPT-4o AP After",
+    ],
+    "llama_70b": [
+        "Llama3.1-70B base",
+        "Llama3.1-70B FT",
+        "Llama3.1-70B AP Before",
+        "Llama3.1-70B AP",
+        "Llama3.1-70B AP After",
+    ],
+    "llama_8b": [
+        "Llama3.1-8B base",
+        "Llama3.1-8B FT",
+        "Llama3.1-8B AP Before",
+        "Llama3.1-8B AP",
+        "Llama3.1-8B AP After",
+    ],
+}
+
+COLUMN_RENAMES = {
+    "llama-3.1-70B AP": "Llama3.1-70B AP",
+    "llama-3.1-70B AP before": "Llama3.1-70B AP Before",
+    "llama-3.1-70B AP after": "Llama3.1-70B AP After",
+    "llama-3.1-8B AP": "Llama3.1-8B AP",
+    "llama-3.1-8B AP before": "Llama3.1-8B AP Before",
+    "llama-3.1-8B AP after": "Llama3.1-8B AP After",
 }
 
 SCENARIOS = [

@@ -11,8 +11,23 @@ import pandas as pd
 
 
 PROMPTS_EXCEL = Path("S4Table.xlsx")
-RESPONSES_JSONL = Path("pmid_responses.jsonl")
-OUTPUT_EXCEL = Path("gpt-4o-mini-2024-07-18_parsed.xlsx")
+DATASETS = (
+    (
+        Path("pmid_responses_Nov7.jsonl"),
+        Path("gpt-4o-mini-2024-07-18_parsed.xlsx"),
+        "GPT-4o AP",
+    ),
+    (
+        Path("pmid_responses_after_Nov10.jsonl"),
+        Path("gpt-4o-mini-2024-07-18_after_parsed.xlsx"),
+        "GPT-4o AP After",
+    ),
+    (
+        Path("pmid_responses_before_Nov10.jsonl"),
+        Path("gpt-4o-mini-2024-07-18_before_parsed.xlsx"),
+        "GPT-4o AP Before",
+    ),
+)
 
 
 def extract_answers(text: str) -> list[str]:
@@ -27,12 +42,12 @@ def extract_answers(text: str) -> list[str]:
     return answers
 
 
-def main() -> int:
+def process_dataset(responses_jsonl: Path, output_excel: Path, column_name: str) -> None:
     df = pd.read_excel(PROMPTS_EXCEL, usecols=["PMID", "QID", "Question", "Type", "Category"])
     responses: dict[str, list[str]] = {}
 
-    if RESPONSES_JSONL.exists():
-        with RESPONSES_JSONL.open("r", encoding="utf-8") as infile:
+    if responses_jsonl.exists():
+        with responses_jsonl.open("r", encoding="utf-8") as infile:
             for line in infile:
                 line = line.strip()
                 if not line:
@@ -41,7 +56,7 @@ def main() -> int:
                 pmid = str(record["pmid"])
                 responses[pmid] = extract_answers(record.get("response", ""))
 
-    df["GPT-4o AP"] = ""
+    df[column_name] = ""
 
     for pmid, group in df.groupby("PMID", sort=False):
         answers = responses.get(str(pmid), [])
@@ -50,13 +65,17 @@ def main() -> int:
         group_indices = group.sort_values("QID").index.tolist()
         for idx, row_index in enumerate(group_indices):
             if idx < len(answers):
-                df.at[row_index, "GPT-4o AP"] = answers[idx]
+                df.at[row_index, column_name] = answers[idx]
 
-    df["GPT-4o AP"] = df["GPT-4o AP"].apply(lambda x: "" if pd.isna(x) else str(x))
+    df[column_name] = df[column_name].apply(lambda x: "" if pd.isna(x) else str(x))
 
-    df[["PMID", "QID", "Question", "Type", "Category", "GPT-4o AP"]].to_excel(
-        OUTPUT_EXCEL, index=False
-    )
+    output_columns = ["PMID", "QID", "Question", "Type", "Category", column_name]
+    df[output_columns].to_excel(output_excel, index=False)
+
+
+def main() -> int:
+    for responses_jsonl, output_excel, column_name in DATASETS:
+        process_dataset(responses_jsonl, output_excel, column_name)
     return 0
 
 

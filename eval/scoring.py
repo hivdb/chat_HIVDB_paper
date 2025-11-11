@@ -25,14 +25,16 @@ def format_identifier(value: str | int | float | None) -> str:
 
 def load_dataset() -> pd.DataFrame:
     merged = pd.read_excel(config.MERGED_PATH)
+    if getattr(config, "COLUMN_RENAMES", None):
+        merged.rename(columns=config.COLUMN_RENAMES, inplace=True)
     merged["PMID"] = merged["PMID"].apply(format_identifier)
     merged["QID"] = merged["QID"].apply(format_identifier)
 
-    gpt5 = pd.read_csv(config.GPT5_PATH, dtype={"PMID": str}).rename(columns={"Answer": "gpt5-mini"})
+    gpt5 = pd.read_csv(config.GPT5_PATH, dtype={"PMID": str}).rename(columns={"Answer": "GPT-5 base"})
     gpt5["PMID"] = gpt5["PMID"].apply(format_identifier)
     gpt5["QID"] = gpt5["QID"].apply(format_identifier)
 
-    df = merged.merge(gpt5[["PMID", "QID", "gpt5-mini"]], on=["PMID", "QID"], how="left")
+    df = merged.merge(gpt5[["PMID", "QID", "GPT-5 base"]], on=["PMID", "QID"], how="left")
     df = df[(df["PMID"] != "") & (df["QID"] != "")]
     df["sort_key"] = range(len(df))
     df["sample_id"] = df["PMID"] + "-" + df["QID"]
