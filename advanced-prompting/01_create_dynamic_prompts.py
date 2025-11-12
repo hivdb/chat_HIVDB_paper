@@ -149,8 +149,8 @@ def load_paper_text(pmid: str, papers_dir: Path) -> str:
 
 
 def build_few_shot_block(examples: Sequence[Document]) -> tuple[str, list[str]]:
-    """Create the compact few-shot block and capture example PMIDs."""
-    question_map: dict[int, dict[str, object]] = {}
+    """Create the structured few-shot block and capture example PMIDs."""
+    question_map: dict[int, list[tuple[str, str, str]]] = {}
     example_pmids: list[str] = []
 
     for doc in examples:
@@ -160,21 +160,23 @@ def build_few_shot_block(examples: Sequence[Document]) -> tuple[str, list[str]]:
         qas = doc.metadata.get("qas") or []
         for entry in qas:
             qid = int(entry["qid"])
-            question = str(entry["question"])
-            question_map.setdefault(qid, {"question": question, "examples": []})
-            question_map[qid]["examples"].append(
+            question_map.setdefault(qid, []).append(
                 (str(entry["evidence"]), str(entry["rationale"]), str(entry["answer"]))
             )
 
     lines: list[str] = []
     for qid in sorted(question_map):
-        data = question_map[qid]
-        tuples = data["examples"]
-        tuple_strs = [
-            f"[{evidence}, {rationale}, {answer}]" for evidence, rationale, answer in tuples
-        ]
-        line = f"Question {qid}: {data['question']} - " + ", ".join(tuple_strs)
-        lines.append(line)
+        tuples = question_map[qid]
+        example_entries = []
+        for evidence, rationale, answer in tuples:
+            example_entries.append(
+                {
+                    "Evidence": str(evidence),
+                    "Rationale": str(rationale),
+                    "Answer": str(answer),
+                }
+            )
+        lines.append({"QID": qid, "Examples": example_entries})
 
     deduped_pmids: list[str] = []
     seen: set[str] = set()
@@ -183,7 +185,7 @@ def build_few_shot_block(examples: Sequence[Document]) -> tuple[str, list[str]]:
             seen.add(pmid)
             deduped_pmids.append(pmid)
 
-    return ("\n".join(lines), deduped_pmids)
+    return (json.dumps(lines, ensure_ascii=False, indent=2), deduped_pmids)
 
 
 def write_jsonl(records: Sequence[dict[str, str]], output_path: Path) -> None:
