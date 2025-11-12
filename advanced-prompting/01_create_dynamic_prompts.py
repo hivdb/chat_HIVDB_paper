@@ -3,36 +3,31 @@
 Create retrieval-based dynamic few-shot prompts for each PubMed article.
 
 Steps:
-1. Load the S2Table.xlsx instruction set into langchain Documents via PandasExcelLoader.
-2. Build BM25 and TF-IDF retrievers over the instruction Documents.
-3. For every PMID from pmid_prompts.jsonl, build the base query consisting of:
+1. Load the S2Table.xlsx instruction set and convert each PMID block into a single LangChain Document.
+2. Build a BM25 retriever over those Documents.
+3. For every PMID directory under advanced-prompting/papers, build the base query consisting of:
    - The evaluation prompt (eval/gpt-5/gpt-5-mini-prompt.md)
    - The corresponding paper markdown (advanced-prompting/papers/<pmid>/<pmid>.checked.md)
    - A trailing \"### FEW SHOT EXAMPLES\" section marker.
-4. Use each retriever to fetch the top k (k in {5, 10}) Documents that best match the query.
+4. Use the BM25 retriever to fetch the top k (k in {5, 10}) Documents that best match the query.
 5. Append the retrieved examples to the query and write JSONL files named
-   dynamic_prompts_<retriever>_<k>-shot.jsonl, each containing 120 records.
+   dynamic_prompts_bm25_<k>-shot.jsonl, each containing 120 records.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import logging
+from datetime import datetime
 from pathlib import Path
 from typing import Iterable, Sequence
 
 import pandas as pd
+from langchain_core.documents import Document
+from langchain_community.retrievers import BM25Retriever
 
-try:  # LangChain >= 0.2
-    from langchain_core.documents import Document
-except ImportError:  # Older LangChain releases
-    from langchain.schema import Document  # type: ignore[assignment]
 
-try:
-    from langchain_community.document_loaders import PandasExcelLoader
-except ImportError:
-    PandasExcelLoader = None  # type: ignore[misc,assignment]
-
-from langchain_community.retrievers import BM25Retriever, TFIDFRetriever
+LOG_DIR = Path("advanced-prompting/log")
 
 
 def parse_args() -> argparse.Namespace:
@@ -44,12 +39,6 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=Path("advanced-prompting/csv/S2Table.xlsx"),
         help="Path to the S2 instruction table.",
-    )
-    parser.add_argument(
-        "--pmid-jsonl",
-        type=Path,
-        default=Path("advanced-prompting/jsonl/pmid_prompts.jsonl"),
-        help="JSONL file enumerating the PubMed IDs to process.",
     )
     parser.add_argument(
         "--prompt-md",
@@ -79,85 +68,61 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def normalize_cell(value: object) -> str:
-    """Convert spreadsheet values to clean strings."""
-    if value is None:
-        return ""
-    if isinstance(value, str):
-        return value.strip()
-    try:
-        if pd.isna(value):
-            return ""
-    except Exception:
-        pass
-    if isinstance(value, float):
-        if value != value:  # NaN check
-            return ""
-        return str(int(value)) if value.is_integer() else str(value)
-    return str(value).strip()
+def configure_logging(log_dir: Path) -> logging.Logger:
+    """Configure console and file logging."""
+    log_dir.mkdir(parents=True, exist_ok=True)
+    log_path = log_dir / f"create_dynamic_prompts_{datetime.now():%Y%m%d_%H%M%S}.log"
+
+    logger = logging.getLogger("dynamic_prompts")
+    logger.setLevel(logging.INFO)
+    logger.handlers.clear()
+
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    file_handler = logging.FileHandler(log_path, encoding="utf-8")
+    file_handler.setFormatter(formatter)
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(formatter)
+
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+    logger.propagate = False
+    logger.info("Logging to %s", log_path)
+    return logger
 
 
-def load_instruction_documents(xlsx_path: Path) -> list[Document]:
-    """Load the Excel table and convert each row into a Document."""
-    if PandasExcelLoader is not None:
-        loader = PandasExcelLoader(str(xlsx_path))
-        raw_docs = loader.load()
-    else:
-        df = pd.read_excel(xlsx_path)
-        raw_docs = []
-        for _, row in df.iterrows():
-            text = "\n".join(f"{column}: {row[column]}" for column in df.columns)
-            raw_docs.append(
-                Document(
-                    page_content=str(text),
-                    metadata={"row": row.to_dict(), "source": str(xlsx_path)},
-                )
-            )
-    documents: list[Document] = []
-
-    for doc in raw_docs:
-        row = doc.metadata.get("row")
-        if row is None:
-            raise ValueError(
-                "Each Document from PandasExcelLoader must include the row metadata."
-            )
-        pmid = normalize_cell(row.get("PMID"))
-        qid = int(row.get("QID"))
-        question = normalize_cell(row.get("Question"))
-        evidence = normalize_cell(row.get("Evidence"))
-        rationale = normalize_cell(row.get("Rationale"))
-        answer = normalize_cell(row.get("Answer"))
-
-        page_content = (
-            f"PMID: {pmid}\n"
-            f"Question ID: {qid}\n"
-            f"Question: {question}\n"
-            f"Evidence: {evidence}\n"
-            f"Rationale: {rationale}\n"
-            f"Answer: {answer}"
-        )
-        documents.append(
-            Document(page_content=page_content, metadata={"pmid": pmid, "qid": qid})
-        )
-    return documents
-
-
-def load_pmids(jsonl_path: Path) -> list[str]:
-    """Read the ordered list of PMIDs from the reference JSONL file."""
-    pmids: list[str] = []
-    with jsonl_path.open("r", encoding="utf-8") as infile:
-        for line in infile:
-            if not line.strip():
-                continue
-            record = json.loads(line)
-            pmids.append(str(record["pmid"]))
+def collect_pmids(papers_dir: Path) -> list[str]:
+    """Collect PMIDs based on subdirectory names under papers_dir."""
+    if not papers_dir.exists():
+        raise FileNotFoundError(f"Papers directory not found: {papers_dir}")
+    pmids = sorted(
+        entry.name for entry in papers_dir.iterdir() if entry.is_dir() and not entry.name.startswith(".")
+    )
     if not pmids:
-        raise ValueError(f"No PMIDs found in {jsonl_path}")
+        raise ValueError(f"No PMID directories found in {papers_dir}")
     return pmids
 
 
-def load_base_prompt(prompt_path: Path) -> str:
-    return prompt_path.read_text(encoding="utf-8").strip()
+def load_instruction_documents(xlsx_path: Path) -> list[Document]:
+    """Load the Excel table and convert each PMID into a Document."""
+    df = pd.read_excel(xlsx_path).sort_values(["PMID", "QID"])
+
+    documents: list[Document] = []
+    for pmid, group in df.groupby("PMID", sort=False):
+        parts: list[str] = []
+        for _, row in group.iterrows():
+            part = (
+                f"Question {int(row['QID'])}: {row['Question']}\n"
+                f"Evidence: {row['Evidence']}\n"
+                f"Rationale: {row['Rationale']}\n"
+                f"Answer: {row['Answer']}"
+            )
+            parts.append(part.strip())
+
+        page_content = f"PMID: {pmid}\n\n" + "\n\n---\n\n".join(parts)
+        documents.append(
+            Document(page_content=page_content, metadata={"pmid": pmid, "count": len(parts)})
+        )
+    return documents
 
 
 def build_query_base(pmid: str, prompt_text: str, papers_dir: Path) -> str:
@@ -173,14 +138,6 @@ def build_query_base(pmid: str, prompt_text: str, papers_dir: Path) -> str:
         "### FEW SHOT EXAMPLES",
     ]
     return "\n\n".join(sections)
-
-
-def build_retrievers(documents: Sequence[Document], k: int) -> dict[str, object]:
-    """Instantiate BM25 and TF-IDF retrievers from the shared document set."""
-    return {
-        "bm25": BM25Retriever.from_documents(documents, k=k),
-        "tfidf": TFIDFRetriever.from_documents(documents, k=k),
-    }
 
 
 def append_examples(base_query: str, examples: Iterable[Document]) -> str:
@@ -200,33 +157,42 @@ def write_jsonl(records: Sequence[dict[str, str]], output_path: Path) -> None:
 
 def main() -> int:
     args = parse_args()
+    logger = configure_logging(LOG_DIR)
+    logger.info("Starting dynamic prompt generation.")
 
+    pmids = collect_pmids(args.papers_dir)
+    logger.info("Found %d PMIDs in %s", len(pmids), args.papers_dir)
     documents = load_instruction_documents(args.instruction_xlsx)
-    pmids = load_pmids(args.pmid_jsonl)
-    prompt_text = load_base_prompt(args.prompt_md)
+    logger.info("Loaded %d instruction documents from %s", len(documents), args.instruction_xlsx)
+
+    prompt_text = args.prompt_md.read_text(encoding="utf-8").strip()
     base_queries = {
         pmid: build_query_base(pmid, prompt_text, args.papers_dir) for pmid in pmids
     }
+    logger.info("Prepared base queries for %d PMIDs.", len(base_queries))
 
     shot_values = sorted({int(value) for value in args.shots if value > 0})
     if not shot_values:
         raise ValueError("At least one positive k value must be provided.")
+    logger.info("Shot values configured: %s", shot_values)
 
     for k in shot_values:
-        retrievers = build_retrievers(documents, k)
-        for retriever_name, retriever in retrievers.items():
-            file_name = f"dynamic_prompts_{retriever_name}_{k}-shot.jsonl"
-            output_path = args.output_dir / file_name
-            records: list[dict[str, str]] = []
+        retriever = BM25Retriever.from_documents(documents, k=k)
+        logger.info("Built BM25 retriever for k=%d.", k)
+        file_name = f"dynamic_prompts_bm25_{k}-shot.jsonl"
+        output_path = args.output_dir / file_name
+        records: list[dict[str, str]] = []
+        logger.info("Generating BM25 prompts with k=%d.", k)
 
-            for pmid in pmids:
-                query = base_queries[pmid]
-                examples = retriever.invoke(query)
-                prompt = append_examples(query, examples)
-                records.append({"pmid": pmid, "prompt": prompt})
+        for pmid in pmids:
+            query = base_queries[pmid]
+            examples = retriever.invoke(query)
+            prompt = append_examples(query, examples)
+            records.append({"pmid": pmid, "prompt": prompt})
 
-            write_jsonl(records, output_path)
-            print(f"Wrote {len(records)} prompts to {output_path}")
+        write_jsonl(records, output_path)
+        logger.info("Wrote %d prompts to %s", len(records), output_path)
+    logger.info("Dynamic prompt generation finished successfully.")
     return 0
 
 
