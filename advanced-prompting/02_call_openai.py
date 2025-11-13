@@ -55,16 +55,16 @@ class JobConfig:
 
 JOB_CONFIGS: tuple[JobConfig, ...] = (
     JobConfig(
-        label="before",
-        prompts_path=Path("pmid_prompts_before_Nov10.jsonl"),
-        responses_path=Path("pmid_responses_before_Nov10.jsonl"),
-        log_path=Path("pmid_responses_before_Nov10.log"),
+        label="bm25-5shot",
+        prompts_path=Path("advanced-prompting/jsonl/dynamic_prompts_bm25_5-shot.jsonl"),
+        responses_path=Path("advanced-prompting/jsonl/dynamic_responses_bm25_5-shot.jsonl"),
+        log_path=Path("advanced-prompting/log/dynamic_responses_bm25_5-shot.log"),
     ),
     JobConfig(
-        label="after",
-        prompts_path=Path("pmid_prompts_after_Nov10.jsonl"),
-        responses_path=Path("pmid_responses_after_Nov10.jsonl"),
-        log_path=Path("pmid_responses_after_Nov10.log"),
+        label="bm25-10shot",
+        prompts_path=Path("advanced-prompting/jsonl/dynamic_prompts_bm25_10-shot.jsonl"),
+        responses_path=Path("advanced-prompting/jsonl/dynamic_responses_bm25_10-shot.jsonl"),
+        log_path=Path("advanced-prompting/log/dynamic_responses_bm25_10-shot.log"),
     ),
 )
 
@@ -104,25 +104,41 @@ def setup_logger(log_path: Path, label: str) -> logging.Logger:
 def load_processed(path: Path) -> tuple[set[str], set[str]]:
     processed: set[str] = set()
     retry: set[str] = set()
+    failed_seen: set[str] = set()
     if not path.exists():
         return processed, retry
     with path.open("r", encoding="utf-8") as infile:
-        for line in infile:
-            if not line.strip():
+        lines = infile.readlines()
+
+    kept_lines: list[str] = []
+    dropped = 0
+    for line in lines:
+        if not line.strip():
+            continue
+        try:
+            data = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        pmid = data.get("pmid")
+        if not pmid:
+            continue
+        pmid_str = str(pmid)
+        response_text = data.get("response")
+        failed = not response_text or is_failed_response(response_text)
+        if failed:
+            retry.add(pmid_str)
+            if pmid_str in failed_seen:
+                dropped += 1
                 continue
-            try:
-                data = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            pmid = data.get("pmid")
-            if not pmid:
-                continue
-            pmid_str = str(pmid)
-            response_text = data.get("response")
-            if not response_text or is_failed_response(response_text):
-                retry.add(pmid_str)
-                continue
+            failed_seen.add(pmid_str)
+        else:
             processed.add(pmid_str)
+        kept_lines.append(line)
+
+    if dropped:
+        with path.open("w", encoding="utf-8") as outfile:
+            outfile.writelines(kept_lines)
+
     return processed, retry
 
 
