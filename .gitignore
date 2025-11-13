@@ -164,6 +164,7 @@ openai-nextjs
 
 
 papers
+train_val
 checked_papers
 output
 database
