@@ -36,6 +36,10 @@ def run(limit: int | None) -> Tuple[pd.DataFrame, List[dict], List[Tuple[str, st
         if scenario_df.empty:
             continue
 
+        missing_models = [model for model in scenario["models"] if model not in df.columns]
+        if missing_models:
+            logging.warning("Scenario '%s' missing models: %s", scenario["title"], ", ".join(missing_models))
+
         convert = scenario["convert_special_no"]
         norm_lookup = {col: ensure_norm(df, col, convert, cache) for col in [scenario["reference"], *scenario["models"]] if col in df.columns}
         subset = evaluate_group(

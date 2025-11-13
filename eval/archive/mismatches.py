@@ -1,18 +1,26 @@
 import pandas as pd
 
-merged = pd.read_excel('advanced-prompting/merged_answers.xlsx')
-merged['sample_id'] = merged['PMID'].astype(str)+'-'+merged['QID'].astype(str)
+DETAIL_PATH = "eval/detailed_evaluation.csv"
+OUTPUT_PATH = "eval/archive/mismatch_report_gpt5.txt"
 
-detail = pd.read_csv('eval/detailed_evaluation.csv')
-human = detail[detail['Scenario']=='Human Answer'].copy()
-human['sample_id'] = human['PMID'].astype(str)+'-'+human['QID'].astype(str)
+def main() -> None:
+    detail = pd.read_csv(DETAIL_PATH)
+    human = detail[detail["Scenario"] == "Human Answer"].copy()
 
-legacy = merged.set_index('sample_id')['GPT-4o base correct']
-human['legacy_correct'] = human['sample_id'].map(legacy)
+    mismatches = human[human["GPT-5 base Correct"] == 0]
+    columns = [
+        "PMID",
+        "QID",
+        "Question",
+        "Human Answer",
+        "GPT-5 base Answer",
+        "GPT-5 base Correct",
+    ]
+    output = mismatches[columns].to_string(index=False)
+    print(output)
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as outfile:
+        outfile.write(output + "\n")
 
-mismatches = human[human['legacy_correct'] != human['GPT-4o base Correct']]
-output = mismatches[['PMID','QID','Question','Human Answer',
-                    'GPT-4o base Answer','legacy_correct','GPT-4o base Correct']].to_string(index=False)
-print(output)
-with open('eval/mismatch_report.txt', 'w', encoding='utf-8') as outfile:
-    outfile.write(output + '\n')
+
+if __name__ == "__main__":
+    main()

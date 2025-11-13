@@ -258,8 +258,8 @@ def mentions_year(years: List[str], pred_norm: str, pred_raw: str) -> bool:
 
 
 def boolean_positive_context(question_text: str, pred_raw: str) -> bool:
-    question = (question_text or "").lower()
-    text = (pred_raw or "").lower()
+    question = str(question_text or "").lower()
+    text = str(pred_raw or "").lower()
     for cue, markers in BOOLEAN_POSITIVE_CUES.items():
         if cue in question and any(marker in text for marker in markers):
             return True
@@ -290,7 +290,9 @@ def compare_lists(pred_norm: str, ref_norm: str) -> bool:
     return bool(pred_set and ref_set and (pred_set == ref_set or ref_set.issubset(pred_set)))
 
 def slugify(text: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "-", (text or "").lower()).strip("-")
+    slug = re.sub(r"[^a-z0-9]+", "-", (text or "").lower())
+    slug = re.sub(r"-{2,}", "-", slug).strip("-")
+    return slug or "figure"
 
 
 # ---------------------------------------------------------------------------

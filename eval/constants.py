@@ -156,3 +156,17 @@ LIST_DELIM = re.compile(r",|;|/|\band\b|\bor\b")
 NON_ALPHANUM = re.compile(r"[^a-z0-9\s]")
 LEADING_YES_NO = re.compile(r"^(yes|no)\b")
 YEAR_REGEX = re.compile(r"(?:19|20)\d{2}")
+
+# Styling helpers for evaluation plots
+MODEL_BASE_COLORS = {
+    "GPT-5": "#1f77b4",
+    "GPT-4o": "#ff7f0e",
+    "Llama3.1-70B": "#2ca02c",
+    "Llama3.1-8B": "#d62728",
+}
+VARIANT_TINTS = {
+    "base": 0.0,
+    "FT": 0.2,
+    "AP": 0.55,   # noticeably lighter shade for AP variants (Before/After)
+    "BM25": 0.8,
+}

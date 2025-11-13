@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import logging
 from typing import Dict, Iterable, List
 
 import pandas as pd
@@ -35,6 +36,11 @@ def load_dataset() -> pd.DataFrame:
     gpt5["QID"] = gpt5["QID"].apply(format_identifier)
 
     df = merged.merge(gpt5[["PMID", "QID", "GPT-5 base"]], on=["PMID", "QID"], how="left")
+
+    for column in getattr(config, "ALL_MODEL_COLUMNS", []):
+        if column not in df.columns:
+            logging.warning("Column '%s' missing from merged answers; filling with blanks.", column)
+            df[column] = ""
     df = df[(df["PMID"] != "") & (df["QID"] != "")]
     df["sort_key"] = range(len(df))
     df["sample_id"] = df["PMID"] + "-" + df["QID"]
