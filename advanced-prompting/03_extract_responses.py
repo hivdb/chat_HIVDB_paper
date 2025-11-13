@@ -10,22 +10,17 @@ from pathlib import Path
 import pandas as pd
 
 
-PROMPTS_EXCEL = Path("S4Table.xlsx")
+PROMPTS_EXCEL = Path("advanced-prompting/csv/S4Table.xlsx")
 DATASETS = (
     (
-        Path("pmid_responses_Nov7.jsonl"),
-        Path("gpt-4o-mini-2024-07-18_parsed.xlsx"),
-        "GPT-4o AP",
+        Path("advanced-prompting/jsonl/dynamic_responses_bm25_5-shot.jsonl"),
+        Path("advanced-prompting/csv/gpt-4o-mini-2024-07-18_bm25_5-shot_parsed.xlsx"),
+        "GPT-4o BM25 5-shot",
     ),
     (
-        Path("pmid_responses_after_Nov10.jsonl"),
-        Path("gpt-4o-mini-2024-07-18_after_parsed.xlsx"),
-        "GPT-4o AP After",
-    ),
-    (
-        Path("pmid_responses_before_Nov10.jsonl"),
-        Path("gpt-4o-mini-2024-07-18_before_parsed.xlsx"),
-        "GPT-4o AP Before",
+        Path("advanced-prompting/jsonl/dynamic_responses_bm25_10-shot.jsonl"),
+        Path("advanced-prompting/csv/gpt-4o-mini-2024-07-18_bm25_10-shot_parsed.xlsx"),
+        "GPT-4o BM25 10-shot",
     ),
 )
 
