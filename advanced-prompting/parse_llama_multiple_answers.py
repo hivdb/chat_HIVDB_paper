@@ -1,21 +1,30 @@
 #!/usr/bin/env python3
-"""Parse the `Multiple Answer` column in llama-3.1-8B data.
+"""Expand Llama multiple-answer cells into per-question CSV rows.
 
-The script expands each "Question" block into its own row containing the
-PMID, QID, question text, evidence, rationale, and answer.
+The 70B RAG runs record all answers inside the `Multiple Answer` column
+where each question is written as a stand-alone block (usually wrapped
+with triple quotes).  This script splits those blocks, extracts the
+Question/Evidence/Rationale/Answer fields, and matches each entry to the
+canonical QIDs listed in `S2Table.xlsx`.
 """
+
 from __future__ import annotations
 
 import argparse
 import csv
 import pathlib
 import re
-from typing import Dict, List, Sequence, Tuple
+from typing import Dict, Iterable, List, Sequence, Tuple
 
 import pandas as pd
 
-
-QUESTION_LABELS = ("question", "evidence", "rationale", "answer")
+QUESTION_FIELDS = ("question", "evidence", "rationale", "answer")
+DELIMITER_LINES = {
+    '"""',
+    '""',
+    "'''",
+    '```',
+}
 FIELD_LINE_RE = re.compile(
     r"""
     ^
@@ -27,41 +36,48 @@ FIELD_LINE_RE = re.compile(
     """,
     re.IGNORECASE | re.VERBOSE,
 )
-QUESTION_ID_RE = re.compile(
-    r"(?i)^(?:question|q)(?:id)?\s*(?:[:\-]?\s*)?(?:q\s*)?(?P<digits>\d+)",
-)
-QUESTION_PREFIX_RE = re.compile(
+QUESTION_HEADER_RE = re.compile(
     r"""
     ^
-    (?:question|q)(?:id)?      # core label
-    (?=\s|[:\-]|$)            # next char must be space/punct/EOL
-    \s*(?:[:\-]?\s*)?        # optional punctuation
-    (?:q\s*)?                  # allow repeated Q
-    (?:\d+[\.):]?)?          # optional numeric indicator
-    \s*
+    \s*\#{2,}\s*
+    q(?:uestion)?(?:\s*id)?
+    \s*(?P<digits>\d+)
+    (?P<rest>.*)
+    $
     """,
     re.IGNORECASE | re.VERBOSE,
 )
-TRIPLE_QUOTE_SPLIT_RE = re.compile(r'"{3,}')
+QUESTION_LINE_HEADER_RE = re.compile(
+    r"""
+    ^
+    \s*question
+    (?:\s*(?P<digits>\d+))?
+    \s*[:\-]\s*
+    (?P<value>.*)
+    $
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+QuestionBlock = Dict[str, str]
 
 
-class QuestionBlock(Dict[str, str]):
-    """TypedDict-like alias for parsed question blocks."""
+def clean_text(value: object) -> str:
+    """Return the CSV-safe representation of any cell-like value."""
+
+    if value is None:
+        return ""
+    text = str(value)
+    if text.lower() == "nan":
+        return ""
+    return text.replace('""', '"').strip()
 
 
 def normalise_question_id(value: object) -> str:
-    """Return only the numeric portion of a Question/QID identifier."""
     if value is None:
         return ""
     match = re.search(r"\d+", str(value))
     return match.group(0) if match else ""
-
-
-def clean_text(value: str) -> str:
-    """Normalise whitespace and escape sequences within parsed text."""
-    if value is None:
-        return ""
-    return value.replace('""', '"').strip()
 
 
 def normalise_question_text(value: str) -> str:
@@ -71,193 +87,132 @@ def normalise_question_text(value: str) -> str:
     return text.rstrip(" ?.")
 
 
-def normalise_cell(cell: str) -> str:
-    if not cell:
+def normalise_cell(cell: object) -> str:
+    if cell is None:
         return ""
-    text = cell.replace("\r\n", "\n").replace("\r", "\n")
+    text = clean_text(cell)
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
     text = text.replace("\\n", "\n")
     return text.strip()
 
 
-def strip_question_prefix(value: str) -> str:
-    if not value:
-        return ""
-    text = value.strip()
-    match = QUESTION_PREFIX_RE.match(text)
-    if match and match.end() < len(text):
-        return text[match.end() :].strip()
-    if match:
-        return ""
-    return text
+def _is_delimiter(line: str) -> bool:
+    stripped = line.strip()
+    return stripped in DELIMITER_LINES
 
 
-def is_question_header(line: str) -> bool:
+def _detect_header(line: str) -> str | None:
     stripped = line.strip()
     if not stripped:
-        return False
-    starts_with_hash = stripped.startswith("#")
-    starts_with_star = stripped.startswith("*")
-    if not (starts_with_hash or starts_with_star):
-        return False
-    core = stripped.lstrip("#* ").strip()
-    if not core:
-        return False
-    if QUESTION_ID_RE.match(core):
-        return True
-    if starts_with_hash:
-        prefix = QUESTION_PREFIX_RE.match(core)
-        return bool(prefix and prefix.end() < len(core))
-    return False
-
-
-def extract_blocks(text: str) -> List[Tuple[str, str]]:
-    blocks: List[Tuple[str, str]] = []
-    header: str | None = None
-    body_lines: List[str] = []
-
-    for line in text.splitlines():
-        if is_question_header(line):
-            if header is not None:
-                blocks.append((header, "\n".join(body_lines).strip()))
-            header = line.strip()
-            body_lines = []
-        elif header is not None:
-            body_lines.append(line.rstrip())
-    if header is not None:
-        blocks.append((header, "\n".join(body_lines).strip()))
-    return blocks
-
-
-def fallback_blocks(text: str) -> List[Tuple[str, str]]:
-    blocks: List[Tuple[str, str]] = []
-    header: str | None = None
-    body_lines: List[str] = []
-    for line in text.splitlines():
-        stripped = line.strip()
-        normalized = stripped.lstrip("* ")
-        if QUESTION_PREFIX_RE.match(normalized):
-            if header is not None:
-                blocks.append((header, "\n".join(body_lines).strip()))
-            header = stripped
-            body_lines = []
-        elif header is not None:
-            body_lines.append(line.rstrip())
-    if header is not None:
-        blocks.append((header, "\n".join(body_lines).strip()))
-    return blocks
-
-
-def parse_triple_quoted_segments(text: str) -> List[QuestionBlock]:
-    results: List[QuestionBlock] = []
-    for segment in TRIPLE_QUOTE_SPLIT_RE.split(text):
-        segment = segment.strip()
-        if not segment:
-            continue
-        if not segment.lower().startswith("question"):
-            continue
-        sections = parse_sections(segment)
-        section_qid, section_question = parse_question_section(sections.get("question", ""))
-        question_text = strip_question_prefix(section_question or sections.get("question", ""))
-        results.append(
-            {
-                "question_id": section_qid,
-                "question": clean_text(question_text),
-                "evidence": sections.get("evidence", ""),
-                "rationale": sections.get("rationale", ""),
-                "answer": sections.get("answer", ""),
-            }
-        )
-    return results
-
-
-def parse_question_header(header_line: str) -> Tuple[str, str]:
-    cleaned = header_line.strip().strip("*")
-    cleaned = cleaned.lstrip("#").strip()
-    match = QUESTION_ID_RE.match(cleaned)
-    question_id = normalise_question_id(match.group("digits")) if match else ""
-    question_text = cleaned[match.end():].lstrip(" -:\t").strip() if match else cleaned
-    question_text = strip_question_prefix(question_text)
-    return question_id, clean_text(question_text)
-
-
-def detect_field_label(line: str) -> Tuple[str, str] | None:
-    match = FIELD_LINE_RE.match(line.strip())
-    if not match:
         return None
-    label = match.group("label").lower()
-    value = match.group("value") or ""
-    return label, value.strip()
+    if QUESTION_HEADER_RE.match(stripped):
+        return stripped
+    if QUESTION_LINE_HEADER_RE.match(stripped):
+        return stripped
+    return None
 
 
-def join_section(lines: Sequence[str]) -> str:
-    text = "\n".join(part.rstrip() for part in lines if part is not None)
-    return clean_text(text)
+def extract_question_blocks(text: str) -> List[Tuple[str, str]]:
+    """Split a cell into (header, body) tuples."""
+
+    blocks: List[Tuple[str, str]] = []
+    header: str | None = None
+    body_lines: List[str] = []
+
+    for raw_line in text.splitlines():
+        if _is_delimiter(raw_line):
+            continue
+        candidate = _detect_header(raw_line)
+        if candidate:
+            if header is not None or body_lines:
+                blocks.append((header or "", "\n".join(body_lines).strip()))
+                body_lines = []
+            header = candidate
+            continue
+        body_lines.append(raw_line.rstrip())
+
+    if header is not None or body_lines:
+        blocks.append((header or "", "\n".join(body_lines).strip()))
+
+    # Filter out empty shells
+    return [(hdr, body) for hdr, body in blocks if hdr or body]
 
 
 def parse_sections(body: str) -> Dict[str, str]:
-    collected: Dict[str, List[str]] = {label: [] for label in QUESTION_LABELS}
+    collected: Dict[str, List[str]] = {label: [] for label in QUESTION_FIELDS}
     current_label: str | None = None
 
     for raw_line in body.splitlines():
-        detection = detect_field_label(raw_line)
+        if _is_delimiter(raw_line):
+            current_label = None
+            continue
+        detection = FIELD_LINE_RE.match(raw_line.strip())
         if detection:
-            label, initial_value = detection
-            current_label = label
-            if initial_value:
-                collected[label].append(initial_value)
+            current_label = detection.group("label").lower()
+            value = detection.group("value") or ""
+            if value:
+                collected[current_label].append(value.strip())
             continue
         if current_label:
-            collected[current_label].append(raw_line)
+            collected[current_label].append(raw_line.rstrip())
 
-    return {label: join_section(lines) for label, lines in collected.items()}
-
-
-def parse_question_section(value: str) -> Tuple[str, str]:
-    cleaned = clean_text(value)
-    if not cleaned:
-        return "", ""
-    if re.fullmatch(r"(?i)q(?:uestion)?\s*\d+", cleaned):
-        return normalise_question_id(cleaned), ""
-    match = re.search(r"(?i)q(?:uestion)?\s*(\d+)", cleaned)
-    question_id = normalise_question_id(match.group(1)) if match else ""
-    return question_id, strip_question_prefix(cleaned)
+    return {label: clean_text("\n".join(lines).strip()) for label, lines in collected.items()}
 
 
-def parse_multiple_answer(cell: str) -> List[QuestionBlock]:
+def parse_question_header(header_line: str) -> Tuple[str, str]:
+    cleaned = header_line.strip().lstrip("#").strip()
+    match = re.match(
+        r"(?i)q(?:uestion)?(?:\s*id)?\s*(\d+)(?:\s*[:\-]\s*)?(.*)",
+        cleaned,
+    )
+    if match:
+        qid = normalise_question_id(match.group(1))
+        question_text = clean_text(match.group(2))
+        return qid, question_text
+    fallback = re.sub(r"(?i)^question\s*[:\-]\s*", "", cleaned)
+    return "", clean_text(fallback)
+
+
+def parse_block(header: str, body: str) -> QuestionBlock | None:
+    header_qid, header_question = parse_question_header(header)
+    sections = parse_sections(body)
+
+    if not any(sections.values()) and not header_question:
+        return None
+
+    question_text = sections.get("question") or header_question
+    return {
+        "question_id": header_qid,
+        "question": question_text or "",
+        "evidence": sections.get("evidence", ""),
+        "rationale": sections.get("rationale", ""),
+        "answer": sections.get("answer", ""),
+    }
+
+
+def parse_multiple_answer(cell: object) -> List[QuestionBlock]:
     text = normalise_cell(cell)
     if not text:
         return []
 
-    blocks = extract_blocks(text)
+    parsed: List[QuestionBlock] = []
+    blocks = extract_question_blocks(text)
     if not blocks:
-        blocks = fallback_blocks(text)
-    if blocks:
-        parsed: List[QuestionBlock] = []
-        for header, body in blocks:
-            header_qid, header_question = parse_question_header(header)
-            sections = parse_sections(body)
-            section_qid, section_question = parse_question_section(sections.get("question", ""))
-            question_id = header_qid or section_qid
-            question_text = header_question or section_question or sections.get("question", "")
-            question_text = strip_question_prefix(question_text)
-            parsed.append(
-                {
-                    "question_id": question_id,
-                    "question": clean_text(question_text),
-                    "evidence": sections.get("evidence", ""),
-                    "rationale": sections.get("rationale", ""),
-                    "answer": sections.get("answer", ""),
-                }
-            )
+        fallback = parse_block("", text)
+        if fallback:
+            parsed.append(fallback)
         return parsed
 
-    return parse_triple_quoted_segments(text)
+    for header, body in blocks:
+        block = parse_block(header, body)
+        if block:
+            parsed.append(block)
+    return parsed
 
 
-def load_qid_lookup(
+def load_question_lookup(
     s2_table_path: pathlib.Path,
 ) -> Tuple[Dict[str, Dict[str, str]], Dict[str, Dict[str, str]]]:
-    """Build lookups keyed by question text and by question ID."""
     if not s2_table_path.exists():
         raise FileNotFoundError(f"Missing S2 table: {s2_table_path}")
 
@@ -266,10 +221,7 @@ def load_qid_lookup(
     qid_lookup: Dict[str, Dict[str, str]] = {}
 
     for _, row in dataframe.iterrows():
-        if pd.isna(row.get("Question")) or pd.isna(row.get("QID")):
-            continue
-
-        question = clean_text(str(row["Question"]))
+        question = clean_text(row.get("Question"))
         qid = normalise_question_id(row.get("QID"))
         if not question or not qid:
             continue
@@ -277,7 +229,8 @@ def load_qid_lookup(
         entry = {"QID": qid, "question": question}
         qid_lookup.setdefault(qid, entry)
         norm_text = normalise_question_text(question)
-        question_lookup.setdefault(norm_text, entry)
+        if norm_text:
+            question_lookup.setdefault(norm_text, entry)
 
     return question_lookup, qid_lookup
 
@@ -285,77 +238,69 @@ def load_qid_lookup(
 def match_question(
     question_lookup: Dict[str, Dict[str, str]],
     qid_lookup: Dict[str, Dict[str, str]],
-    question: QuestionBlock,
+    block: QuestionBlock,
 ) -> Tuple[str, str]:
-    question_id = normalise_question_id(question.get("question_id"))
-    if question_id and question_id in qid_lookup:
-        entry = qid_lookup[question_id]
+    qid = normalise_question_id(block.get("question_id"))
+    if qid and qid in qid_lookup:
+        entry = qid_lookup[qid]
         return entry["QID"], entry["question"]
 
-    question_text = strip_question_prefix(question.get("question", ""))
-    norm_question = normalise_question_text(question_text)
-    if norm_question and norm_question in question_lookup:
-        entry = question_lookup[norm_question]
+    question_text = clean_text(block.get("question", ""))
+    norm_text = normalise_question_text(question_text)
+    if norm_text and norm_text in question_lookup:
+        entry = question_lookup[norm_text]
         return entry["QID"], entry["question"]
 
-    return "", question_text or question.get("question", "")
+    return qid, question_text
+
+
+def _row_sort_key(row: Dict[str, str]) -> Tuple[str, int, str]:
+    pmid = row.get("PMID", "")
+    qid = row.get("QID", "")
+    try:
+        return pmid, 0, f"{int(qid):04d}"
+    except (TypeError, ValueError):
+        return pmid, 1, qid or ""
 
 
 def parse_file(
     input_path: pathlib.Path, output_path: pathlib.Path, s2_table_path: pathlib.Path
 ) -> None:
     rows: List[Dict[str, str]] = []
-    question_lookup, qid_lookup = load_qid_lookup(s2_table_path)
+    question_lookup, qid_lookup = load_question_lookup(s2_table_path)
 
     with input_path.open("r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
         for row in reader:
             pmid = clean_text(row.get("PMID", ""))
-            matched_pairs: set[Tuple[str, str]] = set()
+            parsed_blocks = parse_multiple_answer(row.get("Multiple Answer", ""))
+            print(f"PMID {pmid or '[unknown]'}: parsed {len(parsed_blocks)} question(s)")
+            matched: set[Tuple[str, str]] = set()
 
-            parsed_questions = parse_multiple_answer(row.get("Multiple Answer", ""))
-            print(f"PMID {pmid or '[unknown]'}: parsed {len(parsed_questions)} question(s)")
-            for question in parsed_questions:
-                qid, canonical_question = match_question(question_lookup, qid_lookup, question)
+            for block in parsed_blocks:
+                qid, canonical_question = match_question(question_lookup, qid_lookup, block)
                 if not qid:
                     print(
-                        "PMID {pmid}: could not find QID for question {question!r} (ID: {question_id})".format(
-                            pmid=pmid or "[unknown]",
-                            question=question.get("question", ""),
-                            question_id=question.get("question_id", "") or "unknown",
-                        )
+                        f"  Warning: PMID {pmid or '[unknown]'} missing QID for question {block.get('question', '')!r}"
                     )
                     continue
 
-                key = (qid, pmid)
-                if key in matched_pairs:
+                key = (pmid, qid)
+                if key in matched:
                     continue
-                matched_pairs.add(key)
+                matched.add(key)
                 rows.append(
                     {
                         "PMID": pmid,
                         "QID": qid,
-                        "question": canonical_question or question.get("question", ""),
-                        "evidence": question.get("evidence", ""),
-                        "rationale": question.get("rationale", ""),
-                        "answer": question.get("answer", ""),
+                        "question": canonical_question or block.get("question", ""),
+                        "evidence": block.get("evidence", ""),
+                        "rationale": block.get("rationale", ""),
+                        "answer": block.get("answer", ""),
                     }
                 )
 
-            for qid, entry in qid_lookup.items():
-                key = (qid, pmid)
-                if key in matched_pairs:
-                    continue
-                rows.append(
-                    {
-                        "PMID": pmid,
-                        "QID": entry["QID"],
-                        "question": entry["question"],
-                        "evidence": "",
-                        "rationale": "",
-                        "answer": "No",
-                    }
-                )
+    rows.sort(key=_row_sort_key)
 
     fieldnames = ["PMID", "QID", "question", "evidence", "rationale", "answer"]
     with output_path.open("w", encoding="utf-8", newline="") as handle:
@@ -370,21 +315,21 @@ def build_parser() -> argparse.ArgumentParser:
         "input",
         type=pathlib.Path,
         nargs="?",
-        default=pathlib.Path("./csv/llama-3.1-70B_bm25_10-shot.csv"),
-        help="Path to the input CSV file (default: llama-3.1-70B_bm25_10-shot.csv)",
+        default=pathlib.Path("./csv/llama-3.1-70B RAG.csv"),
+        help="Path to the input CSV file (default: ./csv/llama-3.1-70B RAG.csv)",
     )
     parser.add_argument(
         "output",
         type=pathlib.Path,
         nargs="?",
-        default=pathlib.Path("./csv/llama-3.1-70B_bm25_10-shot_parsed.csv"),
-        help="Path to the output CSV file (default: llama-3.1-70B_bm25_10-shot_parsed.csv)",
+        default=pathlib.Path("./csv/llama-3.1-70B RAG_parsed.csv"),
+        help="Path to the output CSV file (default: ./csv/llama-3.1-70B RAG_parsed.csv)",
     )
     parser.add_argument(
         "--s2-table",
         type=pathlib.Path,
         default=pathlib.Path("./csv/S2Table.xlsx"),
-        help="Path to the S2Table.xlsx file that contains PMID/QID/question mappings",
+        help="Path to the S2Table.xlsx file",
     )
     return parser
 
