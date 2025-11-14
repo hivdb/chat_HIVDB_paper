@@ -1,0 +1,13 @@
+- If the paper states “submitted/deposited/available in GenBank under accession number(s)/nos/IDs …” or “GenBank accession numbers are …” then extract and report the exact ranges and individual IDs that follow (e.g., “FJ800379–FJ800386,” “GQ477441-GQ477451,” “KP170487”).
+- If multiple gene regions are listed (pol, protease/PR, reverse transcriptase/RT, integrase/IN, gag, env, NFLG/full genome), then collect all GenBank ranges/IDs mentioned for any region and report them together.
+- If timepoints or cohorts are separated (e.g., baseline/48/96 weeks; different cohorts), then include all corresponding GenBank ranges/IDs cited for those sets.
+- If wording is “sequences described/reported/generated in this study” or “all sequences from this study,” then include those GenBank numbers; if “sequences analyzed/used” are explicitly listed with GenBank numbers, include them as well.
+- If accession numbers are only provided in Supplementary Materials (e.g., “see Table Sx”), then extract those GenBank IDs from the supplement and report them.
+- If the paper cites GenBank IDs solely for prior studies/reference strains/lab isolates used (e.g., NL4-3, BaL, “in a previous study… accession no. AY…”) without depositing new study sequences, then answer “Not reported.”
+- If the paper states “pending,” “available upon request,” or provides a non-GenBank location only (institutional website, Los Alamos database, SRA BioProject without GenBank sequence accessions), then answer “Not reported.”
+- If accessions are to non-GenBank repositories only (EMBL/DDBJ accession numbers, Protein Data Bank IDs), then answer “Not reported” for GenBank.
+- If the paper is purely in vitro/phenotypic/methods without new sequence deposition, or explicitly states no sequencing was done, then answer “Not reported.”
+- Normalize formats: capture hyphen/en dash ranges, “to/through/between X and Y,” comma-separated lists, and mixed ranges plus singletons; include all segments exactly as printed.
+- If conflicting or ambiguous, prioritize statements in “Data availability,” “Nucleotide sequence accession numbers,” or “Sequence data” sections.
+
+Always verify extracted accession numbers against the paper’s text or supplements before finalizing.

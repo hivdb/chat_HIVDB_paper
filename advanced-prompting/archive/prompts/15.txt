@@ -1,0 +1,26 @@
+Instruction: Determine which antiretroviral drug classes participants received before the sequenced sample was taken. Use these rules.
+
+If the paper says “treatment-naïve,” “ART-naïve,” “drug-naïve,” “never exposed to antiretrovirals,” “before ART initiation,” “pre-ART,” “newly diagnosed,” “seroconverter,” “blood donor,” “primary/acute infection without ART,” or samples collected “at diagnosis/baseline prior to therapy,” then return nan.
+
+If specific drugs/regimens are named, map to classes:
+- NRTI: zidovudine/AZT, lamivudine/3TC, emtricitabine/FTC, tenofovir TDF/TAF, abacavir/ABC, stavudine/d4T, didanosine/ddI.
+- NNRTI: efavirenz/EFV, nevirapine/NVP, etravirine/ETR, rilpivirine/RPV, doravirine/DOR.
+- PI: lopinavir/r (LPV/r), atazanavir/ATV, darunavir/DRV, saquinavir/SQV, indinavir/IDV, nelfinavir/NFV, tipranavir/TPV, fosamprenavir/FPV, ritonavir boosting implies PI-based.
+- INSTI: raltegravir/RAL, elvitegravir/EVG, dolutegravir/DTG, bictegravir/BIC, cabotegravir/CAB.
+- CCR5 antagonist: maraviroc/MVC.
+- Capsid inhibitor: lenacapavir/LEN.
+
+If regimen descriptors are used, infer classes:
+- “NNRTI-based first-line” implies NNRTI + NRTI backbone.
+- “PI-based second-line” implies PI + NRTIs.
+- “Two NRTIs + one NNRTI/PI” implies those classes.
+- “NRTI backbone” implies NRTIs were received.
+- “Triomune” implies 3TC/d4T/NVP (NRTI + NNRTI).
+- PMTCT: single-dose nevirapine (NNRTI) and/or zidovudine (NRTI) count as exposures.
+- PrEP: TDF/FTC implies NRTIs; CAB-LA implies INSTI; CAB/RPV implies INSTI + NNRTI.
+
+If the paper states “on raltegravir/dolutegravir/elvitegravir/bictegravir” at sampling, include INSTI; “on maraviroc” include CCR5 antagonist; “on lenacapavir” include capsid inhibitor.
+
+If only “ART-experienced” is stated without drugs or class descriptors, or the study uses lab constructs/in vitro selection/site-directed mutants/reviewed database sequences without patient treatment detail, return Not reported.
+
+Report all classes clearly present before sampling; do not infer from later therapy. Validate timing (at/just before sampling) and confirm phrases against the paper.
