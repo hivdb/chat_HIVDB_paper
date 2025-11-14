@@ -3,26 +3,37 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 from pathlib import Path
 
 import pandas as pd
 
-
 PROMPTS_EXCEL = Path("advanced-prompting/csv/S4Table.xlsx")
-DATASETS = (
-    (
-        Path("advanced-prompting/jsonl/dynamic_responses_bm25_5-shot.jsonl"),
-        Path("advanced-prompting/csv/gpt-4o-mini-2024-07-18_bm25_5-shot_parsed.xlsx"),
-        "GPT-4o BM25 5-shot",
-    ),
-    (
-        Path("advanced-prompting/jsonl/dynamic_responses_bm25_10-shot.jsonl"),
-        Path("advanced-prompting/csv/gpt-4o-mini-2024-07-18_bm25_10-shot_parsed.xlsx"),
-        "GPT-4o BM25 10-shot",
-    ),
-)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--responses",
+        type=Path,
+        required=True,
+        help="Path to the model responses JSONL file.",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        required=True,
+        help="Path to the output Excel file.",
+    )
+    parser.add_argument(
+        "--column-name",
+        type=str,
+        default="Model Answer",
+        help="Column name to store extracted answers.",
+    )
+    return parser.parse_args()
 
 
 def extract_answers(text: str) -> list[str]:
@@ -69,8 +80,8 @@ def process_dataset(responses_jsonl: Path, output_excel: Path, column_name: str)
 
 
 def main() -> int:
-    for responses_jsonl, output_excel, column_name in DATASETS:
-        process_dataset(responses_jsonl, output_excel, column_name)
+    args = parse_args()
+    process_dataset(args.responses, args.output, args.column_name)
     return 0
 
 

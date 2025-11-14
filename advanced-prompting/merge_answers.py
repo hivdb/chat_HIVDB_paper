@@ -15,6 +15,7 @@ SOURCE_ADV_BEFORE = "./csv/gpt-4o-mini-2024-07-18_before_parsed.xlsx"
 SOURCE_ADV_AFTER = "./csv/gpt-4o-mini-2024-07-18_after_parsed.xlsx"
 SOURCE_ADV_5shot = "./csv/gpt-4o-mini-2024-07-18_bm25_5-shot_parsed.xlsx"
 SOURCE_ADV_10shot = "./csv/gpt-4o-mini-2024-07-18_bm25_10-shot_parsed.xlsx"
+SOURCE_ADV_RAG = "./csv/gpt-4o-mini-2024-07-18_semantic_5-shot_parsed.xlsx"
 
 SOURCE_LLAMA_8B = "./csv/llama-3.1-8B_parsed.csv"
 SOURCE_LLAMA_8B_before = "./csv/llama-3.1-8B_before_parsed.csv"
@@ -57,6 +58,9 @@ def main() -> None:
     adv_after = _load_unique(SOURCE_ADV_AFTER, usecols=MERGE_KEYS + ["GPT-4o AP After"])
     adv_5shot = _load_unique(SOURCE_ADV_5shot, usecols=MERGE_KEYS + ["GPT-4o BM25 5-shot"])
     adv_10shot = _load_unique(SOURCE_ADV_10shot, usecols=MERGE_KEYS + ["GPT-4o BM25 10-shot"])
+    adv_rag = _load_unique(SOURCE_ADV_RAG, usecols=MERGE_KEYS + ["GPT-4o Semantic 5-shot"]).rename(
+        columns={"GPT-4o Semantic 5-shot": "GPT-4o RAG"}
+    )
 
     llama_8b = _load_unique(SOURCE_LLAMA_8B, usecols=MERGE_KEYS + ["answer"]).rename(
         columns={"answer": "llama-3.1-8B AP"}
@@ -104,6 +108,7 @@ def main() -> None:
 
     merged = merged.merge(adv_5shot, on=MERGE_KEYS, how="left")
     merged = merged.merge(adv_10shot, on=MERGE_KEYS, how="left")
+    merged = merged.merge(adv_rag, on=MERGE_KEYS, how="left")
 
     merged = merged.merge(llama_8b, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b_before, on=MERGE_KEYS, how="left")

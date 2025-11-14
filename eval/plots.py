@@ -15,6 +15,8 @@ from .normalize import slugify
 
 def _variant_from_label(label: str) -> str:
     lowered = label.lower()
+    if "rag" in lowered:
+        return "RAG"
     if "bm25" in lowered:
         return "BM25"
     if "ap" in lowered and "base" not in lowered:

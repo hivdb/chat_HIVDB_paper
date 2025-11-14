@@ -167,6 +167,7 @@ MODEL_BASE_COLORS = {
 VARIANT_TINTS = {
     "base": 0.0,
     "FT": 0.2,
-    "AP": 0.55,   # noticeably lighter shade for AP variants (Before/After)
+    "AP": 0.55,
     "BM25": 0.8,
+    "RAG": 0.9,
 }

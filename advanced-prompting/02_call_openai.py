@@ -3,16 +3,17 @@
 
 from __future__ import annotations
 
+import argparse
 import asyncio
-import os
 import json
 import logging
+import os
+import re
 import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
-import re
+from typing import Iterable, Sequence
 
 from openai import AsyncOpenAI
 from dotenv import load_dotenv
@@ -53,20 +54,22 @@ class JobConfig:
     log_path: Path
 
 
-JOB_CONFIGS: tuple[JobConfig, ...] = (
-    JobConfig(
-        label="bm25-5shot",
-        prompts_path=Path("advanced-prompting/jsonl/dynamic_prompts_bm25_5-shot.jsonl"),
-        responses_path=Path("advanced-prompting/jsonl/dynamic_responses_bm25_5-shot.jsonl"),
-        log_path=Path("advanced-prompting/log/dynamic_responses_bm25_5-shot.log"),
-    ),
-    JobConfig(
-        label="bm25-10shot",
-        prompts_path=Path("advanced-prompting/jsonl/dynamic_prompts_bm25_10-shot.jsonl"),
-        responses_path=Path("advanced-prompting/jsonl/dynamic_responses_bm25_10-shot.jsonl"),
-        log_path=Path("advanced-prompting/log/dynamic_responses_bm25_10-shot.log"),
-    ),
-)
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--job",
+        action="append",
+        nargs=3,
+        metavar=("LABEL", "PROMPTS", "RESPONSES"),
+        help="Add a job with label and paths to prompts/responses JSONL. Log path defaults to responses log.",
+    )
+    parser.add_argument(
+        "--log-dir",
+        type=Path,
+        default=Path("advanced-prompting/log"),
+        help="Directory for job logs (default: advanced-prompting/log).",
+    )
+    return parser.parse_args()
 
 
 @dataclass(frozen=True)
@@ -80,6 +83,31 @@ class PromptJob:
 class Progress:
     total: int
     completed: int = 0
+
+
+def default_jobs(log_dir: Path) -> list[JobConfig]:
+    return [
+        JobConfig(
+            label="semantic-5shot",
+            prompts_path=Path("advanced-prompting/jsonl/dynamic_prompts_semantic_5-shot.jsonl"),
+            responses_path=Path("advanced-prompting/jsonl/dynamic_responses_semantic_5-shot.jsonl"),
+            log_path=log_dir / "dynamic_responses_semantic_5-shot.log",
+        )
+    ]
+
+
+def build_jobs(args: argparse.Namespace) -> list[JobConfig]:
+    log_dir = args.log_dir
+    log_dir.mkdir(parents=True, exist_ok=True)
+    if not args.job:
+        return default_jobs(log_dir)
+    jobs: list[JobConfig] = []
+    for label, prompts, responses in args.job:
+        prompts_path = Path(prompts)
+        responses_path = Path(responses)
+        log_path = log_dir / f"{label}.log"
+        jobs.append(JobConfig(label, prompts_path, responses_path, log_path))
+    return jobs
 
 
 def setup_logger(log_path: Path, label: str) -> logging.Logger:
@@ -390,6 +418,11 @@ def run_job_config(config: JobConfig, api_key: str) -> int:
 
 def main() -> int:
     load_dotenv()
+    args = parse_args()
+    jobs = build_jobs(args)
+    if not jobs:
+        logging.error("No job configurations provided.")
+        return 1
 
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
@@ -397,7 +430,7 @@ def main() -> int:
         return 1
 
     exit_code = 0
-    for config in JOB_CONFIGS:
+    for config in jobs:
         exit_code = max(exit_code, run_job_config(config, api_key))
     return exit_code
 

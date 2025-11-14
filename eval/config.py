@@ -20,6 +20,7 @@ MODEL_GROUPS = {
         "GPT-4o AP After",
         "GPT-4o BM25 5-shot",
         "GPT-4o BM25 10-shot",
+        "GPT-4o RAG",
     ],
     "llama_70b": [
         "Llama3.1-70B base",
@@ -29,6 +30,7 @@ MODEL_GROUPS = {
         "Llama3.1-70B AP After",
         "Llama3.1-70B BM25 5-shot",
         "Llama3.1-70B BM25 10-shot",
+        "Llama3.1-70B RAG",
     ],
     "llama_8b": [
         "Llama3.1-8B base",
@@ -38,6 +40,7 @@ MODEL_GROUPS = {
         "Llama3.1-8B AP After",
         "Llama3.1-8B BM25 5-shot",
         "Llama3.1-8B BM25 10-shot",
+        "Llama3.1-8B RAG",
     ],
 }
 
@@ -54,6 +57,8 @@ COLUMN_RENAMES = {
     "llama-3.1-8B 10shot": "Llama3.1-8B BM25 10-shot",
     "llama-3.1-70B 5shot": "Llama3.1-70B BM25 5-shot",
     "llama-3.1-70B 10shot": "Llama3.1-70B BM25 10-shot",
+    "llama-3.1-8B RAG": "Llama3.1-8B RAG",
+    "llama-3.1-70B RAG": "Llama3.1-70B RAG",
 }
 
 SCENARIOS = [
@@ -65,7 +70,7 @@ SCENARIOS = [
         "footnote": (
             "*AI Answers compared against Human Answers after normalizing case, stripping punctuation, "
             "sorting list-valued entries, and collapsing None/Not reported/Not applicable/0 into 'No'. "
-            "Bar colors indicate the base model family; shade intensity reflects the scenario (base, FT, AP, BM25)."
+            "Bar colors indicate the base model family; shade intensity reflects the scenario (base, FT, AP, BM25, RAG)."
         ),
     },
     {
@@ -76,7 +81,7 @@ SCENARIOS = [
         "footnote": (
             "*AI Answers compared against Human Answers after collapsing None/Not reported/Not "
             "applicable/0 into 'No'. Bar colors indicate the base model family; shade intensity reflects the "
-            "scenario (base, FT, AP, BM25)."
+            "scenario (base, FT, AP, BM25, RAG)."
         ),
         "filter_type": "Boolean",
     },
