@@ -63,27 +63,53 @@ COLUMN_RENAMES = {
 
 SCENARIOS = [
     {
-        "title": "Human Answer",
+        "title": "Overall",
         "reference": "Human Answer",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
         "convert_special_no": True,
         "footnote": (
-            "*AI Answers compared against Human Answers after normalizing case, stripping punctuation, "
+            "*AI answers scored against human references after normalizing case, stripping punctuation, "
             "sorting list-valued entries, and collapsing None/Not reported/Not applicable/0 into 'No'. "
             "Bar colors indicate the base model family; shade intensity reflects the scenario (base, FT, AP, BM25, RAG)."
         ),
     },
     {
-        "title": "Human Answer – Yes/No questions",
+        "title": "Yes/No questions",
         "reference": "Human Answer",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
         "convert_special_no": True,
         "footnote": (
-            "*AI Answers compared against Human Answers after collapsing None/Not reported/Not "
+            "*AI answers scored against human references after collapsing None/Not reported/Not "
             "applicable/0 into 'No'. Bar colors indicate the base model family; shade intensity reflects the "
             "scenario (base, FT, AP, BM25, RAG)."
         ),
         "filter_type": "Boolean",
+        "include_details": False,
+    },
+    {
+        "title": "List questions (exact match)",
+        "reference": "Human Answer",
+        "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
+        "convert_special_no": True,
+        "footnote": (
+            "*Exact list match after normalizing case and stripping punctuation."
+        ),
+        "filter_type": "List",
+        "allow_partial_list": False,
+        "include_details": False,
+    },
+    {
+        "title": "List questions (partial match)",
+        "reference": "Human Answer",
+        "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
+        "convert_special_no": True,
+        "footnote": (
+            "*Partial list match credit granted when ≥66% of human tokens appear. Bar colors indicate model family; "
+            "shade intensity reflects scenario (base, FT, AP, BM25, RAG)."
+        ),
+        "filter_type": "List",
+        "allow_partial_list": True,
+        "include_details": False,
     },
 ]
 

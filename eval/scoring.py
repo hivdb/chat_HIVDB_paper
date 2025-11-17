@@ -64,6 +64,7 @@ def evaluate_model(
     ref_col: str,
     pred_norm_col: str,
     ref_norm_col: str,
+    allow_partial_list: bool = False,
 ) -> Dict[str, float]:
     counts = {"tp": 0, "tn": 0, "fp": 0, "fn": 0}
     for _, row in data.iterrows():
@@ -74,6 +75,7 @@ def evaluate_model(
             question_text=row.get("Question", ""),
             ref_raw=row.get(ref_col, ""),
             pred_raw=row.get(model_col, ""),
+            allow_partial_list=allow_partial_list,
         )
         for key, value in row_counts.items():
             counts[key] += value
@@ -94,6 +96,7 @@ def evaluate_group(
     scenario: str,
     norm_lookup: dict[str, str],
     convert_special_no: bool,
+    allow_partial_list: bool = False,
 ) -> pd.DataFrame:
     rows = []
     ref_norm = norm_lookup[ref_col]
@@ -103,7 +106,7 @@ def evaluate_group(
         pred_norm = norm_lookup.get(model)
         if not pred_norm:
             continue
-        metrics = evaluate_model(df, model, ref_col, pred_norm, ref_norm)
+        metrics = evaluate_model(df, model, ref_col, pred_norm, ref_norm, allow_partial_list)
         metrics.update({"model": model, "scenario": scenario, "reference": ref_col, "convert_no": convert_special_no})
         rows.append(metrics)
     return pd.DataFrame(rows)
@@ -115,7 +118,6 @@ def build_detail_rows(df: pd.DataFrame, scenario: dict, norm_lookup: dict[str, s
     ref_norm = norm_lookup[ref_col]
     for _, row in df.iterrows():
         base = {
-            "Scenario": scenario["title"],
             "PMID": row["PMID"],
             "QID": row["QID"],
             "Question": row.get("Question", ""),
@@ -135,6 +137,7 @@ def build_detail_rows(df: pd.DataFrame, scenario: dict, norm_lookup: dict[str, s
                 question_text=row.get("Question", ""),
                 ref_raw=row.get(ref_col, ""),
                 pred_raw=answer,
+                allow_partial_list=scenario.get("allow_partial_list", False),
             )
             base[f"{model} Correct"] = int(correct)
         records.append(base)

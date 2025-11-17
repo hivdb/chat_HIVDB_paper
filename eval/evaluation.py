@@ -29,6 +29,7 @@ def run(limit: int | None) -> Tuple[pd.DataFrame, List[dict], List[Tuple[str, st
     figure_specs: List[Tuple[str, str, pd.DataFrame]] = []
 
     cache: dict = {}
+    scenario_results: dict[str, pd.DataFrame] = {}
     for scenario in config.SCENARIOS:
         scenario_df = df
         if filter_type := scenario.get("filter_type"):
@@ -49,10 +50,31 @@ def run(limit: int | None) -> Tuple[pd.DataFrame, List[dict], List[Tuple[str, st
             scenario["title"],
             norm_lookup,
             convert,
+            allow_partial_list=scenario.get("allow_partial_list", False),
         )
         if subset.empty:
             continue
-        detail_rows.extend(build_detail_rows(scenario_df, scenario, norm_lookup))
+        scenario_id = scenario.get("scenario_id")
+        if scenario.get("compare_to"):
+            base_id = scenario.get("compare_to")
+            base_subset = scenario_results.get(base_id)
+            if base_subset is None:
+                logging.warning("Scenario '%s' requires compare_to '%s', which is missing.", scenario["title"], base_id)
+                continue
+            metrics_cols = ["accuracy", "precision", "recall", "f1"]
+            merged = subset.merge(
+                base_subset[["model", *metrics_cols]],
+                on="model",
+                suffixes=("", "_base"),
+            )
+            for col in metrics_cols:
+                merged[col] = merged[col] - merged[f"{col}_base"]
+                merged.drop(columns=f"{col}_base", inplace=True)
+            subset = merged
+        if scenario_id:
+            scenario_results[scenario_id] = subset.copy()
+        if scenario.get("include_details", True):
+            detail_rows.extend(build_detail_rows(scenario_df, scenario, norm_lookup))
         scenario_frames.append(subset)
         figure_specs.append((scenario["title"], scenario["footnote"], subset))
     combined = pd.concat(scenario_frames, ignore_index=True) if scenario_frames else pd.DataFrame()
@@ -60,11 +82,11 @@ def run(limit: int | None) -> Tuple[pd.DataFrame, List[dict], List[Tuple[str, st
 
 
 def write_outputs(metrics: pd.DataFrame, details: List[dict]) -> None:
-    metrics.to_csv(config.OUTPUT_METRICS, index=False)
+    metrics.to_csv(config.OUTPUT_METRICS, index=False, encoding="utf-8-sig")
     detail_df = pd.DataFrame(details)
-    detail_df.sort_values(["Scenario", "sort_key"], inplace=True)
-    detail_df.drop(columns=["sort_key"], inplace=True)
-    detail_df.to_csv(config.DETAIL_METRICS_HUMAN, index=False)
+    detail_df.sort_values(["sort_key"], inplace=True)
+    detail_df.drop(columns=["sort_key"], inplace=True, errors="ignore")
+    detail_df.to_csv(config.DETAIL_METRICS_HUMAN, index=False, encoding="utf-8-sig")
 
 
 def main() -> int:

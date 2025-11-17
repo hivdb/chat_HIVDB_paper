@@ -100,6 +100,7 @@ def _canonical_list(lowered: str, raw: str, convert_special_no: bool) -> str:
         sanitized = " | ".join(part.strip() for part in normalized.split("|") if part.strip())
     else:
         sanitized = " ".join(NON_ALPHANUM.sub(" ", normalized).split())
+    sanitized = TEXT_SYNONYMS.get(sanitized, sanitized)
     if convert_special_no and sanitized in SPECIAL_NO:
         return "no"
     if sanitized in YES_SYNONYMS:
@@ -307,6 +308,7 @@ def human_answer_counts(
     question_text: str,
     ref_raw: str,
     pred_raw: str,
+    allow_partial_list: bool = False,
 ) -> Tuple[dict[str, int], bool]:
     qtype = (question_type or "").lower()
     handler = QUESTION_HANDLERS.get(qtype, _score_generic)
@@ -316,6 +318,7 @@ def human_answer_counts(
         question_text=question_text,
         ref_raw=ref_raw,
         pred_raw=pred_raw,
+        allow_partial=allow_partial_list,
     )
 
 
@@ -351,6 +354,7 @@ def _score_list(
     ref_norm: str,
     *,
     pred_raw: str,
+    allow_partial: bool = False,
     **_: str,
 ) -> Tuple[dict[str, int], bool]:
     counts = _new_counts()
@@ -358,9 +362,7 @@ def _score_list(
     matches, total = list_match_stats(ref_norm, pred_norm, pred_raw)
     match_ratio = matches / total if total else 0.0
     full_match = compare_lists(pred_norm, ref_norm) or (total and matches == total)
-    # Partial list credit temporarily disabled: only perfect coverage counts.
-    # partial = total >= LIST_PARTIAL_MIN_TOKENS and match_ratio >= LIST_PARTIAL_THRESHOLD
-    partial = False
+    partial = allow_partial and total > 0 and match_ratio >= LIST_PARTIAL_THRESHOLD
     # Year reference shortcut also disabled to match stricter behavior.
     # has_year_reference = mentions_year(year_tokens(ref_norm), pred_norm, pred_raw)
     has_year_reference = False
