@@ -21,6 +21,7 @@ from .constants import (
     NUMBER_WORDS,
     SCALE_WORDS,
     SPECIAL_NO,
+    SPECIAL_NO_INDICATORS,
     TEXT_SYNONYMS,
     YES_SYNONYMS,
     YEAR_REGEX,
@@ -75,6 +76,8 @@ def _canonical_boolean(lowered: str, convert_special_no: bool) -> str | None:
         lowered in SPECIAL_NO
         or any(lowered.startswith(f"{token} ") for token in SPECIAL_NO)
     ):
+        return "no"
+    if convert_special_no and any(phrase in lowered for phrase in SPECIAL_NO_INDICATORS):
         return "no"
     return None
 

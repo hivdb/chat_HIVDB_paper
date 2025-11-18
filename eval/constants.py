@@ -8,6 +8,7 @@ SPECIAL_NO = {
     "not applicable",
     "not available",
     "not provided",
+    "unknown",
     "na",
     "n/a",
     "not stated",
@@ -15,6 +16,24 @@ SPECIAL_NO = {
     "no data",
     "0",
     "zero",
+}
+SPECIAL_NO_INDICATORS = {
+    "does not report",
+    "doesn't report",
+    "does not provide",
+    "doesn't provide",
+    "does not mention",
+    "doesn't mention",
+    "paper does not indicate",
+    "paper does not report",
+    "paper does not provide",
+    "paper does not mention",
+    "not described in the paper",
+    "not discussed in the paper",
+    "no evidence that the paper",
+    "no evidence in the paper",
+    "no mention in the paper",
+    "no details in the paper",
 }
 YES_SYNONYMS = {"yes", "y", "true", "reported", "present"}
 NO_SYNONYMS = {"no", "false", "not", "absent"}
@@ -100,6 +119,10 @@ TEXT_SYNONYMS = {
     "miseq": "illumina sequencing",
     "illumina miseq": "illumina sequencing",
     "sanger": "sanger sequencing",
+    "pbmcs": "pbmc",
+    "proviral dna": "pbmc",
+    "dbs": "dried blood spot",
+    "dried blood spots": "dried blood spot",
 }
 ADDITIONAL_LIST_SYNONYMS = {
     "illumina sequencing": {"illumina", "miseq", "next generation sequencing", "nextera"},
@@ -166,6 +189,7 @@ MODEL_BASE_COLORS = {
 }
 VARIANT_TINTS = {
     "base": 0.0,
+    "LC": 0.1,
     "FT": 0.2,
     "AP": 0.55,
     "BM25": 0.8,

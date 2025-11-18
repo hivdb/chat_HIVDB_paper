@@ -1,0 +1,31 @@
+{
+  "runs": [
+    {
+      "label": "size050",
+      "responses": "eval/learning-curve/responses/size050_responses.csv",
+      "column": "GPT-4o LC size050",
+      "accuracy": 0.8244791666666667,
+      "precision": 0.8320726172465961,
+      "recall": 0.7087628865979382,
+      "f1": 0.7654836464857342
+    },
+    {
+      "label": "size100",
+      "responses": "eval/learning-curve/responses/size100_responses.csv",
+      "column": "GPT-4o LC size100",
+      "accuracy": 0.8453125,
+      "precision": 0.8678955453149002,
+      "recall": 0.7280927835051546,
+      "f1": 0.7918710581639804
+    },
+    {
+      "label": "size150",
+      "responses": "eval/learning-curve/responses/size150_responses.csv",
+      "column": "GPT-4o LC size150",
+      "accuracy": 0.8380208333333333,
+      "precision": 0.8444444444444444,
+      "recall": 0.7345360824742269,
+      "f1": 0.7856650585802893
+    }
+  ]
+}

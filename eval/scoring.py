@@ -37,6 +37,19 @@ def load_dataset() -> pd.DataFrame:
 
     df = merged.merge(gpt5[["PMID", "QID", "GPT-5 base"]], on=["PMID", "QID"], how="left")
 
+    for column, path in getattr(config, "LEARNING_CURVE_RESPONSES", {}).items():
+        if not path.exists():
+            logging.warning("Learning-curve response file missing for %s: %s", column, path)
+            continue
+        extra = pd.read_csv(path, dtype={"PMID": str})
+        if "Answer" not in extra.columns:
+            logging.warning("Response file %s missing 'Answer' column.", path)
+            continue
+        extra["PMID"] = extra["PMID"].apply(format_identifier)
+        extra["QID"] = extra["QID"].apply(format_identifier)
+        extra = extra.rename(columns={"Answer": column})
+        df = df.merge(extra[["PMID", "QID", column]], on=["PMID", "QID"], how="left")
+
     for column in getattr(config, "ALL_MODEL_COLUMNS", []):
         if column not in df.columns:
             logging.warning("Column '%s' missing from merged answers; filling with blanks.", column)
