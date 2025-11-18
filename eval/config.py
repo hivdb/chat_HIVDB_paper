@@ -8,6 +8,7 @@ MERGED_PATH = Path("advanced-prompting/csv/merged_answers.xlsx")
 GPT5_PATH = Path("eval/gpt-5/gpt5_responses.csv")
 OUTPUT_METRICS = Path("eval/evaluation_metrics.csv")
 DETAIL_METRICS_HUMAN = Path("eval/detailed_evaluation.csv")
+DETAIL_METRICS_PARTIAL = Path("eval/detailed_evaluation_partial_list_matches.csv")
 OUTPUT_TABLE_DIR = Path("eval/figures")
 EXACT_VS_PARTIAL_DETAILS = Path("eval/exact_vs_partial_evaluation.csv")
 LEARNING_CURVE_RESPONSES = {

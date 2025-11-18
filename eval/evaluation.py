@@ -26,7 +26,13 @@ LIST_SCENARIO_TITLES = {
 }
 
 
-def run(limit: int | None) -> Tuple[pd.DataFrame, List[dict], List[Tuple[str, str, pd.DataFrame]], List[dict]]:
+def run(limit: int | None) -> Tuple[
+    pd.DataFrame,
+    List[dict],
+    List[Tuple[str, str, pd.DataFrame]],
+    List[dict],
+    List[dict],
+]:
     df = load_dataset()
     if limit:
         df = df.head(limit)
@@ -34,6 +40,7 @@ def run(limit: int | None) -> Tuple[pd.DataFrame, List[dict], List[Tuple[str, st
     detail_rows: List[dict] = []
     figure_specs: List[Tuple[str, str, pd.DataFrame]] = []
     exact_partial_details: List[dict] = []
+    partial_only_details: List[dict] = []
 
     cache: dict = {}
     scenario_results: dict[str, pd.DataFrame] = {}
@@ -84,13 +91,15 @@ def run(limit: int | None) -> Tuple[pd.DataFrame, List[dict], List[Tuple[str, st
             detail_rows.extend(build_detail_rows(scenario_df, scenario, norm_lookup))
         if scenario["title"] in LIST_SCENARIO_TITLES:
             exact_partial_details.extend(build_detail_rows(scenario_df, scenario, norm_lookup))
+            if scenario["title"] == "List questions (partial match)":
+                partial_only_details.extend(build_detail_rows(scenario_df, scenario, norm_lookup))
         scenario_frames.append(subset)
         figure_specs.append((scenario["title"], scenario["footnote"], subset))
     combined = pd.concat(scenario_frames, ignore_index=True) if scenario_frames else pd.DataFrame()
-    return combined, detail_rows, figure_specs, exact_partial_details
+    return combined, detail_rows, figure_specs, exact_partial_details, partial_only_details
 
 
-def write_outputs(metrics: pd.DataFrame, details: List[dict], extra_details: List[dict]) -> None:
+def write_outputs(metrics: pd.DataFrame, details: List[dict], extra_details: List[dict], partial_details: List[dict]) -> None:
     metrics.to_csv(config.OUTPUT_METRICS, index=False, encoding="utf-8-sig")
     detail_df = pd.DataFrame(details)
     detail_df.sort_values(["sort_key"], inplace=True)
@@ -105,6 +114,11 @@ def write_outputs(metrics: pd.DataFrame, details: List[dict], extra_details: Lis
         extra_df.sort_values(sort_cols, inplace=True)
         extra_df.drop(columns=["sort_key"], inplace=True, errors="ignore")
         extra_df.to_csv(config.EXACT_VS_PARTIAL_DETAILS, index=False, encoding="utf-8-sig")
+    if partial_details:
+        partial_df = pd.DataFrame(partial_details)
+        partial_df.sort_values(["sort_key"], inplace=True)
+        partial_df.drop(columns=["sort_key", "Scenario"], inplace=True, errors="ignore")
+        partial_df.to_csv(config.DETAIL_METRICS_PARTIAL, index=False, encoding="utf-8-sig")
 
 
 def main() -> int:
@@ -113,15 +127,17 @@ def main() -> int:
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    metrics, details, figures, extra_details = run(args.limit)
+    metrics, details, figures, extra_details, partial_details = run(args.limit)
     if metrics.empty:
         logging.error("No scenarios produced metrics.")
         return 1
-    write_outputs(metrics, details, extra_details)
+    write_outputs(metrics, details, extra_details, partial_details)
     logging.info("Wrote metrics to %s", config.OUTPUT_METRICS)
     logging.info("Wrote detail rows to %s", config.DETAIL_METRICS_HUMAN)
     if extra_details:
         logging.info("Wrote list scenario details to %s", config.EXACT_VS_PARTIAL_DETAILS)
+    if partial_details:
+        logging.info("Wrote partial-list detail rows to %s", config.DETAIL_METRICS_PARTIAL)
     for title, footnote, subset in figures:
         generate_figures(subset, title, footnote, config.OUTPUT_TABLE_DIR)
     return 0
