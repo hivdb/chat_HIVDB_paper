@@ -129,6 +129,7 @@ def build_detail_rows(df: pd.DataFrame, scenario: dict, norm_lookup: dict[str, s
     records = []
     ref_col = scenario["reference"]
     ref_norm = norm_lookup[ref_col]
+    include_scenario = scenario.get("include_scenario_label", False)
     for _, row in df.iterrows():
         base = {
             "PMID": row["PMID"],
@@ -138,6 +139,8 @@ def build_detail_rows(df: pd.DataFrame, scenario: dict, norm_lookup: dict[str, s
             "Human Answer": row.get("Human Answer", ""),
             "sort_key": row.get("sort_key", 0),
         }
+        if include_scenario:
+            base["Scenario"] = scenario["title"]
         for model in scenario["models"]:
             answer = row.get(model, "")
             base[f"{model} Answer"] = answer

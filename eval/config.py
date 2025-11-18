@@ -9,6 +9,7 @@ GPT5_PATH = Path("eval/gpt-5/gpt5_responses.csv")
 OUTPUT_METRICS = Path("eval/evaluation_metrics.csv")
 DETAIL_METRICS_HUMAN = Path("eval/detailed_evaluation.csv")
 OUTPUT_TABLE_DIR = Path("eval/figures")
+EXACT_VS_PARTIAL_DETAILS = Path("eval/exact_vs_partial_evaluation.csv")
 LEARNING_CURVE_RESPONSES = {
     "GPT-4o FT (100)": Path("eval/learning-curve/responses/size100_responses.csv"),
 }
@@ -101,6 +102,7 @@ SCENARIOS = [
         "filter_type": "List",
         "allow_partial_list": False,
         "include_details": False,
+        "include_scenario_label": True,
     },
     {
         "title": "List questions (partial match)",
@@ -114,6 +116,7 @@ SCENARIOS = [
         "filter_type": "List",
         "allow_partial_list": True,
         "include_details": False,
+        "include_scenario_label": True,
     },
 ]
 
