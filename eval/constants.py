@@ -102,7 +102,6 @@ NUMBER_WORDS = {
 }
 SCALE_WORDS = {"hundred": 100, "thousand": 1000}
 LIST_PARTIAL_THRESHOLD = 0.66
-LIST_PARTIAL_MIN_TOKENS = 4
 BOOLEAN_POSITIVE_CUES = {
     "virological failure": {"virological failure", "failure", "mutation", "resistance", "patient", "n155h"},
 }

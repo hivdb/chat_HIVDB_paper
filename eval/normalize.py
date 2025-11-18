@@ -13,7 +13,6 @@ from .constants import (
     LAB_ONLY_PHRASES,
     LEADING_YES_NO,
     LIST_DELIM,
-    LIST_PARTIAL_MIN_TOKENS,
     LIST_PARTIAL_THRESHOLD,
     NEGATION_PHRASES,
     NO_SYNONYMS,
@@ -365,13 +364,16 @@ def _score_list(
     matches, total = list_match_stats(ref_norm, pred_norm, pred_raw)
     match_ratio = matches / total if total else 0.0
     full_match = compare_lists(pred_norm, ref_norm) or (total and matches == total)
-    partial = allow_partial and total > 0 and match_ratio >= LIST_PARTIAL_THRESHOLD
-    # Year reference shortcut also disabled to match stricter behavior.
-    # has_year_reference = mentions_year(year_tokens(ref_norm), pred_norm, pred_raw)
+    partial_credit = (
+        allow_partial
+        and not ref_empty
+        and total > 0
+        and match_ratio >= LIST_PARTIAL_THRESHOLD
+    )
     has_year_reference = False
 
     if not ref_empty:
-        correct = full_match or partial or has_year_reference
+        correct = full_match or partial_credit or has_year_reference
         return _finalize(counts, "tp" if correct else "fn", correct)
 
     if is_empty_token(pred_norm) or contains_negation(pred_raw) or lab_only_context(pred_raw):
