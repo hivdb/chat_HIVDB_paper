@@ -23,13 +23,13 @@ COMBINED_CSV = Path("eval/learning-curve/results/learning_curve_overall_combined
 
 MODEL_SIZE_MAP: Dict[str, int] = {
     "GPT-4o base": 0,
+    "GPT-4o FT (50)": 50,
     "GPT-4o LC size050": 50,
-    "GPT-4o LC (50)": 50,
     "GPT-4o FT (100)": 100,
     "GPT-4o LC size100": 100,
     "GPT-4o LC (100)": 100,
+    "GPT-4o FT (150)": 150,
     "GPT-4o LC size150": 150,
-    "GPT-4o LC (150)": 150,
     "GPT-4o FT": 200,
     "GPT-4o FT (200)": 200,
 }
@@ -75,11 +75,11 @@ def _format_label(row: pd.Series) -> str:
     if size == 0:
         return "GPT-4o base (0)"
     if size == 50:
-        return "GPT-4o LC (50)"
+        return "GPT-4o FT (50)"
     if size == 100:
         return "GPT-4o FT (100)"
     if size == 150:
-        return "GPT-4o LC (150)"
+        return "GPT-4o FT (150)"
     if size == 200:
         return "GPT-4o FT (200)"
     return f"GPT-4o ({size})"
