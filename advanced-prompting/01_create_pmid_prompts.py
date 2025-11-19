@@ -15,6 +15,9 @@ from pathlib import Path
 from typing import Callable
 
 
+PromptBuilder = Callable[[str, str], str]
+
+
 def load_prompt(prompt_path: Path) -> str:
     text = prompt_path.read_text(encoding="utf-8")
     return text.strip()
@@ -64,9 +67,6 @@ def collect_articles(papers_dir: Path) -> list[tuple[str, Path]]:
     return sorted(articles, key=lambda item: item[0])
 
 
-PromptBuilder = Callable[[str, str], str]
-
-
 def generate_jsonl(
     prompt_path: Path,
     papers_dir: Path,
@@ -105,8 +105,39 @@ def parse_args() -> argparse.Namespace:
         "--output",
         type=Path,
         default=Path("pmid_prompts_Nov7.jsonl"),
-        help="Output JSONL file path.",
+        help="Output JSONL file path. For --before/--after this is the only file produced.",
     )
+
+    mode_group = parser.add_mutually_exclusive_group()
+    mode_group.add_argument(
+        "--all",
+        action="store_const",
+        dest="mode",
+        const="all",
+        help="Generate sandwich, before, and after outputs (default).",
+    )
+    mode_group.add_argument(
+        "--sandwich",
+        action="store_const",
+        dest="mode",
+        const="sandwich",
+        help="Generate only the prompt sandwich output.",
+    )
+    mode_group.add_argument(
+        "--before",
+        action="store_const",
+        dest="mode",
+        const="before",
+        help="Generate only the 'prompt before paper' output.",
+    )
+    mode_group.add_argument(
+        "--after",
+        action="store_const",
+        dest="mode",
+        const="after",
+        help="Generate only the 'prompt after paper' output.",
+    )
+    parser.set_defaults(mode="all")
     return parser.parse_args()
 
 
@@ -118,13 +149,35 @@ def main() -> int:
     if not args.papers.exists():
         raise FileNotFoundError(f"Papers directory not found: {args.papers}")
 
-    generate_jsonl(args.prompt, args.papers, args.output)
+    if args.mode in {"all", "sandwich"}:
+        generate_jsonl(args.prompt, args.papers, args.output)
 
-    before_output = args.output.parent / "pmid_prompts_before_Nov10.jsonl"
-    after_output = args.output.parent / "pmid_prompts_after_Nov10.jsonl"
+    if args.mode in {"all", "before"}:
+        before_target = (
+            args.output
+            if args.mode == "before"
+            else args.output.parent / "pmid_prompts_before_Nov10.jsonl"
+        )
+        generate_jsonl(
+            args.prompt,
+            args.papers,
+            before_target,
+            prompt_builder=build_prompt_before,
+        )
 
-    generate_jsonl(args.prompt, args.papers, before_output, prompt_builder=build_prompt_before)
-    generate_jsonl(args.prompt, args.papers, after_output, prompt_builder=build_prompt_after)
+    if args.mode in {"all", "after"}:
+        after_target = (
+            args.output
+            if args.mode == "after"
+            else args.output.parent / "pmid_prompts_after_Nov10.jsonl"
+        )
+        generate_jsonl(
+            args.prompt,
+            args.papers,
+            after_target,
+            prompt_builder=build_prompt_after,
+        )
+
     return 0
 
 
