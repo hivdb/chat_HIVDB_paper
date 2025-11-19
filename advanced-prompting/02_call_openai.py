@@ -88,10 +88,10 @@ class Progress:
 def default_jobs(log_dir: Path) -> list[JobConfig]:
     return [
         JobConfig(
-            label="semantic-5shot",
-            prompts_path=Path("advanced-prompting/jsonl/dynamic_prompts_semantic_5-shot.jsonl"),
-            responses_path=Path("advanced-prompting/jsonl/dynamic_responses_semantic_5-shot.jsonl"),
-            log_path=log_dir / "dynamic_responses_semantic_5-shot.log",
+            label="nov17_v1_before",
+            prompts_path=Path("advanced-prompting/jsonl/pmid_prompts_Nov17_Version1.jsonl"),
+            responses_path=Path("advanced-prompting/jsonl/pmid_responses_Nov17_Version1.jsonl"),
+            log_path=log_dir / "pmid_responses_Nov17_Version1.log",
         )
     ]
 
