@@ -18,6 +18,7 @@ if str(ROOT.parent) not in sys.path:
 from eval import config  # type: ignore
 from eval.plots import generate_figures  # type: ignore
 from eval.scoring import build_detail_rows, ensure_norm, evaluate_group, load_dataset  # type: ignore
+from eval.normalize import match_scenario_label  # type: ignore
 
 
 LIST_SCENARIO_TITLES = {
@@ -56,6 +57,10 @@ def run(limit: int | None) -> Tuple[
             logging.warning("Scenario '%s' missing models: %s", scenario["title"], ", ".join(missing_models))
 
         convert = scenario["convert_special_no"]
+        allow_partial = scenario.get("allow_partial_list", False)
+        match_label = match_scenario_label(allow_partial)
+        detail_type_filter = scenario.get("detail_types")
+        detail_types = set(detail_type_filter) if detail_type_filter else None
         norm_lookup = {col: ensure_norm(df, col, convert, cache) for col in [scenario["reference"], *scenario["models"]] if col in df.columns}
         subset = evaluate_group(
             scenario_df,
@@ -64,7 +69,7 @@ def run(limit: int | None) -> Tuple[
             scenario["title"],
             norm_lookup,
             convert,
-            allow_partial_list=scenario.get("allow_partial_list", False),
+            allow_partial_list=allow_partial,
         )
         if subset.empty:
             continue
@@ -88,11 +93,19 @@ def run(limit: int | None) -> Tuple[
         if scenario_id:
             scenario_results[scenario_id] = subset.copy()
         if scenario.get("include_details", True):
-            detail_rows.extend(build_detail_rows(scenario_df, scenario, norm_lookup))
+            detail_rows.extend(
+                build_detail_rows(
+                    scenario_df,
+                    scenario,
+                    norm_lookup,
+                    match_label,
+                    detail_types,
+                )
+            )
         if scenario["title"] in LIST_SCENARIO_TITLES:
-            exact_partial_details.extend(build_detail_rows(scenario_df, scenario, norm_lookup))
+            exact_partial_details.extend(build_detail_rows(scenario_df, scenario, norm_lookup, match_label))
             if scenario["title"] == "List questions (partial match)":
-                partial_only_details.extend(build_detail_rows(scenario_df, scenario, norm_lookup))
+                partial_only_details.extend(build_detail_rows(scenario_df, scenario, norm_lookup, match_label))
         scenario_frames.append(subset)
         figure_specs.append((scenario["title"], scenario["footnote"], subset))
     combined = pd.concat(scenario_frames, ignore_index=True) if scenario_frames else pd.DataFrame()
@@ -107,17 +120,16 @@ def write_outputs(metrics: pd.DataFrame, details: List[dict], extra_details: Lis
     detail_df.to_csv(config.DETAIL_METRICS_HUMAN, index=False, encoding="utf-8-sig")
     if extra_details:
         extra_df = pd.DataFrame(extra_details)
-        sort_cols = ["Scenario", "sort_key"]
-        for col in sort_cols:
-            if col not in extra_df.columns:
-                continue
-        extra_df.sort_values(sort_cols, inplace=True)
+        sort_cols = ["Scenario Title", "Scenario", "sort_key"]
+        present_cols = [col for col in sort_cols if col in extra_df.columns]
+        if present_cols:
+            extra_df.sort_values(present_cols, inplace=True)
         extra_df.drop(columns=["sort_key"], inplace=True, errors="ignore")
         extra_df.to_csv(config.EXACT_VS_PARTIAL_DETAILS, index=False, encoding="utf-8-sig")
     if partial_details:
         partial_df = pd.DataFrame(partial_details)
         partial_df.sort_values(["sort_key"], inplace=True)
-        partial_df.drop(columns=["sort_key", "Scenario"], inplace=True, errors="ignore")
+        partial_df.drop(columns=["sort_key", "Scenario Title"], inplace=True, errors="ignore")
         partial_df.to_csv(config.DETAIL_METRICS_PARTIAL, index=False, encoding="utf-8-sig")
 
 

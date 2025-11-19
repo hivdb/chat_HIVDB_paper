@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import math
 import logging
-from typing import Dict, Iterable, List
+from typing import Dict, Iterable, List, Set
 
 import pandas as pd
 
@@ -125,12 +125,22 @@ def evaluate_group(
     return pd.DataFrame(rows)
 
 
-def build_detail_rows(df: pd.DataFrame, scenario: dict, norm_lookup: dict[str, str]) -> List[dict]:
+def build_detail_rows(
+    df: pd.DataFrame,
+    scenario: dict,
+    norm_lookup: dict[str, str],
+    match_label: str,
+    detail_types: Set[str] | None = None,
+) -> List[dict]:
     records = []
     ref_col = scenario["reference"]
     ref_norm = norm_lookup[ref_col]
     include_scenario = scenario.get("include_scenario_label", False)
+    allowed_types = {value.lower() for value in detail_types} if detail_types else None
     for _, row in df.iterrows():
+        question_type = str(row.get("Type", ""))
+        if allowed_types and question_type.lower() not in allowed_types:
+            continue
         base = {
             "PMID": row["PMID"],
             "QID": row["QID"],
@@ -139,8 +149,9 @@ def build_detail_rows(df: pd.DataFrame, scenario: dict, norm_lookup: dict[str, s
             "Human Answer": row.get("Human Answer", ""),
             "sort_key": row.get("sort_key", 0),
         }
+        base["Scenario"] = match_label
         if include_scenario:
-            base["Scenario"] = scenario["title"]
+            base["Scenario Title"] = scenario["title"]
         for model in scenario["models"]:
             answer = row.get(model, "")
             base[f"{model} Answer"] = answer

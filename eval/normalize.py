@@ -14,6 +14,7 @@ from .constants import (
     LEADING_YES_NO,
     LIST_DELIM,
     LIST_PARTIAL_THRESHOLD,
+    MATCH_SCENARIOS,
     NEGATION_PHRASES,
     NO_SYNONYMS,
     NON_ALPHANUM,
@@ -296,6 +297,10 @@ def slugify(text: str) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", (text or "").lower())
     slug = re.sub(r"-{2,}", "-", slug).strip("-")
     return slug or "figure"
+
+
+def match_scenario_label(allow_partial: bool) -> str:
+    return MATCH_SCENARIOS[bool(allow_partial)]
 
 
 # ---------------------------------------------------------------------------

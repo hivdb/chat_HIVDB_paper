@@ -24,6 +24,7 @@ from eval.scoring import (  # type: ignore
     format_identifier,
     load_dataset,
 )
+from eval.normalize import match_scenario_label  # type: ignore
 
 
 @dataclass
@@ -125,6 +126,10 @@ def evaluate(df: pd.DataFrame, scenarios: Iterable[dict]) -> Tuple[pd.DataFrame,
             for col in relevant_columns
             if col in df.columns
         }
+        allow_partial = scenario.get("allow_partial_list", False)
+        match_label = match_scenario_label(allow_partial)
+        detail_type_filter = scenario.get("detail_types")
+        detail_types = set(detail_type_filter) if detail_type_filter else None
         subset = evaluate_group(
             scenario_df,
             scenario["models"],
@@ -132,12 +137,12 @@ def evaluate(df: pd.DataFrame, scenarios: Iterable[dict]) -> Tuple[pd.DataFrame,
             scenario["title"],
             norm_lookup,
             convert,
-            allow_partial_list=scenario.get("allow_partial_list", False),
+            allow_partial_list=allow_partial,
         )
         if subset.empty:
             continue
         if scenario.get("include_details", True):
-            details.extend(build_detail_rows(scenario_df, scenario, norm_lookup))
+            details.extend(build_detail_rows(scenario_df, scenario, norm_lookup, match_label, detail_types))
         scenario_frames.append(subset)
     metrics = pd.concat(scenario_frames, ignore_index=True) if scenario_frames else pd.DataFrame()
     return metrics, details
@@ -176,7 +181,7 @@ def main() -> int:
     pd.DataFrame(detail_rows).to_csv(details_path, index=False, encoding="utf-8-sig")
 
     summary = []
-    overall = metrics[metrics["scenario"] == "Overall"]
+    overall = metrics[metrics["scenario"] == "Overall (exact match)"]
     for run in runs:
         row = overall[overall["model"] == run.column]
         summary.append(

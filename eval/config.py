@@ -69,13 +69,25 @@ COLUMN_RENAMES = {
 
 SCENARIOS = [
     {
-        "title": "Overall",
+        "title": "Overall (exact match)",
         "reference": "Human Answer",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
         "convert_special_no": True,
         "footnote": (
             "*AI answers scored against human references after normalizing case, stripping punctuation, "
             "sorting list-valued entries, and collapsing None/Not reported/Not applicable/0 into 'No'. "
+            "Bar colors indicate the base model family; shade intensity reflects the scenario (base, FT, AP, BM25, RAG)."
+        ),
+    },
+    {
+        "title": "Overall (partial match)",
+        "reference": "Human Answer",
+        "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
+        "convert_special_no": True,
+        "allow_partial_list": True,
+        "detail_types": ["List"],
+        "footnote": (
+            "*Partial list credit granted when ≥66% of human tokens appear; Boolean and numeric scoring remains exact. "
             "Bar colors indicate the base model family; shade intensity reflects the scenario (base, FT, AP, BM25, RAG)."
         ),
     },

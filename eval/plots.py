@@ -129,6 +129,8 @@ def plot_bar_chart(df, title: str, path: Path, footnote: str | None = None) -> N
 
     fig.tight_layout()
     fig.subplots_adjust(bottom=0.35, top=0.95, left=0.05, right=0.98)
+    if footnote:
+        fig.text(0.5, 0.01, footnote, ha="center", va="bottom", fontsize=9, wrap=True)
     fig.savefig(path, dpi=300)
     plt.close(fig)
 
@@ -150,6 +152,8 @@ def save_table(df, title: str, path: Path, footnote: str | None = None) -> None:
     table.set_fontsize(10)
     table.scale(1, 1.5)
     ax.set_title(title, fontweight="bold", pad=10)
+    if footnote:
+        fig.text(0.5, 0.02, footnote, ha="center", fontsize=9, wrap=True)
     fig.tight_layout()
     fig.savefig(path, dpi=300)
     plt.close(fig)
