@@ -132,6 +132,7 @@ ADDITIONAL_LIST_SYNONYMS = {
     "sanger sequencing": {"sanger"},
     "south korea": {"korea"},
     "united states": {"usa", "u.s.", "us", "america", "san francisco", "united states of america"},
+    "plasma": {"blood", "whole blood"},
 }
 ARV_SYNONYMS = {
     "tfv": "tenofovir",

@@ -291,7 +291,24 @@ def compare_lists(pred_norm: str, ref_norm: str) -> bool:
             return True
     pred_set = {tok.strip() for tok in pred_norm.split("|") if tok.strip()}
     ref_set = {tok.strip() for tok in ref_norm.split("|") if tok.strip()}
-    return bool(pred_set and ref_set and (pred_set == ref_set or ref_set.issubset(pred_set)))
+    if not pred_set or not ref_set:
+        return False
+    if pred_set == ref_set or ref_set.issubset(pred_set):
+        return True
+    if _matches_pol_group(ref_set, pred_set):
+        return True
+    return False
+
+
+def _matches_pol_group(ref_set: set[str], pred_set: set[str]) -> bool:
+    pol_components = GENE_GROUP_EXPANSIONS.get("pol", set())
+    if ref_set != {"pol"}:
+        return False
+    subset = {token for token in pred_set if token}
+    if not subset or not subset.issubset(pol_components):
+        return False
+    # Require at least two distinct Pol genes to match the broader 'pol' reference.
+    return len(subset) >= 2
 
 def slugify(text: str) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", (text or "").lower())
