@@ -24,6 +24,7 @@ MODEL_GROUPS = {
         "GPT-4o AP Before",
         "GPT-4o AP",
         "GPT-4o AP After",
+        "GPT-4o PV1",
         "GPT-4o BM25 5-shot",
         "GPT-4o BM25 10-shot",
         "GPT-4o RAG",
@@ -34,6 +35,7 @@ MODEL_GROUPS = {
         "Llama3.1-70B AP Before",
         "Llama3.1-70B AP",
         "Llama3.1-70B AP After",
+        "Llama3.1-70B PV1",
         "Llama3.1-70B BM25 5-shot",
         "Llama3.1-70B BM25 10-shot",
         "Llama3.1-70B RAG",
@@ -44,6 +46,7 @@ MODEL_GROUPS = {
         "Llama3.1-8B AP Before",
         "Llama3.1-8B AP",
         "Llama3.1-8B AP After",
+        "Llama3.1-8B PV1",
         "Llama3.1-8B BM25 5-shot",
         "Llama3.1-8B BM25 10-shot",
         "Llama3.1-8B RAG",
@@ -65,6 +68,8 @@ COLUMN_RENAMES = {
     "llama-3.1-70B 10shot": "Llama3.1-70B BM25 10-shot",
     "llama-3.1-8B RAG": "Llama3.1-8B RAG",
     "llama-3.1-70B RAG": "Llama3.1-70B RAG",
+    "llama-3.1-8B PV1": "Llama3.1-8B PV1",
+    "llama-3.1-70B PV1": "Llama3.1-70B PV1",
 }
 
 SCENARIOS = [
@@ -88,7 +93,7 @@ SCENARIOS = [
         "detail_types": ["List"],
         "footnote": (
             "*Partial list credit granted when ≥66% of human tokens appear; Boolean and numeric scoring remains exact. "
-            "Bar colors indicate the base model family; shade intensity reflects the scenario (base, FT, AP, BM25, RAG)."
+            "Bar colors indicate the base model family; shade intensity reflects the scenario (base, FT, AP, PV1, BM25, RAG)."
         ),
     },
     {
@@ -99,7 +104,7 @@ SCENARIOS = [
         "footnote": (
             "*AI answers scored against human references after collapsing None/Not reported/Not "
             "applicable/0 into 'No'. Bar colors indicate the base model family; shade intensity reflects the "
-            "scenario (base, FT, AP, BM25, RAG)."
+            "scenario (base, FT, AP, PV1, BM25, RAG)."
         ),
         "filter_type": "Boolean",
         "include_details": False,
@@ -124,7 +129,7 @@ SCENARIOS = [
         "convert_special_no": True,
         "footnote": (
             "*Partial list match credit granted when ≥66% of human tokens appear. Bar colors indicate model family; "
-            "shade intensity reflects scenario (base, FT, AP, BM25, RAG)."
+            "shade intensity reflects scenario (base, FT, AP, PV1, BM25, RAG)."
         ),
         "filter_type": "List",
         "allow_partial_list": True,

@@ -21,6 +21,8 @@ def _variant_from_label(label: str) -> str:
         return "RAG"
     if "bm25" in lowered:
         return "BM25"
+    if "pv1" in lowered:
+        return "PV1"
     if "ap" in lowered and "base" not in lowered:
         return "AP"
     if " ft" in lowered or lowered.endswith("ft") or " ft " in lowered or lowered.startswith("ft") or lowered.startswith("ft"):
