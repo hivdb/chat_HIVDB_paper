@@ -32,6 +32,17 @@ NEGATION_PATTERNS = [
     for phrase in NEGATION_PHRASES
 ]
 
+FULL_GENOME_TOKENS = {
+    "full genome",
+    "full length genome",
+    "flg",
+    "near full length genome",
+    "near-full-length genome",
+    "near full length proviruses",
+    "near-full-length proviruses",
+    "nflg",
+}
+
 # ---------------------------------------------------------------------------
 # Canonicalization helpers
 # ---------------------------------------------------------------------------
@@ -100,38 +111,40 @@ def _canonical_numeric(lowered: str, raw: str, convert_special_no: bool) -> str 
 def _canonical_list(lowered: str, raw: str, convert_special_no: bool) -> str:
     normalized = normalize_list(lowered)
     if "|" in normalized:
-        sanitized = " | ".join(part.strip() for part in normalized.split("|") if part.strip())
+        tokens = [part.strip() for part in normalized.split("|") if part.strip()]
     else:
-        sanitized = " ".join(NON_ALPHANUM.sub(" ", normalized).split())
-    sanitized = TEXT_SYNONYMS.get(sanitized, sanitized)
-    if convert_special_no and sanitized in SPECIAL_NO:
-        return "no"
-    if sanitized in YES_SYNONYMS:
-        return "yes"
-    if sanitized in NO_SYNONYMS:
-        return "no"
+        tokens = [" ".join(NON_ALPHANUM.sub(" ", normalized).split())] if normalized.strip() else []
 
-    arv_terms = _detect_terms(raw, ARV_SYNONYMS)
-    if arv_terms:
-        return " | ".join(sorted(arv_terms))
+    canonical_tokens: list[str] = []
+    for token in tokens:
+        if not token:
+            continue
+        token = TEXT_SYNONYMS.get(token, token)
+        if convert_special_no and token in SPECIAL_NO:
+            return "no"
+        if token in YES_SYNONYMS:
+            return "yes"
+        if token in NO_SYNONYMS:
+            return "no"
+        canonical_tokens.extend(_canonical_list_token(token))
 
-    gene_terms = _detect_terms(sanitized, GENE_SYNONYMS, min_len=3)
-    if gene_terms:
-        expanded: set[str] = set()
-        for term in gene_terms:
-            expanded.update(GENE_GROUP_EXPANSIONS.get(term, {term}))
-        return " | ".join(sorted(expanded))
-    return sanitized
+    canonical_tokens = [" ".join(token.split()) for token in canonical_tokens if token]
+    if not canonical_tokens:
+        return ""
+    unique_tokens = sorted(dict.fromkeys(canonical_tokens))
+    return " | ".join(unique_tokens)
 
 
-def _detect_terms(text: str, synonyms: dict[str, str], min_len: int = 3) -> List[str]:
-    lowered = text.lower()
-    matches = {
-        canonical
-        for key, canonical in synonyms.items()
-        if len(key) >= min_len and re.search(rf"\b{re.escape(key)}\b", lowered)
-    }
-    return sorted(matches)
+def _canonical_list_token(token: str) -> List[str]:
+    if not token:
+        return []
+    if token in ARV_SYNONYMS:
+        return [part.strip() for part in ARV_SYNONYMS[token].split("|") if part.strip()]
+    gene = GENE_SYNONYMS.get(token)
+    if gene:
+        expansions = GENE_GROUP_EXPANSIONS.get(gene, {gene})
+        return sorted(expansions)
+    return [token]
 
 
 # ---------------------------------------------------------------------------
@@ -290,25 +303,55 @@ def compare_lists(pred_norm: str, ref_norm: str) -> bool:
         if ref_norm.strip() in options:
             return True
     pred_set = {tok.strip() for tok in pred_norm.split("|") if tok.strip()}
-    ref_set = {tok.strip() for tok in ref_norm.split("|") if tok.strip()}
-    if not pred_set or not ref_set:
+    raw_ref_set = {tok.strip() for tok in ref_norm.split("|") if tok.strip()}
+    if not pred_set or not raw_ref_set:
         return False
+    core_ref = raw_ref_set - FULL_GENOME_TOKENS
+    ref_set = core_ref if core_ref else raw_ref_set
     if pred_set == ref_set or ref_set.issubset(pred_set):
         return True
     if _matches_pol_group(ref_set, pred_set):
+        return True
+    if _full_genome_equivalent(raw_ref_set, pred_set, pred_norm):
         return True
     return False
 
 
 def _matches_pol_group(ref_set: set[str], pred_set: set[str]) -> bool:
+    """Treat any Pol reference as satisfied by at least two component genes or 'pol'."""
     pol_components = GENE_GROUP_EXPANSIONS.get("pol", set())
-    if ref_set != {"pol"}:
+    if not pol_components:
         return False
-    subset = {token for token in pred_set if token}
-    if not subset or not subset.issubset(pol_components):
+    # Reference counts as Pol-style if it only contains Pol tokens (components or Pol itself)
+    ref_tokens = {token for token in ref_set if token}
+    ref_is_pol = ref_tokens.issubset(pol_components | {"pol"})
+    ref_requires_pol = ref_is_pol and ("pol" in ref_tokens or len(ref_tokens) >= 3)
+    if not ref_is_pol:
         return False
-    # Require at least two distinct Pol genes to match the broader 'pol' reference.
-    return len(subset) >= 2
+    normalized_pred = {token for token in pred_set if token}
+    pred_components = normalized_pred & pol_components
+    if "pol" in normalized_pred:
+        return True
+    if ref_requires_pol and len(pred_components) >= 2:
+        return True
+    if not ref_requires_pol and pred_components.issuperset(ref_tokens):
+        return True
+    return False
+
+
+def _full_genome_equivalent(ref_set: set[str], pred_set: set[str], pred_norm: str) -> bool:
+    if not (ref_set & FULL_GENOME_TOKENS):
+        return False
+    if pred_set & FULL_GENOME_TOKENS:
+        return True
+    lowered_pred = pred_norm.lower()
+    has_pol = "pol" in lowered_pred
+    has_env = "env" in lowered_pred or "gp120" in lowered_pred
+    if has_pol and has_env:
+        return True
+    if {"pol", "env"}.issubset(pred_set) or {"pol", "gp120"}.issubset(pred_set):
+        return True
+    return False
 
 def slugify(text: str) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", (text or "").lower())

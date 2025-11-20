@@ -46,7 +46,7 @@ TYPE_COLORS = {
 
 def load_data() -> pd.DataFrame:
     df = pd.read_csv(DATA_PATH)
-    df = df[df.get("Scenario", "").str.lower() == "exact"].copy()
+    df = df[df.get("Scenario", "").str.lower() == "partial"].copy()
     df["QID"] = df["QID"].astype(int)
     return df
 
@@ -71,6 +71,7 @@ def compute_model_error_types(df: pd.DataFrame) -> dict[str, dict[int, dict[str,
                 continue
             pred_raw = row.get(answer_col, "")
             pred_norm = canonicalize_answer(pred_raw, convert_special_no=True)
+            allow_partial = (question_type or "").strip().lower() == "list"
             counts, _ = human_answer_counts(
                 question_type,
                 pred_norm,
@@ -78,7 +79,7 @@ def compute_model_error_types(df: pd.DataFrame) -> dict[str, dict[int, dict[str,
                 question_text=question_text,
                 ref_raw=ref_raw,
                 pred_raw=pred_raw,
-                allow_partial_list=False,
+                allow_partial_list=allow_partial,
             )
             entry = per_model[model][qid]
             if counts["fp"]:

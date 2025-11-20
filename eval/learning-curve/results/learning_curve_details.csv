@@ -87,7 +87,7 @@
 25637519,6,From which countries were the sequenced samples obtained?,List,Not applicable,85,exact,,1,0,1,Not reported,1
 25637519,7,From what years were the sequenced samples obtained?,List,Not applicable,86,exact,,1,0,1,Not reported,1
 25637519,8,Were samples cloned prior to sequencing?,Boolean,No,87,exact,No,1,No,1,No,1
-25637519,9,Which HIV genes were reported to have been sequenced?,List,RT,88,exact,Reverse transcriptase,1,Not applicable,0,"gag, pol",0
+25637519,9,Which HIV genes were reported to have been sequenced?,List,RT,88,exact,Reverse transcriptase,1,Not applicable,0,"gag, pol",1
 25637519,10,What method was used for sequencing?,List,Not reported,89,exact,Not mentioned,1,Not applicable,1,Not reported,1
 25637519,11,What type of samples were sequenced?,List,Not reported,90,exact,,1,Not applicable,1,Not reported,1
 25637519,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,91,exact,No,1,No,1,No,1
@@ -201,7 +201,7 @@
 29373677,8,Were samples cloned prior to sequencing?,Boolean,No,199,exact,No,1,No,1,No,1
 29373677,9,Which HIV genes were reported to have been sequenced?,List,IN,200,exact,Integrase gene,1,IN gene,1,IN gene,1
 29373677,10,What method was used for sequencing?,List,Not reported,201,exact,Not specified,1,Not mentioned,1,Not reported,1
-29373677,11,What type of samples were sequenced?,List,"PBMC, Plasma",202,exact,"Plasma, PBMCs",1,"Blood, PBMC",0,Plasma RNA and DNA from PBMCs,1
+29373677,11,What type of samples were sequenced?,List,"PBMC, Plasma",202,exact,"Plasma, PBMCs",1,"Blood, PBMC",1,Plasma RNA and DNA from PBMCs,1
 29373677,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,203,exact,Yes,1,Yes,1,Yes,1
 29373677,13,Were the patients in the study in a clinical trial?,Boolean,No,204,exact,No,1,No,1,No,1
 29373677,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Yes,205,exact,Yes,1,Yes,1,Yes,1
@@ -247,7 +247,7 @@
 31988104,6,From which countries were the sequenced samples obtained?,List,Not reported,245,exact,,1,Not reported,1,0,1
 31988104,7,From what years were the sequenced samples obtained?,List,Not reported,246,exact,,1,Not reported,1,0,1
 31988104,8,Were samples cloned prior to sequencing?,Boolean,No,247,exact,No,1,Not reported,1,No.,1
-31988104,9,Which HIV genes were reported to have been sequenced?,List,RT,248,exact,"pol, gag, env",0,Not reported,1,None.,0
+31988104,9,Which HIV genes were reported to have been sequenced?,List,RT,248,exact,"pol, gag, env",1,Not reported,1,None.,0
 31988104,10,What method was used for sequencing?,List,Not reported,249,exact,The paper does not specify the exact method used for sequencing.,0,Not reported,1,None.,1
 31988104,11,What type of samples were sequenced?,List,Not reported,250,exact,The paper does not specify the type of clinical samples that were sequenced.,0,Not reported,1,None.,1
 31988104,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,251,exact,No,1,Not reported,1,No.,1
@@ -375,7 +375,7 @@
 36454248,6,From which countries were the sequenced samples obtained?,List,Panama,373,exact,Panama,1,Panama,1,Panama,1
 36454248,7,From what years were the sequenced samples obtained?,List,2018-2019,374,exact,2018-2019,1,2018-2019,1,2018-2019,1
 36454248,8,Were samples cloned prior to sequencing?,Boolean,No,375,exact,No,1,No,1,No,1
-36454248,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",376,exact,"PR, RT, IN",0,"PR, RT, IN",0,"PR, RT, IN",0
+36454248,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",376,exact,"PR, RT, IN",1,"PR, RT, IN",1,"PR, RT, IN",1
 36454248,10,What method was used for sequencing?,List,Not reported,377,exact,Sanger sequencing,0,Macrogen Inc.,0,Not Specified,1
 36454248,11,What type of samples were sequenced?,List,Plasma,378,exact,Plasma samples,1,Plasma,1,Plasma,1
 36454248,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,379,exact,Yes,1,Yes,1,Yes,1
@@ -409,7 +409,7 @@
 36571282,8,Were samples cloned prior to sequencing?,Boolean,No,407,exact,No,1,No,1,No,1
 36571282,9,Which HIV genes were reported to have been sequenced?,List,"RT, IN",408,exact,"Integrase, RT",1,integrase and RT,1,Reverse transcriptase and integrase,1
 36571282,10,What method was used for sequencing?,List,"Sanger sequencing, NGS",409,exact,Sanger sequencing and next-generation sequencing,1,Sanger sequencing and next-generation sequencing (NGS),1,Sanger sequencing and next-generation sequencing,1
-36571282,11,What type of samples were sequenced?,List,Plasma,410,exact,Viral specimens from blood,0,Plasma,1,Plasma samples,1
+36571282,11,What type of samples were sequenced?,List,Plasma,410,exact,Viral specimens from blood,1,Plasma,1,Plasma samples,1
 36571282,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,411,exact,No,1,No,1,No,1
 36571282,13,Were the patients in the study in a clinical trial?,Boolean,No,412,exact,No,1,No,1,No,1
 36571282,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,No,413,exact,No,1,No,1,No,1
@@ -535,7 +535,7 @@
 36751650,6,From which countries were the sequenced samples obtained?,List,China,533,exact,China,1,China,1,China,1
 36751650,7,From what years were the sequenced samples obtained?,List,2016-2020,534,exact,2016-2020,1,2016 to 2020,1,2016 to 2020,1
 36751650,8,Were samples cloned prior to sequencing?,Boolean,No,535,exact,No,1,No,1,No,1
-36751650,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",536,exact,pol gene,0,pol gene,0,pol,0
+36751650,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",536,exact,pol gene,1,pol gene,1,pol,1
 36751650,10,What method was used for sequencing?,List,Sanger sequencing,537,exact,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 36751650,11,What type of samples were sequenced?,List,Plasma,538,exact,Plasma samples,1,Plasma,1,Plasma,1
 36751650,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,539,exact,No,1,No,1,No,1
@@ -551,7 +551,7 @@
 36779485,6,From which countries were the sequenced samples obtained?,List,South Africa,549,exact,South Africa,1,South Africa,1,South Africa,1
 36779485,7,From what years were the sequenced samples obtained?,List,Not reported,550,exact,Not specified,1,Not provided,1,Not Reported,1
 36779485,8,Were samples cloned prior to sequencing?,Boolean,No,551,exact,No,1,Not provided,1,No,1
-36779485,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",552,exact,Not specified,0,Pol,0,Not Reported,0
+36779485,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",552,exact,Not specified,0,Pol,1,Not Reported,0
 36779485,10,What method was used for sequencing?,List,Not reported,553,exact,Not specified,1,Not provided,1,Not Reported,1
 36779485,11,What type of samples were sequenced?,List,Plasma,554,exact,Not specified,0,Not provided,0,Clinical Samples,0
 36779485,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,555,exact,Yes,1,Yes,1,Yes,1
@@ -585,7 +585,7 @@
 36851704,8,Were samples cloned prior to sequencing?,Boolean,No,583,exact,No,1,No,1,No,1
 36851704,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",584,exact,"Protease, reverse transcriptase, integrase",1,"Protease, reverse transcriptase, and integrase",1,"Protease, reverse transcriptase, and integrase",1
 36851704,10,What method was used for sequencing?,List,Sanger sequencing,585,exact,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
-36851704,11,What type of samples were sequenced?,List,Whole Blood,586,exact,Plasma,0,Plasma,0,Plasma,0
+36851704,11,What type of samples were sequenced?,List,Whole Blood,586,exact,Plasma,1,Plasma,1,Plasma,1
 36851704,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,587,exact,Yes,0,Yes,0,No,1
 36851704,13,Were the patients in the study in a clinical trial?,Boolean,No,588,exact,No,1,No,1,No,1
 36851704,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Yes,589,exact,Yes,1,Yes,1,Yes,1
@@ -647,8 +647,8 @@
 36961945,6,From which countries were the sequenced samples obtained?,List,USA,645,exact,United States,1,United States,1,United States,1
 36961945,7,From what years were the sequenced samples obtained?,List,2005-2020,646,exact,2005-2020,1,2005 to 2020,1,2005 to 2020,1
 36961945,8,Were samples cloned prior to sequencing?,Boolean,No,647,exact,No,1,No,1,No,1
-36961945,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",648,exact,"PR, RT",0,"PR, RT, IN",1,"PR, RT, IN",1
-36961945,10,What method was used for sequencing?,List,Illumina sequencing,649,exact,"NGS, bulk genotyping",0,Next-Generation Sequencing (NGS),1,Next-generation sequencing,1
+36961945,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",648,exact,"PR, RT",1,"PR, RT, IN",1,"PR, RT, IN",1
+36961945,10,What method was used for sequencing?,List,Illumina sequencing,649,exact,"NGS, bulk genotyping",1,Next-Generation Sequencing (NGS),1,Next-generation sequencing,1
 36961945,11,What type of samples were sequenced?,List,"Plasma, PBMC",650,exact,"Plasma, PBMCs",1,"Blood plasma, PBMC",1,"Blood plasma, PBMC",1
 36961945,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,651,exact,No,1,Yes,0,No,1
 36961945,13,Were the patients in the study in a clinical trial?,Boolean,No,652,exact,Yes,0,No,1,No,1
@@ -697,12 +697,12 @@
 37017009,8,Were samples cloned prior to sequencing?,Boolean,No,695,exact,No,1,No,1,No,1
 37017009,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",696,exact,"Pol, Protease, Reverse Transcriptase",1,Protease and RT,1,Protease and reverse transcriptase,1
 37017009,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",697,exact,Next-generation sequencing using the MiSeq platform.,0,Next-generation sequencing (NGS),0,Next-generation sequencing (NGS) and Sanger sequencing,1
-37017009,11,What type of samples were sequenced?,List,Whole Blood,698,exact,Blood plasma samples,0,Plasma,0,Blood,0
+37017009,11,What type of samples were sequenced?,List,Whole Blood,698,exact,Blood plasma samples,1,Plasma,1,Blood,1
 37017009,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,699,exact,Yes,1,Yes,1,Yes,1
 37017009,13,Were the patients in the study in a clinical trial?,Boolean,No,700,exact,No,1,No,1,No,1
 37017009,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Yes,701,exact,Yes,1,Yes,1,Yes,1
 37017009,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI, PI",702,exact,"NRTIs, NNRTIs, PIs",1,"NRTIs, NNRTIs, PIs",1,"NRTIs, NNRTIs, PIs",1
-37017009,16,Which drugs were received by individuals in the study before sample sequencing?,List,"LPV, ATV, EFV, NVP, 3TC, ABC, AZT, FTC, D4T, TDF",703,exact,"Lopinavir, Atazanavir, Efavirenz, Nevirapine, Lamivudine, Abacavir, Zidovudine, Emtricitabine, Stavudine, Tenofovir",1,"Tenofovir, lamivudine, zidovudine, efavirenz, nevirapine, ritonavir-boosted lopinavir, ritonavir-boosted atazanavir, abacavir, emtricitabine, stavudine",1,"Lopinavir, atazanavir, efavirenz, nevirapine, lamivudine, abacavir, zidovudine, emtricitabine, stavudine, tenofovir",1
+37017009,16,Which drugs were received by individuals in the study before sample sequencing?,List,"LPV, ATV, EFV, NVP, 3TC, ABC, AZT, FTC, D4T, TDF",703,exact,"Lopinavir, Atazanavir, Efavirenz, Nevirapine, Lamivudine, Abacavir, Zidovudine, Emtricitabine, Stavudine, Tenofovir",0,"Tenofovir, lamivudine, zidovudine, efavirenz, nevirapine, ritonavir-boosted lopinavir, ritonavir-boosted atazanavir, abacavir, emtricitabine, stavudine",0,"Lopinavir, atazanavir, efavirenz, nevirapine, lamivudine, abacavir, zidovudine, emtricitabine, stavudine, tenofovir",0
 37029656,1,Does the paper report HIV sequences from patient samples?,Boolean,Yes,704,exact,Yes,1,Yes,1,Yes,1
 37029656,2,Does the paper report in vitro drug susceptibility data?,Boolean,No,705,exact,No,1,No,1,No,1
 37029656,3,Were sequences from the paper made publicly available?,Boolean,No,706,exact,No,1,No,1,No,1
@@ -713,7 +713,7 @@
 37029656,8,Were samples cloned prior to sequencing?,Boolean,No,711,exact,No,1,No,1,No,1
 37029656,9,Which HIV genes were reported to have been sequenced?,List,IN,712,exact,Integrase,1,HIV integrase gene,1,Not explicitly stated,0
 37029656,10,What method was used for sequencing?,List,Sanger sequencing,713,exact,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
-37029656,11,What type of samples were sequenced?,List,Plasma,714,exact,Blood,0,Plasma,1,Clinical samples,0
+37029656,11,What type of samples were sequenced?,List,Plasma,714,exact,Blood,1,Plasma,1,Clinical samples,0
 37029656,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,715,exact,No,1,No,1,No,1
 37029656,13,Were the patients in the study in a clinical trial?,Boolean,No,716,exact,No,1,No,1,No,1
 37029656,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,No,717,exact,No,1,No,1,No,1
@@ -727,7 +727,7 @@
 37039023,6,From which countries were the sequenced samples obtained?,List,Brazil,725,exact,Brazil,1,Brazil,1,Brazil,1
 37039023,7,From what years were the sequenced samples obtained?,List,2016-2018,726,exact,2016 to 2018,1,2016 to 2018,1,2016 to 2018,1
 37039023,8,Were samples cloned prior to sequencing?,Boolean,No,727,exact,No,1,No,1,No,1
-37039023,9,Which HIV genes were reported to have been sequenced?,List,"NFLG, PR, RT, IN, Env",728,exact,Near full-length genome,1,Near full-length genome (NFLG),1,"Near full-length genome (NFLG), Protease, Reverse transcriptase, Integrase, Envelope.",1
+37039023,9,Which HIV genes were reported to have been sequenced?,List,"NFLG, PR, RT, IN, Env",728,exact,Near full-length genome,1,Near full-length genome (NFLG),0,"Near full-length genome (NFLG), Protease, Reverse transcriptase, Integrase, Envelope.",1
 37039023,10,What method was used for sequencing?,List,Illumina sequencing,729,exact,Illumina MiSeq platform with a paired-end 2×251 protocol,1,Illumina MiSeq platform,1,Illumina MiSeq platform,1
 37039023,11,What type of samples were sequenced?,List,PBMC,730,exact,Whole blood samples,0,Peripheral blood mononuclear cells (PBMCs),1,Peripheral blood mononuclear cells (PBMCs),1
 37039023,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,731,exact,No,1,No,1,No,1
@@ -809,7 +809,7 @@
 37104815,8,Were samples cloned prior to sequencing?,Boolean,No,807,exact,No,1,No,1,No,1
 37104815,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",808,exact,"RT, PR, INT",1,"RT, PR, INT",1,"RT, PR, IN",1
 37104815,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",809,exact,Sanger and ultra-deep sequencing (UDS),0,Sanger and ultra-deep sequencing (UDS),0,Sanger sequencing and ultra-deep sequencing (UDS) using Illumina technology,1
-37104815,11,What type of samples were sequenced?,List,"Whole Blood, Semen",810,exact,Plasma and semen samples,0,"HIV-1 total DNA, blood plasma, semen",0,"HIV DNA from blood, RNA from plasma",0
+37104815,11,What type of samples were sequenced?,List,"Whole Blood, Semen",810,exact,Plasma and semen samples,1,"HIV-1 total DNA, blood plasma, semen",1,"HIV DNA from blood, RNA from plasma",0
 37104815,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,811,exact,Yes,1,Yes,1,Yes,1
 37104815,13,Were the patients in the study in a clinical trial?,Boolean,Yes,812,exact,Yes,1,Yes,1,Yes,1
 37104815,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Yes,813,exact,Yes,1,Yes,1,Yes,1
@@ -840,7 +840,7 @@
 37147875,7,From what years were the sequenced samples obtained?,List,2022,838,exact,2022,1,2022,1,2022,1
 37147875,8,Were samples cloned prior to sequencing?,Boolean,No,839,exact,No,1,No,1,No,1
 37147875,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",840,exact,"RT, protease, integrase",1,"Reverse transcriptase, protease, integrase",1,"RT, protease, integrase",1
-37147875,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",841,exact,Sanger sequencing and next-generation sequencing,1,Sanger-based sequencing and next-generation sequencing,1,Sanger sequencing and NGS,0
+37147875,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",841,exact,Sanger sequencing and next-generation sequencing,1,Sanger-based sequencing and next-generation sequencing,1,Sanger sequencing and NGS,1
 37147875,11,What type of samples were sequenced?,List,Plasma,842,exact,Plasma,1,Plasma,1,Plasma,1
 37147875,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,843,exact,Yes,0,Yes,0,Yes,0
 37147875,13,Were the patients in the study in a clinical trial?,Boolean,No,844,exact,No,1,No,1,No,1
@@ -871,9 +871,9 @@
 37279764,6,From which countries were the sequenced samples obtained?,List,China,869,exact,China,1,China,1,China,1
 37279764,7,From what years were the sequenced samples obtained?,List,2011-2019,870,exact,2011-2019,1,2011 to 2019,1,2011 to 2019,1
 37279764,8,Were samples cloned prior to sequencing?,Boolean,No,871,exact,No,1,No,1,No,1
-37279764,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",872,exact,partial pol gene,0,pol,0,Partial pol gene,0
+37279764,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",872,exact,partial pol gene,0,pol,1,Partial pol gene,0
 37279764,10,What method was used for sequencing?,List,Not reported,873,exact,Not specified,1,Not specified,1,Not specified,1
-37279764,11,What type of samples were sequenced?,List,Whole Blood,874,exact,Blood,0,Blood,0,Blood samples,0
+37279764,11,What type of samples were sequenced?,List,Whole Blood,874,exact,Blood,1,Blood,1,Blood samples,1
 37279764,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,875,exact,No,1,No,1,No,1
 37279764,13,Were the patients in the study in a clinical trial?,Boolean,No,876,exact,No,1,No,1,No,1
 37279764,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,No,877,exact,No,1,No,1,No,1
@@ -887,7 +887,7 @@
 37327289,6,From which countries were the sequenced samples obtained?,List,Kenya,885,exact,Kenya,1,Kenya,1,Kenya,1
 37327289,7,From what years were the sequenced samples obtained?,List,2020-2021,886,exact,2020-2021,1,2020-2021,1,2020-2021,1
 37327289,8,Were samples cloned prior to sequencing?,Boolean,No,887,exact,No,1,No,1,No,1
-37327289,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",888,exact,pol,0,pol gene,0,pol,0
+37327289,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",888,exact,pol,1,pol gene,1,pol,1
 37327289,10,What method was used for sequencing?,List,Sanger sequencing,889,exact,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 37327289,11,What type of samples were sequenced?,List,Plasma,890,exact,Plasma,1,Plasma samples,1,Plasma,1
 37327289,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,891,exact,No,1,No,1,No,1
@@ -935,14 +935,14 @@
 37376649,6,From which countries were the sequenced samples obtained?,List,Not reported,933,exact,Not listed,0,Not specified,1,The paper does not specify the countries from which the samples were obtained.,0
 37376649,7,From what years were the sequenced samples obtained?,List,Not reported,934,exact,Not listed,0,Not specified,1,The paper does not specify the years from which the sequenced samples were obtained.,0
 37376649,8,Were samples cloned prior to sequencing?,Boolean,No,935,exact,Not listed,1,No,1,No,1
-37376649,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",936,exact,HIV-1 polymerase region,0,Pol gene,0,The HIV-1 polymerase region was sequenced.,0
+37376649,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",936,exact,HIV-1 polymerase region,0,Pol gene,1,The HIV-1 polymerase region was sequenced.,0
 37376649,10,What method was used for sequencing?,List,Illumina sequencing,937,exact,Next-generation sequencing (NGS),1,Next-generation sequencing (NGS),1,Next-generation sequencing (NGS) was used for sequencing.,1
 37376649,11,What type of samples were sequenced?,List,Whole Blood,938,exact,Whole blood samples,1,Whole blood samples,1,Whole blood samples were sequenced.,1
 37376649,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,939,exact,Yes,0,Yes,0,No,1
 37376649,13,Were the patients in the study in a clinical trial?,Boolean,Yes,940,exact,Yes,1,Yes,1,Yes,1
 37376649,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Yes,941,exact,Yes,1,Yes,1,Yes,1
 37376649,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, INSTI",942,exact,"NRTI, INSTI",1,"NRTI, NNRTI, PI, INSTI",1,"NRTI, NNRTI, PI, INSTI",1
-37376649,16,Which drugs were received by individuals in the study before sample sequencing?,List,"Lamivudine (3TC), Tenofovir (TAF), Dolutegravir (DTG)",943,exact,"Tenofovir alafenamide, lamivudine, dolutegravir",1,Not specified,0,"DTG, 3TC, TAF",1
+37376649,16,Which drugs were received by individuals in the study before sample sequencing?,List,"Lamivudine (3TC), Tenofovir (TAF), Dolutegravir (DTG)",943,exact,"Tenofovir alafenamide, lamivudine, dolutegravir",0,Not specified,0,"DTG, 3TC, TAF",0
 37381002,1,Does the paper report HIV sequences from patient samples?,Boolean,Yes,944,exact,Yes,1,Yes,1,Yes,1
 37381002,2,Does the paper report in vitro drug susceptibility data?,Boolean,No,945,exact,The paper does not explicitly state that it reports in vitro drug susceptibility data.,1,No,1,No,1
 37381002,3,Were sequences from the paper made publicly available?,Boolean,No,946,exact,No,1,No,1,No,1
@@ -951,7 +951,7 @@
 37381002,6,From which countries were the sequenced samples obtained?,List,China,949,exact,China,1,China,1,China,1
 37381002,7,From what years were the sequenced samples obtained?,List,2017-2020,950,exact,2017-2020,1,2017 to 2020,1,2017 to 2020,1
 37381002,8,Were samples cloned prior to sequencing?,Boolean,No,951,exact,No,1,No,1,No,1
-37381002,9,Which HIV genes were reported to have been sequenced?,List,"NFLG, PR, RT, IN, Pol",952,exact,"Pol gene, near full-length genomes",0,Pol gene,0,"Pol gene, near full-length genomes",0
+37381002,9,Which HIV genes were reported to have been sequenced?,List,"NFLG, PR, RT, IN, Pol",952,exact,"Pol gene, near full-length genomes",1,Pol gene,1,"Pol gene, near full-length genomes",1
 37381002,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",953,exact,Sanger sequencing and next-generation sequencing,1,Sanger sequencing and Next Generation Sequencing,1,"Sanger sequencing, Next Generation Sequencing",1
 37381002,11,What type of samples were sequenced?,List,Plasma,954,exact,Plasma samples,1,Plasma and blood samples,1,Blood plasma samples,1
 37381002,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,955,exact,Yes,1,Yes,1,Yes,1
@@ -967,7 +967,7 @@
 37439411,6,From which countries were the sequenced samples obtained?,List,Italy,965,exact,Italy,1,Italy,1,Italy,1
 37439411,7,From what years were the sequenced samples obtained?,List,2000-2020,966,exact,2000 to 2020,1,2000 to 2020,1,2000 to 2020,1
 37439411,8,Were samples cloned prior to sequencing?,Boolean,No,967,exact,No,1,No,1,No,1
-37439411,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",968,exact,HIV-1 RNA protease/reverse transcriptase sequences,1,Protease/reverse transcriptase,1,Protease/reverse transcriptase,1
+37439411,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",968,exact,HIV-1 RNA protease/reverse transcriptase sequences,0,Protease/reverse transcriptase,1,Protease/reverse transcriptase,1
 37439411,10,What method was used for sequencing?,List,Not reported,969,exact,Not specified,1,Not reported,1,Not specified,1
 37439411,11,What type of samples were sequenced?,List,Plasma,970,exact,HIV-1 RNA,0,Clinical samples,0,Plasma samples,1
 37439411,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,971,exact,Yes,1,Yes,1,Yes,1
@@ -983,7 +983,7 @@
 37495103,6,From which countries were the sequenced samples obtained?,List,Russia,981,exact,Russia,1,Russia,1,Russia,1
 37495103,7,From what years were the sequenced samples obtained?,List,2018-2022,982,exact,2018 to 2022,1,2018–2022,1,2018 to 2022,1
 37495103,8,Were samples cloned prior to sequencing?,Boolean,No,983,exact,No,1,No,1,No,1
-37495103,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",984,exact,HIV-1 pol gene,0,Pol gene,0,pol,0
+37495103,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",984,exact,HIV-1 pol gene,0,Pol gene,1,pol,1
 37495103,10,What method was used for sequencing?,List,Sanger sequencing,985,exact,ABI PRISM 3130xl DNA Analyser,0,ABI PRISM 3130xl DNA Analyser,0,ABI PRISM 3130xl DNA Analyser,0
 37495103,11,What type of samples were sequenced?,List,Plasma,986,exact,Plasma,1,Plasma,1,Plasma,1
 37495103,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,987,exact,Yes,1,Yes,1,Yes,1
@@ -999,7 +999,7 @@
 37498738,6,From which countries were the sequenced samples obtained?,List,Switzerland,997,exact,Switzerland,1,Switzerland,1,Switzerland,1
 37498738,7,From what years were the sequenced samples obtained?,List,Not reported,998,exact,2010,0,Not specified,1,Not reported,1
 37498738,8,Were samples cloned prior to sequencing?,Boolean,No,999,exact,No,1,No,1,No,1
-37498738,9,Which HIV genes were reported to have been sequenced?,List,NFLG,1000,exact,"gag, pol, env",0,"gag, pol, env",0,"gag, pol, env",0
+37498738,9,Which HIV genes were reported to have been sequenced?,List,NFLG,1000,exact,"gag, pol, env",1,"gag, pol, env",1,"gag, pol, env",1
 37498738,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",1001,exact,Next-generation sequencing (NGS),0,Next-generation sequencing (NGS),0,Next-generation sequencing,0
 37498738,11,What type of samples were sequenced?,List,PBMC,1002,exact,Peripheral blood mononuclear cells (PBMCs),1,Peripheral blood mononuclear cells (PBMCs),1,Peripheral blood mononuclear cells (PBMCs),1
 37498738,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1003,exact,No,1,No,1,No,1
@@ -1015,9 +1015,9 @@
 37515095,6,From which countries were the sequenced samples obtained?,List,Kazakhstan,1013,exact,Kazakhstan,1,Kazakhstan,1,Kazakhstan,1
 37515095,7,From what years were the sequenced samples obtained?,List,2017-2020,1014,exact,2017 to 2020,1,2017 to 2020,1,2017-2020,1
 37515095,8,Were samples cloned prior to sequencing?,Boolean,No,1015,exact,No,1,No,1,No,1
-37515095,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1016,exact,pol,0,Partial HIV-1 pol gene sequences covering protease and the 5′-end of reverse transcriptase,1,Partial pol gene (covering protease and the 5′-end of reverse transcriptase),1
+37515095,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1016,exact,pol,1,Partial HIV-1 pol gene sequences covering protease and the 5′-end of reverse transcriptase,1,Partial pol gene (covering protease and the 5′-end of reverse transcriptase),1
 37515095,10,What method was used for sequencing?,List,Sanger sequencing,1017,exact,Sanger sequencing with Applied Biosystems Genetic Analyzer 3130,1,Sanger sequencing,1,RT-PCR followed by sequencing using AmpliSens® HIV-Resist-Seq and ABI 3130.,0
-37515095,11,What type of samples were sequenced?,List,Whole Blood,1018,exact,Blood samples,0,Blood samples,0,Blood samples,0
+37515095,11,What type of samples were sequenced?,List,Whole Blood,1018,exact,Blood samples,1,Blood samples,1,Blood samples,1
 37515095,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1019,exact,Not explicitly stated,1,No,1,Yes,0
 37515095,13,Were the patients in the study in a clinical trial?,Boolean,No,1020,exact,No,1,No,1,No,1
 37515095,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Yes,1021,exact,Yes,1,Yes,1,Yes,1
@@ -1031,7 +1031,7 @@
 37515146,6,From which countries were the sequenced samples obtained?,List,Cameroon,1029,exact,Cameroon,1,Cameroon,1,Cameroon,1
 37515146,7,From what years were the sequenced samples obtained?,List,2014-2019,1030,exact,2014 to 2019,1,2014 to 2019,1,2014 to 2019,1
 37515146,8,Were samples cloned prior to sequencing?,Boolean,No,1031,exact,No,1,No,1,No,1
-37515146,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1032,exact,HIV-1 protease and reverse transcriptase (pol gene),0,Protease and reverse transcriptase,0,Protease and Reverse Transcriptase,0
+37515146,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1032,exact,HIV-1 protease and reverse transcriptase (pol gene),0,Protease and reverse transcriptase,1,Protease and Reverse Transcriptase,1
 37515146,10,What method was used for sequencing?,List,Sanger sequencing,1033,exact,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 37515146,11,What type of samples were sequenced?,List,Plasma,1034,exact,Plasma samples,1,Plasma,1,Plasma,1
 37515146,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1035,exact,No,1,No,1,No,1
@@ -1047,7 +1047,7 @@
 37520425,6,From which countries were the sequenced samples obtained?,List,Tanzania,1045,exact,Tanzania,1,Tanzania,1,Tanzania,1
 37520425,7,From what years were the sequenced samples obtained?,List,"2016-2017, 2019-2020",1046,exact,2016-2020,0,2016-2020,0,2016-2020,0
 37520425,8,Were samples cloned prior to sequencing?,Boolean,No,1047,exact,No,1,No,1,No,1
-37520425,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",1048,exact,"Protease, Reverse Transcriptase",0,"Protease, Reverse Transcriptase, Integrase",1,"Protease, Reverse Transcriptase, Integrase",1
+37520425,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",1048,exact,"Protease, Reverse Transcriptase",1,"Protease, Reverse Transcriptase, Integrase",1,"Protease, Reverse Transcriptase, Integrase",1
 37520425,10,What method was used for sequencing?,List,Sanger sequencing,1049,exact,Sanger sequencing,1,Sanger sequencing,1,Sanger Sequencing,1
 37520425,11,What type of samples were sequenced?,List,Plasma,1050,exact,Plasma,1,Plasma,1,Plasma Samples,1
 37520425,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,1051,exact,Yes,1,Yes,1,Yes,1
@@ -1111,7 +1111,7 @@
 37546367,6,From which countries were the sequenced samples obtained?,List,China,1109,exact,China,1,China,1,China,1
 37546367,7,From what years were the sequenced samples obtained?,List,2011-2022,1110,exact,2011 to 2022,1,2011-2022,1,2011-2022,1
 37546367,8,Were samples cloned prior to sequencing?,Boolean,No,1111,exact,No,1,No,1,No,1
-37546367,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1112,exact,Partial pol gene,0,pol,0,pol,0
+37546367,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1112,exact,Partial pol gene,0,pol,1,pol,1
 37546367,10,What method was used for sequencing?,List,Sanger sequencing,1113,exact,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 37546367,11,What type of samples were sequenced?,List,Plasma,1114,exact,Plasma samples,1,Plasma,1,Plasma,1
 37546367,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,1115,exact,Yes,1,Yes,1,Yes,1
@@ -1175,7 +1175,7 @@
 37585352,6,From which countries were the sequenced samples obtained?,List,Botswana,1173,exact,Botswana,1,Botswana,1,Botswana,1
 37585352,7,From what years were the sequenced samples obtained?,List,2013-2018,1174,exact,2013-2018,1,2013 to 2018,1,2013 to 2018,1
 37585352,8,Were samples cloned prior to sequencing?,Boolean,No,1175,exact,No,1,No,1,No,1
-37585352,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1176,exact,HIV-1 pol,0,Pol,0,HIV-1 pol,0
+37585352,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1176,exact,HIV-1 pol,0,Pol,1,HIV-1 pol,0
 37585352,10,What method was used for sequencing?,List,Illumina sequencing,1177,exact,Next-generation sequencing (NGS),1,Illumina MiSeq and HiSeq platforms,1,Next-generation sequencing (NGS) using Illumina MiSeq and HiSeq platforms,1
 37585352,11,What type of samples were sequenced?,List,PBMC,1178,exact,Proviral DNA,1,Proviral DNA,1,Proviral DNA,1
 37585352,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1179,exact,No,1,No,1,No,1
@@ -1191,7 +1191,7 @@
 37593123,6,From which countries were the sequenced samples obtained?,List,China,1189,exact,China,1,China,1,China,1
 37593123,7,From what years were the sequenced samples obtained?,List,2004-2022,1190,exact,2004 to 2022,1,2004 to 2022,1,2004 to 2022,1
 37593123,8,Were samples cloned prior to sequencing?,Boolean,No,1191,exact,No,1,No,1,No,1
-37593123,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1192,exact,pol gene.,0,Pol gene,0,pol gene,0
+37593123,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1192,exact,pol gene.,1,Pol gene,1,pol gene,1
 37593123,10,What method was used for sequencing?,List,Not reported,1193,exact,Not mentioned,1,Not provided,1,Not reported,1
 37593123,11,What type of samples were sequenced?,List,Plasma,1194,exact,Not mentioned,0,Not provided,0,Not reported,0
 37593123,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1195,exact,Not mentioned,1,No,1,No,1
@@ -1207,9 +1207,9 @@
 37626789,6,From which countries were the sequenced samples obtained?,List,Ethiopia,1205,exact,Ethiopia,1,Ethiopia,1,Ethiopia,1
 37626789,7,From what years were the sequenced samples obtained?,List,2007-2019,1206,exact,2017-2019,0,2017 to 2019,0,2017-2019,0
 37626789,8,Were samples cloned prior to sequencing?,Boolean,No,1207,exact,No,1,No,1,No,1
-37626789,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1208,exact,Pol,0,pol gene,0,pol,0
+37626789,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1208,exact,Pol,1,pol gene,1,pol,1
 37626789,10,What method was used for sequencing?,List,Sanger sequencing,1209,exact,ABI-3730 DNA genetic analyzer,0,ABI-3730 DNA genetic analyzer,0,ABI-3730 DNA genetic analyzer,0
-37626789,11,What type of samples were sequenced?,List,Plasma,1210,exact,Blood,0,Plasma,1,Plasma,1
+37626789,11,What type of samples were sequenced?,List,Plasma,1210,exact,Blood,1,Plasma,1,Plasma,1
 37626789,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,1211,exact,Yes,1,Yes,1,Yes,1
 37626789,13,Were the patients in the study in a clinical trial?,Boolean,No,1212,exact,No,1,No,1,No,1
 37626789,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Yes,1213,exact,Yes,1,Yes,1,Yes,1
@@ -1287,7 +1287,7 @@
 37674678,6,From which countries were the sequenced samples obtained?,List,China,1285,exact,China,1,China,1,China,1
 37674678,7,From what years were the sequenced samples obtained?,List,2019 to 2021,1286,exact,2019 to 2021,1,2019 to 2021,1,2019 to 2021,1
 37674678,8,Were samples cloned prior to sequencing?,Boolean,No,1287,exact,No,1,No,1,No,1
-37674678,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1288,exact,pol,0,pol gene,0,HIV-1 pol gene,0
+37674678,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1288,exact,pol,1,pol gene,1,HIV-1 pol gene,0
 37674678,10,What method was used for sequencing?,List,Sanger sequencing,1289,exact,Automated DNA sequencing using ABI 3730XL,0,Automated DNA sequencing using ABI 3730XL,0,Sanger sequencing,1
 37674678,11,What type of samples were sequenced?,List,Plasma,1290,exact,Plasma samples,1,Plasma samples,1,Plasma samples,1
 37674678,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1291,exact,All individuals were ART-naïve,1,No,1,No,1
@@ -1351,7 +1351,7 @@
 37775947,6,From which countries were the sequenced samples obtained?,List,"South America, Africa, USA, Asia, Australia, Europe",1349,exact,Countries included in the START study were not specified.,0,Not reported,0,Countries were not reported,0
 37775947,7,From what years were the sequenced samples obtained?,List,2009-2013,1350,exact,2009 - 2013,1,2009-2013,1,2009-2013,1
 37775947,8,Were samples cloned prior to sequencing?,Boolean,No,1351,exact,No,1,No,1,No,1
-37775947,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1352,exact,Pol gene,0,Pol,0,"PR, RT, and IN",0
+37775947,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1352,exact,Pol gene,1,Pol,1,"PR, RT, and IN",1
 37775947,10,What method was used for sequencing?,List,Illumina sequencing,1353,exact,Illumina MiSeq,1,Next-generation sequencing (NGS) using Illumina MiSeq,1,NGS (illumina MiSeq),1
 37775947,11,What type of samples were sequenced?,List,Plasma,1354,exact,Plasma samples,1,Plasma,1,Plasma samples,1
 37775947,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1355,exact,Yes,0,Yes,0,No,1
@@ -1383,7 +1383,7 @@
 37823653,6,From which countries were the sequenced samples obtained?,List,Botswana,1381,exact,Botswana,1,Botswana,1,Botswana,1
 37823653,7,From what years were the sequenced samples obtained?,List,2013-2018,1382,exact,2013 - 2018,1,2013 to 2018,1,2013-2018,1
 37823653,8,Were samples cloned prior to sequencing?,Boolean,No,1383,exact,No,1,No,1,No,1
-37823653,9,Which HIV genes were reported to have been sequenced?,List,"NFLG, gp120",1384,exact,gp120,0,gp120,0,gp120,0
+37823653,9,Which HIV genes were reported to have been sequenced?,List,"NFLG, gp120",1384,exact,gp120,1,gp120,1,gp120,1
 37823653,10,What method was used for sequencing?,List,Illumina sequencing,1385,exact,Next-generation sequencing (NGS),1,Next-generation sequencing (NGS),1,NGS,1
 37823653,11,What type of samples were sequenced?,List,PBMC,1386,exact,Proviral DNA and plasma samples,1,Proviral DNA,1,Proviral DNA,1
 37823653,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,1387,exact,Yes,1,Yes,1,Yes,1
@@ -1399,7 +1399,7 @@
 37872202,6,From which countries were the sequenced samples obtained?,List,Not reported,1397,exact,,1,Not Applicable,1,,1
 37872202,7,From what years were the sequenced samples obtained?,List,Not reported,1398,exact,,1,Not Applicable,1,,1
 37872202,8,Were samples cloned prior to sequencing?,Boolean,No,1399,exact,No,1,Not Applicable,1,No,1
-37872202,9,Which HIV genes were reported to have been sequenced?,List,gp120,1400,exact,,0,Not Applicable,0,env,0
+37872202,9,Which HIV genes were reported to have been sequenced?,List,gp120,1400,exact,,0,Not Applicable,0,env,1
 37872202,10,What method was used for sequencing?,List,Not reported,1401,exact,,1,Not Applicable,1,Not applicable,1
 37872202,11,What type of samples were sequenced?,List,Not reported,1402,exact,,1,Not Applicable,1,,1
 37872202,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1403,exact,,1,No,1,No,1
@@ -1447,7 +1447,7 @@
 37896785,6,From which countries were the sequenced samples obtained?,List,Vietnam,1445,exact,Vietnam,1,Vietnam,1,Vietnam,1
 37896785,7,From what years were the sequenced samples obtained?,List,2021,1446,exact,2021,1,2021,1,2021,1
 37896785,8,Were samples cloned prior to sequencing?,Boolean,No,1447,exact,No,1,No,1,No,1
-37896785,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1448,exact,pol gene,0,pol,0,pol gene region (protease and part of reverse transcriptase),1
+37896785,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1448,exact,pol gene,1,pol,1,pol gene region (protease and part of reverse transcriptase),1
 37896785,10,What method was used for sequencing?,List,Sanger sequencing,1449,exact,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 37896785,11,What type of samples were sequenced?,List,Plasma,1450,exact,"Plasma, Blood",1,Blood plasma,1,Blood plasma,1
 37896785,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,1451,exact,Yes,1,Yes,1,Yes,1
@@ -1463,7 +1463,7 @@
 37896860,6,From which countries were the sequenced samples obtained?,List,Kenya,1461,exact,Samples were obtained from Kenya,1,Kenya,1,Kenya,1
 37896860,7,From what years were the sequenced samples obtained?,List,2019-2020,1462,exact,Samples were obtained from 2019 to 2020,1,2019 - 2020,1,2019-2020,1
 37896860,8,Were samples cloned prior to sequencing?,Boolean,No,1463,exact,No,1,No,1,No,1
-37896860,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",1464,exact,"The study focused on DR testing for NRTI, NNRTI, and PI mutations, but not INSTI mutations",0,"RT, PR",0,"RT, PR",0
+37896860,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",1464,exact,"The study focused on DR testing for NRTI, NNRTI, and PI mutations, but not INSTI mutations",0,"RT, PR",1,"RT, PR",1
 37896860,10,What method was used for sequencing?,List,Sanger sequencing,1465,exact,The paper used Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 37896860,11,What type of samples were sequenced?,List,Plasma,1466,exact,Plasma samples were sequenced,1,Plasma,1,Plasma,1
 37896860,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,1467,exact,"Yes, all participants had virologic failure on antiretroviral treatment",1,Yes,1,Yes,1
@@ -1495,7 +1495,7 @@
 37914679,6,From which countries were the sequenced samples obtained?,List,China,1493,exact,China,1,China,1,China,1
 37914679,7,From what years were the sequenced samples obtained?,List,2018 to 2020,1494,exact,2018-2020,1,2018 to 2020,1,2018 to 2020,1
 37914679,8,Were samples cloned prior to sequencing?,Boolean,No,1495,exact,No,1,No,1,No,1
-37914679,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",1496,exact,Not specified,0,Pol gene,0,Pol gene,0
+37914679,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",1496,exact,Not specified,0,Pol gene,1,Pol gene,1
 37914679,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",1497,exact,MiSeq second-generation sequencing platform,0,MiSeq second-generation sequencing platform,0,"MiSeq second-generation sequencing platform, conventional Sanger sequencing",1
 37914679,11,What type of samples were sequenced?,List,Plasma,1498,exact,Plasma samples,1,Plasma,1,Plasma,1
 37914679,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,1499,exact,Yes,1,Yes,1,Yes,1
@@ -1513,7 +1513,7 @@
 37920909,8,Were samples cloned prior to sequencing?,Boolean,No,1511,exact,No,1,No,1,no,1
 37920909,9,Which HIV genes were reported to have been sequenced?,List,IN,1512,exact,Integrase gene,1,Integrase,1,Integrase,1
 37920909,10,What method was used for sequencing?,List,Sanger sequencing,1513,exact,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
-37920909,11,What type of samples were sequenced?,List,Whole Blood,1514,exact,Blood,0,Blood,0,Plasma,0
+37920909,11,What type of samples were sequenced?,List,Whole Blood,1514,exact,Blood,1,Blood,1,Plasma,1
 37920909,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1515,exact,No,1,No,1,No,1
 37920909,13,Were the patients in the study in a clinical trial?,Boolean,No,1516,exact,No,1,No,1,No,1
 37920909,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,No,1517,exact,No,1,No,1,No,1
@@ -1534,7 +1534,7 @@
 37938856,13,Were the patients in the study in a clinical trial?,Boolean,No,1532,exact,No,1,No,1,No,1
 37938856,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Yes,1533,exact,Yes,1,Yes,1,Yes,1
 37938856,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI, PI, INSTI",1534,exact,"NNRTIs, PIs, INSTIs",1,"NRTIs, NNRTIs, PIs, INSTIs",1,"NRTIs, NNRTIs, PIs, INSTIs",1
-37938856,16,Which drugs were received by individuals in the study before sample sequencing?,List,"3TC, TDF, EFV, DTG, ATV",1535,exact,"Lamivudine, Tenofovir, Efavirenz, Dolutegravir, Atazanavir, Ritonovir",1,"lamivudine, tenofovir, efavirenz, dolutegravir, atazanavir, ritonavir",1,"lamivudine, tenofovir, efavirenz, dolutegravir, atazanavir, ritonavir",1
+37938856,16,Which drugs were received by individuals in the study before sample sequencing?,List,"3TC, TDF, EFV, DTG, ATV",1535,exact,"Lamivudine, Tenofovir, Efavirenz, Dolutegravir, Atazanavir, Ritonovir",0,"lamivudine, tenofovir, efavirenz, dolutegravir, atazanavir, ritonavir",0,"lamivudine, tenofovir, efavirenz, dolutegravir, atazanavir, ritonavir",0
 37941373,1,Does the paper report HIV sequences from patient samples?,Boolean,Yes,1536,exact,Yes,1,Yes,1,Yes,1
 37941373,2,Does the paper report in vitro drug susceptibility data?,Boolean,No,1537,exact,No,1,No,1,No,1
 37941373,3,Were sequences from the paper made publicly available?,Boolean,No,1538,exact,No,1,No,1,No,1
@@ -1575,14 +1575,14 @@
 37957382,6,From which countries were the sequenced samples obtained?,List,Not reported,1573,exact,Not mentioned,1,United States,0,The specific countries are not mentioned in the text.,1
 37957382,7,From what years were the sequenced samples obtained?,List,Not reported,1574,exact,Not mentioned,1,No data,1,The specific years are not mentioned in the text.,1
 37957382,8,Were samples cloned prior to sequencing?,Boolean,Yes,1575,exact,No,0,No,0,No,0
-37957382,9,Which HIV genes were reported to have been sequenced?,List,"Full genome, NFLG",1576,exact,HIV-1 pol-env region,0,Near-full-length proviruses and The sequnced plasma HIV-1 pol-env RNA,0,Near-full-length proviral sequences and HIV-1 pol-env RNA were sequenced.,0
+37957382,9,Which HIV genes were reported to have been sequenced?,List,"Full genome, NFLG",1576,exact,HIV-1 pol-env region,1,Near-full-length proviruses and The sequnced plasma HIV-1 pol-env RNA,1,Near-full-length proviral sequences and HIV-1 pol-env RNA were sequenced.,1
 37957382,10,What method was used for sequencing?,List,Illumina sequencing,1577,exact,MiSeq sequencing,1,MiSeq sequencing,1,Illumina MiSeq,1
 37957382,11,What type of samples were sequenced?,List,"Plasma, PBMC",1578,exact,Plasma and PBMC samples,1,Plasma RNA and PBMC DNA,1,Plasma and PBMC samples,1
 37957382,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,1579,exact,Yes,1,Yes,1,Yes,1
 37957382,13,Were the patients in the study in a clinical trial?,Boolean,No,1580,exact,No,1,No,1,No,1
 37957382,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Yes,1581,exact,Yes,1,Yes,1,Yes,1
 37957382,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, PI, INSTI",1582,exact,"NRTIs, NNRTIs, PIs, Integrase inhibitors",0,"NRTI, NNRTI, PI, IN",0,"NRTIs, NNRTIs, PIs, and In.",0
-37957382,16,Which drugs were received by individuals in the study before sample sequencing?,List,"DTG, DRV, TFV, FTC ",1583,exact,"Tenofovir, emtricitabine, darunavir, dolutegravir, atazanavir, rilpivirine",1,"Darunavir, Dolutegravir, Tenofovir DF, Emtricitabine, Rilpivirine, Tenofovir alafenamide",1,Not specified,0
+37957382,16,Which drugs were received by individuals in the study before sample sequencing?,List,"DTG, DRV, TFV, FTC ",1583,exact,"Tenofovir, emtricitabine, darunavir, dolutegravir, atazanavir, rilpivirine",0,"Darunavir, Dolutegravir, Tenofovir DF, Emtricitabine, Rilpivirine, Tenofovir alafenamide",0,Not specified,0
 37966701,1,Does the paper report HIV sequences from patient samples?,Boolean,No,1584,exact,No,1,No,1,No,1
 37966701,2,Does the paper report in vitro drug susceptibility data?,Boolean,No,1585,exact,No,1,No,1,No,1
 37966701,3,Were sequences from the paper made publicly available?,Boolean,No,1586,exact,No,1,No,1,No,1
@@ -1609,7 +1609,7 @@
 37973713,8,Were samples cloned prior to sequencing?,Boolean,No,1607,exact,No,1,No,1,No,1
 37973713,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1608,exact,"Protease, reverse transcriptase",1,Protease (PR) and Reverse Transcriptase (RT),1,Protease (PR) and Reverse Transcriptase (RT),1
 37973713,10,What method was used for sequencing?,List,Sanger sequencing,1609,exact,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
-37973713,11,What type of samples were sequenced?,List,Plasma,1610,exact,Blood,0,Plasma samples,1,Not specified,0
+37973713,11,What type of samples were sequenced?,List,Plasma,1610,exact,Blood,1,Plasma samples,1,Not specified,0
 37973713,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1611,exact,No,1,No,1,No,1
 37973713,13,Were the patients in the study in a clinical trial?,Boolean,Yes,1612,exact,Yes,1,Yes,1,Yes,1
 37973713,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,No,1613,exact,No,1,No,1,No,1
@@ -1623,7 +1623,7 @@
 37976080,6,From which countries were the sequenced samples obtained?,List,China,1621,exact,China,1,China,1,China,1
 37976080,7,From what years were the sequenced samples obtained?,List,2022,1622,exact,2022,1,2022,1,2022,1
 37976080,8,Were samples cloned prior to sequencing?,Boolean,No,1623,exact,No,1,No,1,No,1
-37976080,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1624,exact,PR and partial RT regions,1,PR and partial RT regions,1,Protease and reverse transcriptase regions,1
+37976080,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1624,exact,PR and partial RT regions,1,PR and partial RT regions,1,Protease and reverse transcriptase regions,0
 37976080,10,What method was used for sequencing?,List,Sanger sequencing,1625,exact,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 37976080,11,What type of samples were sequenced?,List,Plasma,1626,exact,Plasma samples,1,Plasma,1,Plasma samples,1
 37976080,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1627,exact,Not reported,1,No,1,Yes,0
@@ -1662,7 +1662,7 @@
 37993493,13,Were the patients in the study in a clinical trial?,Boolean,No,1660,exact,No,1,No,1,No,1
 37993493,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Yes,1661,exact,Yes,1,Yes,1,Yes,1
 37993493,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, PI, INSTI",1662,exact,"NRTIs, NNRTIs, PIs, INIs",0,"NRTI, NNRTI, PI, INSTI",1,"NRTI, NNRTI, PI, INSTI",1
-37993493,16,Which drugs were received by individuals in the study before sample sequencing?,List,"TDF, 3TC, DTG, ABC, LPV, ATV, EFV",1663,exact,"DTG, 3TC, TDF, ABC, LPV/r, ATV/r, EFV",1,"Tenofovir, Lamivudine, Dolutegravir, Abacavir, Lopinavir, Atazanavir, Efavirenz",1,"Tenofovir, Lamivudine, Dolutegravir, Abacavir, Atazanavir, Ritonavir, Lopinavir",0
+37993493,16,Which drugs were received by individuals in the study before sample sequencing?,List,"TDF, 3TC, DTG, ABC, LPV, ATV, EFV",1663,exact,"DTG, 3TC, TDF, ABC, LPV/r, ATV/r, EFV",1,"Tenofovir, Lamivudine, Dolutegravir, Abacavir, Lopinavir, Atazanavir, Efavirenz",0,"Tenofovir, Lamivudine, Dolutegravir, Abacavir, Atazanavir, Ritonavir, Lopinavir",0
 38005921,1,Does the paper report HIV sequences from patient samples?,Boolean,No,1664,exact,Yes,0,No,1,No,1
 38005921,2,Does the paper report in vitro drug susceptibility data?,Boolean,No,1665,exact,No,1,No,1,No,1
 38005921,3,Were sequences from the paper made publicly available?,Boolean,Yes,1666,exact,Yes,1,No,0,No,0
@@ -1687,9 +1687,9 @@
 38020274,6,From which countries were the sequenced samples obtained?,List,Cameroon,1685,exact,Cameroon,1,Cameroon,1,Cameroon,1
 38020274,7,From what years were the sequenced samples obtained?,List,2018-2020,1686,exact,2018-2020,1,2018-2020,1,2018-2020,1
 38020274,8,Were samples cloned prior to sequencing?,Boolean,No,1687,exact,No,1,No,1,No,1
-38020274,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, In",1688,exact,HIV-1 polymerase and reverse transcriptase genes,0,pol and env genes,0,Reverse transcriptase and polymerase gene regions,0
+38020274,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, In",1688,exact,HIV-1 polymerase and reverse transcriptase genes,0,pol and env genes,1,Reverse transcriptase and polymerase gene regions,0
 38020274,10,What method was used for sequencing?,List,Not reported,1689,exact,Not specified,1,Not mentioned,1,Not specified,1
-38020274,11,What type of samples were sequenced?,List,Plasma,1690,exact,Blood samples,0,Plasma samples,1,Blood samples,0
+38020274,11,What type of samples were sequenced?,List,Plasma,1690,exact,Blood samples,1,Plasma samples,1,Blood samples,1
 38020274,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Yes,1691,exact,Yes,1,Yes,1,Yes,1
 38020274,13,Were the patients in the study in a clinical trial?,Boolean,No,1692,exact,No,1,No,1,No,1
 38020274,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Yes,1693,exact,Yes,1,Yes,1,Yes,1
@@ -1815,7 +1815,7 @@
 38140649,6,From which countries were the sequenced samples obtained?,List,Croatia,1813,exact,Croatia,1,Croatia,1,Croatia,1
 38140649,7,From what years were the sequenced samples obtained?,List,2019-2022,1814,exact,2019 to 2022,1,2019 to 2022,1,2019 to 2022,1
 38140649,8,Were samples cloned prior to sequencing?,Boolean,No,1815,exact,No,1,No,1,No,1
-38140649,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1816,exact,"HIV-1 protease, reverse transcriptase gene, and integrase gene",0,"Protease, reverse transcriptase, and integrase genes",0,"PR, RT, IN",0
+38140649,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1816,exact,"HIV-1 protease, reverse transcriptase gene, and integrase gene",0,"Protease, reverse transcriptase, and integrase genes",1,"PR, RT, IN",1
 38140649,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",1817,exact,Sanger sequencing and Illumina sequencing,1,Sanger sequencing and Next Generation Sequencing,1,Sanger sequencing and deep sequencing (NGS),0
 38140649,11,What type of samples were sequenced?,List,Plasma,1818,exact,Patient plasma samples,1,Plasma samples,1,Plasma samples,1
 38140649,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1819,exact,No,1,No,1,No,1
@@ -1879,7 +1879,7 @@
 38314093,6,From which countries were the sequenced samples obtained?,List,China,1877,exact,China,1,China,1,China,1
 38314093,7,From what years were the sequenced samples obtained?,List,2008-2019,1878,exact,2018-2019,0,"Samples were collected from 2008 to 2019, and the sequenced samples were from 2018 to 2019",1,2008 to 2019,1
 38314093,8,Were samples cloned prior to sequencing?,Boolean,No,1879,exact,No,1,Not reported,1,No,1
-38314093,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1880,exact,PR-RT gene,1,Protease and reverse transcriptase genes,1,PR-RT,1
+38314093,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1880,exact,PR-RT gene,1,Protease and reverse transcriptase genes,0,PR-RT,1
 38314093,10,What method was used for sequencing?,List,NGS,1881,exact,High-throughput sequencing,0,Not reported,0,High-throughput sequencing,0
 38314093,11,What type of samples were sequenced?,List,Serum,1882,exact,Blood samples,0,Serum,1,Blood samples,0
 38314093,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,No,1883,exact,Yes,0,Yes,0,No,1
@@ -1962,7 +1962,7 @@
 25637519,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not applicable,83,partial,,1,No GenBank accession numbers were reported,1,,1
 25637519,6,From which countries were the sequenced samples obtained?,List,Not applicable,85,partial,,1,0,1,Not reported,1
 25637519,7,From what years were the sequenced samples obtained?,List,Not applicable,86,partial,,1,0,1,Not reported,1
-25637519,9,Which HIV genes were reported to have been sequenced?,List,RT,88,partial,Reverse transcriptase,1,Not applicable,0,"gag, pol",0
+25637519,9,Which HIV genes were reported to have been sequenced?,List,RT,88,partial,Reverse transcriptase,1,Not applicable,0,"gag, pol",1
 25637519,10,What method was used for sequencing?,List,Not reported,89,partial,Not mentioned,1,Not applicable,1,Not reported,1
 25637519,11,What type of samples were sequenced?,List,Not reported,90,partial,,1,Not applicable,1,Not reported,1
 25637519,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not applicable,94,partial,,1,No data,1,Not reported,1
@@ -2020,7 +2020,7 @@
 29373677,7,From what years were the sequenced samples obtained?,List,2015,198,partial,2008 to 2015,1,2008 to 2015,1,2008 to 2015,1
 29373677,9,Which HIV genes were reported to have been sequenced?,List,IN,200,partial,Integrase gene,1,IN gene,1,IN gene,1
 29373677,10,What method was used for sequencing?,List,Not reported,201,partial,Not specified,1,Not mentioned,1,Not reported,1
-29373677,11,What type of samples were sequenced?,List,"PBMC, Plasma",202,partial,"Plasma, PBMCs",1,"Blood, PBMC",0,Plasma RNA and DNA from PBMCs,1
+29373677,11,What type of samples were sequenced?,List,"PBMC, Plasma",202,partial,"Plasma, PBMCs",1,"Blood, PBMC",1,Plasma RNA and DNA from PBMCs,1
 29373677,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"INSTI, NRTI",206,partial,"INSTIs, NRTIs",1,"NRTI, NNRTI, and integrate inhibitor",0,"NRTI, NNRTI, PI, II",0
 29373677,16,Which drugs were received by individuals in the study before sample sequencing?,List,"TFV, FTC, RAL, DTG",207,partial,"Raltegravir, tenofovir, emtricitabine, dolutegravir",1,"Raltegravir, tenofovir, emtricitabine, dolutegravir",1,"Tenofovir, Emtricitabine, Raltegravir, Dolutegravir, Etravirine, Saquinavir Findriss.",1
 30053052,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,211,partial,Not reported,1,No evidence,1,No,1
@@ -2042,7 +2042,7 @@
 31988104,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,243,partial,"K03455, AF324493",0,"K03455, AF324493",0,None.,1
 31988104,6,From which countries were the sequenced samples obtained?,List,Not reported,245,partial,,1,Not reported,1,0,1
 31988104,7,From what years were the sequenced samples obtained?,List,Not reported,246,partial,,1,Not reported,1,0,1
-31988104,9,Which HIV genes were reported to have been sequenced?,List,RT,248,partial,"pol, gag, env",0,Not reported,1,None.,0
+31988104,9,Which HIV genes were reported to have been sequenced?,List,RT,248,partial,"pol, gag, env",1,Not reported,1,None.,0
 31988104,10,What method was used for sequencing?,List,Not reported,249,partial,The paper does not specify the exact method used for sequencing.,0,Not reported,1,None.,1
 31988104,11,What type of samples were sequenced?,List,Not reported,250,partial,The paper does not specify the type of clinical samples that were sequenced.,0,Not reported,1,None.,1
 31988104,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,254,partial,,1,Not reported,1,None.,1
@@ -2110,7 +2110,7 @@
 36454248,10,What method was used for sequencing?,List,Not reported,377,partial,Sanger sequencing,0,Macrogen Inc.,0,Not Specified,1
 36454248,11,What type of samples were sequenced?,List,Plasma,378,partial,Plasma samples,1,Plasma,1,Plasma,1
 36454248,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI, PI, INSTI",382,partial,"NRTIs, NNRTIs, PIs, INSTIs",1,"NRTIs, NNRTIs, PIs, INSTIs",1,"NRTIs, NNRTIs, PIs, INSTIs",1
-36454248,16,Which drugs were received by individuals in the study before sample sequencing?,List,"3TC, TDF, AZT, D4T, ABC, DDI, FTC, EFV, LPV, DRV, NFV, RAL",383,partial,"zidovudine, lamivudine, lopinavir, ritonavir, efavirenz, raltegravir",0,"zidovudine, lamivudine, lopinavir/ritonavir, efavirenz, maraviroc, tenofovir, atazanavir, darunavir raltegravir",1,"lamivudine, zidovudine, lopinavir/ritonavir, efavirenz, emtricitabine, tenofovir disoproxil fumarate, raltegravir",1
+36454248,16,Which drugs were received by individuals in the study before sample sequencing?,List,"3TC, TDF, AZT, D4T, ABC, DDI, FTC, EFV, LPV, DRV, NFV, RAL",383,partial,"zidovudine, lamivudine, lopinavir, ritonavir, efavirenz, raltegravir",0,"zidovudine, lamivudine, lopinavir/ritonavir, efavirenz, maraviroc, tenofovir, atazanavir, darunavir raltegravir",0,"lamivudine, zidovudine, lopinavir/ritonavir, efavirenz, emtricitabine, tenofovir disoproxil fumarate, raltegravir",0
 36519389,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,387,partial,Not applicable,1,No GenBank accession numbers,1,Not applicable,1
 36519389,6,From which countries were the sequenced samples obtained?,List,Not reported,389,partial,Not applicable,1,No countries,1,Not applicable,1
 36519389,7,From what years were the sequenced samples obtained?,List,Not reported,390,partial,Not applicable,1,No years,1,Not applicable,1
@@ -2124,7 +2124,7 @@
 36571282,7,From what years were the sequenced samples obtained?,List,2018-2021,406,partial,2018-2021,1,2018 to 2021,1,2018-2021,1
 36571282,9,Which HIV genes were reported to have been sequenced?,List,"RT, IN",408,partial,"Integrase, RT",1,integrase and RT,1,Reverse transcriptase and integrase,1
 36571282,10,What method was used for sequencing?,List,"Sanger sequencing, NGS",409,partial,Sanger sequencing and next-generation sequencing,1,Sanger sequencing and next-generation sequencing (NGS),1,Sanger sequencing and next-generation sequencing,1
-36571282,11,What type of samples were sequenced?,List,Plasma,410,partial,Viral specimens from blood,0,Plasma,1,Plasma samples,1
+36571282,11,What type of samples were sequenced?,List,Plasma,410,partial,Viral specimens from blood,1,Plasma,1,Plasma samples,1
 36571282,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,414,partial,,1,,1,,1
 36571282,16,Which drugs were received by individuals in the study before sample sequencing?,List,Not reported,415,partial,,1,,1,,1
 36597160,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,419,partial,,1,No Genbank Accession Number,1,Not reported,1
@@ -2186,7 +2186,7 @@
 36751650,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,531,partial,No,1,,1,No evidence,1
 36751650,6,From which countries were the sequenced samples obtained?,List,China,533,partial,China,1,China,1,China,1
 36751650,7,From what years were the sequenced samples obtained?,List,2016-2020,534,partial,2016-2020,1,2016 to 2020,1,2016 to 2020,1
-36751650,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",536,partial,pol gene,0,pol gene,0,pol,0
+36751650,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",536,partial,pol gene,1,pol gene,1,pol,1
 36751650,10,What method was used for sequencing?,List,Sanger sequencing,537,partial,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 36751650,11,What type of samples were sequenced?,List,Plasma,538,partial,Plasma samples,1,Plasma,1,Plasma,1
 36751650,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,542,partial,,1,,1,,1
@@ -2194,7 +2194,7 @@
 36779485,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,547,partial,No,1,No accession numbers were provided,1,No Accession Number,1
 36779485,6,From which countries were the sequenced samples obtained?,List,South Africa,549,partial,South Africa,1,South Africa,1,South Africa,1
 36779485,7,From what years were the sequenced samples obtained?,List,Not reported,550,partial,Not specified,1,Not provided,1,Not Reported,1
-36779485,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",552,partial,Not specified,0,Pol,0,Not Reported,0
+36779485,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",552,partial,Not specified,0,Pol,1,Not Reported,0
 36779485,10,What method was used for sequencing?,List,Not reported,553,partial,Not specified,1,Not provided,1,Not Reported,1
 36779485,11,What type of samples were sequenced?,List,Plasma,554,partial,Not specified,0,Not provided,0,Clinical Samples,0
 36779485,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI",558,partial,NNRTI,1,"NRTI,NNRTI",1,"NRTI, NNRTI",1
@@ -2212,7 +2212,7 @@
 36851704,7,From what years were the sequenced samples obtained?,List,2018-2019,582,partial,2018-2019,1,2018-2019,1,2018-2019,1
 36851704,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",584,partial,"Protease, reverse transcriptase, integrase",1,"Protease, reverse transcriptase, and integrase",1,"Protease, reverse transcriptase, and integrase",1
 36851704,10,What method was used for sequencing?,List,Sanger sequencing,585,partial,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
-36851704,11,What type of samples were sequenced?,List,Whole Blood,586,partial,Plasma,0,Plasma,0,Plasma,0
+36851704,11,What type of samples were sequenced?,List,Whole Blood,586,partial,Plasma,1,Plasma,1,Plasma,1
 36851704,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI, PI, INSTI",590,partial,"NRTIs, NNRTIs, PIs, Integrase Inhibitors",1,"NRTI, NNRTI, PI/r, INSTI",1,"NRTIs, NNRTIs, PIs, Integrase Inhibitors",1
 36851704,16,Which drugs were received by individuals in the study before sample sequencing?,List,Not reported,591,partial,Data not provided,1,"EFV, NVP, TDF, FTC, 3TC, ATV/r, LPV/r, DTG, DRV/r, RAL",0,"ABACAVIR,DDD,EFAVIRENZ, EMTRICITABINE, LAMIVUDINE, NEVIRAPINE, RALTEGRAVIR, TENOFOVIR DISOPROXIL, ZIDOVUDINE",0
 36851760,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,OQ435656-OQ435729,595,partial,OQ435656-OQ435729,1,OQ435656-OQ435729,1,OQ435656-OQ435729,1
@@ -2243,7 +2243,7 @@
 36961945,6,From which countries were the sequenced samples obtained?,List,USA,645,partial,United States,1,United States,1,United States,1
 36961945,7,From what years were the sequenced samples obtained?,List,2005-2020,646,partial,2005-2020,1,2005 to 2020,1,2005 to 2020,1
 36961945,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",648,partial,"PR, RT",1,"PR, RT, IN",1,"PR, RT, IN",1
-36961945,10,What method was used for sequencing?,List,Illumina sequencing,649,partial,"NGS, bulk genotyping",0,Next-Generation Sequencing (NGS),1,Next-generation sequencing,1
+36961945,10,What method was used for sequencing?,List,Illumina sequencing,649,partial,"NGS, bulk genotyping",1,Next-Generation Sequencing (NGS),1,Next-generation sequencing,1
 36961945,11,What type of samples were sequenced?,List,"Plasma, PBMC",650,partial,"Plasma, PBMCs",1,"Blood plasma, PBMC",1,"Blood plasma, PBMC",1
 36961945,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,654,partial,NRTIs,0,,1,"NRTIs, NNRTIs, PIs",0
 36961945,16,Which drugs were received by individuals in the study before sample sequencing?,List,Not reported,655,partial,"3TC, FTC",0,,1,No evidence,1
@@ -2268,7 +2268,7 @@
 37017009,7,From what years were the sequenced samples obtained?,List,2017-2019,694,partial,2017 to 2019,1,2017-2019,1,2017-2019,1
 37017009,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",696,partial,"Pol, Protease, Reverse Transcriptase",1,Protease and RT,1,Protease and reverse transcriptase,1
 37017009,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",697,partial,Next-generation sequencing using the MiSeq platform.,0,Next-generation sequencing (NGS),0,Next-generation sequencing (NGS) and Sanger sequencing,1
-37017009,11,What type of samples were sequenced?,List,Whole Blood,698,partial,Blood plasma samples,0,Plasma,0,Blood,0
+37017009,11,What type of samples were sequenced?,List,Whole Blood,698,partial,Blood plasma samples,1,Plasma,1,Blood,1
 37017009,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI, PI",702,partial,"NRTIs, NNRTIs, PIs",1,"NRTIs, NNRTIs, PIs",1,"NRTIs, NNRTIs, PIs",1
 37017009,16,Which drugs were received by individuals in the study before sample sequencing?,List,"LPV, ATV, EFV, NVP, 3TC, ABC, AZT, FTC, D4T, TDF",703,partial,"Lopinavir, Atazanavir, Efavirenz, Nevirapine, Lamivudine, Abacavir, Zidovudine, Emtricitabine, Stavudine, Tenofovir",1,"Tenofovir, lamivudine, zidovudine, efavirenz, nevirapine, ritonavir-boosted lopinavir, ritonavir-boosted atazanavir, abacavir, emtricitabine, stavudine",1,"Lopinavir, atazanavir, efavirenz, nevirapine, lamivudine, abacavir, zidovudine, emtricitabine, stavudine, tenofovir",1
 37029656,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,707,partial,No,1,Not reported,1,Not reported,1
@@ -2276,13 +2276,13 @@
 37029656,7,From what years were the sequenced samples obtained?,List,2009-2019,710,partial,2009-2019,1,2009-2019,1,2009-2019,1
 37029656,9,Which HIV genes were reported to have been sequenced?,List,IN,712,partial,Integrase,1,HIV integrase gene,1,Not explicitly stated,0
 37029656,10,What method was used for sequencing?,List,Sanger sequencing,713,partial,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
-37029656,11,What type of samples were sequenced?,List,Plasma,714,partial,Blood,0,Plasma,1,Clinical samples,0
+37029656,11,What type of samples were sequenced?,List,Plasma,714,partial,Blood,1,Plasma,1,Clinical samples,0
 37029656,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,718,partial,,1,,1,,1
 37029656,16,Which drugs were received by individuals in the study before sample sequencing?,List,Not reported,719,partial,,1,,1,,1
 37039023,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,723,partial,NC_001802,0,The GenBank accession number for the HIV near full-length genome (NFLG) sequence is NC_001802.,0,NC_001802,0
 37039023,6,From which countries were the sequenced samples obtained?,List,Brazil,725,partial,Brazil,1,Brazil,1,Brazil,1
 37039023,7,From what years were the sequenced samples obtained?,List,2016-2018,726,partial,2016 to 2018,1,2016 to 2018,1,2016 to 2018,1
-37039023,9,Which HIV genes were reported to have been sequenced?,List,"NFLG, PR, RT, IN, Env",728,partial,Near full-length genome,1,Near full-length genome (NFLG),1,"Near full-length genome (NFLG), Protease, Reverse transcriptase, Integrase, Envelope.",1
+37039023,9,Which HIV genes were reported to have been sequenced?,List,"NFLG, PR, RT, IN, Env",728,partial,Near full-length genome,1,Near full-length genome (NFLG),0,"Near full-length genome (NFLG), Protease, Reverse transcriptase, Integrase, Envelope.",1
 37039023,10,What method was used for sequencing?,List,Illumina sequencing,729,partial,Illumina MiSeq platform with a paired-end 2×251 protocol,1,Illumina MiSeq platform,1,Illumina MiSeq platform,1
 37039023,11,What type of samples were sequenced?,List,PBMC,730,partial,Whole blood samples,0,Peripheral blood mononuclear cells (PBMCs),1,Peripheral blood mononuclear cells (PBMCs),1
 37039023,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI",734,partial,"NRTIs, NNRTIs, PIs",1,"NRTI, NNRTI",1,"NRTI, NNRTI, PI",1
@@ -2324,7 +2324,7 @@
 37104815,7,From what years were the sequenced samples obtained?,List,2017-2019,806,partial,2017-2019,1,2017-2019,1,From 2017 to 2019,1
 37104815,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",808,partial,"RT, PR, INT",1,"RT, PR, INT",1,"RT, PR, IN",1
 37104815,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",809,partial,Sanger and ultra-deep sequencing (UDS),0,Sanger and ultra-deep sequencing (UDS),0,Sanger sequencing and ultra-deep sequencing (UDS) using Illumina technology,1
-37104815,11,What type of samples were sequenced?,List,"Whole Blood, Semen",810,partial,Plasma and semen samples,0,"HIV-1 total DNA, blood plasma, semen",0,"HIV DNA from blood, RNA from plasma",0
+37104815,11,What type of samples were sequenced?,List,"Whole Blood, Semen",810,partial,Plasma and semen samples,1,"HIV-1 total DNA, blood plasma, semen",1,"HIV DNA from blood, RNA from plasma",0
 37104815,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI, PI, INSTI",814,partial,"INSTIs, NNRTIs, PIs",1,"NRTI, INSTI, PI",1,"NRTIs, NNRTIs, PIs, INSTIs",1
 37104815,16,Which drugs were received by individuals in the study before sample sequencing?,List,"TDF, FTC, ABC, 3TC",815,partial,"Tenofovir/emtricitabine, Abacavir/Lamivudine",1,"Tenofovir (TDF), Emtricitabine (FTC), Maraviroc, Ritonavir, Lopinavir, Abacavir, Lamivudine, Efavirenz, Rilpivirine, Dolutegravir, Cabotegravir",1,"Tenofovir/emtricitabine, tenofovir alafenamide/emtricitabine, abacavir/lamivudine, rilpivirine, efavirenz, elvitegravir, dolutegravir, integrase inhibitors",1
 37112971,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,819,partial,K03455,0,The GenBank accession number for HIV isolates is K03455.,0,K03455,0
@@ -2339,7 +2339,7 @@
 37147875,6,From which countries were the sequenced samples obtained?,List,France,837,partial,France,1,France,1,France,1
 37147875,7,From what years were the sequenced samples obtained?,List,2022,838,partial,2022,1,2022,1,2022,1
 37147875,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",840,partial,"RT, protease, integrase",1,"Reverse transcriptase, protease, integrase",1,"RT, protease, integrase",1
-37147875,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",841,partial,Sanger sequencing and next-generation sequencing,1,Sanger-based sequencing and next-generation sequencing,1,Sanger sequencing and NGS,0
+37147875,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",841,partial,Sanger sequencing and next-generation sequencing,1,Sanger-based sequencing and next-generation sequencing,1,Sanger sequencing and NGS,1
 37147875,11,What type of samples were sequenced?,List,Plasma,842,partial,Plasma,1,Plasma,1,Plasma,1
 37147875,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,846,partial,NRTIs and INSTIs,0,"NRTI, integrase inhibitor",0,"NRTI, NNRTI, II",0
 37147875,16,Which drugs were received by individuals in the study before sample sequencing?,List,Not reported,847,partial,"Tenofovir (TDF), Emtricitabine (FTC), Dolutegravir",0,"Emtricitabine, tenofovir disoproxil fumarate, dolutegravir",0,"TDF, FTC, DTG",0
@@ -2354,15 +2354,15 @@
 37279764,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,"MW947591–MW957968, OP058117–OP058658",867,partial,"MW947591-MW957968, OP058117-OP058658",1,"MW947591–MW957968, OP058117–OP058658",1,"MW947591–MW957968, OP058117–OP058658",1
 37279764,6,From which countries were the sequenced samples obtained?,List,China,869,partial,China,1,China,1,China,1
 37279764,7,From what years were the sequenced samples obtained?,List,2011-2019,870,partial,2011-2019,1,2011 to 2019,1,2011 to 2019,1
-37279764,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",872,partial,partial pol gene,0,pol,0,Partial pol gene,0
+37279764,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",872,partial,partial pol gene,0,pol,1,Partial pol gene,0
 37279764,10,What method was used for sequencing?,List,Not reported,873,partial,Not specified,1,Not specified,1,Not specified,1
-37279764,11,What type of samples were sequenced?,List,Whole Blood,874,partial,Blood,0,Blood,0,Blood samples,0
+37279764,11,What type of samples were sequenced?,List,Whole Blood,874,partial,Blood,1,Blood,1,Blood samples,1
 37279764,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,878,partial,none,1,,1,,1
 37279764,16,Which drugs were received by individuals in the study before sample sequencing?,List,Not reported,879,partial,none,1,,1,,1
 37327289,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,LC723952-LC724015,883,partial,LC723952-LC724015,1,LC723952-LC724015,1,LC723952-LC724015,1
 37327289,6,From which countries were the sequenced samples obtained?,List,Kenya,885,partial,Kenya,1,Kenya,1,Kenya,1
 37327289,7,From what years were the sequenced samples obtained?,List,2020-2021,886,partial,2020-2021,1,2020-2021,1,2020-2021,1
-37327289,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",888,partial,pol,0,pol gene,0,pol,0
+37327289,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",888,partial,pol,1,pol gene,1,pol,1
 37327289,10,What method was used for sequencing?,List,Sanger sequencing,889,partial,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 37327289,11,What type of samples were sequenced?,List,Plasma,890,partial,Plasma,1,Plasma samples,1,Plasma,1
 37327289,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,894,partial,,1,,1,,1
@@ -2386,15 +2386,15 @@
 37376649,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,931,partial,No accession numbers provided,1,Not applicable,1,The paper does not provide any GenBank accession numbers.,1
 37376649,6,From which countries were the sequenced samples obtained?,List,Not reported,933,partial,Not listed,0,Not specified,1,The paper does not specify the countries from which the samples were obtained.,0
 37376649,7,From what years were the sequenced samples obtained?,List,Not reported,934,partial,Not listed,0,Not specified,1,The paper does not specify the years from which the sequenced samples were obtained.,0
-37376649,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",936,partial,HIV-1 polymerase region,0,Pol gene,0,The HIV-1 polymerase region was sequenced.,0
+37376649,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",936,partial,HIV-1 polymerase region,0,Pol gene,1,The HIV-1 polymerase region was sequenced.,0
 37376649,10,What method was used for sequencing?,List,Illumina sequencing,937,partial,Next-generation sequencing (NGS),1,Next-generation sequencing (NGS),1,Next-generation sequencing (NGS) was used for sequencing.,1
 37376649,11,What type of samples were sequenced?,List,Whole Blood,938,partial,Whole blood samples,1,Whole blood samples,1,Whole blood samples were sequenced.,1
 37376649,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, INSTI",942,partial,"NRTI, INSTI",1,"NRTI, NNRTI, PI, INSTI",1,"NRTI, NNRTI, PI, INSTI",1
-37376649,16,Which drugs were received by individuals in the study before sample sequencing?,List,"Lamivudine (3TC), Tenofovir (TAF), Dolutegravir (DTG)",943,partial,"Tenofovir alafenamide, lamivudine, dolutegravir",1,Not specified,0,"DTG, 3TC, TAF",1
+37376649,16,Which drugs were received by individuals in the study before sample sequencing?,List,"Lamivudine (3TC), Tenofovir (TAF), Dolutegravir (DTG)",943,partial,"Tenofovir alafenamide, lamivudine, dolutegravir",0,Not specified,0,"DTG, 3TC, TAF",0
 37381002,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,947,partial,No,1,No accession number provided,1,Not reported,1
 37381002,6,From which countries were the sequenced samples obtained?,List,China,949,partial,China,1,China,1,China,1
 37381002,7,From what years were the sequenced samples obtained?,List,2017-2020,950,partial,2017-2020,1,2017 to 2020,1,2017 to 2020,1
-37381002,9,Which HIV genes were reported to have been sequenced?,List,"NFLG, PR, RT, IN, Pol",952,partial,"Pol gene, near full-length genomes",0,Pol gene,0,"Pol gene, near full-length genomes",0
+37381002,9,Which HIV genes were reported to have been sequenced?,List,"NFLG, PR, RT, IN, Pol",952,partial,"Pol gene, near full-length genomes",1,Pol gene,1,"Pol gene, near full-length genomes",1
 37381002,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",953,partial,Sanger sequencing and next-generation sequencing,1,Sanger sequencing and Next Generation Sequencing,1,"Sanger sequencing, Next Generation Sequencing",1
 37381002,11,What type of samples were sequenced?,List,Plasma,954,partial,Plasma samples,1,Plasma and blood samples,1,Blood plasma samples,1
 37381002,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,958,partial,"NRTIs, NNRTIs, and PIs",0,"NRTIs, NNRTIs, PIs",0,"NRTIs, NNRTIs, PIs",0
@@ -2402,7 +2402,7 @@
 37439411,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,963,partial,No information,1,Not reported,1,No,1
 37439411,6,From which countries were the sequenced samples obtained?,List,Italy,965,partial,Italy,1,Italy,1,Italy,1
 37439411,7,From what years were the sequenced samples obtained?,List,2000-2020,966,partial,2000 to 2020,1,2000 to 2020,1,2000 to 2020,1
-37439411,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",968,partial,HIV-1 RNA protease/reverse transcriptase sequences,1,Protease/reverse transcriptase,1,Protease/reverse transcriptase,1
+37439411,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",968,partial,HIV-1 RNA protease/reverse transcriptase sequences,0,Protease/reverse transcriptase,1,Protease/reverse transcriptase,1
 37439411,10,What method was used for sequencing?,List,Not reported,969,partial,Not specified,1,Not reported,1,Not specified,1
 37439411,11,What type of samples were sequenced?,List,Plasma,970,partial,HIV-1 RNA,0,Clinical samples,0,Plasma samples,1
 37439411,15,Which drug classes were received by individuals in the study before sample sequencing?,List,NNRTI,974,partial,Not specified,0,Not reported,0,Nonnucleoside reverse transcriptase inhibitors (NNRTIs),1
@@ -2410,15 +2410,15 @@
 37495103,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,979,partial,,1,No accession numbers provided,1,The paper does not provide any GenBank accession numbers for sequenced HIV isolates.,1
 37495103,6,From which countries were the sequenced samples obtained?,List,Russia,981,partial,Russia,1,Russia,1,Russia,1
 37495103,7,From what years were the sequenced samples obtained?,List,2018-2022,982,partial,2018 to 2022,1,2018–2022,1,2018 to 2022,1
-37495103,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",984,partial,HIV-1 pol gene,0,Pol gene,0,pol,0
+37495103,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",984,partial,HIV-1 pol gene,0,Pol gene,1,pol,1
 37495103,10,What method was used for sequencing?,List,Sanger sequencing,985,partial,ABI PRISM 3130xl DNA Analyser,0,ABI PRISM 3130xl DNA Analyser,0,ABI PRISM 3130xl DNA Analyser,0
 37495103,11,What type of samples were sequenced?,List,Plasma,986,partial,Plasma,1,Plasma,1,Plasma,1
 37495103,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI, PI, INSTI",990,partial,"NRTIs, NNRTIs, PIs, INSTIs",1,"NRTI, NNRTI, PI, INSTI",1,"NRTI, NNRTI, PI, INSTI",1
-37495103,16,Which drugs were received by individuals in the study before sample sequencing?,List,"TDF, FTC, EFV, ABC, 3TC, DTG, LPV, Elsulfavirine, RAL, DRV, AZT",991,partial,"Tenofovir (TDF), Lamivudine (3TC), Efavirenz (EFV), Abacavir (ABC), Dolutegravir (DTG), Lopinavir (LPV/r), Raltegravir (RAL), Datunavir (DRV/r), Elsulfavirine (ESV)",1,"TDF, 3TC, ABC, EFV, DTG, LPV/r, ESV, RAL, DRV",1,"DRV, DTG, EFV, LPV/r, TDF, 3TC, RAL",1
+37495103,16,Which drugs were received by individuals in the study before sample sequencing?,List,"TDF, FTC, EFV, ABC, 3TC, DTG, LPV, Elsulfavirine, RAL, DRV, AZT",991,partial,"Tenofovir (TDF), Lamivudine (3TC), Efavirenz (EFV), Abacavir (ABC), Dolutegravir (DTG), Lopinavir (LPV/r), Raltegravir (RAL), Datunavir (DRV/r), Elsulfavirine (ESV)",1,"TDF, 3TC, ABC, EFV, DTG, LPV/r, ESV, RAL, DRV",1,"DRV, DTG, EFV, LPV/r, TDF, 3TC, RAL",0
 37498738,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,995,partial,K03455,0,K03455,0,K03455,0
 37498738,6,From which countries were the sequenced samples obtained?,List,Switzerland,997,partial,Switzerland,1,Switzerland,1,Switzerland,1
 37498738,7,From what years were the sequenced samples obtained?,List,Not reported,998,partial,2010,0,Not specified,1,Not reported,1
-37498738,9,Which HIV genes were reported to have been sequenced?,List,NFLG,1000,partial,"gag, pol, env",0,"gag, pol, env",0,"gag, pol, env",0
+37498738,9,Which HIV genes were reported to have been sequenced?,List,NFLG,1000,partial,"gag, pol, env",1,"gag, pol, env",1,"gag, pol, env",1
 37498738,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",1001,partial,Next-generation sequencing (NGS),0,Next-generation sequencing (NGS),0,Next-generation sequencing,0
 37498738,11,What type of samples were sequenced?,List,PBMC,1002,partial,Peripheral blood mononuclear cells (PBMCs),1,Peripheral blood mononuclear cells (PBMCs),1,Peripheral blood mononuclear cells (PBMCs),1
 37498738,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, INSTI",1006,partial,"NRTIs, NNRTIs, PIs, IIs",0,"NRTIs, NNRTIs, PIs, INIs",0,"NRTIs, NNRTIs, PIs, Integrase Inhibitors",0
@@ -2426,15 +2426,15 @@
 37515095,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1011,partial,Not available,1,Not reported,1,Not reported,1
 37515095,6,From which countries were the sequenced samples obtained?,List,Kazakhstan,1013,partial,Kazakhstan,1,Kazakhstan,1,Kazakhstan,1
 37515095,7,From what years were the sequenced samples obtained?,List,2017-2020,1014,partial,2017 to 2020,1,2017 to 2020,1,2017-2020,1
-37515095,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1016,partial,pol,0,Partial HIV-1 pol gene sequences covering protease and the 5′-end of reverse transcriptase,1,Partial pol gene (covering protease and the 5′-end of reverse transcriptase),1
+37515095,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1016,partial,pol,1,Partial HIV-1 pol gene sequences covering protease and the 5′-end of reverse transcriptase,1,Partial pol gene (covering protease and the 5′-end of reverse transcriptase),1
 37515095,10,What method was used for sequencing?,List,Sanger sequencing,1017,partial,Sanger sequencing with Applied Biosystems Genetic Analyzer 3130,1,Sanger sequencing,1,RT-PCR followed by sequencing using AmpliSens® HIV-Resist-Seq and ABI 3130.,0
-37515095,11,What type of samples were sequenced?,List,Whole Blood,1018,partial,Blood samples,0,Blood samples,0,Blood samples,0
+37515095,11,What type of samples were sequenced?,List,Whole Blood,1018,partial,Blood samples,1,Blood samples,1,Blood samples,1
 37515095,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI",1022,partial,Not explicitly stated,0,"NRTI, NNRTI",1,"NRTIs, NNRTIs, PIs, INSTIs",1
 37515095,16,Which drugs were received by individuals in the study before sample sequencing?,List,"3TC, ABC, AZT, D4T, DDI, FTC, TDF, ETR, EFV, NVP, RPV",1023,partial,Not explicitly stated,0,"3TC, ABC, AZT, D4T, DDI, FTC, TDF, ETR, EFV, NVP, RPV, DRV/r, LPV/r",1,"3TC, ABC, AZT, D4T, DDI, FTC, TDF, ETR, EFV, NVP, RPV, DRV/r, LPV/r, DTG",1
 37515146,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,"MK702015-MK702057, MK867695-MK867757, MK995397-MK995457",1027,partial,"GenBank MK702015-MK702057, MK867695-MK867757, MK995397-MK995457",1,"GenBank MK702015-MK702057, MK867695-MK867757, and MK995397-MK995457",1,"MK702015-MK702057, MK867695-MK867757, and MK995397-MK995457",1
 37515146,6,From which countries were the sequenced samples obtained?,List,Cameroon,1029,partial,Cameroon,1,Cameroon,1,Cameroon,1
 37515146,7,From what years were the sequenced samples obtained?,List,2014-2019,1030,partial,2014 to 2019,1,2014 to 2019,1,2014 to 2019,1
-37515146,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1032,partial,HIV-1 protease and reverse transcriptase (pol gene),1,Protease and reverse transcriptase,0,Protease and Reverse Transcriptase,0
+37515146,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1032,partial,HIV-1 protease and reverse transcriptase (pol gene),0,Protease and reverse transcriptase,1,Protease and Reverse Transcriptase,1
 37515146,10,What method was used for sequencing?,List,Sanger sequencing,1033,partial,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 37515146,11,What type of samples were sequenced?,List,Plasma,1034,partial,Plasma samples,1,Plasma,1,Plasma,1
 37515146,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1038,partial,None (the patients were treatment naïve),1,,1,,1
@@ -2474,7 +2474,7 @@
 37546367,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,OQ886077 - OQ888150,1107,partial,OQ886077 - OQ888150,1,OQ886077 - OQ888150,1,OQ886077 - OQ888150,1
 37546367,6,From which countries were the sequenced samples obtained?,List,China,1109,partial,China,1,China,1,China,1
 37546367,7,From what years were the sequenced samples obtained?,List,2011-2022,1110,partial,2011 to 2022,1,2011-2022,1,2011-2022,1
-37546367,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1112,partial,Partial pol gene,0,pol,0,pol,0
+37546367,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1112,partial,Partial pol gene,0,pol,1,pol,1
 37546367,10,What method was used for sequencing?,List,Sanger sequencing,1113,partial,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 37546367,11,What type of samples were sequenced?,List,Plasma,1114,partial,Plasma samples,1,Plasma,1,Plasma,1
 37546367,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI, PI",1118,partial,"NRTIs, NNRTIs, PIs",1,"NRTI, NNRTI, PI",1,"NRTI, NNRTI, PI",1
@@ -2506,7 +2506,7 @@
 37585352,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1171,partial,No GenBank accession number provided,1,No accession numbers provided,1,,1
 37585352,6,From which countries were the sequenced samples obtained?,List,Botswana,1173,partial,Botswana,1,Botswana,1,Botswana,1
 37585352,7,From what years were the sequenced samples obtained?,List,2013-2018,1174,partial,2013-2018,1,2013 to 2018,1,2013 to 2018,1
-37585352,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1176,partial,HIV-1 pol,0,Pol,0,HIV-1 pol,0
+37585352,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1176,partial,HIV-1 pol,0,Pol,1,HIV-1 pol,0
 37585352,10,What method was used for sequencing?,List,Illumina sequencing,1177,partial,Next-generation sequencing (NGS),1,Illumina MiSeq and HiSeq platforms,1,Next-generation sequencing (NGS) using Illumina MiSeq and HiSeq platforms,1
 37585352,11,What type of samples were sequenced?,List,PBMC,1178,partial,Proviral DNA,1,Proviral DNA,1,Proviral DNA,1
 37585352,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI",1182,partial,"NRTIs, NNRTIs",1,"NRTI, NNRTI",1,"NRTI, NNRTI",1
@@ -2514,7 +2514,7 @@
 37593123,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1187,partial,,1,Not provided,1,Not reported,1
 37593123,6,From which countries were the sequenced samples obtained?,List,China,1189,partial,China,1,China,1,China,1
 37593123,7,From what years were the sequenced samples obtained?,List,2004-2022,1190,partial,2004 to 2022,1,2004 to 2022,1,2004 to 2022,1
-37593123,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1192,partial,pol gene.,0,Pol gene,0,pol gene,0
+37593123,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1192,partial,pol gene.,1,Pol gene,1,pol gene,1
 37593123,10,What method was used for sequencing?,List,Not reported,1193,partial,Not mentioned,1,Not provided,1,Not reported,1
 37593123,11,What type of samples were sequenced?,List,Plasma,1194,partial,Not mentioned,0,Not provided,0,Not reported,0
 37593123,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1198,partial,,1,,1,,1
@@ -2522,19 +2522,19 @@
 37626789,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1203,partial,No Genbank accession numbers,1,Not reported,1,,1
 37626789,6,From which countries were the sequenced samples obtained?,List,Ethiopia,1205,partial,Ethiopia,1,Ethiopia,1,Ethiopia,1
 37626789,7,From what years were the sequenced samples obtained?,List,2007-2019,1206,partial,2017-2019,0,2017 to 2019,0,2017-2019,0
-37626789,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1208,partial,Pol,0,pol gene,0,pol,0
+37626789,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1208,partial,Pol,1,pol gene,1,pol,1
 37626789,10,What method was used for sequencing?,List,Sanger sequencing,1209,partial,ABI-3730 DNA genetic analyzer,0,ABI-3730 DNA genetic analyzer,0,ABI-3730 DNA genetic analyzer,0
-37626789,11,What type of samples were sequenced?,List,Plasma,1210,partial,Blood,0,Plasma,1,Plasma,1
+37626789,11,What type of samples were sequenced?,List,Plasma,1210,partial,Blood,1,Plasma,1,Plasma,1
 37626789,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI",1214,partial,"NRTIs, NNRTIs",1,"NRTI, NNRTI",1,"NRTIs, NNRTIs",1
 37626789,16,Which drugs were received by individuals in the study before sample sequencing?,List,"AZT, 3TC, NVP, D4T, EFV, ABC, EFV, TDF",1215,partial,"AZT, 3TC, D4T, NVP, EFV",1,"Zidovudine (AZT), Lamivudine (3TC), Nevirapine (NVP), Stavudine (D4T), Efavirenz (EFV), Abacavir (ABC), Tenofovir (TDF)",1,"Zidovudine (AZT), Lamivudine (3TC), Nevirapine (NVP), Stavudine (D4T), Efavirenz (EFV), Abacavir (ABC), Tenofovir (TDF)",1
 37632026,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,MK580543-MK580618; JF273935-JF273965; JQ796152-JQ796169; MK867721-MK867755; OQ985493-OQ985958,1219,partial,"MK580543-MK580618, JF273935-JF273965, JQ796152-JQ796169, MK867721-MK867755, OQ985493-OQ985958",1,"MK580543-MK580618, JF273935-JF273965, JQ796152-JQ796169, MK867721-MK867755, OQ985493-OQ985958",1,"MK580543-MK580618, JF273935-JF273965, JQ796152-JQ796169, MK867721-MK867755, OQ985493-OQ985958",1
 37632026,6,From which countries were the sequenced samples obtained?,List,Cameroon,1221,partial,Cameroon,1,Cameroon,1,Cameroon,1
 37632026,7,From what years were the sequenced samples obtained?,List,2011-2019,1222,partial,2011 to 2019,1,2011 to 2019,1,2011 to 2019,1
-37632026,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1224,partial,pol gene (protease and reverse transcriptase regions),1,protease and reverse-transcriptase regions,0,HIV-1 pol-gene (protease and reverse-transcriptase regions),1
+37632026,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1224,partial,pol gene (protease and reverse transcriptase regions),0,protease and reverse-transcriptase regions,0,HIV-1 pol-gene (protease and reverse-transcriptase regions),0
 37632026,10,What method was used for sequencing?,List,Sanger sequencing,1225,partial,Applied Biosystems 3500 genetic analyzer,0,Sanger sequencing,1,Applied Biosystems 3500 genetic analyzer,0
 37632026,11,What type of samples were sequenced?,List,Plasma,1226,partial,Plasma samples,1,Plasma samples,1,Plasma samples,1
 37632026,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI, PI",1230,partial,"NRTI, NNRTI, PI",1,"NRTI, NNRTI, PI/r",1,"NRTI, NNRTI, PI/r",1
-37632026,16,Which drugs were received by individuals in the study before sample sequencing?,List,"AZT, D4T, XTC, TDF, ATV, LPV, DRV",1231,partial,"TDF, AZT, 3TC, ABC, ATV/r, LPV/r, DRV/r",1,"TDF, 3TC, EFV, NVP, ATV, DRV",0,"Tenofovir, Lamivudine, Dolutegravir, Zidovudine, Lamivudine/Emtricitabine, Abacavir, Efavirenz, Nevirapine, Atazanavir, Lopinavir, Darunavir",1
+37632026,16,Which drugs were received by individuals in the study before sample sequencing?,List,"AZT, D4T, XTC, TDF, ATV, LPV, DRV",1231,partial,"TDF, AZT, 3TC, ABC, ATV/r, LPV/r, DRV/r",1,"TDF, 3TC, EFV, NVP, ATV, DRV",0,"Tenofovir, Lamivudine, Dolutegravir, Zidovudine, Lamivudine/Emtricitabine, Abacavir, Efavirenz, Nevirapine, Atazanavir, Lopinavir, Darunavir",0
 37632071,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1235,partial,,1,Not applicable,1,,1
 37632071,6,From which countries were the sequenced samples obtained?,List,Not reported,1237,partial,,1,Not applicable,1,,1
 37632071,7,From what years were the sequenced samples obtained?,List,Not reported,1238,partial,,1,Not applicable,1,,1
@@ -2562,7 +2562,7 @@
 37674678,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1283,partial,The paper does not provide specific GenBank accession numbers for the sequenced HIV isolates.,1,Not reported,1,Not reported,1
 37674678,6,From which countries were the sequenced samples obtained?,List,China,1285,partial,China,1,China,1,China,1
 37674678,7,From what years were the sequenced samples obtained?,List,2019 to 2021,1286,partial,2019 to 2021,1,2019 to 2021,1,2019 to 2021,1
-37674678,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1288,partial,pol,0,pol gene,0,HIV-1 pol gene,0
+37674678,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1288,partial,pol,1,pol gene,1,HIV-1 pol gene,0
 37674678,10,What method was used for sequencing?,List,Sanger sequencing,1289,partial,Automated DNA sequencing using ABI 3730XL,0,Automated DNA sequencing using ABI 3730XL,0,Sanger sequencing,1
 37674678,11,What type of samples were sequenced?,List,Plasma,1290,partial,Plasma samples,1,Plasma samples,1,Plasma samples,1
 37674678,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1294,partial,All individuals were ART-naïve,0,,1,,1
@@ -2594,7 +2594,7 @@
 37775947,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1347,partial,No GenBank accession numbers were provided.,1,Not reported,1,Not reported,1
 37775947,6,From which countries were the sequenced samples obtained?,List,"South America, Africa, USA, Asia, Australia, Europe",1349,partial,Countries included in the START study were not specified.,0,Not reported,0,Countries were not reported,0
 37775947,7,From what years were the sequenced samples obtained?,List,2009-2013,1350,partial,2009 - 2013,1,2009-2013,1,2009-2013,1
-37775947,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1352,partial,Pol gene,0,Pol,0,"PR, RT, and IN",1
+37775947,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1352,partial,Pol gene,1,Pol,1,"PR, RT, and IN",1
 37775947,10,What method was used for sequencing?,List,Illumina sequencing,1353,partial,Illumina MiSeq,1,Next-generation sequencing (NGS) using Illumina MiSeq,1,NGS (illumina MiSeq),1
 37775947,11,What type of samples were sequenced?,List,Plasma,1354,partial,Plasma samples,1,Plasma,1,Plasma samples,1
 37775947,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1358,partial,,1,"None, all participants were ART-naïve",1,,1
@@ -2610,7 +2610,7 @@
 37823653,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1379,partial,,1,,1,No,1
 37823653,6,From which countries were the sequenced samples obtained?,List,Botswana,1381,partial,Botswana,1,Botswana,1,Botswana,1
 37823653,7,From what years were the sequenced samples obtained?,List,2013-2018,1382,partial,2013 - 2018,1,2013 to 2018,1,2013-2018,1
-37823653,9,Which HIV genes were reported to have been sequenced?,List,"NFLG, gp120",1384,partial,gp120,0,gp120,0,gp120,0
+37823653,9,Which HIV genes were reported to have been sequenced?,List,"NFLG, gp120",1384,partial,gp120,1,gp120,1,gp120,1
 37823653,10,What method was used for sequencing?,List,Illumina sequencing,1385,partial,Next-generation sequencing (NGS),1,Next-generation sequencing (NGS),1,NGS,1
 37823653,11,What type of samples were sequenced?,List,PBMC,1386,partial,Proviral DNA and plasma samples,1,Proviral DNA,1,Proviral DNA,1
 37823653,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI",1390,partial,"NRTIs, NNRTIs, INSTIs",1,"NRTI, NNRTI",1,"NRTIs, NNRTIs, PIs, and INSTIs",1
@@ -2618,7 +2618,7 @@
 37872202,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1395,partial,,1,Not Applicable,1,,1
 37872202,6,From which countries were the sequenced samples obtained?,List,Not reported,1397,partial,,1,Not Applicable,1,,1
 37872202,7,From what years were the sequenced samples obtained?,List,Not reported,1398,partial,,1,Not Applicable,1,,1
-37872202,9,Which HIV genes were reported to have been sequenced?,List,gp120,1400,partial,,0,Not Applicable,0,env,0
+37872202,9,Which HIV genes were reported to have been sequenced?,List,gp120,1400,partial,,0,Not Applicable,0,env,1
 37872202,10,What method was used for sequencing?,List,Not reported,1401,partial,,1,Not Applicable,1,Not applicable,1
 37872202,11,What type of samples were sequenced?,List,Not reported,1402,partial,,1,Not Applicable,1,,1
 37872202,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1406,partial,,1,Not Applicable,1,,1
@@ -2642,7 +2642,7 @@
 37896785,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,OQ215322-OQ215382,1443,partial,OQ215322-OQ215382,1,OQ215322-OQ215382,1,OQ215322-OQ215382,1
 37896785,6,From which countries were the sequenced samples obtained?,List,Vietnam,1445,partial,Vietnam,1,Vietnam,1,Vietnam,1
 37896785,7,From what years were the sequenced samples obtained?,List,2021,1446,partial,2021,1,2021,1,2021,1
-37896785,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1448,partial,pol gene,0,pol,0,pol gene region (protease and part of reverse transcriptase),1
+37896785,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1448,partial,pol gene,1,pol,1,pol gene region (protease and part of reverse transcriptase),1
 37896785,10,What method was used for sequencing?,List,Sanger sequencing,1449,partial,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 37896785,11,What type of samples were sequenced?,List,Plasma,1450,partial,"Plasma, Blood",1,Blood plasma,1,Blood plasma,1
 37896785,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1454,partial,"NRTIs, NNRTIs, PIs",0,"NRTI, NNRTI, PI",0,"NRTIs, NRTI, PI-NNRTI",0
@@ -2666,7 +2666,7 @@
 37914679,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1491,partial,No,1,No,1,No GenBank accession numbers provided,1
 37914679,6,From which countries were the sequenced samples obtained?,List,China,1493,partial,China,1,China,1,China,1
 37914679,7,From what years were the sequenced samples obtained?,List,2018 to 2020,1494,partial,2018-2020,1,2018 to 2020,1,2018 to 2020,1
-37914679,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",1496,partial,Not specified,0,Pol gene,0,Pol gene,0
+37914679,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN",1496,partial,Not specified,0,Pol gene,1,Pol gene,1
 37914679,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",1497,partial,MiSeq second-generation sequencing platform,0,MiSeq second-generation sequencing platform,0,"MiSeq second-generation sequencing platform, conventional Sanger sequencing",1
 37914679,11,What type of samples were sequenced?,List,Plasma,1498,partial,Plasma samples,1,Plasma,1,Plasma,1
 37914679,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1502,partial,"NRTI, NNRTI, PI, INSTI",0,"NRTI, NNRTI, PI, I",0,"NRTI, NNRTI, PI",0
@@ -2676,7 +2676,7 @@
 37920909,7,From what years were the sequenced samples obtained?,List,2020-2023,1510,partial,2020-2023,1,2020-2023,1,2020 to 2023,1
 37920909,9,Which HIV genes were reported to have been sequenced?,List,IN,1512,partial,Integrase gene,1,Integrase,1,Integrase,1
 37920909,10,What method was used for sequencing?,List,Sanger sequencing,1513,partial,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
-37920909,11,What type of samples were sequenced?,List,Whole Blood,1514,partial,Blood,0,Blood,0,Plasma,0
+37920909,11,What type of samples were sequenced?,List,Whole Blood,1514,partial,Blood,1,Blood,1,Plasma,1
 37920909,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1518,partial,,1,,1,,1
 37920909,16,Which drugs were received by individuals in the study before sample sequencing?,List,Not reported,1519,partial,,1,,1,,1
 37938856,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1523,partial,Not reported,1,No HIV sequences were reported.,1,Not provided,1
@@ -2706,7 +2706,7 @@
 37957382,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1571,partial,PRJNA973660,0,No data,1,The GenBank accession numbers are not provided in the text.,1
 37957382,6,From which countries were the sequenced samples obtained?,List,Not reported,1573,partial,Not mentioned,1,United States,0,The specific countries are not mentioned in the text.,1
 37957382,7,From what years were the sequenced samples obtained?,List,Not reported,1574,partial,Not mentioned,1,No data,1,The specific years are not mentioned in the text.,1
-37957382,9,Which HIV genes were reported to have been sequenced?,List,"Full genome, NFLG",1576,partial,HIV-1 pol-env region,0,Near-full-length proviruses and The sequnced plasma HIV-1 pol-env RNA,0,Near-full-length proviral sequences and HIV-1 pol-env RNA were sequenced.,0
+37957382,9,Which HIV genes were reported to have been sequenced?,List,"Full genome, NFLG",1576,partial,HIV-1 pol-env region,1,Near-full-length proviruses and The sequnced plasma HIV-1 pol-env RNA,1,Near-full-length proviral sequences and HIV-1 pol-env RNA were sequenced.,1
 37957382,10,What method was used for sequencing?,List,Illumina sequencing,1577,partial,MiSeq sequencing,1,MiSeq sequencing,1,Illumina MiSeq,1
 37957382,11,What type of samples were sequenced?,List,"Plasma, PBMC",1578,partial,Plasma and PBMC samples,1,Plasma RNA and PBMC DNA,1,Plasma and PBMC samples,1
 37957382,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, PI, INSTI",1582,partial,"NRTIs, NNRTIs, PIs, Integrase inhibitors",1,"NRTI, NNRTI, PI, IN",1,"NRTIs, NNRTIs, PIs, and In.",1
@@ -2724,13 +2724,13 @@
 37973713,7,From what years were the sequenced samples obtained?,List,2020-2022,1606,partial,2020-2022,1,2020 to 2022,1,2020-2022,1
 37973713,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1608,partial,"Protease, reverse transcriptase",1,Protease (PR) and Reverse Transcriptase (RT),1,Protease (PR) and Reverse Transcriptase (RT),1
 37973713,10,What method was used for sequencing?,List,Sanger sequencing,1609,partial,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
-37973713,11,What type of samples were sequenced?,List,Plasma,1610,partial,Blood,0,Plasma samples,1,Not specified,0
+37973713,11,What type of samples were sequenced?,List,Plasma,1610,partial,Blood,1,Plasma samples,1,Not specified,0
 37973713,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1614,partial,,1,,1,None received ARV drugs,1
 37973713,16,Which drugs were received by individuals in the study before sample sequencing?,List,Not reported,1615,partial,,1,,1,None received ARV drugs,1
 37976080,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1619,partial,No accession numbers were reported,1,,1,,1
 37976080,6,From which countries were the sequenced samples obtained?,List,China,1621,partial,China,1,China,1,China,1
 37976080,7,From what years were the sequenced samples obtained?,List,2022,1622,partial,2022,1,2022,1,2022,1
-37976080,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1624,partial,PR and partial RT regions,1,PR and partial RT regions,1,Protease and reverse transcriptase regions,1
+37976080,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1624,partial,PR and partial RT regions,1,PR and partial RT regions,1,Protease and reverse transcriptase regions,0
 37976080,10,What method was used for sequencing?,List,Sanger sequencing,1625,partial,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
 37976080,11,What type of samples were sequenced?,List,Plasma,1626,partial,Plasma samples,1,Plasma,1,Plasma samples,1
 37976080,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1630,partial,"NRTIs, NNRTIs",0,"NRTIs, NNRTIs, PIs",0,NRTI and NNRTI,0
@@ -2762,9 +2762,9 @@
 38020274,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1683,partial,,1,The paper did not provide GenBank accession numbers.,0,Not reported,1
 38020274,6,From which countries were the sequenced samples obtained?,List,Cameroon,1685,partial,Cameroon,1,Cameroon,1,Cameroon,1
 38020274,7,From what years were the sequenced samples obtained?,List,2018-2020,1686,partial,2018-2020,1,2018-2020,1,2018-2020,1
-38020274,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, In",1688,partial,HIV-1 polymerase and reverse transcriptase genes,0,pol and env genes,0,Reverse transcriptase and polymerase gene regions,0
+38020274,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, In",1688,partial,HIV-1 polymerase and reverse transcriptase genes,0,pol and env genes,1,Reverse transcriptase and polymerase gene regions,0
 38020274,10,What method was used for sequencing?,List,Not reported,1689,partial,Not specified,1,Not mentioned,1,Not specified,1
-38020274,11,What type of samples were sequenced?,List,Plasma,1690,partial,Blood samples,0,Plasma samples,1,Blood samples,0
+38020274,11,What type of samples were sequenced?,List,Plasma,1690,partial,Blood samples,1,Plasma samples,1,Blood samples,1
 38020274,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"RTI, PI",1694,partial,"NRTI, PI/r, INSTI",1,"NRTI-based, PI-based",1,"NRTIs, NNRTIs, PIs",1
 38020274,16,Which drugs were received by individuals in the study before sample sequencing?,List,Not reported,1695,partial,"TDF, 3TC, AZT, ABC, RAL, DRV, LPV/r, ATV/r",0,"Tenofovir, Lamivudine, Dolutegravir",0,"TDF, 3TC, AZT, ABC, FTC, NVP, EFV, LPV/r, ATV/r, DRV/r, DTG",0
 38022124,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1699,partial,No,1,Not applicable,1,No,1
@@ -2798,7 +2798,7 @@
 38058846,10,What method was used for sequencing?,List,Not reported,1753,partial,Not reported,1,Not specified,1,Not specified,1
 38058846,11,What type of samples were sequenced?,List,Not reported,1754,partial,Not reported,1,Not specified,1,Not specified,1
 38058846,15,Which drug classes were received by individuals in the study before sample sequencing?,List,"NRTI, NNRTI, PI, INSTI",1758,partial,"NRTIs, NNRTIs, PIs",1,"NRTI, NNRTI, PI, INSTI",1,"NRTIs, NNRTIs, PK integrase inhibitors",0
-38058846,16,Which drugs were received by individuals in the study before sample sequencing?,List,"3TC, ABC, LPV, AZT, DTG, FTC, TDF, DRV, EFV, NVP",1759,partial,"lamivudine/abacavir/lopinavir/ritonavir, tenofovir/emtricitabine/darunavir/ritonavir",0,"lamivudine, abacavir, lopinavir, ritonavir, zidovudine, dolutegravir, emtricitabine, tenofovir, nevirapine",1,"3TC, AZT, TDF, FTC, DRV/r, LPV/r, DTG.",0
+38058846,16,Which drugs were received by individuals in the study before sample sequencing?,List,"3TC, ABC, LPV, AZT, DTG, FTC, TDF, DRV, EFV, NVP",1759,partial,"lamivudine/abacavir/lopinavir/ritonavir, tenofovir/emtricitabine/darunavir/ritonavir",0,"lamivudine, abacavir, lopinavir, ritonavir, zidovudine, dolutegravir, emtricitabine, tenofovir, nevirapine",1,"3TC, AZT, TDF, FTC, DRV/r, LPV/r, DTG.",1
 38072961,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1763,partial,No,1,Not reported,1,Not reported,1
 38072961,6,From which countries were the sequenced samples obtained?,List,China,1765,partial,China,1,China,1,China,1
 38072961,7,From what years were the sequenced samples obtained?,List,2022,1766,partial,2022,1,2022,1,2022,1
@@ -2820,13 +2820,13 @@
 38140553,7,From what years were the sequenced samples obtained?,List,2011-2020,1798,partial,2011-2020,1,2011 to 2020,1,2011 to 2020,1
 38140553,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1800,partial,Protease and part of reverse transcriptase,0,HIV-1 protease (PR) and part of the reverse transcriptase (RT),0,HIV-1 protease and part of the reverse transcriptase.,0
 38140553,10,What method was used for sequencing?,List,Sanger sequencing,1801,partial,Sanger sequencing,1,Sanger sequencing,1,Sanger sequencing,1
-38140553,11,What type of samples were sequenced?,List,Plasma; PBMC; Whole Blood,1802,partial,"Plasma, PBMC, and whole blood samples",1,"Blood plasma, peripheral blood mononuclear cells (lymphocytes), and frozen whole blood",1,"Blood plasma, peripheral blood mononuclear cells, frozen whole blood",1
+38140553,11,What type of samples were sequenced?,List,Plasma; PBMC; Whole Blood,1802,partial,"Plasma, PBMC, and whole blood samples",1,"Blood plasma, peripheral blood mononuclear cells (lymphocytes), and frozen whole blood",0,"Blood plasma, peripheral blood mononuclear cells, frozen whole blood",0
 38140553,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1806,partial,"NRTIs, NNRTs, PIs",0,"NRTIs, NNRTIs, PIs",0,,1
 38140553,16,Which drugs were received by individuals in the study before sample sequencing?,List,Not reported,1807,partial,Not reported,1,Not Reported,1,,1
 38140649,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,"OR605755-OR606279, OR613869-OR613875",1811,partial,OR605755-OR606279 and OR613869-OR613875,1,OR605755-OR606279 and OR613869-OR613875,1,"OR605755-OR606279, OR613869-OR613875, E-MTAB-13563",1
 38140649,6,From which countries were the sequenced samples obtained?,List,Croatia,1813,partial,Croatia,1,Croatia,1,Croatia,1
 38140649,7,From what years were the sequenced samples obtained?,List,2019-2022,1814,partial,2019 to 2022,1,2019 to 2022,1,2019 to 2022,1
-38140649,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1816,partial,"HIV-1 protease, reverse transcriptase gene, and integrase gene",1,"Protease, reverse transcriptase, and integrase genes",1,"PR, RT, IN",1
+38140649,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT, IN, Pol",1816,partial,"HIV-1 protease, reverse transcriptase gene, and integrase gene",0,"Protease, reverse transcriptase, and integrase genes",1,"PR, RT, IN",1
 38140649,10,What method was used for sequencing?,List,"Sanger sequencing, Illumina sequencing",1817,partial,Sanger sequencing and Illumina sequencing,1,Sanger sequencing and Next Generation Sequencing,1,Sanger sequencing and deep sequencing (NGS),0
 38140649,11,What type of samples were sequenced?,List,Plasma,1818,partial,Patient plasma samples,1,Plasma samples,1,Plasma samples,1
 38140649,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1822,partial,,1,,1,,1
@@ -2858,7 +2858,7 @@
 38314093,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Not reported,1875,partial,No,1,Not reported,1,Not reported,1
 38314093,6,From which countries were the sequenced samples obtained?,List,China,1877,partial,China,1,China,1,China,1
 38314093,7,From what years were the sequenced samples obtained?,List,2008-2019,1878,partial,2018-2019,0,"Samples were collected from 2008 to 2019, and the sequenced samples were from 2018 to 2019",1,2008 to 2019,1
-38314093,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1880,partial,PR-RT gene,1,Protease and reverse transcriptase genes,1,PR-RT,1
+38314093,9,Which HIV genes were reported to have been sequenced?,List,"PR, RT",1880,partial,PR-RT gene,1,Protease and reverse transcriptase genes,0,PR-RT,1
 38314093,10,What method was used for sequencing?,List,NGS,1881,partial,High-throughput sequencing,0,Not reported,0,High-throughput sequencing,0
 38314093,11,What type of samples were sequenced?,List,Serum,1882,partial,Blood samples,0,Serum,1,Blood samples,0
 38314093,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Not reported,1886,partial,NRTIs,0,Not reported,1,"NRTIs, NNRTIs, PIs",0

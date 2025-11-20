@@ -126,6 +126,9 @@ TEXT_SYNONYMS = {
     "proviral dna": "pbmc",
     "dbs": "dried blood spot",
     "dried blood spots": "dried blood spot",
+    "pol gene": "pol",
+    "pol genes": "pol",
+    "whole blood": "plasma",
 }
 ADDITIONAL_LIST_SYNONYMS = {
     "illumina sequencing": {"illumina", "miseq", "next generation sequencing", "nextera"},
@@ -133,6 +136,36 @@ ADDITIONAL_LIST_SYNONYMS = {
     "south korea": {"korea"},
     "united states": {"usa", "u.s.", "us", "america", "san francisco", "united states of america"},
     "plasma": {"blood", "whole blood"},
+    "whole blood": {"plasma"},
+    "full genome": {
+        "full length genome",
+        "flg",
+        "near full length genome",
+        "near-full-length genome",
+        "near full length proviruses",
+        "near-full-length proviruses",
+        "nflg",
+    },
+    "full length genome": {
+        "full genome",
+        "flg",
+        "near full length genome",
+        "near-full-length genome",
+        "near full length proviruses",
+        "near-full-length proviruses",
+        "nflg",
+    },
+    "nflg": {
+        "full genome",
+        "full length genome",
+        "flg",
+        "near full length genome",
+        "near-full-length genome",
+        "near full length proviruses",
+        "near-full-length proviruses",
+    },
+    "env": {"gp120"},
+    "gp120": {"env"},
 }
 ARV_SYNONYMS = {
     "tfv": "tenofovir",
