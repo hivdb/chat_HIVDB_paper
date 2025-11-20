@@ -21,10 +21,12 @@ SOURCE_LLAMA_8B = "./csv/llama-3.1-8B_parsed.csv"
 SOURCE_LLAMA_8B_before = "./csv/llama-3.1-8B_before_parsed.csv"
 SOURCE_LLAMA_8B_after = "./csv/llama-3.1-8B_after_parsed.csv"
 SOURCE_LLAMA_8B_RAG = "./csv/llama-3.1-8B RAG_parsed.csv"
+SOURCE_LLAMA_8B_PV1 = "./csv/llama-3.1-8B-PV1_parsed.csv"
 SOURCE_LLAMA_70B = "./csv/llama-3.1-70B_parsed.csv"
 SOURCE_LLAMA_70B_before = "./csv/llama-3.1-70B_before_parsed.csv"
 SOURCE_LLAMA_70B_after = "./csv/llama-3.1-70B_after_parsed.csv"
 SOURCE_LLAMA_70B_RAG = "./csv/llama-3.1-70B RAG_parsed.csv"
+SOURCE_LLAMA_70B_PV1 = "./csv/llama-3.1-70B-PV1_parsed.csv"
 
 SOURCE_LLAMA_8B_5shot = "./csv/llama-3.1-8B_bm25_5-shot_parsed.csv"
 SOURCE_LLAMA_8B_10shot = "./csv/llama-3.1-8B_bm25_10-shot_parsed.csv"
@@ -75,6 +77,9 @@ def main() -> None:
     llama_8b_rag = _load_unique(
         SOURCE_LLAMA_8B_RAG, usecols=MERGE_KEYS + ["answer"]
     ).rename(columns={"answer": "llama-3.1-8B RAG"})
+    llama_8b_pv1 = _load_unique(
+        SOURCE_LLAMA_8B_PV1, usecols=MERGE_KEYS + ["answer"]
+    ).rename(columns={"answer": "llama-3.1-8B PV1"})
 
     llama_70b = _load_unique(SOURCE_LLAMA_70B, usecols=MERGE_KEYS + ["answer"]).rename(
         columns={"answer": "llama-3.1-70B AP"}
@@ -88,6 +93,9 @@ def main() -> None:
     llama_70b_rag = _load_unique(
         SOURCE_LLAMA_70B_RAG, usecols=MERGE_KEYS + ["answer"]
     ).rename(columns={"answer": "llama-3.1-70B RAG"})
+    llama_70b_pv1 = _load_unique(
+        SOURCE_LLAMA_70B_PV1, usecols=MERGE_KEYS + ["answer"]
+    ).rename(columns={"answer": "llama-3.1-70B PV1"})
 
     llama_8b_5shot = _load_unique(
         SOURCE_LLAMA_8B_5shot, usecols=MERGE_KEYS + ["answer"]
@@ -115,11 +123,13 @@ def main() -> None:
     merged = merged.merge(llama_8b_after, on=MERGE_KEYS, how="left")
 
     merged = merged.merge(llama_8b_rag, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_8b_pv1, on=MERGE_KEYS, how="left")
 
     merged = merged.merge(llama_70b, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_before, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_after, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_rag, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_70b_pv1, on=MERGE_KEYS, how="left")
 
     merged = merged.merge(llama_8b_5shot, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b_10shot, on=MERGE_KEYS, how="left")

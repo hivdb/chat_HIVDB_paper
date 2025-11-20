@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
-"""Expand Llama multiple-answer cells into per-question CSV rows.
-
-The 70B RAG runs record all answers inside the `Multiple Answer` column
-where each question is written as a stand-alone block (usually wrapped
-with triple quotes).  This script splits those blocks, extracts the
-Question/Evidence/Rationale/Answer fields, and matches each entry to the
-canonical QIDs listed in `S2Table.xlsx`.
-"""
+"""Parse the Llama PV1 multiple-answer column into question-level rows."""
 
 from __future__ import annotations
 
@@ -14,47 +7,30 @@ import argparse
 import csv
 import pathlib
 import re
-from typing import Dict, Iterable, List, Sequence, Tuple
+from typing import Dict, List, Tuple
 
 import pandas as pd
 
 QUESTION_FIELDS = ("question", "evidence", "rationale", "answer")
+QUESTION_SYNONYMS = {
+    "what are the genbank accession numbers for sequenced hiv isolates": "what were the genbank accession numbers for sequenced hiv isolates",
+}
 DELIMITER_LINES = {
     '"""',
     '""',
     "'''",
     '```',
 }
-FIELD_LINE_RE = re.compile(
+
+# Captures section labels like "Evidence:" and "Rationale -".
+SECTION_LINE_RE = re.compile(
     r"""
     ^
-    (?P<prefix>[\s\#\*\>\-`]*?)
+    \s*
     (?P<label>Question|Evidence|Rationale|Answer)
-    (?:\s*(?:[:\-]\s*|\s+))
-    (?P<value>.*)
+    (?:\s*(?:[:\-\u2013]\s*|\s+))?
+    (?P<value>.*?)
     \s*$
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-QUESTION_HEADER_RE = re.compile(
-    r"""
-    ^
-    \s*\#{2,}\s*
-    q(?:uestion)?(?:\s*id)?
-    \s*(?P<digits>\d+)
-    (?P<rest>.*)
-    $
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-QUESTION_LINE_HEADER_RE = re.compile(
-    r"""
-    ^
-    \s*question
-    (?:\s*(?P<digits>\d+))?
-    \s*[:\-]\s*
-    (?P<value>.*)
-    $
     """,
     re.IGNORECASE | re.VERBOSE,
 )
@@ -63,8 +39,6 @@ QuestionBlock = Dict[str, str]
 
 
 def clean_text(value: object) -> str:
-    """Return the CSV-safe representation of any cell-like value."""
-
     if value is None:
         return ""
     text = str(value)
@@ -97,61 +71,67 @@ def normalise_cell(cell: object) -> str:
 
 
 def _is_delimiter(line: str) -> bool:
-    stripped = line.strip()
-    return stripped in DELIMITER_LINES
+    return line.strip() in DELIMITER_LINES
 
 
-def _detect_header(line: str) -> str | None:
-    stripped = line.strip()
-    if not stripped:
+def detect_question_header(line: str, allow_plain_without_id: bool = False) -> Tuple[str, str] | None:
+    trimmed = line.strip()
+    if not trimmed:
         return None
-    if QUESTION_HEADER_RE.match(stripped):
-        return stripped
-    if QUESTION_LINE_HEADER_RE.match(stripped):
-        return stripped
-    return None
+
+    # Remove simple Markdown bullets and emphasis markers.
+    trimmed = trimmed.lstrip("#>- ")
+    emphasised = trimmed.startswith("**") and trimmed.endswith("**") and len(trimmed) >= 4
+    if emphasised:
+        trimmed = trimmed[2:-2].strip()
+    trimmed = trimmed.lstrip("*")
+
+    lowered = trimmed.lower()
+    if not lowered.startswith("question"):
+        return None
+
+    remainder = trimmed[len("question") :].lstrip(" .:-\u2013")
+    while remainder.lower().startswith("question"):
+        remainder = remainder[len("question") :].lstrip(" .:-\u2013")
+    if remainder.lower().startswith("id"):
+        remainder = remainder[2:].lstrip(" .:-\u2013")
+
+    digits_match = re.match(r"(?P<digits>\d+)(?P<rest>.*)", remainder)
+    qid = ""
+    rest = remainder
+    if digits_match:
+        qid = digits_match.group("digits")
+        rest = digits_match.group("rest")
+
+    rest = rest.lstrip(" .:-\u2013")
+    question_text = clean_text(rest)
+    qid = normalise_question_id(qid)
+
+    if not qid and not (emphasised or allow_plain_without_id):
+        return None
+
+    if not qid and not question_text:
+        return None
+    return qid, question_text
 
 
-def extract_question_blocks(text: str) -> List[Tuple[str, str]]:
-    """Split a cell into (header, body) tuples."""
-
-    blocks: List[Tuple[str, str]] = []
-    header: str | None = None
-    body_lines: List[str] = []
-
-    for raw_line in text.splitlines():
-        if _is_delimiter(raw_line):
-            continue
-        candidate = _detect_header(raw_line)
-        if candidate:
-            if header is not None or body_lines:
-                blocks.append((header or "", "\n".join(body_lines).strip()))
-                body_lines = []
-            header = candidate
-            continue
-        body_lines.append(raw_line.rstrip())
-
-    if header is not None or body_lines:
-        blocks.append((header or "", "\n".join(body_lines).strip()))
-
-    # Filter out empty shells
-    return [(hdr, body) for hdr, body in blocks if hdr or body]
-
-
-def parse_sections(body: str) -> Dict[str, str]:
+def parse_section_body(body: str) -> Dict[str, str]:
     collected: Dict[str, List[str]] = {label: [] for label in QUESTION_FIELDS}
     current_label: str | None = None
 
     for raw_line in body.splitlines():
-        if _is_delimiter(raw_line):
-            current_label = None
+        stripped = raw_line.strip()
+        if not stripped:
+            if current_label:
+                collected[current_label].append("")
             continue
-        detection = FIELD_LINE_RE.match(raw_line.strip())
-        if detection:
-            current_label = detection.group("label").lower()
-            value = detection.group("value") or ""
+        match = SECTION_LINE_RE.match(stripped)
+        if match:
+            current_label = match.group("label").lower()
+            value = match.group("value") or ""
+            value = value.strip()
             if value:
-                collected[current_label].append(value.strip())
+                collected[current_label].append(value)
             continue
         if current_label:
             collected[current_label].append(raw_line.rstrip())
@@ -159,28 +139,56 @@ def parse_sections(body: str) -> Dict[str, str]:
     return {label: clean_text("\n".join(lines).strip()) for label, lines in collected.items()}
 
 
-def parse_question_header(header_line: str) -> Tuple[str, str]:
-    cleaned = header_line.strip().lstrip("#").strip()
-    match = re.match(
-        r"(?i)q(?:uestion)?(?:\s*id)?\s*(\d+)(?:\s*[:\-]\s*)?(.*)",
-        cleaned,
-    )
-    if match:
-        qid = normalise_question_id(match.group(1))
-        question_text = clean_text(match.group(2))
-        return qid, question_text
-    fallback = re.sub(r"(?i)^question\s*[:\-]\s*", "", cleaned)
-    return "", clean_text(fallback)
+def split_question_sections(text: str) -> List[Tuple[str, str, str]]:
+    sections: List[Tuple[str, str, str]] = []
+    current_header: Tuple[str, str] | None = None
+    body_lines: List[str] = []
+
+    def flush() -> None:
+        nonlocal current_header, body_lines
+        if current_header is None and not body_lines:
+            return
+        qid, question = current_header if current_header else ("", "")
+        body = "\n".join(body_lines).strip()
+        if question or body:
+            sections.append((qid, question, body))
+        current_header = None
+        body_lines = []
+
+    for raw_line in text.splitlines():
+        if _is_delimiter(raw_line):
+            if current_header is None and not body_lines:
+                continue
+            flush()
+            continue
+
+        allow_plain = current_header is None and not body_lines
+        detection = detect_question_header(raw_line, allow_plain_without_id=allow_plain)
+        if detection:
+            if current_header is None and body_lines:
+                body_lines = []  # drop intro text preceding the first question
+            else:
+                flush()
+            current_header = detection
+            continue
+
+        body_lines.append(raw_line.rstrip())
+
+    flush()
+
+    if not sections and text.strip():
+        sections.append(("", "", text.strip()))
+
+    return sections
 
 
-def parse_block(header: str, body: str) -> QuestionBlock | None:
-    header_qid, header_question = parse_question_header(header)
-    sections = parse_sections(body)
+def parse_block(header_qid: str, header_question: str, body: str) -> QuestionBlock | None:
+    sections = parse_section_body(body)
+    question_text = sections.get("question") or header_question
 
-    if not any(sections.values()) and not header_question:
+    if not (question_text or sections.get("evidence") or sections.get("rationale") or sections.get("answer")):
         return None
 
-    question_text = sections.get("question") or header_question
     return {
         "question_id": header_qid,
         "question": question_text or "",
@@ -196,15 +204,9 @@ def parse_multiple_answer(cell: object) -> List[QuestionBlock]:
         return []
 
     parsed: List[QuestionBlock] = []
-    blocks = extract_question_blocks(text)
-    if not blocks:
-        fallback = parse_block("", text)
-        if fallback:
-            parsed.append(fallback)
-        return parsed
-
-    for header, body in blocks:
-        block = parse_block(header, body)
+    sections = split_question_sections(text)
+    for header_qid, header_question, body in sections:
+        block = parse_block(header_qid, header_question, body)
         if block:
             parsed.append(block)
     return parsed
@@ -231,6 +233,14 @@ def load_question_lookup(
         norm_text = normalise_question_text(question)
         if norm_text:
             question_lookup.setdefault(norm_text, entry)
+
+    for alias_text, canonical_text in QUESTION_SYNONYMS.items():
+        alias_norm = normalise_question_text(alias_text)
+        canonical_norm = normalise_question_text(canonical_text)
+        if not alias_norm or not canonical_norm:
+            continue
+        if canonical_norm in question_lookup:
+            question_lookup.setdefault(alias_norm, question_lookup[canonical_norm])
 
     return question_lookup, qid_lookup
 
@@ -263,6 +273,13 @@ def _row_sort_key(row: Dict[str, str]) -> Tuple[str, int, str]:
         return pmid, 1, qid or ""
 
 
+def _extract_answer_cell(row: Dict[str, str]) -> str:
+    for key in ("Multiple Answers", "Multiple Answer"):
+        if key in row:
+            return row.get(key, "")
+    raise KeyError("Input CSV is missing a 'Multiple Answers' column")
+
+
 def parse_file(
     input_path: pathlib.Path, output_path: pathlib.Path, s2_table_path: pathlib.Path
 ) -> None:
@@ -273,7 +290,8 @@ def parse_file(
         reader = csv.DictReader(handle)
         for row in reader:
             pmid = clean_text(row.get("PMID", ""))
-            parsed_blocks = parse_multiple_answer(row.get("Multiple Answer", ""))
+            multiple_answer = _extract_answer_cell(row)
+            parsed_blocks = parse_multiple_answer(multiple_answer)
             print(f"PMID {pmid or '[unknown]'}: parsed {len(parsed_blocks)} question(s)")
             matched: set[Tuple[str, str]] = set()
 
@@ -315,15 +333,15 @@ def build_parser() -> argparse.ArgumentParser:
         "input",
         type=pathlib.Path,
         nargs="?",
-        default=pathlib.Path("./csv/llama-3.1-70B RAG.csv"),
-        help="Path to the input CSV file (default: ./csv/llama-3.1-70B RAG.csv)",
+        default=pathlib.Path("./csv/llama-3.1-70B-PV1.csv"),
+        help="Path to the input CSV file (default: ./csv/llama-3.1-70B-PV1.csv)",
     )
     parser.add_argument(
         "output",
         type=pathlib.Path,
         nargs="?",
-        default=pathlib.Path("./csv/llama-3.1-70B RAG_parsed.csv"),
-        help="Path to the output CSV file (default: ./csv/llama-3.1-70B RAG_parsed.csv)",
+        default=pathlib.Path("./csv/llama-3.1-70B-PV1_parsed.csv"),
+        help="Path to the output CSV file (default: ./csv/llama-3.1-70B-PV1_parsed.csv)",
     )
     parser.add_argument(
         "--s2-table",
