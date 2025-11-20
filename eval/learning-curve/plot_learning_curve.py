@@ -22,11 +22,11 @@ OUTPUT_DIR = Path("eval/learning-curve/figures")
 COMBINED_CSV = Path("eval/learning-curve/results/learning_curve_overall_combined.csv")
 
 DISPLAY_SLOTS = [
-    ("GPT-4o base (0)", 0, ["GPT-4o base"]),
-    ("GPT-4o FT (50)", 50, ["GPT-4o LC size050", "GPT-4o FT (50)"]),
-    ("GPT-4o FT (100)", 100, ["GPT-4o LC size100", "GPT-4o LC (100)", "GPT-4o FT (100)"]),
-    ("GPT-4o FT (150)", 150, ["GPT-4o LC size150", "GPT-4o FT (150)"]),
-    ("GPT-4o FT (200)", 200, ["GPT-4o FT", "GPT-4o FT (200)"]),
+    ("base", 0, ["GPT-4o base"]),
+    ("FT-50", 50, ["GPT-4o FT-50", "GPT-4o LC size050"]),
+    ("FT-100", 100, ["GPT-4o FT-100", "GPT-4o LC size100", "GPT-4o LC (100)"]),
+    ("FT-150", 150, ["GPT-4o FT-150", "GPT-4o LC size150"]),
+    ("FT", 200, ["GPT-4o FT", "GPT-4o FT (200)"]),
 ]
 
 

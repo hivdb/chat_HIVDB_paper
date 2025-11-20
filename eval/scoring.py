@@ -81,6 +81,7 @@ def evaluate_model(
 ) -> Dict[str, float]:
     counts = {"tp": 0, "tn": 0, "fp": 0, "fn": 0}
     for _, row in data.iterrows():
+        row_allow_partial = allow_partial_list and str(row.get("Type", "")).strip().lower() == "list"
         row_counts, _ = human_answer_counts(
             row.get("Type", ""),
             row.get(pred_norm_col, ""),
@@ -88,7 +89,7 @@ def evaluate_model(
             question_text=row.get("Question", ""),
             ref_raw=row.get(ref_col, ""),
             pred_raw=row.get(model_col, ""),
-            allow_partial_list=allow_partial_list,
+            allow_partial_list=row_allow_partial,
         )
         for key, value in row_counts.items():
             counts[key] += value
@@ -157,6 +158,7 @@ def build_detail_rows(
             base[f"{model} Answer"] = answer
             pred_norm = row.get(norm_lookup.get(model, ""), "")
             ref_norm_value = row.get(ref_norm, "")
+            row_allow_partial = scenario.get("allow_partial_list", False) and question_type.strip().lower() == "list"
             _, correct = human_answer_counts(
                 row.get("Type", ""),
                 pred_norm,
@@ -164,7 +166,7 @@ def build_detail_rows(
                 question_text=row.get("Question", ""),
                 ref_raw=row.get(ref_col, ""),
                 pred_raw=answer,
-                allow_partial_list=scenario.get("allow_partial_list", False),
+                allow_partial_list=row_allow_partial,
             )
             base[f"{model} Correct"] = int(correct)
         records.append(base)

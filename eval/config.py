@@ -12,14 +12,14 @@ DETAIL_METRICS_PARTIAL = Path("eval/detailed_evaluation_partial_list_matches.csv
 OUTPUT_TABLE_DIR = Path("eval/figures")
 EXACT_VS_PARTIAL_DETAILS = Path("eval/exact_vs_partial_evaluation.csv")
 LEARNING_CURVE_RESPONSES = {
-    "GPT-4o FT (100)": Path("eval/learning-curve/responses/size100_responses.csv"),
+    "GPT-4o FT-100": Path("eval/learning-curve/responses/size100_responses.csv"),
 }
 
 MODEL_GROUPS = {
     "gpt_family": [
         "GPT-5 base",
         "GPT-4o base",
-        "GPT-4o FT (100)",
+        "GPT-4o FT-100",
         "GPT-4o FT",
         "GPT-4o AP Before",
         "GPT-4o AP",
@@ -56,6 +56,7 @@ MODEL_GROUPS = {
 ALL_MODEL_COLUMNS = sorted({model for models in MODEL_GROUPS.values() for model in models})
 
 COLUMN_RENAMES = {
+    "GPT-4o FT (100)": "GPT-4o FT-100",
     "llama-3.1-70B AP": "Llama3.1-70B AP",
     "llama-3.1-70B AP before": "Llama3.1-70B AP Before",
     "llama-3.1-70B AP after": "Llama3.1-70B AP After",

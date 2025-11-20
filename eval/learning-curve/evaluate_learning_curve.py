@@ -34,14 +34,34 @@ class RunSpec:
     column: str
 
 
+LABEL_TO_MODEL = {
+    "base": "base",
+    "size050": "FT-50",
+    "50": "FT-50",
+    "ft50": "FT-50",
+    "size100": "FT-100",
+    "100": "FT-100",
+    "ft100": "FT-100",
+    "size150": "FT-150",
+    "150": "FT-150",
+    "ft150": "FT-150",
+    "size200": "FT",
+    "200": "FT",
+    "ft200": "FT",
+    "ft": "FT",
+}
+
+
 def parse_run(value: str) -> Tuple[str, Path]:
     if "=" not in value:
         raise argparse.ArgumentTypeError("Expected LABEL=PATH for --responses.")
     label, raw_path = value.split("=", 1)
-    label = label.strip()
+    label = label.strip().lower()
     path = Path(raw_path.strip())
     if not label:
         raise argparse.ArgumentTypeError("Response label cannot be empty.")
+    if label not in LABEL_TO_MODEL:
+        raise argparse.ArgumentTypeError(f"Unknown run label '{label}'. Expected one of: {', '.join(sorted(LABEL_TO_MODEL))}.")
     return label, path
 
 
@@ -57,7 +77,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--column-prefix",
         type=str,
-        default="GPT-4o LC",
+        default="GPT-4o",
         help="Prefix used when naming new evaluation columns.",
     )
     parser.add_argument(
@@ -160,11 +180,20 @@ def main() -> int:
         df = df.head(args.limit)
     df["sample_id"] = df["PMID"] + "-" + df["QID"]
 
-    runs: List[RunSpec] = []
+    resolved_labels = []
     for label, path in responses:
+        canonical = LABEL_TO_MODEL.get(label.lower())
+        if not canonical:
+            raise SystemExit(f"Unrecognized response label '{label}'.")
+        resolved_labels.append((canonical, path))
+
+    runs: List[RunSpec] = []
+    model_to_column: dict[str, str] = {}
+    for label, path in resolved_labels:
         column = f"{args.column_prefix} {label}".strip()
         df[column] = integrate_responses(df, path)
         runs.append(RunSpec(label=label, path=path, column=column))
+        model_to_column[label] = column
 
     if not runs:
         raise SystemExit("No response files were integrated.")
