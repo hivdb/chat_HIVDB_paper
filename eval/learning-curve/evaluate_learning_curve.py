@@ -210,7 +210,7 @@ def main() -> int:
     pd.DataFrame(detail_rows).to_csv(details_path, index=False, encoding="utf-8-sig")
 
     summary = []
-    overall = metrics[metrics["scenario"] == "Overall (partial match)"]
+    overall = metrics[metrics["scenario"] == "Overall - partial match"]
     for run in runs:
         row = overall[overall["model"] == run.column]
         summary.append(

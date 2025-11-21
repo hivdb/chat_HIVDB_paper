@@ -17,20 +17,65 @@ if str(ROOT.parent) not in sys.path:
 
 from eval import config  # type: ignore
 from eval.plots import generate_figures  # type: ignore
-from eval.scoring import build_detail_rows, ensure_norm, evaluate_group, load_dataset  # type: ignore
+from eval.scoring import build_detail_rows, ensure_norm, evaluate_group, evaluate_model, load_dataset  # type: ignore
 from eval.normalize import match_scenario_label  # type: ignore
 
 
 LIST_SCENARIO_TITLES = {
-    "List questions (exact match)",
-    "List questions (partial match)",
+    "List questions - exact match",
+    "List questions - partial match",
 }
+
+
+def build_qid_metrics(
+    scenario_df: pd.DataFrame,
+    scenario: dict,
+    norm_lookup: dict[str, str],
+    convert_special_no: bool,
+) -> List[dict]:
+    rows: List[dict] = []
+    if scenario_df.empty:
+        return rows
+    allow_partial = scenario.get("allow_partial_list", False)
+    ref_col = scenario["reference"]
+    ref_norm = norm_lookup.get(ref_col)
+    if not ref_norm:
+        return rows
+    for qid, qid_df in scenario_df.groupby("QID"):
+        q_type = qid_df.get("Type", pd.Series([""])).iloc[0]
+        question = qid_df.get("Question", pd.Series([""])).iloc[0]
+        for model in scenario["models"]:
+            pred_norm = norm_lookup.get(model)
+            if not pred_norm or model not in qid_df.columns:
+                continue
+            metrics = evaluate_model(
+                qid_df,
+                model,
+                ref_col,
+                pred_norm,
+                ref_norm,
+                allow_partial_list=allow_partial,
+            )
+            metrics.update(
+                {
+                    "model": model,
+                    "scenario": scenario["title"],
+                    "reference": ref_col,
+                    "convert_no": convert_special_no,
+                    "QID": qid,
+                    "Type": q_type,
+                    "Question": question,
+                }
+            )
+            rows.append(metrics)
+    return rows
 
 
 def run(limit: int | None) -> Tuple[
     pd.DataFrame,
     List[dict],
     List[Tuple[str, str, pd.DataFrame]],
+    List[dict],
     List[dict],
     List[dict],
 ]:
@@ -42,6 +87,7 @@ def run(limit: int | None) -> Tuple[
     figure_specs: List[Tuple[str, str, pd.DataFrame]] = []
     exact_partial_details: List[dict] = []
     partial_only_details: List[dict] = []
+    qid_metrics_rows: List[dict] = []
 
     cache: dict = {}
     scenario_results: dict[str, pd.DataFrame] = {}
@@ -102,14 +148,28 @@ def run(limit: int | None) -> Tuple[
                     detail_types,
                 )
             )
+        qid_metrics_rows.extend(
+            build_qid_metrics(
+                scenario_df,
+                scenario,
+                norm_lookup,
+                convert,
+            )
+        )
         if scenario["title"] in LIST_SCENARIO_TITLES:
             exact_partial_details.extend(build_detail_rows(scenario_df, scenario, norm_lookup, match_label))
-            if scenario["title"] == "List questions (partial match)":
+            if scenario["title"] == "List questions - partial match":
                 partial_only_details.extend(build_detail_rows(scenario_df, scenario, norm_lookup, match_label))
         scenario_frames.append(subset)
-        figure_specs.append((scenario["title"], scenario["footnote"], subset))
+        def _format_title(title: str) -> str:
+            if " - " in title:
+                head, tail = title.split(" - ", 1)
+                return f"{head} ({tail})"
+            return title
+
+        figure_specs.append((_format_title(scenario["title"]), scenario["footnote"], subset))
     combined = pd.concat(scenario_frames, ignore_index=True) if scenario_frames else pd.DataFrame()
-    return combined, detail_rows, figure_specs, exact_partial_details, partial_only_details
+    return combined, detail_rows, figure_specs, exact_partial_details, partial_only_details, qid_metrics_rows
 
 
 def write_outputs(metrics: pd.DataFrame, details: List[dict], extra_details: List[dict], partial_details: List[dict]) -> None:
@@ -139,11 +199,15 @@ def main() -> int:
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    metrics, details, figures, extra_details, partial_details = run(args.limit)
+    metrics, details, figures, extra_details, partial_details, qid_rows = run(args.limit)
     if metrics.empty:
         logging.error("No scenarios produced metrics.")
         return 1
     write_outputs(metrics, details, extra_details, partial_details)
+    if qid_rows:
+        qid_df = pd.DataFrame(qid_rows)
+        qid_df.to_csv(config.OUTPUT_METRICS_BY_QID, index=False, encoding="utf-8-sig")
+        logging.info("Wrote per-QID metrics to %s", config.OUTPUT_METRICS_BY_QID)
     logging.info("Wrote metrics to %s", config.OUTPUT_METRICS)
     logging.info("Wrote detail rows to %s", config.DETAIL_METRICS_HUMAN)
     if extra_details:

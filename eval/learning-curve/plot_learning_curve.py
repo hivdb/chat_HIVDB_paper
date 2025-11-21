@@ -34,7 +34,7 @@ def load_metrics(path: Path, scenarios: List[str] | None = None) -> pd.DataFrame
     if not path.exists():
         raise FileNotFoundError(f"Metrics file missing: {path}")
     df = pd.read_csv(path)
-    scenarios = scenarios or ["Overall (partial match)"]
+    scenarios = scenarios or ["Overall - partial match"]
     df = df[df["scenario"].isin(scenarios)].copy()
     return df
 
@@ -59,7 +59,7 @@ def select_models(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_combined() -> pd.DataFrame:
-    target_scenarios = ["Overall (partial match)"]
+    target_scenarios = ["Overall - partial match"]
     lc_df = load_metrics(LC_RESULTS, target_scenarios)
     base_df = load_metrics(BASE_RESULTS, target_scenarios)
     all_df = pd.concat([lc_df, base_df], ignore_index=True)

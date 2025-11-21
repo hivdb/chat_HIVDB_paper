@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Generate failure histograms for key models."""
+"""Plot per-QID precision and recall for key models using evaluation metrics."""
 
 from __future__ import annotations
 
-from collections import defaultdict
 from pathlib import Path
-import re
 import sys
 
 import pandas as pd
@@ -20,11 +18,11 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-from eval.normalize import canonicalize_answer
-from eval.scoring import human_answer_counts
+from eval.config import OUTPUT_METRICS_BY_QID  # type: ignore
 
 
-DATA_PATH = Path(__file__).resolve().parents[1] / "detailed_evaluation.csv"
+DATA_PATH = OUTPUT_METRICS_BY_QID
+SCENARIO_NAME = "Overall - partial match"
 OUTPUT_DIR = Path(__file__).resolve().parent
 
 MODEL_ORDER = [
@@ -63,80 +61,35 @@ QID_TOPICS = {
 
 
 def load_data() -> pd.DataFrame:
+    if not DATA_PATH.exists():
+        raise FileNotFoundError(f"Per-QID metrics file missing: {DATA_PATH}")
     df = pd.read_csv(DATA_PATH)
-    scenario_lower = df.get("Scenario", "").str.lower()
-    df["ScenarioLower"] = scenario_lower
+    df = df[df["scenario"] == SCENARIO_NAME].copy()
+    if df.empty:
+        return df
     df["QID"] = df["QID"].astype(int)
-    df["TypeLower"] = df["Type"].str.lower()
-
-    exact = df[df["ScenarioLower"] == "exact"].copy()
-    list_partial = df[(df["ScenarioLower"] == "partial") & (df["TypeLower"] == "list")].copy()
-
-    exact_non_list = exact[exact["TypeLower"] != "list"]
-    combined = pd.concat([exact_non_list, list_partial], ignore_index=True)
-    combined.drop(columns=["ScenarioLower", "TypeLower"], inplace=True, errors="ignore")
-    return combined
+    df["Type"] = df["Type"].astype(str).str.lower()
+    df["Question"] = df.get("Question", "").fillna("")
+    return df
 
 
-def compute_model_error_types(df: pd.DataFrame) -> dict[str, dict[int, dict[str, int]]]:
-    per_model: dict[str, defaultdict[int, dict[str, int]]] = {
-        model: defaultdict(lambda: {"tp": 0, "tn": 0, "fp": 0, "fn": 0}) for model in MODEL_ORDER
-    }
+def build_rates(df: pd.DataFrame, metric: str) -> dict[str, dict[int, float]]:
+    rates: dict[str, dict[int, float]] = {model: {} for model in MODEL_ORDER}
     for _, row in df.iterrows():
-        question_type = row.get("Type", "")
-        question_text = row.get("Question", "")
-        ref_raw = row.get("Human Answer", "")
-        ref_norm = canonicalize_answer(ref_raw, convert_special_no=True)
+        model = row.get("model")
+        if model not in rates:
+            continue
         qid = int(row["QID"])
-        allow_partial = (question_type or "").strip().lower() == "list"
-        for model in MODEL_ORDER:
-            correct_col = f"{model} Correct"
-            answer_col = f"{model} Answer"
-            if correct_col not in row or answer_col not in row:
-                continue
-            pred_raw = row.get(answer_col, "")
-            pred_norm = canonicalize_answer(pred_raw, convert_special_no=True)
-            counts, _ = human_answer_counts(
-                question_type,
-                pred_norm,
-                ref_norm,
-                question_text=question_text,
-                ref_raw=ref_raw,
-                pred_raw=pred_raw,
-                allow_partial_list=allow_partial,
-            )
-            entry = per_model[model][qid]
-            for key, value in counts.items():
-                entry[key] += value
-    return {model: {qid: dict(values) for qid, values in qid_map.items()} for model, qid_map in per_model.items()}
+        rates[model][qid] = float(row.get(metric, 0.0) or 0.0)
+    return rates
 
 
-def compute_precision_recall(
-    model_errors: dict[str, dict[int, dict[str, int]]]
-) -> tuple[dict[str, dict[int, float]], dict[str, dict[int, float]]]:
-    precision: dict[str, dict[int, float]] = {}
-    recall: dict[str, dict[int, float]] = {}
-    for model, qid_map in model_errors.items():
-        precision[model] = {}
-        recall[model] = {}
-        for qid, counts in qid_map.items():
-            tp = counts.get("tp", 0)
-            tn = counts.get("tn", 0)
-            fp = counts.get("fp", 0)
-            fn = counts.get("fn", 0)
-            prec_denom = tp + fp
-            rec_denom = tp + fn
-            precision[model][qid] = (tp / prec_denom) if prec_denom else 0.0
-            recall[model][qid] = (tp / rec_denom) if rec_denom else 0.0
-    return precision, recall
-
-
-def _topic_label(question: str, words: int = 4) -> str:
-    tokens = re.findall(r"[A-Za-z0-9]+", question or "")
-    if not tokens:
-        return ""
-    snippet = " ".join(tokens[:words])
-    return snippet.title()
+def _topic_label(qid: int, question_map: dict[int, str]) -> str:
+    if qid in QID_TOPICS:
+        return QID_TOPICS[qid]
+    question = question_map.get(qid, "")
+    tokens = question.split()
+    return " ".join(tokens[:4]).title()
 
 
 def plot_rate_grid(
@@ -147,12 +100,7 @@ def plot_rate_grid(
     title: str,
     output_name: str,
 ) -> None:
-    labels = []
-    for qid in qids:
-        topic = QID_TOPICS.get(qid)
-        if not topic:
-            topic = _topic_label(question_map.get(qid, ""))
-        labels.append(f"Q{qid}\n{topic}")
+    labels = [f"Q{qid}\n{_topic_label(qid, question_map)}" for qid in qids]
     colors = [TYPE_COLORS.get(type_map.get(qid, ""), "#999999") for qid in qids]
     max_value = max((rates.get(model, {}).get(qid, 0.0) for model in MODEL_ORDER for qid in qids), default=0.0)
     y_limit = min(1.0, max_value * 1.15 if max_value else 0.1)
@@ -185,14 +133,14 @@ def main() -> int:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     df = load_data()
     if df.empty:
-        raise SystemExit("No evaluation rows found in detailed_evaluation.csv")
-    type_map = df.groupby("QID")["Type"].first().str.lower()
+        raise SystemExit(f"No rows found in {DATA_PATH} for scenario '{SCENARIO_NAME}'.")
+    type_map = df.groupby("QID")["Type"].first()
     question_map = df.groupby("QID")["Question"].first().to_dict()
     qids = sorted(type_map.index.tolist())
-    model_errors = compute_model_error_types(df)
-    precision, recall = compute_precision_recall(model_errors)
-    plot_rate_grid(qids, type_map, question_map, precision, "Precision = TP / (TP + FP)", "precision.png")
-    plot_rate_grid(qids, type_map, question_map, recall, "Recall = TP / (TP + FN)", "recall.png")
+    precision_rates = build_rates(df, "precision")
+    recall_rates = build_rates(df, "recall")
+    plot_rate_grid(qids, type_map, question_map, precision_rates, "Precision = TP / (TP + FP)", "precision.png")
+    plot_rate_grid(qids, type_map, question_map, recall_rates, "Recall = TP / (TP + FN)", "recall.png")
     return 0
 
 

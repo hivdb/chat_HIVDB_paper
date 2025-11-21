@@ -7,6 +7,7 @@ from .constants import MODEL_BASE_COLORS, VARIANT_TINTS  # re-exported for plott
 MERGED_PATH = Path("advanced-prompting/csv/merged_answers.xlsx")
 GPT5_PATH = Path("eval/gpt-5/gpt5_responses.csv")
 OUTPUT_METRICS = Path("eval/evaluation_metrics.csv")
+OUTPUT_METRICS_BY_QID = Path("eval/evaluation_metrics_by_qid.csv")
 DETAIL_METRICS_HUMAN = Path("eval/detailed_evaluation.csv")
 DETAIL_METRICS_PARTIAL = Path("eval/detailed_evaluation_partial_list_matches.csv")
 OUTPUT_TABLE_DIR = Path("eval/figures")
@@ -75,7 +76,7 @@ COLUMN_RENAMES = {
 
 SCENARIOS = [
     {
-        "title": "Overall (exact match)",
+        "title": "Overall - exact match",
         "reference": "Human Answer",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
         "convert_special_no": True,
@@ -86,7 +87,7 @@ SCENARIOS = [
         ),
     },
     {
-        "title": "Overall (partial match)",
+        "title": "Overall - partial match",
         "reference": "Human Answer",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
         "convert_special_no": True,
@@ -111,7 +112,7 @@ SCENARIOS = [
         "include_details": False,
     },
     {
-        "title": "List questions (exact match)",
+        "title": "List questions - exact match",
         "reference": "Human Answer",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
         "convert_special_no": True,
@@ -124,7 +125,7 @@ SCENARIOS = [
         "include_scenario_label": True,
     },
     {
-        "title": "List questions (partial match)",
+        "title": "List questions - partial match",
         "reference": "Human Answer",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
         "convert_special_no": True,
