@@ -111,22 +111,24 @@ def compute_model_error_types(df: pd.DataFrame) -> dict[str, dict[int, dict[str,
     return {model: {qid: dict(values) for qid, values in qid_map.items()} for model, qid_map in per_model.items()}
 
 
-def compute_rates(model_errors: dict[str, dict[int, dict[str, int]]]) -> tuple[dict[str, dict[int, float]], dict[str, dict[int, float]]]:
-    fnr: dict[str, dict[int, float]] = {}
-    fpr: dict[str, dict[int, float]] = {}
+def compute_precision_recall(
+    model_errors: dict[str, dict[int, dict[str, int]]]
+) -> tuple[dict[str, dict[int, float]], dict[str, dict[int, float]]]:
+    precision: dict[str, dict[int, float]] = {}
+    recall: dict[str, dict[int, float]] = {}
     for model, qid_map in model_errors.items():
-        fnr[model] = {}
-        fpr[model] = {}
+        precision[model] = {}
+        recall[model] = {}
         for qid, counts in qid_map.items():
             tp = counts.get("tp", 0)
             tn = counts.get("tn", 0)
             fp = counts.get("fp", 0)
             fn = counts.get("fn", 0)
-            fn_denom = tp + fn
-            fp_denom = tn + fp
-            fnr[model][qid] = (fn / fn_denom) if fn_denom else 0.0
-            fpr[model][qid] = (fp / fp_denom) if fp_denom else 0.0
-    return fnr, fpr
+            prec_denom = tp + fp
+            rec_denom = tp + fn
+            precision[model][qid] = (tp / prec_denom) if prec_denom else 0.0
+            recall[model][qid] = (tp / rec_denom) if rec_denom else 0.0
+    return precision, recall
 
 
 def _topic_label(question: str, words: int = 4) -> str:
@@ -188,9 +190,9 @@ def main() -> int:
     question_map = df.groupby("QID")["Question"].first().to_dict()
     qids = sorted(type_map.index.tolist())
     model_errors = compute_model_error_types(df)
-    fnr, fpr = compute_rates(model_errors)
-    plot_rate_grid(qids, type_map, question_map, fnr, "False Negative Rate = FN / (TP + FN)", "fnr.png")
-    plot_rate_grid(qids, type_map, question_map, fpr, "False Positive Rate = FP / (TN + FP)", "fpr.png")
+    precision, recall = compute_precision_recall(model_errors)
+    plot_rate_grid(qids, type_map, question_map, precision, "Precision = TP / (TP + FP)", "precision.png")
+    plot_rate_grid(qids, type_map, question_map, recall, "Recall = TP / (TP + FN)", "recall.png")
     return 0
 
 
