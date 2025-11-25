@@ -3,9 +3,10 @@
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
-from typing import List
+from typing import Dict, List, Tuple
 
 import pandas as pd
 
@@ -20,6 +21,7 @@ LC_RESULTS = Path("eval/learning-curve/results/learning_curve_metrics.csv")
 BASE_RESULTS = Path("eval/evaluation_metrics.csv")
 OUTPUT_DIR = Path("eval/learning-curve/figures")
 COMBINED_CSV = Path("eval/learning-curve/results/learning_curve_overall_combined.csv")
+SIGNIFICANCE_JSON = Path("eval/learning-curve/results/learning_curve_significance.json")
 
 DISPLAY_SLOTS = [
     ("base", 0, ["GPT-4o base"]),
@@ -50,7 +52,7 @@ def select_models(df: pd.DataFrame) -> pd.DataFrame:
                 break
         if selected is None:
             continue
-        selected["model"] = display_label
+        selected["display_label"] = display_label
         selected["training_size"] = size
         rows.append(selected)
     if not rows:
@@ -71,15 +73,33 @@ def build_combined() -> pd.DataFrame:
     return combined
 
 
+def load_significance(path: Path) -> Tuple[Dict[str, Dict[Tuple[str, str], float]] | None, Dict[str, dict] | None]:
+    if not path.exists():
+        return None, None
+    with path.open("r", encoding="utf-8") as handle:
+        data = json.load(handle)
+    raw_map = data.get("ttest") or data.get("wilcoxon", {})
+    comparisons = data.get("comparisons")
+    tuple_map: Dict[str, Dict[Tuple[str, str], float]] = {}
+    for metric, fam_map in raw_map.items():
+        metric_entries: Dict[Tuple[str, str], float] = {}
+        for family, comp_map in fam_map.items():
+            for comparison, value in comp_map.items():
+                metric_entries[(family, comparison)] = float(value)
+        tuple_map[metric] = metric_entries
+    return tuple_map or None, comparisons
+
+
 def main() -> int:
     combined = build_combined()
     if combined.empty:
         print("No learning-curve metrics available.")
         return 1
+    significance, comparisons = load_significance(SIGNIFICANCE_JSON)
     COMBINED_CSV.parent.mkdir(parents=True, exist_ok=True)
     combined.to_csv(COMBINED_CSV, index=False)
     title = "GPT-4o Learning Curve"
-    generate_figures(combined, title, OUTPUT_DIR)
+    generate_figures(combined, title, OUTPUT_DIR, significance=significance, comparisons=comparisons, layout="vertical")
     print(f"Wrote combined metrics to {COMBINED_CSV}")
     print(f"Figures saved to {OUTPUT_DIR}")
     return 0

@@ -107,9 +107,9 @@ def compute_pairwise_tests(
     qid_df: pd.DataFrame,
     comparisons: dict,
     metrics: Iterable[str],
-) -> Tuple[pd.DataFrame, Dict[str, Dict[Tuple[str, str], float]]]:
+) -> Tuple[pd.DataFrame, Dict[str, Dict[Tuple[str, str], float]], Dict[str, Dict[Tuple[str, str], float]]]:
     if qid_df is None or qid_df.empty:
-        return pd.DataFrame(), {}
+        return pd.DataFrame(), {}, {}
 
     metric_pivots = {
         metric: qid_df.pivot_table(index="QID", columns="model", values=metric)
@@ -118,6 +118,7 @@ def compute_pairwise_tests(
 
     records: List[dict] = []
     wilcoxon_map: Dict[str, Dict[Tuple[str, str], float]] = {metric: {} for metric in metrics}
+    ttest_map: Dict[str, Dict[Tuple[str, str], float]] = {metric: {} for metric in metrics}
 
     for metric in metrics:
         pivot = metric_pivots[metric]
@@ -160,10 +161,11 @@ def compute_pairwise_tests(
                         "p_value": float(w_p),
                     }
                 )
+                ttest_map.setdefault(metric, {})[(family, target_suffix)] = float(t_p)
 
     stats_df = pd.DataFrame(records)
     if stats_df.empty:
-        return stats_df, wilcoxon_map
+        return stats_df, wilcoxon_map, ttest_map
 
     stats_df["adj_p"] = 1.0
     for metric in metrics:
@@ -177,4 +179,4 @@ def compute_pairwise_tests(
                 for (_, row), adj in zip(stats_df.loc[mask].iterrows(), adjusted):
                     wilcoxon_map.setdefault(metric, {})[(row["family"], row["comparison"])] = adj
 
-    return stats_df, wilcoxon_map
+    return stats_df, wilcoxon_map, ttest_map

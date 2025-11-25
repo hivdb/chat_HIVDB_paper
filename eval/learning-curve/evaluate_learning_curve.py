@@ -5,10 +5,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, List, Sequence, Tuple
+from typing import Dict, Iterable, List, Sequence, Tuple
 
 import pandas as pd
 
@@ -17,6 +18,7 @@ if str(ROOT.parent) not in sys.path:
     sys.path.append(str(ROOT.parent))
 
 from eval import config  # type: ignore
+from eval.evaluation import build_qid_metrics  # type: ignore
 from eval.scoring import (  # type: ignore
     build_detail_rows,
     ensure_norm,
@@ -25,6 +27,7 @@ from eval.scoring import (  # type: ignore
     load_dataset,
 )
 from eval.normalize import match_scenario_label  # type: ignore
+from eval import statistics as stat_utils  # type: ignore
 
 
 @dataclass
@@ -129,10 +132,11 @@ def scenario_copy(models: Sequence[str]) -> List[dict]:
     return overrides
 
 
-def evaluate(df: pd.DataFrame, scenarios: Iterable[dict]) -> Tuple[pd.DataFrame, List[dict]]:
+def evaluate(df: pd.DataFrame, scenarios: Iterable[dict]) -> Tuple[pd.DataFrame, List[dict], Dict[str, pd.DataFrame]]:
     cache: dict = {}
     scenario_frames: List[pd.DataFrame] = []
     details: List[dict] = []
+    qid_frames: Dict[str, pd.DataFrame] = {}
     for scenario in scenarios:
         scenario_df = df
         if filter_type := scenario.get("filter_type"):
@@ -164,8 +168,46 @@ def evaluate(df: pd.DataFrame, scenarios: Iterable[dict]) -> Tuple[pd.DataFrame,
         if scenario.get("include_details", True):
             details.extend(build_detail_rows(scenario_df, scenario, norm_lookup, match_label, detail_types))
         scenario_frames.append(subset)
+        scenario_qid = build_qid_metrics(
+            scenario_df,
+            scenario,
+            norm_lookup,
+            convert,
+        )
+        qid_frames[scenario["title"]] = pd.DataFrame(scenario_qid)
     metrics = pd.concat(scenario_frames, ignore_index=True) if scenario_frames else pd.DataFrame()
-    return metrics, details
+    return metrics, details, qid_frames
+
+
+def build_learning_curve_comparisons(model_columns: Dict[str, str]) -> Dict[str, dict]:
+    base_label = model_columns.get("base")
+    if not base_label:
+        return {}
+    family = base_label.rsplit(" ", 1)[0] if " " in base_label else base_label
+    ordered_labels = ["FT-50", "FT-100", "FT-150", "FT"]
+    targets = [model_columns[label] for label in ordered_labels if label in model_columns]
+    if not targets:
+        return {}
+    return {family: {"base": base_label, "targets": targets}}
+
+
+def load_baseline_ttests(path: Path) -> Dict[str, Dict[Tuple[str, str], float]]:
+    if not path.exists():
+        return {}
+    df = pd.read_csv(path)
+    if df.empty:
+        return {}
+    df = df[df["test"] == "t-test"].copy()
+    mapping: Dict[str, Dict[Tuple[str, str], float]] = {}
+    for _, row in df.iterrows():
+        metric = row.get("metric")
+        family = row.get("family")
+        comparison = row.get("comparison")
+        p_val = row.get("p_value")
+        if pd.isna(metric) or pd.isna(family) or pd.isna(comparison) or pd.isna(p_val):
+            continue
+        mapping.setdefault(metric, {})[(family, comparison)] = float(p_val)
+    return mapping
 
 
 def main() -> int:
@@ -198,8 +240,21 @@ def main() -> int:
     if not runs:
         raise SystemExit("No response files were integrated.")
 
-    scenarios = scenario_copy([run.column for run in runs])
-    metrics, detail_rows = evaluate(df, scenarios)
+    base_column = f"{args.column_prefix} base".strip()
+    if base_column in df.columns:
+        model_to_column.setdefault("base", base_column)
+    ft_column = f"{args.column_prefix} FT".strip()
+    if ft_column in df.columns:
+        model_to_column.setdefault("FT", ft_column)
+    model_sequence: List[str] = []
+    if base_column in df.columns:
+        model_sequence.append(base_column)
+    if ft_column in df.columns and ft_column not in model_sequence:
+        model_sequence.append(ft_column)
+    model_sequence.extend(run.column for run in runs if run.column not in model_sequence)
+
+    scenarios = scenario_copy(model_sequence)
+    metrics, detail_rows, qid_frames = evaluate(df, scenarios)
     if metrics.empty:
         raise SystemExit("No metrics produced. Check response coverage.")
 
@@ -228,9 +283,53 @@ def main() -> int:
     with summary_path.open("w", encoding="utf-8") as outfile:
         json.dump({"runs": summary}, outfile, indent=2)
 
+    stats_path = args.output_dir / "learning_curve_pairwise_stats.csv"
+    significance_path = args.output_dir / "learning_curve_significance.json"
+    comparisons = build_learning_curve_comparisons(model_to_column)
+    if comparisons:
+        overall_qid = qid_frames.get("Overall - partial match")
+        if overall_qid is not None and not overall_qid.empty:
+            metrics_to_test = ["accuracy", "precision", "recall"]
+            stats_df, _, ttest_map = stat_utils.compute_pairwise_tests(
+                overall_qid,
+                comparisons,
+                metrics_to_test,
+            )
+            baseline_map = load_baseline_ttests(config.PAIRWISE_RESULTS)
+            if baseline_map:
+                for metric, entries in baseline_map.items():
+                    if metric not in ttest_map:
+                        continue
+                    for (family, comparison), value in entries.items():
+                        if comparison != "FT":
+                            continue
+                        if (family, comparison) in ttest_map[metric]:
+                            ttest_map[metric][(family, comparison)] = value
+                            logging.info("Aligned %s %s vs %s t-test p-value with baseline results", metric, family, comparison)
+            if not stats_df.empty:
+                stats_df.to_csv(stats_path, index=False, encoding="utf-8-sig")
+                logging.info("Wrote learning-curve pairwise stats to %s", stats_path)
+            if ttest_map:
+                serialized: Dict[str, Dict[str, Dict[str, float]]] = {}
+                for metric, mapping in ttest_map.items():
+                    fam_map: Dict[str, Dict[str, float]] = {}
+                    for (family, comparison), value in mapping.items():
+                        fam_map.setdefault(family, {})[comparison] = value
+                    serialized[metric] = fam_map
+                payload = {"comparisons": comparisons, "ttest": serialized}
+                with significance_path.open("w", encoding="utf-8") as handle:
+                    json.dump(payload, handle, indent=2)
+                logging.info("Saved learning-curve significance map to %s", significance_path)
+        else:
+            logging.warning("No QID metrics found for Overall - partial match; skipping pairwise tests.")
+
     print(f"Metrics written to {metrics_path}")
     print(f"Details written to {details_path}")
     print(f"Summary written to {summary_path}")
+    if stats_path.exists():
+        print(f"Pairwise stats written to {stats_path}")
+    if significance_path.exists():
+        print(f"Significance map written to {significance_path}")
     return 0
 
 
