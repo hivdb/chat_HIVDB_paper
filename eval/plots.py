@@ -325,8 +325,10 @@ def save_table(df, title: str, path: Path) -> None:
     fig_height = 1.0 + 0.6 * len(df)
     fig, ax = plt.subplots(figsize=(14, fig_height))
     ax.axis("off")
+    data = df[["model", "accuracy", "precision", "recall", "f1"]].round(3).values
+    data[:, 0] = df["model"].str.replace("Llama3.1", "L3.1", regex=False)
     table = ax.table(
-        cellText=df[["model", "accuracy", "precision", "recall", "f1"]].round(3).values,
+        cellText=data,
         colLabels=["Model", "Accuracy", "Precision", "Recall", "F1"],
         cellLoc="center",
         loc="center",
