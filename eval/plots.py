@@ -12,6 +12,39 @@ from matplotlib.patches import Patch
 from .constants import MODEL_BASE_COLORS, VARIANT_TINTS
 from .normalize import slugify
 
+METRIC_COLUMNS = [
+    ("accuracy", "Accuracy"),
+    ("precision", "Precision"),
+    ("recall", "Recall"),
+]
+
+FAMILY_COMPARISONS = {
+    "GPT-4o": {
+        "base": "GPT-4o base",
+        "targets": [
+            "GPT-4o FT",
+            "GPT-4o QSP",
+            "GPT-4o RAG",
+        ],
+    },
+    "Llama3.1-70B": {
+        "base": "Llama3.1-70B base",
+        "targets": [
+            "Llama3.1-70B FT",
+            "Llama3.1-70B QSP",
+            "Llama3.1-70B RAG",
+        ],
+    },
+    "Llama3.1-8B": {
+        "base": "Llama3.1-8B base",
+        "targets": [
+            "Llama3.1-8B FT",
+            "Llama3.1-8B QSP",
+            "Llama3.1-8B RAG",
+        ],
+    },
+}
+
 
 def _variant_from_label(label: str) -> str:
     lowered = label.lower()
@@ -21,8 +54,8 @@ def _variant_from_label(label: str) -> str:
         return "RAG"
     if "bm25" in lowered:
         return "BM25"
-    if "pv1" in lowered:
-        return "PV1"
+    if "question-specific" in lowered or "pv1" in lowered:
+        return "QSP"
     if "ap" in lowered and "base" not in lowered:
         return "AP"
     if " ft" in lowered or lowered.endswith("ft") or " ft " in lowered or lowered.startswith("ft") or lowered.startswith("ft"):
@@ -107,37 +140,125 @@ def _annotate_families(ax, family_bounds: dict[str, tuple[float, float]]) -> Non
         )
 
 
-def plot_bar_chart(df, title: str, path: Path, footnote: str | None = None) -> None:
+def _variant_label(label: str) -> str:
+    for family in MODEL_BASE_COLORS:
+        if label.startswith(family):
+            suffix = label[len(family):].strip()
+            return suffix if suffix else "base"
+    return label
+
+
+def _position_lookup(models: list[str]) -> dict[str, float]:
+    positions, _ = _group_positions(models)
+    return dict(zip(models, positions))
+
+
+def _annotate_significance(
+    ax,
+    models: list[str],
+    pos_lookup: dict[str, float],
+    significance: dict | None,
+    metric: str,
+) -> None:
+    if not significance:
+        return
+    metric_map = significance.get(metric)
+    if not metric_map:
+        return
+    y_max = ax.get_ylim()[1]
+    base_margin = 0.35
+    bracket_height = 0.04
+    text_padding = 0.01
+    offset_step = 0.11
+    family_offsets: dict[str, float] = {}
+    for family, mapping in FAMILY_COMPARISONS.items():
+        base_label = mapping["base"]
+        base_x = pos_lookup.get(base_label)
+        if base_x is None:
+            continue
+        target_rows: list[tuple[float, str, float, str]] = []
+        for target in mapping["targets"]:
+            target_x = pos_lookup.get(target)
+            if target_x is None:
+                continue
+            target_suffix = target.replace(f"{family} ", "")
+            p_value = metric_map.get((family, target_suffix))
+            if p_value is None:
+                continue
+            distance = abs(target_x - base_x)
+            target_rows.append((distance, target, target_x, target_suffix))
+        if not target_rows:
+            continue
+        target_rows.sort(key=lambda item: item[0])
+        offset = family_offsets.get(family, y_max - base_margin)
+        for _, target, target_x, target_suffix in target_rows:
+            p_value = metric_map.get((family, target_suffix))
+            if p_value is None:
+                continue
+            label = "p<0.001" if p_value < 0.001 else f"p={p_value:.3f}"
+            ax.plot(
+                [base_x, base_x, target_x, target_x],
+                [offset, offset + bracket_height, offset + bracket_height, offset],
+                color="black",
+                linewidth=1,
+            )
+            ax.text(
+                (base_x + target_x) / 2,
+                offset + bracket_height + text_padding,
+                label,
+                ha="center",
+                va="bottom",
+                fontsize=9,
+            )
+            offset += offset_step
+        family_offsets[family] = offset
+
+
+def plot_metric_panels(
+    df,
+    qid_df,
+    title: str,
+    path: Path,
+    significance: dict | None = None,
+) -> None:
     if df.empty:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
-    width = max(14, 0.65 * len(df))
-    fig, ax = plt.subplots(figsize=(width, 6))
     models = df["model"].tolist()
     positions, family_bounds = _group_positions(models)
-    colors = [_color_for_model(model) for model in df["model"]]
-    bars = ax.bar(positions, df["accuracy"], color=colors, width=0.6)
+    pos_lookup = _position_lookup(models)
+    colors = [_color_for_model(model) for model in models]
     variant_labels = [_variant_label(model) for model in models]
-    ax.set_xticks(positions)
-    ax.set_xticklabels(variant_labels, rotation=25, ha="right", fontsize=9)
-    ax.set_ylim(0, 1)
-    ax.set_ylabel("Accuracy")
-    ax.set_title(title)
-    ax.grid(axis="y", linestyle="--", alpha=0.3)
-    for bar, value in zip(bars, df["accuracy"]):
-        ax.text(bar.get_x() + bar.get_width() / 2, value, f"{value:.2f}", ha="center", va="bottom")
-
-    _annotate_families(ax, family_bounds)
-
-    fig.tight_layout()
-    fig.subplots_adjust(bottom=0.35, top=0.95, left=0.05, right=0.98)
-    if footnote:
-        fig.text(0.5, 0.01, footnote, ha="center", va="bottom", fontsize=9, wrap=True)
+    width = max(14, 0.7 * len(models))
+    fig, axes = plt.subplots(len(METRIC_COLUMNS), 1, figsize=(width, 11), sharex=True)
+    if len(METRIC_COLUMNS) == 1:
+        axes = [axes]
+    for ax, (metric, label) in zip(axes, METRIC_COLUMNS):
+        values = df[metric].tolist()
+        bars = ax.bar(positions, values, color=colors, width=0.6)
+        ax.set_ylim(0, 1.5)
+        ax.set_ylabel(label)
+        ax.grid(axis="y", linestyle="--", alpha=0.3)
+        for bar, value in zip(bars, values):
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,
+                value + 0.01,
+                f"{value:.2f}",
+                ha="center",
+                va="bottom",
+                fontsize=9,
+            )
+        _annotate_significance(ax, models, pos_lookup, significance, metric)
+    axes[-1].set_xticks(positions)
+    axes[-1].set_xticklabels(variant_labels, rotation=25, ha="right", fontsize=9)
+    _annotate_families(axes[-1], family_bounds)
+    fig.suptitle(title, fontsize=16, y=0.99)
+    fig.tight_layout(rect=[0, 0, 0.98, 0.95])
     fig.savefig(path, dpi=300)
     plt.close(fig)
 
 
-def save_table(df, title: str, path: Path, footnote: str | None = None) -> None:
+def save_table(df, title: str, path: Path) -> None:
     if df.empty:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -154,14 +275,12 @@ def save_table(df, title: str, path: Path, footnote: str | None = None) -> None:
     table.set_fontsize(10)
     table.scale(1, 1.5)
     ax.set_title(title, fontweight="bold", pad=10)
-    if footnote:
-        fig.text(0.5, 0.02, footnote, ha="center", fontsize=9, wrap=True)
     fig.tight_layout()
     fig.savefig(path, dpi=300)
     plt.close(fig)
 
 
-def generate_figures(subset, title: str, footnote: str | None, output_dir: Path) -> None:
+def generate_figures(subset, title: str, output_dir: Path, qid_df=None, significance=None) -> None:
     slug = slugify(title)
-    plot_bar_chart(subset, f"{title} Accuracy", output_dir / f"{slug}_accuracy.png")
+    plot_metric_panels(subset, qid_df, title, output_dir / f"{slug}_accuracy.png", significance)
     save_table(subset, f"{title} Metrics", output_dir / f"{slug}_table.png")

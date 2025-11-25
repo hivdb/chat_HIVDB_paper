@@ -16,14 +16,33 @@ if str(ROOT.parent) not in sys.path:
     sys.path.append(str(ROOT.parent))
 
 from eval import config  # type: ignore
+from eval import statistics as stat_utils  # type: ignore
 from eval.plots import generate_figures  # type: ignore
 from eval.scoring import build_detail_rows, ensure_norm, evaluate_group, evaluate_model, load_dataset  # type: ignore
 from eval.normalize import match_scenario_label  # type: ignore
+# Statistical helpers
+from scipy.stats import fisher_exact, ttest_rel, wilcoxon
+import numpy as np
 
 
 LIST_SCENARIO_TITLES = {
     "List questions - exact match",
     "List questions - partial match",
+}
+
+FAMILY_COMPARISONS = {
+    "GPT-4o": {
+        "base": "GPT-4o base",
+        "targets": ["GPT-4o FT", "GPT-4o QSP", "GPT-4o RAG"],
+    },
+    "Llama3.1-70B": {
+        "base": "Llama3.1-70B base",
+        "targets": ["Llama3.1-70B FT", "Llama3.1-70B QSP", "Llama3.1-70B RAG"],
+    },
+    "Llama3.1-8B": {
+        "base": "Llama3.1-8B base",
+        "targets": ["Llama3.1-8B FT", "Llama3.1-8B QSP", "Llama3.1-8B RAG"],
+    },
 }
 
 
@@ -91,6 +110,7 @@ def run(limit: int | None) -> Tuple[
 
     cache: dict = {}
     scenario_results: dict[str, pd.DataFrame] = {}
+    scenario_qid_frames: dict[str, pd.DataFrame] = {}
     for scenario in config.SCENARIOS:
         scenario_df = df
         if filter_type := scenario.get("filter_type"):
@@ -148,14 +168,15 @@ def run(limit: int | None) -> Tuple[
                     detail_types,
                 )
             )
-        qid_metrics_rows.extend(
-            build_qid_metrics(
-                scenario_df,
-                scenario,
-                norm_lookup,
-                convert,
-            )
+        scenario_qid = build_qid_metrics(
+            scenario_df,
+            scenario,
+            norm_lookup,
+            convert,
         )
+        qid_metrics_rows.extend(scenario_qid)
+        scenario_qid_df = pd.DataFrame(scenario_qid)
+        scenario_qid_frames[scenario["title"]] = scenario_qid_df
         if scenario["title"] in LIST_SCENARIO_TITLES:
             exact_partial_details.extend(build_detail_rows(scenario_df, scenario, norm_lookup, match_label))
             if scenario["title"] == "List questions - partial match":
@@ -167,9 +188,9 @@ def run(limit: int | None) -> Tuple[
                 return f"{head} ({tail})"
             return title
 
-        figure_specs.append((_format_title(scenario["title"]), scenario["footnote"], subset))
+        figure_specs.append((_format_title(scenario["title"]), scenario["title"], subset, scenario_qid_df))
     combined = pd.concat(scenario_frames, ignore_index=True) if scenario_frames else pd.DataFrame()
-    return combined, detail_rows, figure_specs, exact_partial_details, partial_only_details, qid_metrics_rows
+    return combined, detail_rows, figure_specs, exact_partial_details, partial_only_details, qid_metrics_rows, scenario_qid_frames
 
 
 def write_outputs(metrics: pd.DataFrame, details: List[dict], extra_details: List[dict], partial_details: List[dict]) -> None:
@@ -199,7 +220,15 @@ def main() -> int:
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    metrics, details, figures, extra_details, partial_details, qid_rows = run(args.limit)
+    (
+        metrics,
+        details,
+        figures,
+        extra_details,
+        partial_details,
+        qid_rows,
+        scenario_qid_frames,
+    ) = run(args.limit)
     if metrics.empty:
         logging.error("No scenarios produced metrics.")
         return 1
@@ -208,14 +237,38 @@ def main() -> int:
         qid_df = pd.DataFrame(qid_rows)
         qid_df.to_csv(config.OUTPUT_METRICS_BY_QID, index=False, encoding="utf-8-sig")
         logging.info("Wrote per-QID metrics to %s", config.OUTPUT_METRICS_BY_QID)
+    overall_stats = {}
+    fisher_df = pd.DataFrame()
+    pair_df = pd.DataFrame()
+    overall_qid_df = scenario_qid_frames.get("Overall - partial match")
+    if overall_qid_df is not None and not overall_qid_df.empty:
+        fisher_df = stat_utils.compute_fisher_tests(
+            overall_qid_df,
+            FAMILY_COMPARISONS,
+            ["accuracy", "precision", "recall"],
+        )
+        if not fisher_df.empty:
+            config.FISHER_RESULTS.parent.mkdir(parents=True, exist_ok=True)
+            fisher_df.to_csv(config.FISHER_RESULTS, index=False, encoding="utf-8-sig")
+            logging.info("Wrote Fisher tests to %s", config.FISHER_RESULTS)
+        pair_df, overall_stats = stat_utils.compute_pairwise_tests(
+            overall_qid_df,
+            FAMILY_COMPARISONS,
+            ["accuracy", "precision", "recall"],
+        )
+        if not pair_df.empty:
+            config.PAIRWISE_RESULTS.parent.mkdir(parents=True, exist_ok=True)
+            pair_df.to_csv(config.PAIRWISE_RESULTS, index=False, encoding="utf-8-sig")
+            logging.info("Wrote pairwise tests to %s", config.PAIRWISE_RESULTS)
     logging.info("Wrote metrics to %s", config.OUTPUT_METRICS)
     logging.info("Wrote detail rows to %s", config.DETAIL_METRICS_HUMAN)
     if extra_details:
         logging.info("Wrote list scenario details to %s", config.EXACT_VS_PARTIAL_DETAILS)
     if partial_details:
         logging.info("Wrote partial-list detail rows to %s", config.DETAIL_METRICS_PARTIAL)
-    for title, footnote, subset in figures:
-        generate_figures(subset, title, footnote, config.OUTPUT_TABLE_DIR)
+    for display_title, scenario_title, subset, scenario_qid_df in figures:
+        annotations = overall_stats if scenario_title == "Overall - partial match" else None
+        generate_figures(subset, display_title, config.OUTPUT_TABLE_DIR, scenario_qid_df, annotations)
     return 0
 
 

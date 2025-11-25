@@ -225,11 +225,11 @@ MODEL_BASE_COLORS = {
     "Llama3.1-8B": "#d62728",
 }
 VARIANT_TINTS = {
-    "base": 0.0,
+    "base": 0.65,
     "LC": 0.1,
-    "FT": 0.2,
+    "FT": 0.05,
     "AP": 0.55,
-    "PV1": 0.65,
+    "QSP": 0.35,
     "BM25": 0.8,
-    "RAG": 0.9,
+    "RAG": 0.5,
 }

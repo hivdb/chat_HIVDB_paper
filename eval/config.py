@@ -8,6 +8,8 @@ MERGED_PATH = Path("advanced-prompting/csv/merged_answers.xlsx")
 GPT5_PATH = Path("eval/gpt-5/gpt5_responses.csv")
 OUTPUT_METRICS = Path("eval/evaluation_metrics.csv")
 OUTPUT_METRICS_BY_QID = Path("eval/evaluation_metrics_by_qid.csv")
+FISHER_RESULTS = Path("eval/fisher_exact_results.csv")
+PAIRWISE_RESULTS = Path("eval/pairwise_stats.csv")
 DETAIL_METRICS_HUMAN = Path("eval/detailed_evaluation.csv")
 DETAIL_METRICS_PARTIAL = Path("eval/detailed_evaluation_partial_list_matches.csv")
 OUTPUT_TABLE_DIR = Path("eval/figures")
@@ -18,38 +20,21 @@ LEARNING_CURVE_RESPONSES = {
 
 MODEL_GROUPS = {
     "gpt_family": [
-        "GPT-5 base",
         "GPT-4o base",
-        "GPT-4o FT-100",
         "GPT-4o FT",
-        "GPT-4o AP Before",
-        "GPT-4o AP",
-        "GPT-4o AP After",
-        "GPT-4o PV1",
-        "GPT-4o BM25 5-shot",
-        "GPT-4o BM25 10-shot",
+        "GPT-4o QSP",
         "GPT-4o RAG",
     ],
     "llama_70b": [
         "Llama3.1-70B base",
         "Llama3.1-70B FT",
-        "Llama3.1-70B AP Before",
-        "Llama3.1-70B AP",
-        "Llama3.1-70B AP After",
-        "Llama3.1-70B PV1",
-        "Llama3.1-70B BM25 5-shot",
-        "Llama3.1-70B BM25 10-shot",
+        "Llama3.1-70B QSP",
         "Llama3.1-70B RAG",
     ],
     "llama_8b": [
         "Llama3.1-8B base",
         "Llama3.1-8B FT",
-        "Llama3.1-8B AP Before",
-        "Llama3.1-8B AP",
-        "Llama3.1-8B AP After",
-        "Llama3.1-8B PV1",
-        "Llama3.1-8B BM25 5-shot",
-        "Llama3.1-8B BM25 10-shot",
+        "Llama3.1-8B QSP",
         "Llama3.1-8B RAG",
     ],
 }
@@ -58,6 +43,14 @@ ALL_MODEL_COLUMNS = sorted({model for models in MODEL_GROUPS.values() for model 
 
 COLUMN_RENAMES = {
     "GPT-4o FT (100)": "GPT-4o FT-100",
+    "GPT-4o Question-specific Prompt": "GPT-4o QSP",
+    "GPT-4o PV1": "GPT-4o QSP",
+    "Llama3.1-70B Question-specific Prompt": "Llama3.1-70B QSP",
+    "llama-3.1-70B PV1": "Llama3.1-70B QSP",
+    "Llama3.1-8B Question-specific Prompt": "Llama3.1-8B QSP",
+    "llama-3.1-8B PV1": "Llama3.1-8B QSP",
+    "llama-3.1-70B RAG": "Llama3.1-70B RAG",
+    "llama-3.1-8B RAG": "Llama3.1-8B RAG",
     "llama-3.1-70B AP": "Llama3.1-70B AP",
     "llama-3.1-70B AP before": "Llama3.1-70B AP Before",
     "llama-3.1-70B AP after": "Llama3.1-70B AP After",
@@ -68,10 +61,6 @@ COLUMN_RENAMES = {
     "llama-3.1-8B 10shot": "Llama3.1-8B BM25 10-shot",
     "llama-3.1-70B 5shot": "Llama3.1-70B BM25 5-shot",
     "llama-3.1-70B 10shot": "Llama3.1-70B BM25 10-shot",
-    "llama-3.1-8B RAG": "Llama3.1-8B RAG",
-    "llama-3.1-70B RAG": "Llama3.1-70B RAG",
-    "llama-3.1-8B PV1": "Llama3.1-8B PV1",
-    "llama-3.1-70B PV1": "Llama3.1-70B PV1",
 }
 
 SCENARIOS = [
@@ -80,11 +69,6 @@ SCENARIOS = [
         "reference": "Human Answer",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
         "convert_special_no": True,
-        "footnote": (
-            "*AI answers scored against human references after normalizing case, stripping punctuation, "
-            "sorting list-valued entries, and collapsing None/Not reported/Not applicable/0 into 'No'. "
-            "Bar colors indicate the base model family; shade intensity reflects the scenario (base, FT, AP, BM25, RAG)."
-        ),
     },
     {
         "title": "Overall - partial match",
@@ -93,21 +77,12 @@ SCENARIOS = [
         "convert_special_no": True,
         "allow_partial_list": True,
         "detail_types": ["List"],
-        "footnote": (
-            "*Partial list credit granted when ≥66% of human tokens appear; Boolean and numeric scoring remains exact. "
-            "Bar colors indicate the base model family; shade intensity reflects the scenario (base, FT, AP, PV1, BM25, RAG)."
-        ),
     },
     {
         "title": "Yes/No questions",
         "reference": "Human Answer",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
         "convert_special_no": True,
-        "footnote": (
-            "*AI answers scored against human references after collapsing None/Not reported/Not "
-            "applicable/0 into 'No'. Bar colors indicate the base model family; shade intensity reflects the "
-            "scenario (base, FT, AP, PV1, BM25, RAG)."
-        ),
         "filter_type": "Boolean",
         "include_details": False,
     },
@@ -116,9 +91,6 @@ SCENARIOS = [
         "reference": "Human Answer",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
         "convert_special_no": True,
-        "footnote": (
-            "*Exact list match after normalizing case and stripping punctuation."
-        ),
         "filter_type": "List",
         "allow_partial_list": False,
         "include_details": False,
@@ -129,10 +101,6 @@ SCENARIOS = [
         "reference": "Human Answer",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
         "convert_special_no": True,
-        "footnote": (
-            "*Partial list match credit granted when ≥66% of human tokens appear. Bar colors indicate model family; "
-            "shade intensity reflects scenario (base, FT, AP, PV1, BM25, RAG)."
-        ),
         "filter_type": "List",
         "allow_partial_list": True,
         "include_details": False,

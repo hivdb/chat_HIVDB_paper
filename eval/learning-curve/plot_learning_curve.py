@@ -79,8 +79,7 @@ def main() -> int:
     COMBINED_CSV.parent.mkdir(parents=True, exist_ok=True)
     combined.to_csv(COMBINED_CSV, index=False)
     title = "GPT-4o Learning Curve"
-    footnote = "*Overall accuracy/precision/recall/F1 for GPT-4o with 0/50/100/150/200 supervised examples."
-    generate_figures(combined, title, footnote, OUTPUT_DIR)
+    generate_figures(combined, title, OUTPUT_DIR)
     print(f"Wrote combined metrics to {COMBINED_CSV}")
     print(f"Figures saved to {OUTPUT_DIR}")
     return 0
