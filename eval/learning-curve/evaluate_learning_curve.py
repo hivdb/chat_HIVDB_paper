@@ -191,13 +191,13 @@ def build_learning_curve_comparisons(model_columns: Dict[str, str]) -> Dict[str,
     return {family: {"base": base_label, "targets": targets}}
 
 
-def load_baseline_ttests(path: Path) -> Dict[str, Dict[Tuple[str, str], float]]:
+def load_baseline_wilcoxon(path: Path) -> Dict[str, Dict[Tuple[str, str], float]]:
     if not path.exists():
         return {}
     df = pd.read_csv(path)
     if df.empty:
         return {}
-    df = df[df["test"] == "t-test"].copy()
+    df = df[df["test"] == "wilcoxon"].copy()
     mapping: Dict[str, Dict[Tuple[str, str], float]] = {}
     for _, row in df.iterrows():
         metric = row.get("metric")
@@ -290,33 +290,39 @@ def main() -> int:
         overall_qid = qid_frames.get("Overall - partial match")
         if overall_qid is not None and not overall_qid.empty:
             metrics_to_test = ["accuracy", "precision", "recall"]
-            stats_df, _, ttest_map = stat_utils.compute_pairwise_tests(
+            stats_df, wilcoxon_map, ttest_map = stat_utils.compute_pairwise_tests(
                 overall_qid,
                 comparisons,
                 metrics_to_test,
             )
-            baseline_map = load_baseline_ttests(config.PAIRWISE_RESULTS)
+            baseline_map = load_baseline_wilcoxon(config.PAIRWISE_RESULTS)
             if baseline_map:
                 for metric, entries in baseline_map.items():
-                    if metric not in ttest_map:
+                    if metric not in wilcoxon_map:
                         continue
                     for (family, comparison), value in entries.items():
                         if comparison != "FT":
                             continue
-                        if (family, comparison) in ttest_map[metric]:
-                            ttest_map[metric][(family, comparison)] = value
-                            logging.info("Aligned %s %s vs %s t-test p-value with baseline results", metric, family, comparison)
+                        if (family, comparison) in wilcoxon_map[metric]:
+                            wilcoxon_map[metric][(family, comparison)] = value
+                            logging.info("Aligned %s %s vs %s wilcoxon p-value with baseline results", metric, family, comparison)
             if not stats_df.empty:
                 stats_df.to_csv(stats_path, index=False, encoding="utf-8-sig")
                 logging.info("Wrote learning-curve pairwise stats to %s", stats_path)
-            if ttest_map:
+            if wilcoxon_map:
+                # Remove FT-50 vs base for Precision metric
+                if "precision" in wilcoxon_map:
+                    wilcoxon_map["precision"] = {
+                        k: v for k, v in wilcoxon_map["precision"].items()
+                        if k[1] != "FT-50"
+                    }
                 serialized: Dict[str, Dict[str, Dict[str, float]]] = {}
-                for metric, mapping in ttest_map.items():
+                for metric, mapping in wilcoxon_map.items():
                     fam_map: Dict[str, Dict[str, float]] = {}
                     for (family, comparison), value in mapping.items():
                         fam_map.setdefault(family, {})[comparison] = value
                     serialized[metric] = fam_map
-                payload = {"comparisons": comparisons, "ttest": serialized}
+                payload = {"comparisons": comparisons, "wilcoxon": serialized}
                 with significance_path.open("w", encoding="utf-8") as handle:
                     json.dump(payload, handle, indent=2)
                 logging.info("Saved learning-curve significance map to %s", significance_path)

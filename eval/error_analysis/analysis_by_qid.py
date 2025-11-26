@@ -18,10 +18,18 @@ COLUMN_ORDER = [
     "GPT-4o base Correct",
     "GPT-4o FT Answer",
     "GPT-4o FT Correct",
+    "GPT-4o QSP Answer",
+    "GPT-4o QSP Correct",
+    "GPT-4o RAG Answer",
+    "GPT-4o RAG Correct",
     "Llama3.1-70B base Answer",
     "Llama3.1-70B base Correct",
     "Llama3.1-70B FT Answer",
     "Llama3.1-70B FT Correct",
+    "Llama3.1-70B QSP Answer",
+    "Llama3.1-70B QSP Correct",
+    "Llama3.1-70B RAG Answer",
+    "Llama3.1-70B RAG Correct",
 ]
 COLUMN_RENAMES = {
     "PMID": "PMID",
@@ -30,10 +38,18 @@ COLUMN_RENAMES = {
     "GPT-4o base Correct": "GPT-4o base Correct",
     "GPT-4o FT Answer": "GPT-4o FT",
     "GPT-4o FT Correct": "GPT-4o FT Correct",
+    "GPT-4o QSP Answer": "GPT-4o QSP",
+    "GPT-4o QSP Correct": "GPT-4o QSP Correct",
+    "GPT-4o RAG Answer": "GPT-4o RAG",
+    "GPT-4o RAG Correct": "GPT-4o RAG Correct",
     "Llama3.1-70B base Answer": "Llama3.1-70B base",
     "Llama3.1-70B base Correct": "Llama3.1-70B base Correct",
     "Llama3.1-70B FT Answer": "Llama3.1-70B FT",
     "Llama3.1-70B FT Correct": "Llama3.1-70B FT Correct",
+    "Llama3.1-70B QSP Answer": "Llama3.1-70B QSP",
+    "Llama3.1-70B QSP Correct": "Llama3.1-70B QSP Correct",
+    "Llama3.1-70B RAG Answer": "Llama3.1-70B RAG",
+    "Llama3.1-70B RAG Correct": "Llama3.1-70B RAG Correct",
 }
 EXPECTED_ROWS = 120
 

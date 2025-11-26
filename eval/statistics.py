@@ -162,6 +162,7 @@ def compute_pairwise_tests(
                     }
                 )
                 ttest_map.setdefault(metric, {})[(family, target_suffix)] = float(t_p)
+                wilcoxon_map.setdefault(metric, {})[(family, target_suffix)] = float(w_p)
 
     stats_df = pd.DataFrame(records)
     if stats_df.empty:
@@ -175,8 +176,5 @@ def compute_pairwise_tests(
                 continue
             adjusted = benjamini_hochberg(stats_df.loc[mask, "p_value"].tolist())
             stats_df.loc[mask, "adj_p"] = adjusted
-            if test_name == "wilcoxon":
-                for (_, row), adj in zip(stats_df.loc[mask].iterrows(), adjusted):
-                    wilcoxon_map.setdefault(metric, {})[(row["family"], row["comparison"])] = adj
 
     return stats_df, wilcoxon_map, ttest_map

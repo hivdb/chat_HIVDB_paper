@@ -251,7 +251,7 @@ def main() -> int:
             config.FISHER_RESULTS.parent.mkdir(parents=True, exist_ok=True)
             fisher_df.to_csv(config.FISHER_RESULTS, index=False, encoding="utf-8-sig")
             logging.info("Wrote Fisher tests to %s", config.FISHER_RESULTS)
-        pair_df, _, overall_stats = stat_utils.compute_pairwise_tests(
+        pair_df, overall_stats, _ = stat_utils.compute_pairwise_tests(
             overall_qid_df,
             FAMILY_COMPARISONS,
             ["accuracy", "precision", "recall"],
