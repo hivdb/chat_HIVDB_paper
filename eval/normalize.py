@@ -119,6 +119,8 @@ def _canonical_list(lowered: str, raw: str, convert_special_no: bool) -> str:
     for token in tokens:
         if not token:
             continue
+        # Normalize ritonavir suffix before looking up synonyms
+        token = _normalize_ritonavir_suffix(token)
         token = TEXT_SYNONYMS.get(token, token)
         if convert_special_no and token in SPECIAL_NO:
             return "no"
@@ -196,9 +198,26 @@ def _token_matches(token: str, haystack: str) -> bool:
     return False
 
 
+def _normalize_ritonavir_suffix(text: str) -> str:
+    """Strip optional ritonavir suffixes from drug names."""
+    if not text:
+        return text
+    # Remove /r, /ritonavir, or comma-separated ritonavir
+    normalized = re.sub(r'\s*/\s*r(?:itonavir)?\s*$', '', text, flags=re.IGNORECASE)
+    normalized = re.sub(r'\s*,\s*r(?:itonavir)?\s*$', '', normalized, flags=re.IGNORECASE)
+    normalized = re.sub(r'\s+ritonavir\s*$', '', normalized, flags=re.IGNORECASE)
+    return normalized.strip()
+
+
 def _expand_token_synonyms(token: str) -> set[str]:
     normalized = NON_ALPHANUM.sub(" ", token.lower()).strip()
     variants = {normalized}
+
+    # Add variant without ritonavir suffix
+    without_rtv = _normalize_ritonavir_suffix(normalized)
+    if without_rtv != normalized:
+        variants.add(without_rtv)
+
     key = token.lower()
     for mapping in (ARV_SYNONYMS, GENE_SYNONYMS, TEXT_SYNONYMS):
         if key in mapping:
@@ -208,7 +227,15 @@ def _expand_token_synonyms(token: str) -> set[str]:
             variants.add(raw)
     variants.update(ADDITIONAL_LIST_SYNONYMS.get(token, set()))
     variants = {NON_ALPHANUM.sub(" ", variant.lower()).strip() for variant in variants if variant}
-    return {variant for variant in variants if variant}
+
+    # Also add ritonavir-stripped versions of all variants
+    expanded_variants = set(variants)
+    for variant in variants:
+        stripped = _normalize_ritonavir_suffix(variant)
+        if stripped and stripped != variant:
+            expanded_variants.add(stripped)
+
+    return {variant for variant in expanded_variants if variant}
 
 
 def contains_negation(pred_raw: str) -> bool:

@@ -22,10 +22,10 @@
       "label": "FT-150",
       "responses": "eval/learning-curve/responses/size150_responses.csv",
       "column": "GPT-4o FT-150",
-      "accuracy": 0.8598958333333333,
-      "precision": 0.8535564853556485,
-      "recall": 0.788659793814433,
-      "f1": 0.8198258539852644
+      "accuracy": 0.8604166666666667,
+      "precision": 0.8537604456824512,
+      "recall": 0.7899484536082474,
+      "f1": 0.820615796519411
     }
   ]
 }
