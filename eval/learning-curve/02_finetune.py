@@ -16,13 +16,15 @@ from openai import OpenAI
 from openai.types.fine_tuning import FineTuningJob
 
 
-SUBSET_PATTERN = re.compile(r"(?:train_)?subset_(\d+)\.jsonl$|train_subset_(\d+)\.jsonl$")
+TRAIN_PATTERN = re.compile(r"train_(\d+)\.jsonl$")
+VAL_PATTERN = re.compile(r"val_(\d+)\.jsonl$")
 
 
 @dataclass(frozen=True)
 class SubsetSpec:
     size: int
-    path: Path
+    train_path: Path
+    val_path: Path
 
 
 def parse_args() -> argparse.Namespace:
@@ -39,18 +41,6 @@ def parse_args() -> argparse.Namespace:
         nargs="+",
         default=None,
         help="Only launch jobs for the listed subset sizes.",
-    )
-    parser.add_argument(
-        "--val-file",
-        type=Path,
-        default=Path("advanced-prompting/train_val/val_set.jsonl"),
-        help="Validation file uploaded once per run.",
-    )
-    parser.add_argument(
-        "--validation-file-id",
-        type=str,
-        default=None,
-        help="Existing validation file ID to reuse (skips upload).",
     )
     parser.add_argument(
         "--reference-job",
@@ -100,16 +90,33 @@ def parse_args() -> argparse.Namespace:
 
 def discover_subsets(directory: Path, allowed_sizes: Optional[Iterable[int]]) -> List[SubsetSpec]:
     allowed = {size for size in allowed_sizes} if allowed_sizes else None
-    subsets: List[SubsetSpec] = []
+
+    # Find all train files and match them with corresponding val files
+    train_files: Dict[int, Path] = {}
+    val_files: Dict[int, Path] = {}
+
     for path in sorted(directory.glob("*.jsonl")):
-        match = SUBSET_PATTERN.match(path.name)
-        if not match:
+        train_match = TRAIN_PATTERN.match(path.name)
+        if train_match:
+            size = int(train_match.group(1))
+            train_files[size] = path
             continue
-        size_str = next(filter(None, match.groups()))
-        size = int(size_str)
+
+        val_match = VAL_PATTERN.match(path.name)
+        if val_match:
+            size = int(val_match.group(1))
+            val_files[size] = path
+
+    # Create SubsetSpec for each size with both train and val files
+    subsets: List[SubsetSpec] = []
+    for size in sorted(train_files.keys()):
         if allowed and size not in allowed:
             continue
-        subsets.append(SubsetSpec(size=size, path=path))
+        if size not in val_files:
+            logging.warning("Found train_%03d.jsonl but missing val_%03d.jsonl, skipping", size, size)
+            continue
+        subsets.append(SubsetSpec(size=size, train_path=train_files[size], val_path=val_files[size]))
+
     return subsets
 
 
@@ -204,41 +211,33 @@ def main() -> int:
         json.dumps(hyperparams) if hyperparams else "{}",
     )
 
-    val_file_id = args.validation_file_id
-    if args.val_file and not val_file_id:
-        if args.dry_run:
-            logging.info("[dry-run] Would upload validation file %s", args.val_file)
-            val_file_id = "dry-run-validation"
-        else:
-            val_file_id = upload_file(client, args.val_file)
-    elif not args.val_file:
-        logging.info("Validation file not provided; jobs will train without validation splits.")
-
     for subset in subsets:
         suffix = args.suffix_template.format(prefix=args.suffix_prefix, size=subset.size)
-        logging.info("Processing subset %s (%d examples)", subset.path, subset.size)
+        logging.info("Processing subset size=%d (train=%s, val=%s)", subset.size, subset.train_path, subset.val_path)
 
         if args.dry_run:
-            logging.info("[dry-run] Would upload %s and launch job with suffix %s", subset.path, suffix)
+            logging.info("[dry-run] Would upload train=%s and val=%s, then launch job with suffix %s", subset.train_path, subset.val_path, suffix)
             job_info = {
                 "size": subset.size,
-                "train_file": str(subset.path),
+                "train_file": str(subset.train_path),
+                "val_file": str(subset.val_path),
                 "suffix": suffix,
                 "base_model": base_model,
                 "reference_job": args.reference_job,
-                "validation_file_id": val_file_id,
                 "hyperparameters": hyperparams,
                 "dry_run": True,
             }
             append_job_record(args.jobs_file, job_info)
             continue
 
-        train_file_id = upload_file(client, subset.path)
+        train_file_id = upload_file(client, subset.train_path)
+        val_file_id = upload_file(client, subset.val_path)
         job = create_job(client, base_model, train_file_id, val_file_id, suffix, hyperparams)
-        logging.info("Started job %s for %s (%s)", job.id, subset.path, suffix)
+        logging.info("Started job %s for subset size %d (%s)", job.id, subset.size, suffix)
         record = {
             "size": subset.size,
-            "train_file": str(subset.path),
+            "train_file": str(subset.train_path),
+            "val_file": str(subset.val_path),
             "train_file_id": train_file_id,
             "validation_file_id": val_file_id,
             "job_id": job.id,

@@ -38,6 +38,23 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Also print a short listing of recent fine-tune jobs to confirm access.",
     )
+    parser.add_argument(
+        "--events",
+        action="store_true",
+        help="Show raw event stream for debugging.",
+    )
+    parser.add_argument(
+        "--event-limit",
+        type=int,
+        default=20,
+        help="Number of events to show when --events is used (default: 20).",
+    )
+    parser.add_argument(
+        "--after",
+        type=str,
+        default=None,
+        help="Event ID to start after when --events is used.",
+    )
     return parser.parse_args()
 
 
@@ -82,6 +99,32 @@ def list_jobs(client: OpenAI, limit: int = 5) -> None:
     print(format_json(jobs))
 
 
+def print_events(client: OpenAI, job_id: str, limit: int, after: str | None) -> None:
+    """Print raw event stream for debugging."""
+    response = client.fine_tuning.jobs.list_events(
+        fine_tuning_job_id=job_id,
+        limit=limit,
+        after=after,
+    )
+    print("\n=== Fine-tuning job events ===")
+    for event in response.data:
+        print("=" * 60)
+        print(f"event_id   : {event.id}")
+        print(f"type       : {event.type}")
+        print(f"created_at : {event.created_at}")
+        print(f"message    : {getattr(event, 'message', None)}")
+        payload = getattr(event, "data", None)
+        if payload:
+            for key, value in payload.items():
+                print(f"data[{key!r}] = {value}")
+        else:
+            print("data       : None")
+    print("=" * 60)
+    print(f"has_more   : {response.has_more}")
+    if response.has_more and response.data:
+        print(f"Next cursor: {response.data[-1].id}")
+
+
 def main() -> int:
     args = parse_args()
     load_env()
@@ -89,6 +132,8 @@ def main() -> int:
     status = print_job(args.job_id, client)
     if args.list:
         list_jobs(client)
+    if args.events:
+        print_events(client, args.job_id, args.event_limit, args.after)
     return status
 
 
