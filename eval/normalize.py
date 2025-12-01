@@ -144,8 +144,11 @@ def _canonical_list_token(token: str) -> List[str]:
         return [part.strip() for part in ARV_SYNONYMS[token].split("|") if part.strip()]
     gene = GENE_SYNONYMS.get(token)
     if gene:
-        expansions = GENE_GROUP_EXPANSIONS.get(gene, {gene})
-        return sorted(expansions)
+        # Always expand pol to its component genes
+        expansions = GENE_GROUP_EXPANSIONS.get(gene)
+        if expansions:
+            return sorted(expansions)
+        return [gene]
     return [token]
 
 
@@ -319,8 +322,14 @@ def is_empty_number(value: str) -> bool:
 
 
 def compare_lists(pred_norm: str, ref_norm: str) -> bool:
+    """
+    Check if prediction exactly matches reference (100% = 100%).
+    Both sets must be identical after normalization.
+    """
     if pred_norm == ref_norm:
         return True
+
+    # Handle "or" alternatives: "10 or 20" accepts either value
     if " or " in ref_norm:
         options = {opt.strip() for opt in ref_norm.split("or")}
         if pred_norm.strip() in options:
@@ -329,56 +338,17 @@ def compare_lists(pred_norm: str, ref_norm: str) -> bool:
         options = {opt.strip() for opt in pred_norm.split("or")}
         if ref_norm.strip() in options:
             return True
+
+    # Convert to sets and compare
     pred_set = {tok.strip() for tok in pred_norm.split("|") if tok.strip()}
-    raw_ref_set = {tok.strip() for tok in ref_norm.split("|") if tok.strip()}
-    if not pred_set or not raw_ref_set:
-        return False
-    core_ref = raw_ref_set - FULL_GENOME_TOKENS
-    ref_set = core_ref if core_ref else raw_ref_set
-    if pred_set == ref_set or ref_set.issubset(pred_set):
-        return True
-    if _matches_pol_group(ref_set, pred_set):
-        return True
-    if _full_genome_equivalent(raw_ref_set, pred_set, pred_norm):
-        return True
-    return False
+    ref_set = {tok.strip() for tok in ref_norm.split("|") if tok.strip()}
 
-
-def _matches_pol_group(ref_set: set[str], pred_set: set[str]) -> bool:
-    """Treat any Pol reference as satisfied by at least two component genes or 'pol'."""
-    pol_components = GENE_GROUP_EXPANSIONS.get("pol", set())
-    if not pol_components:
+    if not pred_set or not ref_set:
         return False
-    # Reference counts as Pol-style if it only contains Pol tokens (components or Pol itself)
-    ref_tokens = {token for token in ref_set if token}
-    ref_is_pol = ref_tokens.issubset(pol_components | {"pol"})
-    ref_requires_pol = ref_is_pol and ("pol" in ref_tokens or len(ref_tokens) >= 3)
-    if not ref_is_pol:
-        return False
-    normalized_pred = {token for token in pred_set if token}
-    pred_components = normalized_pred & pol_components
-    if "pol" in normalized_pred:
-        return True
-    if ref_requires_pol and len(pred_components) >= 2:
-        return True
-    if not ref_requires_pol and pred_components.issuperset(ref_tokens):
-        return True
-    return False
 
+    # Exact match: both sets must be identical
+    return pred_set == ref_set
 
-def _full_genome_equivalent(ref_set: set[str], pred_set: set[str], pred_norm: str) -> bool:
-    if not (ref_set & FULL_GENOME_TOKENS):
-        return False
-    if pred_set & FULL_GENOME_TOKENS:
-        return True
-    lowered_pred = pred_norm.lower()
-    has_pol = "pol" in lowered_pred
-    has_env = "env" in lowered_pred or "gp120" in lowered_pred
-    if has_pol and has_env:
-        return True
-    if {"pol", "env"}.issubset(pred_set) or {"pol", "gp120"}.issubset(pred_set):
-        return True
-    return False
 
 def slugify(text: str) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", (text or "").lower())
@@ -453,21 +423,33 @@ def _score_list(
 ) -> Tuple[dict[str, int], bool]:
     counts = _new_counts()
     ref_empty = is_empty_token(ref_norm)
-    matches, total = list_match_stats(ref_norm, pred_norm, pred_raw)
-    match_ratio = matches / total if total else 0.0
-    full_match = compare_lists(pred_norm, ref_norm) or (total and matches == total)
-    partial_credit = (
-        allow_partial
-        and not ref_empty
-        and total > 0
-        and match_ratio >= LIST_PARTIAL_THRESHOLD
-    )
-    has_year_reference = False
 
     if not ref_empty:
-        correct = full_match or partial_credit or has_year_reference
-        return _finalize(counts, "tp" if correct else "fn", correct)
+        # For non-empty reference, check exact or partial match
+        full_match = compare_lists(pred_norm, ref_norm)
 
+        if full_match:
+            return _finalize(counts, "tp", True)
+
+        # Partial match: compute intersection percentage
+        if allow_partial:
+            pred_set = {tok.strip() for tok in pred_norm.split("|") if tok.strip()}
+            ref_set = {tok.strip() for tok in ref_norm.split("|") if tok.strip()}
+
+            if pred_set and ref_set:
+                # Intersection of both sets
+                intersection = pred_set & ref_set
+                # Union of both sets
+                union = pred_set | ref_set
+                # Intersection percentage
+                intersection_ratio = len(intersection) / len(union) if union else 0.0
+
+                if intersection_ratio >= LIST_PARTIAL_THRESHOLD:
+                    return _finalize(counts, "tp", True)
+
+        return _finalize(counts, "fn", False)
+
+    # Reference is empty
     if is_empty_token(pred_norm) or contains_negation(pred_raw) or lab_only_context(pred_raw):
         return _finalize(counts, "tn", True)
     return _finalize(counts, "fp", False)

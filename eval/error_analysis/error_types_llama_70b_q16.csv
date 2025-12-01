@@ -11,6 +11,7 @@ Llama3.1-70B base,False Positive,Not applicable,"RAL, EVG, DTG"
 Llama3.1-70B base,False Positive,Not applicable,"RAL, EVG, DTG"
 Llama3.1-70B QSP,False Positive,Not applicable,"DTG, RAL, EVG"
 Llama3.1-70B base,False Positive,Not applicable,"Amprenavir (APV), Lopinavir (LPV), Atazanavir (ATV), Darunavir (DRV), Nelfinavir (NFV)"
+Llama3.1-70B FT,Other,"Tenofovir, Emtricitabine, Elvitegravir","Tenofovir (TFV), Emtricitabine (FTC), Elvitegravir (EVG)"
 Llama3.1-70B RAG,Partial Match (<66%),"Tenofovir, Emtricitabine, Elvitegravir","Zidovudine (AZT), Tenofovir (TDF), various PIs"
 Llama3.1-70B base,False Positive,Not applicable,"RPV, DOR"
 Llama3.1-70B base,Partial Match (<66%),"TFV, FTC, RAL, DTG","Dolutegravir (DTG), Raltegravir (RAL)"
@@ -45,9 +46,13 @@ Llama3.1-70B base,False Positive,Not reported,"Abacavir, Zidovudine, Zalcitabine
 Llama3.1-70B FT,False Negative,"TDF,FTC,EVG",No
 Llama3.1-70B QSP,Hallucination,"TDF,FTC,EVG","Ritonavir-boosted PIs, NNRTIs, INSTIs"
 Llama3.1-70B RAG,False Negative,"TDF,FTC,EVG",Not reported
+Llama3.1-70B FT,Other,"TDF, 3TC, EFV","Tenofovir (TFV), Emtricitabine (FTC), Efavirenz (EFV)"
+Llama3.1-70B QSP,Other,"TDF, 3TC, EFV","Tenofovir, emtricitabine, efavirenz"
+Llama3.1-70B RAG,Other,"TDF, 3TC, EFV","Efavirenz, Tenofovir, Emtricitabine"
 Llama3.1-70B base,False Negative,"BIC, FTC, TAF",No
 Llama3.1-70B FT,False Negative,"BIC, FTC, TAF",No
 Llama3.1-70B QSP,False Negative,"BIC, FTC, TAF",
+Llama3.1-70B base,Other,"CAB, RPV","Cabotegravir (CAB), Rilpivirine (RPV)"
 Llama3.1-70B FT,False Negative,"CAB, RPV",No
 Llama3.1-70B QSP,False Negative,"CAB, RPV",
 Llama3.1-70B base,Partial Match (<66%),"3TC, TDF, EFV, LPV/r, EVG, ABC, DTG","3TC, TDF, EFV, LPV/r"
@@ -73,12 +78,18 @@ Llama3.1-70B base,False Positive,Not reported,Lamivudine (3TC); Emtricitabine (F
 Llama3.1-70B base,False Positive,Not reported,"ATV, DRV, FPV, IDV, LPV, NFV, SQV, TPV"
 Llama3.1-70B base,False Positive,Not reported,"Abacavir (ABC), Zidovudine (AZT), Lamivudine (3TC), Raltegravir (RAL)"
 Llama3.1-70B RAG,False Positive,Not reported,"Abacavir (ABC), Zidovudine (AZT), Lamivudine (3TC), Emtricitabine (FTC), Tenofovir (TFV), Didanosine (DDI), Darunavir (DRV), Saquinavir (SQV), Maraviroc (MVC), Raltegravir (RAL), Dolutegravir(DTG)"
+Llama3.1-70B base,Other,"LPV, ATV, EFV, NVP, 3TC, ABC, AZT, FTC, D4T, TDF","Abacavir, Zidovudine, Lamivudine, Stavudine, Emtricitabine, Tenofovir, Nevirapine, Delavirdine, Efavirenz, Etravirine, Rilpivirine, Doravirine, Amprenavir, Lopinavir, Atazanavir, Derunavir, Raltegravir, Elvitegravir, Dolutagravir, Bictegravir, cabotagravir"
+Llama3.1-70B FT,Other,"LPV, ATV, EFV, NVP, 3TC, ABC, AZT, FTC, D4T, TDF","Abacavir (ABC), Lamivudine (3TC), Zidovudine (AZT), Stavudine (D4T), Emtricitabine (FTC), Tenofovir (TFV), Nevirapine (NVP), Efavirenz (EFV), Etravirine (ETR), Rilpivirine (RPV), Doravirine (DOR), Amprenavir (APV), Lopinavir (LPV), Atazanavir (ATV), Darunavir (DRV)"
 Llama3.1-70B QSP,Partial Match (<66%),"LPV, ATV, EFV, NVP, 3TC, ABC, AZT, FTC, D4T, TDF","Ritonavir-boosted lopinavir, ritonavir-boosted atazanavir"
+Llama3.1-70B RAG,Other,"LPV, ATV, EFV, NVP, 3TC, ABC, AZT, FTC, D4T, TDF","Ritonavir-boosted lopinavir, Ritonavir-boosted atazanavir, Efavirenz, Nevirapine, Abacavir, Lamivudine, Emtricitabine, Tenofovir disoproxil fumarate, Zidovudine"
+Llama3.1-70B base,Other,"TDF, 3TC, EFV","Tenofovir (TFV), Lamivudine (3TC), Efavirenz (EFV), Atazanavir (ATV), Raltegravir (RAL), Dolutagravir (DTG)"
+Llama3.1-70B FT,Other,"TDF, 3TC, EFV","Tenofovir (TDF), Lamivudine (3TC), Efavirenz (EFV)"
 Llama3.1-70B FT,False Negative,"RAL, DRV",No
 Llama3.1-70B base,False Positive,Not reported,"Raltegravir, Elvitegravir, Dolutagravir, Bictegravir, cabotagravir, Lenacapavir"
 Llama3.1-70B base,False Positive,Not reported,"DTG, BIC"
 Llama3.1-70B RAG,False Positive,Not reported,"Efavirenz (EFV), Tenofovir (TFV), Emtricitabine (FTC), Lamivudine (3TC), Nevirapine (NVP), Zidovudine (AZT), Dolutegravir (DTG)"
 Llama3.1-70B base,Partial Match (<66%),"TDF, FTC, ABC, 3TC",Tenofovir/emtricitabine; Rilpivirine
+Llama3.1-70B FT,Other,"TDF, FTC, ABC, 3TC","Abacavir (ABC), Lamivudine (3TC), Tenofovir (TFV), Tenofovir alafenamide (TAF), Emtricitabine (FTC)"
 Llama3.1-70B RAG,Partial Match (<66%),"TDF, FTC, ABC, 3TC","DTG, 3TC"
 Llama3.1-70B base,False Positive,Not reported,Dolutegravir (DTG); Emtricitabine (FTC); Tenofovir disoproxil fumarate (TDF)
 Llama3.1-70B QSP,False Positive,Not reported,"Dolutegravir, emtricitabine, tenofovir disoproxil fumarate"
@@ -98,11 +109,14 @@ Llama3.1-70B base,Partial Match (<66%),"TDF, FTC, EFV, ABC, 3TC, DTG, LPV, Elsul
 Llama3.1-70B FT,Partial Match (<66%),"TDF, FTC, EFV, ABC, 3TC, DTG, LPV, Elsulfavirine, RAL, DRV, AZT","TDF, 3TC, EFV, ABC, DTG, LPV/r, ETR"
 Llama3.1-70B QSP,Partial Match (<66%),"TDF, FTC, EFV, ABC, 3TC, DTG, LPV, Elsulfavirine, RAL, DRV, AZT","TDF, 3TC, EFV"
 Llama3.1-70B RAG,Partial Match (<66%),"TDF, FTC, EFV, ABC, 3TC, DTG, LPV, Elsulfavirine, RAL, DRV, AZT","TDF, 3TC, DTG"
+Llama3.1-70B base,Other,DTG,Dolutegravir (DTG)
 Llama3.1-70B FT,False Negative,DTG,No
 Llama3.1-70B QSP,False Negative,DTG,Not reported
+Llama3.1-70B base,Other,"3TC, ABC, AZT, D4T, DDI, FTC, TDF, ETR, EFV, NVP, RPV","Abacavir (ABC), Zidovudine'(AZT), Zalcitabine (DDC), Didanosine (DDI), Lamivudine (3TC), Stavudine (D4T), Emtricitabine(FTC), Tenofovir (TFV), Nevirapine (NVP), Delavirdine (DLV), Efavirenz (EFV), Etravirine (ETR), Rilpivirine (RPV), Doravirine (DOR)"
 Llama3.1-70B FT,Partial Match (<66%),"3TC, ABC, AZT, D4T, DDI, FTC, TDF, ETR, EFV, NVP, RPV","Emtricitabine (FTC), Tenofovir (TDF), Efavirenz (EFV)"
 Llama3.1-70B QSP,Partial Match (<66%),"3TC, ABC, AZT, D4T, DDI, FTC, TDF, ETR, EFV, NVP, RPV","FTC, TDF, EFV"
 Llama3.1-70B RAG,False Negative,"3TC, ABC, AZT, D4T, DDI, FTC, TDF, ETR, EFV, NVP, RPV",Not reported
+Llama3.1-70B base,Other,DTG,Dolutegravir (DTG)
 Llama3.1-70B FT,False Negative,DTG,No
 Llama3.1-70B RAG,False Negative,DTG,Not reported
 Llama3.1-70B RAG,False Positive,Not reported,"AZT, 3TC, NVP, EFV, DTG"
@@ -118,7 +132,14 @@ Llama3.1-70B RAG,False Positive,Not reported,"Cabotegravir (CAB), Rilpivirine (R
 Llama3.1-70B base,Partial Match (<66%),"DTG, BIC, FTC, TAF","Abacavir (ABC), Zidovudine'(AZT), Zalcitabine (DDC), Didanosine (DDI), Lamivudine (3TC), Stavudine (D4T), Emtricitabine(FTC), Tenofovir (TFV), Nevirapine (NVP), Delavirdine (DLV), Efavirenz (EFV), Etravirine (ETR), Rilpivirine (RPV), Doravirine (DOR), Amprenavir (APV), Lopinavir'(LPV), Atazanavir (ATV), Derunavir (DRV), Nelfinavir (NFV), Raltegravir (RAL), Elvitegravir(EVG), Dolutagravir (DTG), Bictegravir (BIC), cabotagravir (CAB), Lenacapavir (LEN)"
 Llama3.1-70B FT,False Negative,"DTG, BIC, FTC, TAF",No
 Llama3.1-70B QSP,False Negative,"DTG, BIC, FTC, TAF",Not reported
+Llama3.1-70B RAG,Other,"DTG, BIC, FTC, TAF","TAF, ABC, BIC, FTC"
+Llama3.1-70B base,Other,"EFV, FTC, TDF, 3TC, NVP, AZT","Nevirapine (NVP), Efavirenz (EFV), Lamivudine (3TC), Zidovudine (AZT), Emtricitabine (FTC), Tenofovir (TFV)"
 Llama3.1-70B FT,Partial Match (<66%),"EFV, FTC, TDF, 3TC, NVP, AZT","Efavirenz (EFV), Nevirapine (NVP), Rilpivirine (RPV)"
+Llama3.1-70B base,Other,"AZT, 3TC, NVP, D4T, EFV, ABC, EFV, TDF","Zidovudine (AZT), Lamivudine (3TC), Nevirapine (NVP), Stavudine (D4T), Efavirenz (EFV)"
+Llama3.1-70B FT,Other,"AZT, 3TC, NVP, D4T, EFV, ABC, EFV, TDF","Zidovudine (AZT), Lamivudine (3TC), Nevirapine (NVP), Stavudine (D4T), Efavirenz (EFV)"
+Llama3.1-70B QSP,Other,"AZT, 3TC, NVP, D4T, EFV, ABC, EFV, TDF","AZT, 3TC, NVP, EFV, D4T, and others"
+Llama3.1-70B RAG,Other,"AZT, 3TC, NVP, D4T, EFV, ABC, EFV, TDF","Zidovudine (AZT), Lamivudine (3TC), Nevirapine (NVP), Stavudine (D4T), Efavirenz (EFV)"
+Llama3.1-70B base,Other,"AZT, D4T, XTC, TDF, ATV, LPV, DRV","TDF, AZT, ABC, EFV, ATV, LPV, DRV"
 Llama3.1-70B FT,Partial Match (<66%),"AZT, D4T, XTC, TDF, ATV, LPV, DRV","AZT, 3TC, TDF, EFV, NVP, LPV/r, ATV/r"
 Llama3.1-70B QSP,False Negative,"AZT, D4T, XTC, TDF, ATV, LPV, DRV",Not reported
 Llama3.1-70B RAG,Partial Match (<66%),"AZT, D4T, XTC, TDF, ATV, LPV, DRV","Tenofovir (TFV), Stavudine (D4T), Lamivudine (3TC), Efavirenz (EFV), Nevirapine (NVP)"
@@ -133,8 +154,11 @@ Llama3.1-70B QSP,False Positive,Not reported,"Tenofovir, lamivudine, dolutegravi
 Llama3.1-70B RAG,False Positive,Not reported,"Tenofovir, Lamivudine, Dolutegravir"
 Llama3.1-70B base,False Positive,Not reported,"Efavirenz, Tenofovir, Emtricitabine"
 Llama3.1-70B base,False Positive,Not reported,"Abacavir (ABC), Zidovudine'(AZT), Zalcitabine (DDC), Didanosine (DDI), Lamivudine (3TC), Stavudine (D4T), Emtricitabine(FTC), Tenofovir (TFV), Nevirapine (NVP), Delavirdine (DLV), Efavirenz (EFV), Etravirine (ETR), Rilpivirine (RPV), Doravirine (DOR), Amprenavir (APV), Lopinavir'(LPV), Atazanavir (ATV), Derunavir (DRV), Raltegravir (RAL), Elvitegravir(EVG), Dolutagravir (DTG), Bictegravir (BIC), cabotagravir (CAB), Lenacapavir (LEN)"
+Llama3.1-70B FT,Other,"EFV, NVP","Efavirenz (EFV), Nevirapine (NVP), Dolutegravir (DTG)"
+Llama3.1-70B base,Other,"TDF, 3TC, EFV","Tenofovir (TFV), Lamivudine (3TC), Efavirenz (EFV)"
 Llama3.1-70B FT,False Negative,"TDF, 3TC, EFV",No
 Llama3.1-70B RAG,False Negative,"TDF, 3TC, EFV",Not reported
+Llama3.1-70B FT,Other,"3TC, ABC, AZT, LPV, EFV, DTG","Abacavir (ABC), Zidovudine (AZT), Lamivudine (3TC), Lopinavir (LPV), Efavirenz (EFV), Dolutegravir (DTG)"
 Llama3.1-70B base,False Positive,Not reported,"RAL, EVG, DTG, BIC"
 Llama3.1-70B FT,False Negative,"3TC, TDF, EFV, DTG, ATV",No
 Llama3.1-70B RAG,False Negative,"3TC, TDF, EFV, DTG, ATV",Not reported
@@ -149,6 +173,8 @@ Llama3.1-70B RAG,False Positive,Not reported,"Cabotegravir (CAB), Rilpivirine (R
 Llama3.1-70B base,False Positive,Not reported,"Abacavir, Zidovudine, Lamivudine, and others"
 Llama3.1-70B FT,False Positive,Not reported,"Abacavir (ABC), Zidovudine'(AZT), Zalcitabine (DDC), Didanosine (DDI), Lamivudine (3TC), Stavudine (D4T), Emtricitabine(FTC), Tenofovir (TFV), Nevirapine (NVP), Delavirdine (DLV), Efavirenz (EFV), Etravirine (ETR), Rilpivirine (RPV), Doravirine (DOR), Amprenavir (APV), Lopinavir'(LPV), Atazanavir (ATV), Derunavir (DRV)"
 Llama3.1-70B QSP,False Positive,Not reported,"EFV, NVP, abacavir, zidovudine, lamivudine, tenofovir, emtricitabine, stavudine, didanosine, lopinavir/r, atazanavir/r, darunavir/r"
+Llama3.1-70B base,Other,"TDF, FTC","Emtricitabine (FTC), Tenofovir (TFV)"
+Llama3.1-70B QSP,Other,"TDF, FTC","Tenofovir disoproxil fumarate (TDF), emtricitabine (FTC)"
 Llama3.1-70B RAG,False Negative,"TDF, FTC",Not reported
 Llama3.1-70B base,Partial Match (<66%),"TDF, 3TC, DTG, ABC, LPV, ATV, EFV","Tenofovir (TFV), Lamivudine (3TC), Dolutegravir (DTG)"
 Llama3.1-70B FT,Partial Match (<66%),"TDF, 3TC, DTG, ABC, LPV, ATV, EFV",Dolutegravir
@@ -160,6 +186,7 @@ Llama3.1-70B base,False Positive,Not reported,"Tenofovir, Lamivudine, Dolutegrav
 Llama3.1-70B base,Partial Match (<66%),"3TC, ABC, LPV, AZT, DTG, FTC, TDF, DRV, EFV, NVP",Dolutegravir (DTG)
 Llama3.1-70B FT,False Negative,"3TC, ABC, LPV, AZT, DTG, FTC, TDF, DRV, EFV, NVP",No
 Llama3.1-70B RAG,False Negative,"3TC, ABC, LPV, AZT, DTG, FTC, TDF, DRV, EFV, NVP",Not reported
+Llama3.1-70B base,Other,"TDF, 3TC, LPV, EFV","Tenofovir, Lamivudine, Lopinavir/Ritonavir, Zidovudine, Dolutegravir"
 Llama3.1-70B FT,False Negative,"TDF, 3TC, LPV, EFV",No
 Llama3.1-70B base,Partial Match (<66%),"BIC, FTC, TAF, EVG","Bictegravir (BIC), Emtricitabine (FTC), Tenofovir (TFV)"
 Llama3.1-70B FT,False Negative,"BIC, FTC, TAF, EVG",No
@@ -169,5 +196,8 @@ Llama3.1-70B base,False Positive,Not reported,"Abacavir (ABC), Zidovudine (AZT),
 Llama3.1-70B base,False Positive,Not reported,"DTG, 3TC, RPV"
 Llama3.1-70B QSP,False Positive,Not reported,"DTG, 3TC, ABC, TDF, RPV, and others"
 Llama3.1-70B RAG,False Positive,Not reported,"DTG, 3TC, ABC, TDF, FTC, RPV, DRV"
+Llama3.1-70B base,Other,"TDF, 3TC, DTG","Dolutegravir (DTG), Tenofovir (TDF), Lamivudine (3TC)"
+Llama3.1-70B FT,Other,"TDF, 3TC, DTG","Tenofovir (TDF), Lamivudine (3TC), Dolutegravir (DTG)"
+Llama3.1-70B RAG,Other,"TDF, 3TC, DTG","Tenofovir (TDF), Lamivudine (3TC), Dolutegravir (DTG)"
 Llama3.1-70B base,False Positive,Not reported,"AZT, 3TC, EFV, NVP"
 Llama3.1-70B base,False Positive,Not reported,INSTI

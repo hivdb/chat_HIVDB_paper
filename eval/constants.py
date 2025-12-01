@@ -214,6 +214,7 @@ GENE_SYNONYMS = {
     "pr": "pr",
     "capsid": "ca",
     "ca": "ca",
+    "pol": "pol",
     "full genome": "full genome",
     "near full length genome": "nflg",
     "nflg": "nflg",
