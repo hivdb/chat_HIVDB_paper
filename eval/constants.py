@@ -220,7 +220,7 @@ GENE_SYNONYMS = {
     "nflg": "nflg",
 }
 GENE_GROUP_EXPANSIONS = {"pol": {"in", "pr", "rt"}}
-LIST_DELIM = re.compile(r",|;|/|\band\b|\bor\b")
+LIST_DELIM = re.compile(r",|;|/|\band\b|\bor\b|\(|\)")
 NON_ALPHANUM = re.compile(r"[^a-z0-9\s]")
 LEADING_YES_NO = re.compile(r"^(yes|no)\b")
 YEAR_REGEX = re.compile(r"(?:19|20)\d{2}")
