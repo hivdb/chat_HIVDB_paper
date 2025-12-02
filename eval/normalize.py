@@ -142,6 +142,9 @@ def _canonical_numeric(lowered: str, raw: str, convert_special_no: bool) -> str 
     extracted_range = extract_year_range(raw)
     if extracted_range:
         return extracted_range
+    single_year = YEAR_REGEX.findall(raw)
+    if len(single_year) == 1:
+        return single_year[0]
     if lowered.isdigit():
         if convert_special_no and lowered == "0":
             return "no"
@@ -171,8 +174,8 @@ def _canonical_list(lowered: str, raw: str, convert_special_no: bool) -> str:
                 embedded_tokens.append(replacement.strip())
 
     canonical_tokens: list[str] = []
-    # Process embedded tokens first, then any explicit tokens.
-    tokens_to_process = embedded_tokens if embedded_tokens else tokens
+    # Process embedded tokens first, but still include explicit tokens.
+    tokens_to_process = embedded_tokens + tokens if embedded_tokens else tokens
     for token in tokens_to_process:
         if not token:
             continue
@@ -206,6 +209,23 @@ def _canonical_list(lowered: str, raw: str, convert_special_no: bool) -> str:
 def _canonical_list_token(token: str) -> List[str]:
     if not token:
         return []
+    base = " ".join(NON_ALPHANUM.sub(" ", token).split())
+    base = re.sub(r"^primarily\s+", "", base).replace("primarily ", "")
+    tokens: list[str] = []
+    lowered = token.lower()
+    if " from " in lowered:
+        tail = lowered.split(" from ", 1)[1]
+        for part in re.split(r",|;| and ", tail):
+            cleaned = " ".join(NON_ALPHANUM.sub(" ", part).split())
+            cleaned = re.sub(r"^primarily\s+", "", cleaned).replace("primarily ", "")
+            if cleaned:
+                tokens.append(cleaned)
+    for key, value in TEXT_SYNONYMS.items():
+        if not value:
+            continue
+        if " " in key or len(key) > 3:
+            if re.search(rf"\b{re.escape(key)}\b", lowered):
+                tokens.append(value)
     if token in ARV_SYNONYMS:
         return [part.strip() for part in ARV_SYNONYMS[token].split("|") if part.strip()]
     gene = GENE_SYNONYMS.get(token)
@@ -213,9 +233,12 @@ def _canonical_list_token(token: str) -> List[str]:
         # Always expand pol to its component genes
         expansions = GENE_GROUP_EXPANSIONS.get(gene)
         if expansions:
-            return [gene, *sorted(expansions)]
-        return [gene]
-    return [token]
+            tokens.extend([gene, *sorted(expansions)])
+        else:
+            tokens.append(gene)
+    if not tokens:
+        tokens.append(base)
+    return tokens
 
 
 # ---------------------------------------------------------------------------
@@ -244,7 +267,10 @@ def normalize_year_range(text: str) -> str | None:
             end = start[:2] + end
         return f"{start}-{end}"
     years = YEAR_REGEX.findall(cleaned)
-    return f"{years[0]}-{years[1]}" if len(years) >= 2 else None
+    if len(years) >= 2:
+        years = sorted(years)
+        return f"{years[0]}-{years[-1]}"
+    return None
 
 
 def extract_year_range(text: str) -> str | None:
@@ -264,8 +290,16 @@ def human_tokens(ref_norm: str) -> List[str]:
     return [token.strip() for token in ref_norm.split("|") if token.strip()]
 
 
+def _expand_pol(tokens: Iterable[str]) -> List[str]:
+    tokens_set = {t.strip() for t in tokens if t.strip()}
+    if "pol" in tokens_set:
+        tokens_set.update({"pr", "rt", "in"})
+        tokens_set.discard("pol")
+    return sorted(tokens_set)
+
+
 def list_match_stats(ref_norm: str, pred_norm: str, pred_raw: str) -> Tuple[int, int]:
-    tokens = human_tokens(ref_norm)
+    tokens = _expand_pol(human_tokens(ref_norm))
     if not tokens:
         return 0, 0
     haystack = NON_ALPHANUM.sub(" ", f"{pred_norm or ''} {pred_raw or ''}".lower())
@@ -274,6 +308,14 @@ def list_match_stats(ref_norm: str, pred_norm: str, pred_raw: str) -> Tuple[int,
 
 
 def _token_matches(token: str, haystack: str) -> bool:
+    # Handle year tokens against ranges like 2010-2020
+    if re.fullmatch(r"\d{4}", token):
+        year_val = int(token)
+        for start, end in re.findall(r"(?:(19|20)\d{2})\s*-\s*(?:(19|20)\d{2})", haystack):
+            start_val, end_val = int(start), int(end)
+            if start_val <= year_val <= end_val:
+                return True
+    # Fallback to substring matching with synonyms
     for variant in _expand_token_synonyms(token):
         if variant and variant in haystack:
             return True
@@ -419,8 +461,8 @@ def compare_lists(pred_norm: str, ref_norm: str) -> bool:
             return True
 
     # Convert to sets and compare
-    pred_set = {tok.strip() for tok in pred_norm.split("|") if tok.strip()}
-    ref_set = {tok.strip() for tok in ref_norm.split("|") if tok.strip()}
+    pred_set = set(_expand_pol(pred_norm.split("|")))
+    ref_set = set(_expand_pol(ref_norm.split("|")))
 
     if not pred_set or not ref_set:
         return False
@@ -454,7 +496,11 @@ def human_answer_counts(
     allow_partial_list: bool = False,
 ) -> Tuple[dict[str, int], bool]:
     qtype = (question_type or "").lower()
-    handler = QUESTION_HANDLERS.get(qtype, _score_generic)
+    handler = QUESTION_HANDLERS.get(qtype)
+    if handler is None and allow_partial_list:
+        handler = _score_list
+    if handler is None:
+        handler = _score_generic
     return handler(
         pred_norm,
         ref_norm,

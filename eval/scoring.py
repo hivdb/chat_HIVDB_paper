@@ -81,7 +81,7 @@ def evaluate_model(
 ) -> Dict[str, float]:
     counts = {"tp": 0, "tn": 0, "fp": 0, "fn": 0}
     for _, row in data.iterrows():
-        row_allow_partial = allow_partial_list and str(row.get("Type", "")).strip().lower() == "list"
+        row_allow_partial = allow_partial_list or str(row.get("Type", "")).strip().lower() == "list"
         row_counts, _ = human_answer_counts(
             row.get("Type", ""),
             row.get(pred_norm_col, ""),

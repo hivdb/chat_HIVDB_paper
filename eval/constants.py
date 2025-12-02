@@ -19,6 +19,7 @@ SPECIAL_NO = {
     "no data",
     "0",
     "zero",
+    "not explicitly listed",
 }
 SPECIAL_NO_INDICATORS = {
     "does not report",
@@ -40,6 +41,7 @@ SPECIAL_NO_INDICATORS = {
     "no evidence in the paper",
     "no mention in the paper",
     "no details in the paper",
+    "paper does not list",
 }
 YES_SYNONYMS = {"yes", "y", "true", "reported", "present"}
 NO_SYNONYMS = {"no", "false", "not", "absent", "notapplicable", "not-applicable", "not_applicable"}
@@ -130,6 +132,12 @@ TEXT_SYNONYMS = {
     "integrase inhibitors": "insti",
     "protease inhibitor": "pi",
     "protease inhibitors": "pi",
+    "protease": "pr",
+    "reverse transcriptase": "rt",
+    "integrase": "in",
+    "rt gene": "rt",
+    "pr gene": "pr",
+    "in gene": "in",
     "us": "united states",
     "u.s.": "united states",
     "usa": "united states",
@@ -147,15 +155,20 @@ TEXT_SYNONYMS = {
     "env region": "env",
     "blood plasma": "plasma",
     "blood plasma samples": "plasma",
+    "frozen whole blood": "whole blood",
     "blood samples": "blood",
     "blood sample": "blood",
+    "plasma samples": "plasma",
+    "plasma sample": "plasma",
     "pbmcs": "pbmc",
+    "peripheral blood mononuclear cells": "pbmc",
+    "peripheral blood mononuclear cell": "pbmc",
     "proviral dna": "pbmc",
     "dbs": "dried blood spot",
     "dried blood spots": "dried blood spot",
     "pol gene": "pol",
     "pol genes": "pol",
-    "whole blood": "plasma",
+    "whole blood": "whole blood",
     "plasma samples": "plasma",
     "nrtis": "nrti",
     "nnrtis": "nnrti",
@@ -267,6 +280,7 @@ ARV_SYNONYMS = {
     "rt inhibitors": "nrti | nnrti",
     "reverse transcriptase inhibitor": "nrti | nnrti",
     "reverse transcriptase inhibitors": "nrti | nnrti",
+    "pi": "pr",
 }
 GENE_SYNONYMS = {
     "integrase": "in",
