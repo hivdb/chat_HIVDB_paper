@@ -35,6 +35,11 @@ SOURCE_LLAMA_8B_10shot = "./csv/llama-3.1-8B_bm25_10-shot_parsed.csv"
 SOURCE_LLAMA_70B_5shot = "./csv/llama-3.1-70B_bm25_5-shot_parsed.csv"
 SOURCE_LLAMA_70B_10shot = "./csv/llama-3.1-70B_bm25_10-shot_parsed.csv"
 
+SOURCE_LLAMA_70B_FT_50 = "./csv/llama-3.1-70B-FT 50_parsed.csv"
+SOURCE_LLAMA_70B_FT_100 = "./csv/llama-3.1-70B-FT 100_parsed.csv"
+SOURCE_LLAMA_70B_FT_150 = "./csv/llama-3.1-70B-FT 150_parsed.csv"
+SOURCE_LLAMA_70B_FT_200 = "./csv/llama-3.1-70B-FT 200_parsed.csv"
+
 
 OUTPUT_PATH = "./csv/merged_answers.xlsx"
 
@@ -111,6 +116,18 @@ def main() -> None:
     llama_70b_10shot = _load_unique(
         SOURCE_LLAMA_70B_10shot, usecols=MERGE_KEYS + ["answer"]
     ).rename(columns={"answer": "llama-3.1-70B 10shot"})
+    llama_70b_ft_50 = _load_unique(
+        SOURCE_LLAMA_70B_FT_50, usecols=MERGE_KEYS + ["Answer"]
+    ).rename(columns={"Answer": "llama-3.1-70B-FT 50"})
+    llama_70b_ft_100 = _load_unique(
+        SOURCE_LLAMA_70B_FT_100, usecols=MERGE_KEYS + ["Answer"]
+    ).rename(columns={"Answer": "llama-3.1-70B-FT 100"})
+    llama_70b_ft_150 = _load_unique(
+        SOURCE_LLAMA_70B_FT_150, usecols=MERGE_KEYS + ["Answer"]
+    ).rename(columns={"Answer": "llama-3.1-70B-FT 150"})
+    llama_70b_ft_200 = _load_unique(
+        SOURCE_LLAMA_70B_FT_200, usecols=MERGE_KEYS + ["Answer"]
+    ).rename(columns={"Answer": "llama-3.1-70B-FT 200"})
 
     merged = base.merge(adv, on=MERGE_KEYS, how="left")
     merged = merged.merge(adv_before, on=MERGE_KEYS, how="left")
@@ -129,6 +146,11 @@ def main() -> None:
     merged = merged.merge(llama_8b_pv1, on=MERGE_KEYS, how="left")
 
     merged = merged.merge(llama_70b, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_70b_ft_50, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_70b_ft_100, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_70b_ft_150, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_70b_ft_200, on=MERGE_KEYS, how="left")
+
     merged = merged.merge(llama_70b_before, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_after, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_rag, on=MERGE_KEYS, how="left")
@@ -139,6 +161,7 @@ def main() -> None:
 
     merged = merged.merge(llama_70b_5shot, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_10shot, on=MERGE_KEYS, how="left")
+
 
     merged = merged.sort_values(MERGE_KEYS)
     merged.to_excel(OUTPUT_PATH, index=False)
