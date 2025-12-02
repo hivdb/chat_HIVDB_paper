@@ -510,20 +510,17 @@ def _score_list(
         if full_match:
             return _finalize(counts, "tp", True)
 
-        # Partial match: compute intersection percentage
         if allow_partial:
+            matches, total = list_match_stats(ref_norm, pred_norm, pred_raw)
+            if total:
+                ratio = matches / total
+                if ratio >= LIST_PARTIAL_THRESHOLD:
+                    return _finalize(counts, "tp", True)
             pred_set = {tok.strip() for tok in pred_norm.split("|") if tok.strip()}
             ref_set = {tok.strip() for tok in ref_norm.split("|") if tok.strip()}
-
-            if pred_set and ref_set:
-                # Intersection of both sets
-                intersection = pred_set & ref_set
-                # Union of both sets
-                union = pred_set | ref_set
-                # Intersection percentage
-                intersection_ratio = len(intersection) / len(union) if union else 0.0
-
-                if intersection_ratio >= LIST_PARTIAL_THRESHOLD:
+            if ref_set:
+                overlap = len(pred_set & ref_set) / len(ref_set)
+                if overlap >= LIST_PARTIAL_THRESHOLD:
                     return _finalize(counts, "tp", True)
 
         return _finalize(counts, "fn", False)

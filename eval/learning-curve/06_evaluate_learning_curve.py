@@ -284,6 +284,39 @@ def main() -> int:
     metrics.to_csv(metrics_path, index=False, encoding="utf-8-sig")
     pd.DataFrame(detail_rows).to_csv(details_path, index=False, encoding="utf-8-sig")
 
+    # Export FT-200 incorrect rows for partial scenario to an Excel file
+    ft200_export_path = args.output_dir / "learning_curve_ft200_incorrect.xlsx"
+    ft200_column = model_to_column.get("FT-200") or model_to_column.get("FT")
+    if ft200_column:
+        details_df = pd.DataFrame(detail_rows)
+        answer_col = f"{ft200_column} Answer"
+        correct_col = f"{ft200_column} Correct"
+        cols_needed = {"PMID", "Question", "Human Answer", answer_col, correct_col, "Scenario"}
+        missing_cols = cols_needed - set(details_df.columns)
+        if not missing_cols:
+            subset = details_df[
+                (details_df["Scenario"].str.contains("partial", case=False, na=False))
+                & (details_df[correct_col] == 0)
+            ][["PMID", "Question", "Human Answer", answer_col, correct_col]]
+            if not subset.empty:
+                subset.to_excel(ft200_export_path, index=False)
+                logging.info("Wrote FT-200 incorrect partial rows to %s", ft200_export_path)
+
+    # Export FT-200 incorrect rows for partial scenario to an Excel file
+    ft200_export_path = args.output_dir / "learning_curve_ft200_incorrect.xlsx"
+    ft200_column = model_to_column.get("FT-200") or model_to_column.get("FT")
+    if ft200_column:
+        details_df = pd.DataFrame(detail_rows)
+        cols_needed = {"PMID", "Question", "Human Answer", ft200_column, f"{ft200_column} Correct", "Scenario"}
+        missing_cols = cols_needed - set(details_df.columns)
+        if not missing_cols:
+            subset = details_df[
+                (details_df["Scenario"].str.contains("partial", case=False, na=False))
+                & (details_df[f"{ft200_column} Correct"] == 0)
+            ][["PMID", "Question", "Human Answer", ft200_column, f"{ft200_column} Correct"]]
+            if not subset.empty:
+                subset.to_excel(ft200_export_path, index=False)
+                logging.info("Wrote FT-200 incorrect partial rows to %s", ft200_export_path)
     summary = []
     overall = metrics[metrics["scenario"] == "Overall - partial match"]
     for run in runs:
