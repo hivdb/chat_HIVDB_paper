@@ -13,9 +13,11 @@ from typing import Dict, Iterable, List, Sequence, Tuple
 
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT.parent) not in sys.path:
-    sys.path.append(str(ROOT.parent))
+LC_DIR = Path(__file__).resolve().parent
+ROOT = LC_DIR.parents[1]
+ROOT_PARENT = ROOT.parent
+if str(ROOT_PARENT) not in sys.path:
+    sys.path.insert(0, str(ROOT_PARENT))
 
 from eval import config  # type: ignore
 from eval.evaluation import build_qid_metrics  # type: ignore
@@ -39,20 +41,33 @@ class RunSpec:
 
 LABEL_TO_MODEL = {
     "base": "base",
-    "size050": "FT-50",
-    "50": "FT-50",
     "ft50": "FT-50",
-    "size100": "FT-100",
-    "100": "FT-100",
     "ft100": "FT-100",
-    "size150": "FT-150",
-    "150": "FT-150",
     "ft150": "FT-150",
-    "size200": "FT",
-    "200": "FT",
-    "ft200": "FT",
+    "ft200": "FT-200",
     "ft": "FT",
+    # Backward compatibility with older sizeXXX tags
+    "size050": "FT-50",
+    "size100": "FT-100",
+    "size150": "FT-150",
+    "size200": "FT-200",
+    "50": "FT-50",
+    "100": "FT-100",
+    "150": "FT-150",
+    "200": "FT-200",
 }
+
+def _lookup_model_metric(qid_df: pd.DataFrame | None, comparison_label: str, model_map: Dict[str, str]) -> float | None:
+    if qid_df is None or qid_df.empty:
+        return None
+    col = model_map.get(comparison_label) or comparison_label
+    if col not in qid_df.columns:
+        return None
+    series = qid_df[col]
+    try:
+        return float(series.mean())
+    except Exception:
+        return None
 
 
 def parse_run(value: str) -> Tuple[str, Path]:
@@ -86,7 +101,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("eval/learning-curve/results"),
+        default=LC_DIR / "results",
         help="Directory for metrics/details/summary outputs.",
     )
     parser.add_argument("--limit", type=int, default=None, help="Optional limit on evaluation rows.")
@@ -94,7 +109,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def discover_default_responses() -> List[Tuple[str, Path]]:
-    base_dir = Path("eval/learning-curve/responses")
+    base_dir = LC_DIR / "responses"
     if not base_dir.exists():
         return []
     candidates = sorted(base_dir.glob("*_responses.csv"))
@@ -112,7 +127,12 @@ def discover_default_responses() -> List[Tuple[str, Path]]:
 def integrate_responses(df: pd.DataFrame, path: Path) -> pd.Series:
     if not path.exists():
         raise FileNotFoundError(f"Response CSV missing: {path}")
-    df_resp = pd.read_csv(path, dtype={"PMID": str})
+    df_resp = pd.read_csv(
+        path,
+        dtype={"PMID": str},
+        keep_default_na=False,
+        na_filter=False,
+    )
     required = {"PMID", "QID", "Answer"}
     if missing := required - set(df_resp.columns):
         raise ValueError(f"{path} missing required columns: {', '.join(sorted(missing))}")
@@ -184,7 +204,7 @@ def build_learning_curve_comparisons(model_columns: Dict[str, str]) -> Dict[str,
     if not base_label:
         return {}
     family = base_label.rsplit(" ", 1)[0] if " " in base_label else base_label
-    ordered_labels = ["FT-50", "FT-100", "FT-150", "FT"]
+    ordered_labels = ["FT-50", "FT-100", "FT-150", "FT-200", "FT"]
     targets = [model_columns[label] for label in ordered_labels if label in model_columns]
     if not targets:
         return {}
@@ -316,6 +336,23 @@ def main() -> int:
                         k: v for k, v in wilcoxon_map["precision"].items()
                         if k[1] != "FT-50"
                     }
+                # Hide comparisons where the target metric is lower than base
+                if "precision" in wilcoxon_map:
+                    base_val = None
+                    if overall_qid is not None and not overall_qid.empty:
+                        base_col = model_to_column.get("base")
+                        if base_col:
+                            base_row = overall_qid[overall_qid["model"] == base_col]
+                            if not base_row.empty:
+                                base_val = base_row["precision"].mean()
+                    if base_val is not None:
+                        filtered = {}
+                        for key, pval in wilcoxon_map["precision"].items():
+                            comp_val = _lookup_model_metric(overall_qid, key[1], model_to_column)
+                            if comp_val is None or comp_val < base_val:
+                                continue
+                            filtered[key] = pval
+                        wilcoxon_map["precision"] = filtered
                 serialized: Dict[str, Dict[str, Dict[str, float]]] = {}
                 for metric, mapping in wilcoxon_map.items():
                     fam_map: Dict[str, Dict[str, float]] = {}

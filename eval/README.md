@@ -40,7 +40,7 @@ This package scores multiple model outputs against human‐curated answers and p
 ## Orchestration (`eval/evaluation.py`)
 - Loads the dataset, applies optional row limits, and loops through all scenarios.
 - For each scenario it filters rows (when requested), normalizes the necessary columns, evaluates each model, appends detailed per-question rows, and queues figure specifications.
-- After all scenarios run, it writes:
+- After all scenarios run, it writes (under `eval/results/`):
   * `evaluation_metrics.csv` — stacked model/scenario metrics (including TP/FP/TN/FN counts).
   * `detailed_evaluation.csv` — per-question correctness table for manual inspection.
 
@@ -51,4 +51,4 @@ This package scores multiple model outputs against human‐curated answers and p
 ## Typical Workflow
 1. Ensure `advanced-prompting/merged_answers.xlsx` and `eval/gpt5_responses.csv` are up to date.
 2. Run `python eval/evaluation.py` (optionally with `--limit N` during debugging).
-3. Inspect `eval/evaluation_metrics.csv`, `eval/detailed_evaluation.csv`, and the generated figures for insights or auditing borderline TP/FN cases.
+3. Inspect `eval/results/evaluation_metrics.csv`, `eval/results/detailed_evaluation.csv`, and the generated figures for insights or auditing borderline TP/FN cases.

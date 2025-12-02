@@ -21,8 +21,10 @@ from eval.normalize import (  # type: ignore
 )
 from eval.constants import LIST_PARTIAL_THRESHOLD  # type: ignore
 
-XLSX_PATH = EVAL_DIR / "error_analysis" / "analysis_by_qid.xlsx"
-OUTPUT_PATH = EVAL_DIR / "error_analysis" / "error_types_llama_70b_q16.png"
+FIGURES_DIR = EVAL_DIR / "error_analysis" / "figures"
+RESULTS_DIR = EVAL_DIR / "error_analysis" / "results"
+XLSX_PATH = RESULTS_DIR / "analysis_by_qid.xlsx"
+OUTPUT_PATH = FIGURES_DIR / "error_types_llama_70b_q16.png"
 
 
 def _is_negative_answer(text: str) -> bool:
@@ -126,6 +128,7 @@ def plot_error_types(error_df: pd.DataFrame, output_path: Path) -> None:
     if error_df.empty:
         logging.warning("No errors to plot")
         return
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Count error types by model
     error_counts = error_df.groupby(["model", "error_type"]).size().unstack(fill_value=0)
@@ -212,7 +215,8 @@ def main() -> int:
     plot_error_types(error_df, OUTPUT_PATH)
 
     # Save detailed error breakdown to CSV
-    error_summary_path = EVAL_DIR / "error_analysis" / "error_types_llama_70b_q16.csv"
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    error_summary_path = RESULTS_DIR / "error_types_llama_70b_q16.csv"
     error_df.to_csv(error_summary_path, index=False)
     logging.info("Saved detailed error data to %s", error_summary_path)
 

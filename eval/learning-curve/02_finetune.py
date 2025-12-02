@@ -63,27 +63,10 @@ def parse_args() -> argparse.Namespace:
         help="Override the learning rate multiplier.",
     )
     parser.add_argument(
-        "--suffix-prefix",
-        type=str,
-        default="hivdb-lc",
-        help="Prefix used when deriving fine-tune suffixes.",
-    )
-    parser.add_argument(
-        "--suffix-template",
-        type=str,
-        default="{prefix}-{size:03d}",
-        help="Python format string for suffixes (fields: prefix, size).",
-    )
-    parser.add_argument(
         "--jobs-file",
         type=Path,
         default=Path("eval/learning-curve/finetune_jobs.jsonl"),
         help="Where to append job metadata.",
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Print the actions that would be taken without calling the API.",
     )
     return parser.parse_args()
 
@@ -159,6 +142,46 @@ def resolve_hyperparams(args: argparse.Namespace, reference: FineTuningJob | Non
     return result
 
 
+def load_existing_jobs(path: Path, client: OpenAI) -> Dict[int, dict]:
+    """
+    Load existing job records and return a map of size -> job record.
+    Only includes jobs that succeeded or are still running.
+    Failed jobs will be retried.
+    """
+    if not path.exists():
+        return {}
+
+    jobs_by_size: Dict[int, dict] = {}
+    with path.open("r", encoding="utf-8") as infile:
+        for line in infile:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                record = json.loads(line)
+                size = record.get("size")
+                job_id = record.get("job_id")
+                if size is None or job_id is None:
+                    continue
+
+                # Check current job status from API
+                try:
+                    job_status = client.fine_tuning.jobs.retrieve(job_id)
+                    current_status = job_status.status
+
+                    # Only skip if job succeeded or is still running
+                    if current_status in ("succeeded", "running", "validating_files", "queued"):
+                        jobs_by_size[size] = record
+                        logging.info("  Size %d: %s (status=%s)", size, job_id, current_status)
+                    else:
+                        logging.warning("  Size %d: %s failed (status=%s) - will retry", size, job_id, current_status)
+                except Exception as exc:
+                    logging.warning("  Size %d: %s - could not check status (%s) - will retry", size, job_id, exc)
+            except json.JSONDecodeError:
+                continue
+    return jobs_by_size
+
+
 def create_job(
     client: OpenAI,
     base_model: str,
@@ -190,6 +213,13 @@ def main() -> int:
         return 1
 
     client = OpenAI()
+
+    # Load existing jobs to skip already-processed sizes
+    # Checks job status via API to detect failures
+    logging.info("Checking existing jobs in %s...", args.jobs_file)
+    existing_jobs = load_existing_jobs(args.jobs_file, client)
+    if existing_jobs:
+        logging.info("Found %d successful/running jobs", len(existing_jobs))
     reference_job: FineTuningJob | None = None
     if args.reference_job:
         try:
@@ -211,29 +241,21 @@ def main() -> int:
         json.dumps(hyperparams) if hyperparams else "{}",
     )
 
+    jobs_created = 0
     for subset in subsets:
-        suffix = args.suffix_template.format(prefix=args.suffix_prefix, size=subset.size)
-        logging.info("Processing subset size=%d (train=%s, val=%s)", subset.size, subset.train_path, subset.val_path)
-
-        if args.dry_run:
-            logging.info("[dry-run] Would upload train=%s and val=%s, then launch job with suffix %s", subset.train_path, subset.val_path, suffix)
-            job_info = {
-                "size": subset.size,
-                "train_file": str(subset.train_path),
-                "val_file": str(subset.val_path),
-                "suffix": suffix,
-                "base_model": base_model,
-                "reference_job": args.reference_job,
-                "hyperparameters": hyperparams,
-                "dry_run": True,
-            }
-            append_job_record(args.jobs_file, job_info)
+        # Skip if already processed
+        if subset.size in existing_jobs:
+            logging.info("Skipping size %d (already processed)", subset.size)
             continue
+
+        suffix = f"hivdb-lc-{subset.size:03d}"
+        logging.info("Processing subset size=%d (train=%s, val=%s)", subset.size, subset.train_path, subset.val_path)
 
         train_file_id = upload_file(client, subset.train_path)
         val_file_id = upload_file(client, subset.val_path)
         job = create_job(client, base_model, train_file_id, val_file_id, suffix, hyperparams)
         logging.info("Started job %s for subset size %d (%s)", job.id, subset.size, suffix)
+
         record = {
             "size": subset.size,
             "train_file": str(subset.train_path),
@@ -250,8 +272,12 @@ def main() -> int:
             "suffix": suffix,
         }
         append_job_record(args.jobs_file, record)
+        jobs_created += 1
 
-    logging.info("Job metadata appended to %s", args.jobs_file)
+    if jobs_created > 0:
+        logging.info("Created %d new fine-tuning jobs. Metadata appended to %s", jobs_created, args.jobs_file)
+    else:
+        logging.info("No new jobs created. All sizes already processed.")
     return 0
 
 

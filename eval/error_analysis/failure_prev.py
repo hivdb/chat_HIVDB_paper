@@ -25,7 +25,7 @@ from eval.config import OUTPUT_METRICS_BY_QID  # type: ignore
 
 DATA_PATH = OUTPUT_METRICS_BY_QID
 SCENARIO_NAME = "Overall - partial match"
-OUTPUT_DIR = Path(__file__).resolve().parent
+OUTPUT_DIR = Path(__file__).resolve().parent / "figures"
 
 MODEL_FAMILIES = [
     ("GPT-4o", "GPT-4o base", "GPT-4o FT"),

@@ -10,7 +10,9 @@ from pathlib import Path
 
 import pandas as pd
 
-DETAIL_PATH = Path("eval/detailed_evaluation.csv")
+from eval import config  # type: ignore
+
+DETAIL_PATH = config.DETAIL_METRICS_HUMAN
 OUTPUT_PATH = Path("eval/archive/mismatch_summary.csv")
 
 

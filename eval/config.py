@@ -4,18 +4,21 @@ from pathlib import Path
 
 from .constants import MODEL_BASE_COLORS, VARIANT_TINTS  # re-exported for plotting
 
-MERGED_PATH = Path("advanced-prompting/csv/merged_answers.xlsx")
-GPT5_PATH = Path("eval/gpt-5/gpt5_responses.csv")
-OUTPUT_METRICS = Path("eval/evaluation_metrics.csv")
-OUTPUT_METRICS_BY_QID = Path("eval/evaluation_metrics_by_qid.csv")
-FISHER_RESULTS = Path("eval/fisher_exact_results.csv")
-PAIRWISE_RESULTS = Path("eval/pairwise_stats.csv")
-DETAIL_METRICS_HUMAN = Path("eval/detailed_evaluation.csv")
-DETAIL_METRICS_PARTIAL = Path("eval/detailed_evaluation_partial_list_matches.csv")
-OUTPUT_TABLE_DIR = Path("eval/figures")
-EXACT_VS_PARTIAL_DETAILS = Path("eval/exact_vs_partial_evaluation.csv")
+ROOT = Path(__file__).resolve().parents[1]
+EVAL_DIR = ROOT / "eval"
+MERGED_PATH = ROOT / "advanced-prompting/csv/merged_answers.xlsx"
+GPT5_PATH = EVAL_DIR / "gpt-5/gpt5_responses.csv"
+OUTPUT_DIR = EVAL_DIR / "results"
+OUTPUT_METRICS = OUTPUT_DIR / "evaluation_metrics.csv"
+OUTPUT_METRICS_BY_QID = OUTPUT_DIR / "evaluation_metrics_by_qid.csv"
+FISHER_RESULTS = OUTPUT_DIR / "fisher_exact_results.csv"
+PAIRWISE_RESULTS = OUTPUT_DIR / "pairwise_stats.csv"
+DETAIL_METRICS_HUMAN = OUTPUT_DIR / "detailed_evaluation.csv"
+DETAIL_METRICS_PARTIAL = OUTPUT_DIR / "detailed_evaluation_partial_list_matches.csv"
+OUTPUT_TABLE_DIR = EVAL_DIR / "figures"
+EXACT_VS_PARTIAL_DETAILS = OUTPUT_DIR / "exact_vs_partial_evaluation.csv"
 LEARNING_CURVE_RESPONSES = {
-    "GPT-4o FT-100": Path("eval/learning-curve/responses/size100_responses.csv"),
+    "GPT-4o FT-100": EVAL_DIR / "learning-curve/responses/size100_responses.csv",
 }
 
 MODEL_GROUPS = {

@@ -47,6 +47,48 @@ FULL_GENOME_TOKENS = {
 # Canonicalization helpers
 # ---------------------------------------------------------------------------
 
+EMBEDDED_MAP = {
+    # Genes
+    "protease gene": "protease",
+    "protease region": "protease",
+    "protease": "protease",
+    "reverse transcriptase gene": "reverse transcriptase",
+    "reverse transcriptase region": "reverse transcriptase",
+    "reverse transcriptase": "reverse transcriptase",
+    "rt gene": "reverse transcriptase",
+    "rt region": "reverse transcriptase",
+    "integrase gene": "integrase",
+    "integrase genes": "integrase",
+    "integrase region": "integrase",
+    "integrase": "integrase",
+    "pol gene": "pol|pr|rt|in",
+    "pol region": "pol|pr|rt|in",
+    "pol gene region": "pol|pr|rt|in",
+    "pol region (protease and rt)": "pol|pr|rt|in",
+    # Sequencing methods
+    "next generation sequencing": "next generation sequencing",
+    "next-generation sequencing": "next generation sequencing",
+    "ngs": "next generation sequencing",
+    "illumina": "next generation sequencing",
+    "miseq": "next generation sequencing",
+    "nanopore sequencing": "nanopore sequencing",
+    "oxford nanopore sequencing": "nanopore sequencing",
+    "nanopore": "nanopore sequencing",
+    "sanger sequencing": "sanger sequencing",
+    "sanger": "sanger sequencing",
+    # Drug classes
+    "nrtis": "nrti",
+    "nrti": "nrti",
+    "nnrtis": "nnrti",
+    "nnrti": "nnrti",
+    "pis": "pi",
+    "pi": "pi",
+    "instis": "insti",
+    "insti": "insti",
+    # Locations
+    "south africa": "south africa",
+}
+
 def canonicalize_answer(text: str | float | None, *, convert_special_no: bool) -> str:
     raw = _clean_answer_text(text)
     if not raw:
@@ -97,6 +139,9 @@ def _canonical_numeric(lowered: str, raw: str, convert_special_no: bool) -> str 
     normalized_range = normalize_year_range(raw)
     if normalized_range:
         return normalized_range
+    extracted_range = extract_year_range(raw)
+    if extracted_range:
+        return extracted_range
     if lowered.isdigit():
         if convert_special_no and lowered == "0":
             return "no"
@@ -115,20 +160,41 @@ def _canonical_list(lowered: str, raw: str, convert_special_no: bool) -> str:
     else:
         tokens = [" ".join(NON_ALPHANUM.sub(" ", normalized).split())] if normalized.strip() else []
 
+    # Extract embedded known phrases from the raw text to capture answers stated in sentences.
+    embedded_tokens: list[str] = []
+    raw_lower = raw.lower()
+    for phrase, replacement in EMBEDDED_MAP.items():
+        if phrase in raw_lower and replacement:
+            if "|" in replacement:
+                embedded_tokens.extend(part.strip() for part in replacement.split("|") if part.strip())
+            else:
+                embedded_tokens.append(replacement.strip())
+
     canonical_tokens: list[str] = []
-    for token in tokens:
+    # Process embedded tokens first, then any explicit tokens.
+    tokens_to_process = embedded_tokens if embedded_tokens else tokens
+    for token in tokens_to_process:
         if not token:
             continue
-        # Normalize ritonavir suffix before looking up synonyms
-        token = _normalize_ritonavir_suffix(token)
-        token = TEXT_SYNONYMS.get(token, token)
-        if convert_special_no and token in SPECIAL_NO:
-            return "no"
-        if token in YES_SYNONYMS:
-            return "yes"
-        if token in NO_SYNONYMS:
-            return "no"
-        canonical_tokens.extend(_canonical_list_token(token))
+        # Split multi-part short tokens (e.g., "pr rt") into components
+        parts = token.split()
+        if len(parts) > 1 and all(len(part) <= 4 for part in parts):
+            subtokens = parts
+        else:
+            subtokens = [token]
+        for sub in subtokens:
+            if not sub:
+                continue
+            # Normalize ritonavir suffix before looking up synonyms
+            sub = _normalize_ritonavir_suffix(sub)
+            sub = TEXT_SYNONYMS.get(sub, sub)
+            if convert_special_no and sub in SPECIAL_NO:
+                return "no"
+            if sub in YES_SYNONYMS:
+                return "yes"
+            if sub in NO_SYNONYMS:
+                return "no"
+            canonical_tokens.extend(_canonical_list_token(sub))
 
     canonical_tokens = [" ".join(token.split()) for token in canonical_tokens if token]
     if not canonical_tokens:
@@ -147,7 +213,7 @@ def _canonical_list_token(token: str) -> List[str]:
         # Always expand pol to its component genes
         expansions = GENE_GROUP_EXPANSIONS.get(gene)
         if expansions:
-            return sorted(expansions)
+            return [gene, *sorted(expansions)]
         return [gene]
     return [token]
 
@@ -179,6 +245,19 @@ def normalize_year_range(text: str) -> str | None:
         return f"{start}-{end}"
     years = YEAR_REGEX.findall(cleaned)
     return f"{years[0]}-{years[1]}" if len(years) >= 2 else None
+
+
+def extract_year_range(text: str) -> str | None:
+    """Extract a year range from arbitrary verbose text."""
+    if not text:
+        return None
+    # Remove punctuation noise, normalize separators
+    cleaned = re.sub(r"[^\w\s-]", " ", text.lower())
+    cleaned = re.sub(r"\s*(?:to|through|thru|and|–|—|,|-)\s*", "-", cleaned)
+    years = YEAR_REGEX.findall(cleaned)
+    if len(years) >= 2:
+        return f"{years[0]}-{years[1]}"
+    return None
 
 
 def human_tokens(ref_norm: str) -> List[str]:

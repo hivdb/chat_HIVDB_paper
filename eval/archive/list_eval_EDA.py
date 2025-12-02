@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """EDA utility for list-type answers.
 
-Loads eval/detailed_evaluation.csv, canonicalizes every answer column, and
+Loads eval/results/detailed_evaluation.csv, canonicalizes every answer column, and
 generates two violin plots:
   1. Raw list lengths for all list-type rows (including “No/Not reported”).
   2. Raw list lengths restricted to rows where the human answer contains
@@ -204,7 +204,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--detail-path",
         type=Path,
-        default=ROOT / "eval" / "detailed_evaluation.csv",
+        default=ROOT / "eval" / "results" / "detailed_evaluation.csv",
         help="CSV containing detailed evaluation rows.",
     )
     parser.add_argument(

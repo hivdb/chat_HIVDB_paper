@@ -101,6 +101,7 @@ def run(limit: int | None) -> Tuple[
     df = load_dataset()
     if limit:
         df = df.head(limit)
+    config.OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     scenario_frames: List[pd.DataFrame] = []
     detail_rows: List[dict] = []
     figure_specs: List[Tuple[str, str, pd.DataFrame]] = []

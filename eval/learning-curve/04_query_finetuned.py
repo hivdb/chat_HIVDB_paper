@@ -9,8 +9,6 @@ import csv
 import json
 import logging
 import os
-import re
-import sys
 import time
 from collections import defaultdict, deque
 from dataclasses import dataclass
@@ -24,13 +22,20 @@ from openai import AsyncOpenAI, OpenAI, OpenAIError
 from pydantic import BaseModel, Field, create_model
 
 
-DEFAULT_PROMPT = Path("eval/learning-curve/prompt.md")
 DEFAULT_OUTPUT_DIR = Path("eval/learning-curve/responses")
 QUESTIONS_PATH_DEFAULT = Path("advanced-prompting/csv/merged_answers.xlsx")
 PAPERS_DIR_DEFAULT = Path("advanced-prompting/papers")
+TRAIN_FILE_DEFAULT = Path("advanced-prompting/train_val/train_set.jsonl")
 TOTAL_QUESTIONS = 16
 TOKEN_BUFFER = 200
 CSV_FIELDS = ["PMID", "QID", "Question", "Answer", "Evidence", "Rationale"]
+FAILED_STATUSES = {"failed", "cancelled", "rejected"}
+MAX_FIELD_LENGTH = 2000
+BREVITY_NOTE = (
+    "Keep every answer concise. For each question, provide only the evidence sentences, a short rationale,"
+    " and a short answer."
+    "Avoid extra explanations or formatting outside the required fields."
+)
 
 
 class QAEntry(BaseModel):
@@ -71,6 +76,32 @@ def load_env() -> None:
                 os.environ.setdefault(key, value)
 
 
+def load_system_prompt_from_training(path: Path) -> str:
+    if not path.exists():
+        raise FileNotFoundError(f"Training file missing: {path}")
+    with path.open("r", encoding="utf-8") as infile:
+        for line_no, line in enumerate(infile, start=1):
+            stripped = line.strip()
+            if not stripped:
+                continue
+            try:
+                record = json.loads(stripped)
+            except json.JSONDecodeError as exc:
+                raise ValueError(f"Invalid JSON on line {line_no} of {path}: {exc}") from exc
+            messages = record.get("messages", [])
+            for message in messages:
+                if message.get("role") == "system":
+                    content = message.get("content", "").strip()
+                    if content:
+                        return content
+    raise RuntimeError(f"Could not find a system prompt in {path}")
+
+
+def build_system_prompt(path: Path) -> str:
+    base_prompt = load_system_prompt_from_training(path)
+    return f"{base_prompt}\n\n{BREVITY_NOTE}"
+
+
 def configure_logger(tag: str) -> logging.Logger:
     logger = logging.getLogger(f"learning_curve_{tag}")
     if logger.handlers:
@@ -81,12 +112,6 @@ def configure_logger(tag: str) -> logging.Logger:
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     return logger
-
-
-def load_prompt(path: Path) -> str:
-    if not path.exists():
-        raise FileNotFoundError(f"Prompt file missing: {path}")
-    return path.read_text(encoding="utf-8").strip()
 
 
 def normalize_pmid(value: str) -> str:
@@ -223,6 +248,13 @@ def append_rows(path: Path, rows: List[dict]) -> None:
     with path.open("a", newline="", encoding="utf-8") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=CSV_FIELDS)
         writer.writerows(rows)
+
+
+def clamp_field(text: str) -> str:
+    text = text.strip()
+    if len(text) <= MAX_FIELD_LENGTH:
+        return text
+    return text[:MAX_FIELD_LENGTH]
 
 
 def append_raw_response(path: Path, pmid: str, payload: Dict[str, QAEntry]) -> None:
@@ -413,9 +445,9 @@ async def persist_results(
                 "PMID": question.pmid,
                 "QID": question.qid,
                 "Question": question.text,
-                "Answer": qa_entry.Answer.strip(),
-                "Evidence": qa_entry.Evidence.strip(),
-                "Rationale": qa_entry.Rationale.strip(),
+                "Answer": clamp_field(qa_entry.Answer),
+                "Evidence": clamp_field(qa_entry.Evidence),
+                "Rationale": clamp_field(qa_entry.Rationale),
             }
         )
     await asyncio.to_thread(append_raw_response, raw_path, job.pmid, parsed_answers)
@@ -517,6 +549,18 @@ def read_finetune_jobs(path: Path) -> List[dict]:
     return jobs
 
 
+def is_failed_status(status: str | None) -> bool:
+    if not status:
+        return False
+    return status.lower() in FAILED_STATUSES
+
+
+def sanitize_tag(value: str) -> str:
+    text = value.strip().lower()
+    cleaned = re.sub(r"[^a-z0-9]+", "-", text).strip("-")
+    return cleaned or "run"
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", help="Fine-tuned model name (ft:...) for single-run mode.")
@@ -524,7 +568,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--jobs-file",
         type=Path,
-        default=None,
+        default=Path("eval/learning-curve/finetune_jobs.jsonl"),
         help="JSONL file containing fine-tune metadata (enables batch mode).",
     )
     parser.add_argument(
@@ -533,7 +577,12 @@ def parse_args() -> argparse.Namespace:
         default="size{size:03d}",
         help="Format string for tags when using --jobs-file.",
     )
-    parser.add_argument("--prompt", type=Path, default=DEFAULT_PROMPT, help="Prompt template path.")
+    parser.add_argument(
+        "--train-file",
+        type=Path,
+        default=TRAIN_FILE_DEFAULT,
+        help="Training file containing messages with the canonical system prompt.",
+    )
     parser.add_argument(
         "--questions",
         type=Path,
@@ -559,7 +608,7 @@ def parse_args() -> argparse.Namespace:
 
 def run_single(model: str, tag: str, args: argparse.Namespace) -> None:
     logger = configure_logger(tag)
-    system_prompt = load_prompt(args.prompt)
+    system_prompt = build_system_prompt(args.train_file)
     question_table = load_question_table(args.questions)
     logger.info("Loaded %d PMIDs from %s", len(question_table), args.questions)
     token_counter = build_token_counter(model)
@@ -606,30 +655,46 @@ def run_single(model: str, tag: str, args: argparse.Namespace) -> None:
 def main() -> int:
     args = parse_args()
     load_env()
-    if args.jobs_file:
-        jobs = read_finetune_jobs(args.jobs_file)
-        if not jobs:
-            raise SystemExit(f"No jobs found in {args.jobs_file}")
-        client = OpenAI()
-        for job in jobs:
-            try:
-                model_name = job.get("result_model")
-                if not model_name:
-                    info = client.fine_tuning.jobs.retrieve(job["job_id"])
-                    model_name = info.fine_tuned_model
-                if not model_name:
-                    raise RuntimeError("Fine-tuned model not ready.")
-            except (OpenAIError, RuntimeError) as exc:
-                print(f"Skipping job {job.get('job_id')}: {exc}")
-                continue
-            tag = args.tag_template.format(size=job.get("size", "run"))
-            run_single(model_name, tag, args)
+    if args.model:
+        tag = args.tag or sanitize_tag(args.model)
+        run_single(args.model, tag, args)
         return 0
 
-    if not args.model:
-        raise SystemExit("Provide --model for single-run mode or --jobs-file for batch mode.")
-    tag = args.tag or sanitize_tag(args.model)
-    run_single(args.model, tag, args)
+    jobs_file = args.jobs_file
+    try:
+        jobs = read_finetune_jobs(jobs_file)
+    except FileNotFoundError as exc:
+        raise SystemExit(
+            f"Jobs file missing: {jobs_file}. Provide --model for single-run mode or --jobs-file to override."
+        ) from exc
+    if not jobs:
+        raise SystemExit(f"No jobs found in {jobs_file}")
+    client = OpenAI()
+    for job in jobs:
+        try:
+            job_id = job.get("job_id")
+            if not job_id:
+                raise RuntimeError("Job id missing.")
+            status = job.get("status")
+            if is_failed_status(status):
+                print(f"Skipping job {job_id}: recorded status={status}")
+                continue
+
+            model_name = job.get("result_model")
+            if not model_name:
+                info = client.fine_tuning.jobs.retrieve(job_id)
+                api_status = getattr(info, "status", None)
+                if is_failed_status(api_status):
+                    print(f"Skipping job {job_id}: API status={api_status}")
+                    continue
+                model_name = info.fine_tuned_model
+            if not model_name:
+                raise RuntimeError("Fine-tuned model not ready.")
+        except (OpenAIError, RuntimeError) as exc:
+            print(f"Skipping job {job_id}: {exc}")
+            continue
+        tag = args.tag_template.format(size=job.get("size", "run"))
+        run_single(model_name, tag, args)
     return 0
 
 

@@ -6,10 +6,12 @@ from typing import Dict
 
 import pandas as pd
 
+from eval import config  # type: ignore
+
 EVAL_DIR = Path(__file__).resolve().parent.parent
-PARTIAL_PATH = EVAL_DIR / "detailed_evaluation_partial_list_matches.csv"
-EXACT_PATH = EVAL_DIR / "detailed_evaluation.csv"
-OUTPUT_PATH = EVAL_DIR / "error_analysis" / "analysis_by_qid.xlsx"
+PARTIAL_PATH = config.DETAIL_METRICS_PARTIAL
+EXACT_PATH = config.DETAIL_METRICS_HUMAN
+OUTPUT_PATH = EVAL_DIR / "error_analysis" / "results" / "analysis_by_qid.xlsx"
 
 COLUMN_ORDER = [
     "PMID",

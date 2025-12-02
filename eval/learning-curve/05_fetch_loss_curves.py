@@ -17,6 +17,7 @@ from openai import OpenAI, OpenAIError
 
 
 MPLCONFIG_DEFAULT = ".mplconfig"
+FAILED_STATUSES = {"failed", "cancelled", "rejected"}
 
 
 def load_env(files: Iterable[str]) -> None:
@@ -37,6 +38,12 @@ def read_jobs(path: Path) -> List[dict]:
             if line:
                 records.append(json.loads(line))
     return records
+
+
+def is_failed_status(status: str | None) -> bool:
+    if not status:
+        return False
+    return status.lower() in FAILED_STATUSES
 
 
 def list_events(client: OpenAI, job_id: str) -> List[dict]:
@@ -231,12 +238,23 @@ def main() -> int:
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     for job in jobs:
-        job_id = job["job_id"]
+        job_id = job.get("job_id")
+        if not job_id:
+            print("Skipping job with missing job_id.")
+            continue
+        recorded_status = job.get("status")
+        if is_failed_status(recorded_status):
+            print(f"Skipping {job_id}: recorded status={recorded_status}")
+            continue
         print(f"Processing {job_id}...")
         try:
             job_info = client.fine_tuning.jobs.retrieve(job_id)
         except OpenAIError as exc:
             print(f"  Failed to retrieve job {job_id}: {exc}")
+            continue
+        api_status = getattr(job_info, "status", None)
+        if is_failed_status(api_status):
+            print(f"  Skipping {job_id}: API status={api_status}")
             continue
 
         events = list_events(client, job_id)

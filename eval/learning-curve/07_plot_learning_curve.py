@@ -10,25 +10,28 @@ from typing import Dict, List, Tuple
 
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT.parent) not in sys.path:
-    sys.path.append(str(ROOT.parent))
+LC_DIR = Path(__file__).resolve().parent
+ROOT = LC_DIR.parents[1]
+ROOT_PARENT = ROOT.parent
+if str(ROOT_PARENT) not in sys.path:
+    sys.path.insert(0, str(ROOT_PARENT))
 
 from eval.plots import generate_figures  # type: ignore
 
 
-LC_RESULTS = Path("eval/learning-curve/results/learning_curve_metrics.csv")
-BASE_RESULTS = Path("eval/evaluation_metrics.csv")
-OUTPUT_DIR = Path("eval/learning-curve/figures")
-COMBINED_CSV = Path("eval/learning-curve/results/learning_curve_overall_combined.csv")
-SIGNIFICANCE_JSON = Path("eval/learning-curve/results/learning_curve_significance.json")
+LC_RESULTS = LC_DIR / "results/learning_curve_metrics.csv"
+BASE_RESULTS = ROOT / "eval/results/evaluation_metrics.csv"
+OUTPUT_DIR = LC_DIR / "figures"
+COMBINED_CSV = LC_DIR / "results/learning_curve_overall_combined.csv"
+SIGNIFICANCE_JSON = LC_DIR / "results/learning_curve_significance.json"
 
 DISPLAY_SLOTS = [
     ("base", 0, ["GPT-4o base"]),
     ("FT-50", 50, ["GPT-4o FT-50", "GPT-4o LC size050"]),
     ("FT-100", 100, ["GPT-4o FT-100", "GPT-4o LC size100", "GPT-4o LC (100)"]),
     ("FT-150", 150, ["GPT-4o FT-150", "GPT-4o LC size150"]),
-    ("FT", 200, ["GPT-4o FT", "GPT-4o FT (200)"]),
+    ("FT-200", 200, ["GPT-4o FT-200", "GPT-4o FT (200)"]),
+    ("FT", 250, ["GPT-4o FT", "GPT-4o FT (250)"]),
 ]
 
 

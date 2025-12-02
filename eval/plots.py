@@ -176,6 +176,7 @@ def _annotate_significance(
     metric: str,
     comparisons: dict | None = None,
     offset_shift: float = 0.0,
+    metric_values: dict[str, float] | None = None,
 ) -> None:
     if not significance:
         return
@@ -192,6 +193,7 @@ def _annotate_significance(
     for family, mapping in comparison_map.items():
         base_label = mapping["base"]
         base_x = pos_lookup.get(base_label)
+        base_val = None if metric_values is None else metric_values.get(base_label)
         if base_x is None:
             continue
         target_rows: list[tuple[float, str, float, str]] = []
@@ -203,6 +205,10 @@ def _annotate_significance(
             p_value = metric_map.get((family, target_suffix))
             if p_value is None:
                 continue
+            if metric_values is not None:
+                target_val = metric_values.get(target)
+                if base_val is not None and target_val is not None and target_val < base_val:
+                    continue
             distance = abs(target_x - base_x)
             target_rows.append((distance, target, target_x, target_suffix))
         if not target_rows:
@@ -269,9 +275,19 @@ def plot_metric_panels(
                     ha="center",
                     va="bottom",
                     fontsize=BAR_LABEL_SIZE,
-                )
+            )
             handles.append(Patch(facecolor=metric_color, label=label))
-            _annotate_significance(ax, models, pos_lookup, significance, metric, comparisons, offset_shift=idx * 0.35)
+            value_map = dict(zip(models, values))
+            _annotate_significance(
+                ax,
+                models,
+                pos_lookup,
+                significance,
+                metric,
+                comparisons,
+                offset_shift=idx * 0.35,
+                metric_values=value_map,
+            )
         ax.set_ylim(0, Y_LIM)
         ax.set_ylabel("Value", fontsize=AXIS_LABEL_SIZE)
         ax.tick_params(axis="both", labelsize=AXIS_TICK_SIZE)
@@ -308,7 +324,8 @@ def plot_metric_panels(
                     va="bottom",
                     fontsize=BAR_LABEL_SIZE,
                 )
-            _annotate_significance(ax, models, pos_lookup, significance, metric, comparisons)
+            value_map = dict(zip(models, values))
+            _annotate_significance(ax, models, pos_lookup, significance, metric, comparisons, metric_values=value_map)
         axes[-1].set_xticks(positions)
         axes[-1].set_xticklabels(variant_labels, rotation=25, ha="right", fontsize=AXIS_TICK_SIZE)
     _annotate_families(axes[-1], family_bounds)

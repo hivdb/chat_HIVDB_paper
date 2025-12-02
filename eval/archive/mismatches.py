@@ -1,6 +1,8 @@
 import pandas as pd
 
-DETAIL_PATH = "eval/detailed_evaluation.csv"
+from eval import config  # type: ignore
+
+DETAIL_PATH = str(config.DETAIL_METRICS_HUMAN)
 OUTPUT_PATH = "eval/archive/mismatch_report_gpt5.txt"
 
 def main() -> None:
