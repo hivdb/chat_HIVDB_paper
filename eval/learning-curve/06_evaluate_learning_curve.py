@@ -34,6 +34,7 @@ from eval import statistics as stat_utils  # type: ignore
 
 @dataclass
 class RunSpec:
+    family: str
     label: str
     path: Path
     column: str
@@ -99,6 +100,12 @@ def parse_args() -> argparse.Namespace:
         help="Prefix used when naming new evaluation columns.",
     )
     parser.add_argument(
+        "--include-llama70",
+        action="store_true",
+        default=True,
+        help="Include Llama3.1-70B learning-curve parsed responses when present.",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=LC_DIR / "results",
@@ -124,6 +131,30 @@ def discover_default_responses() -> List[Tuple[str, Path]]:
     return responses
 
 
+def discover_llama70_responses() -> List[Tuple[str, Path]]:
+    """Locate parsed Llama3.1-70B learning-curve responses."""
+    base_dir = ROOT / "advanced-prompting" / "csv"
+    sizes = ["50", "100", "150", "200"]
+    responses: List[Tuple[str, Path]] = []
+    for size in sizes:
+        path = base_dir / f"llama-3.1-70B-FT {size}_parsed.csv"
+        if path.exists():
+            responses.append((f"ft{size}", path))
+    return responses
+
+
+def _select_answer_column(columns: Iterable[str]) -> str | None:
+    preferred = ["Answer", "FT Answer", "Base Answer"]
+    lower_map = {col.lower(): col for col in columns}
+    for name in preferred:
+        if name in columns:
+            return name
+    for col in columns:
+        if col.lower().endswith(" answer"):
+            return col
+    return None
+
+
 def integrate_responses(df: pd.DataFrame, path: Path) -> pd.Series:
     if not path.exists():
         raise FileNotFoundError(f"Response CSV missing: {path}")
@@ -133,13 +164,16 @@ def integrate_responses(df: pd.DataFrame, path: Path) -> pd.Series:
         keep_default_na=False,
         na_filter=False,
     )
-    required = {"PMID", "QID", "Answer"}
+    required = {"PMID", "QID"}
     if missing := required - set(df_resp.columns):
         raise ValueError(f"{path} missing required columns: {', '.join(sorted(missing))}")
+    answer_col = _select_answer_column(df_resp.columns)
+    if not answer_col:
+        raise ValueError(f"{path} missing an answer column (expected one ending with 'Answer').")
     df_resp["PMID"] = df_resp["PMID"].apply(format_identifier)
     df_resp["QID"] = df_resp["QID"].apply(format_identifier)
     df_resp["sample_id"] = df_resp["PMID"] + "-" + df_resp["QID"]
-    mapping = df_resp.set_index("sample_id")["Answer"].to_dict()
+    mapping = df_resp.set_index("sample_id")[answer_col].to_dict()
     return df["sample_id"].map(mapping).fillna("")
 
 
@@ -230,45 +264,55 @@ def load_baseline_wilcoxon(path: Path) -> Dict[str, Dict[Tuple[str, str], float]
 def main() -> int:
     args = parse_args()
     responses = args.responses or discover_default_responses()
-    if not responses:
+    families: List[Tuple[str, List[Tuple[str, Path]]]] = []
+    if responses:
+        families.append((args.column_prefix, responses))
+    llama_responses = discover_llama70_responses() if args.include_llama70 else []
+    if llama_responses:
+        families.append(("Llama3.1-70B", llama_responses))
+    if not families:
         raise SystemExit(
-            "No responses provided. Run with --responses LABEL=PATH or store CSVs under eval/learning-curve/responses/."
+            "No responses provided. Run with --responses LABEL=PATH, store CSVs under eval/learning-curve/responses/, "
+            "or ensure Llama3.1-70B parsed responses are available."
         )
     df = load_dataset()
     if args.limit:
         df = df.head(args.limit)
     df["sample_id"] = df["PMID"] + "-" + df["QID"]
 
-    resolved_labels = []
-    for label, path in responses:
-        canonical = LABEL_TO_MODEL.get(label.lower())
-        if not canonical:
-            raise SystemExit(f"Unrecognized response label '{label}'.")
-        resolved_labels.append((canonical, path))
-
     runs: List[RunSpec] = []
-    model_to_column: dict[str, str] = {}
-    for label, path in resolved_labels:
-        column = f"{args.column_prefix} {label}".strip()
-        df[column] = integrate_responses(df, path)
-        runs.append(RunSpec(label=label, path=path, column=column))
-        model_to_column[label] = column
-
-    if not runs:
-        raise SystemExit("No response files were integrated.")
-
-    base_column = f"{args.column_prefix} base".strip()
-    if base_column in df.columns:
-        model_to_column.setdefault("base", base_column)
-    ft_column = f"{args.column_prefix} FT".strip()
-    if ft_column in df.columns:
-        model_to_column.setdefault("FT", ft_column)
+    family_model_to_column: Dict[str, Dict[str, str]] = {}
     model_sequence: List[str] = []
-    if base_column in df.columns:
-        model_sequence.append(base_column)
-    if ft_column in df.columns and ft_column not in model_sequence:
-        model_sequence.append(ft_column)
-    model_sequence.extend(run.column for run in runs if run.column not in model_sequence)
+
+    for family_prefix, resp_list in families:
+        resolved_labels: List[Tuple[str, Path]] = []
+        for label, path in resp_list:
+            canonical = LABEL_TO_MODEL.get(label.lower())
+            if not canonical:
+                raise SystemExit(f"Unrecognized response label '{label}'.")
+            resolved_labels.append((canonical, path))
+
+        for label, path in resolved_labels:
+            column = f"{family_prefix} {label}".strip()
+            df[column] = integrate_responses(df, path)
+            runs.append(RunSpec(family=family_prefix, label=label, path=path, column=column))
+            family_model_to_column.setdefault(family_prefix, {})[label] = column
+            if column not in model_sequence:
+                model_sequence.append(column)
+
+        base_column = f"{family_prefix} base".strip()
+        if base_column in df.columns:
+            family_model_to_column.setdefault(family_prefix, {}).setdefault("base", base_column)
+            if base_column not in model_sequence:
+                model_sequence.insert(0, base_column)
+        ft_column = f"{family_prefix} FT".strip()
+        if ft_column in df.columns:
+            family_model_to_column.setdefault(family_prefix, {}).setdefault("FT", ft_column)
+            if ft_column not in model_sequence:
+                model_sequence.append(ft_column)
+
+    if not runs and not model_sequence:
+        raise SystemExit("No response files were integrated.")
 
     scenarios = scenario_copy(model_sequence)
     metrics, detail_rows, qid_frames = evaluate(df, scenarios)
@@ -282,10 +326,12 @@ def main() -> int:
     pd.DataFrame(detail_rows).to_csv(details_path, index=False, encoding="utf-8-sig")
 
     # Export FT-200 incorrect rows for partial scenario to an Excel file
-    ft200_export_path = args.output_dir / "learning_curve_ft200_incorrect.xlsx"
-    ft200_column = model_to_column.get("FT-200") or model_to_column.get("FT")
-    if ft200_column:
-        details_df = pd.DataFrame(detail_rows)
+    details_df = pd.DataFrame(detail_rows)
+    for family, mapping in family_model_to_column.items():
+        ft200_column = mapping.get("FT-200") or mapping.get("FT")
+        if not ft200_column:
+            continue
+        ft200_export_path = args.output_dir / f"learning_curve_{family.replace(' ', '_').lower()}_ft200_incorrect.xlsx"
         answer_col = f"{ft200_column} Answer"
         correct_col = f"{ft200_column} Correct"
         cols_needed = {"PMID", "Question", "Human Answer", answer_col, correct_col, "Scenario"}
@@ -297,29 +343,14 @@ def main() -> int:
             ][["PMID", "Question", "Human Answer", answer_col, correct_col]]
             if not subset.empty:
                 subset.to_excel(ft200_export_path, index=False)
-                logging.info("Wrote FT-200 incorrect partial rows to %s", ft200_export_path)
-
-    # Export FT-200 incorrect rows for partial scenario to an Excel file
-    ft200_export_path = args.output_dir / "learning_curve_ft200_incorrect.xlsx"
-    ft200_column = model_to_column.get("FT-200") or model_to_column.get("FT")
-    if ft200_column:
-        details_df = pd.DataFrame(detail_rows)
-        cols_needed = {"PMID", "Question", "Human Answer", ft200_column, f"{ft200_column} Correct", "Scenario"}
-        missing_cols = cols_needed - set(details_df.columns)
-        if not missing_cols:
-            subset = details_df[
-                (details_df["Scenario"].str.contains("partial", case=False, na=False))
-                & (details_df[f"{ft200_column} Correct"] == 0)
-            ][["PMID", "Question", "Human Answer", ft200_column, f"{ft200_column} Correct"]]
-            if not subset.empty:
-                subset.to_excel(ft200_export_path, index=False)
-                logging.info("Wrote FT-200 incorrect partial rows to %s", ft200_export_path)
+                logging.info("Wrote %s FT-200 incorrect partial rows to %s", family, ft200_export_path)
     summary = []
     overall = metrics[metrics["scenario"] == "Partial Match"]
     for run in runs:
         row = overall[overall["model"] == run.column]
         summary.append(
             {
+                "family": run.family,
                 "label": run.label,
                 "responses": str(run.path),
                 "column": run.column,
@@ -335,7 +366,9 @@ def main() -> int:
 
     stats_path = args.output_dir / "learning_curve_pairwise_stats.csv"
     significance_path = args.output_dir / "learning_curve_significance.json"
-    comparisons = build_learning_curve_comparisons(model_to_column)
+    comparisons = {}
+    for family, mapping in family_model_to_column.items():
+        comparisons.update(build_learning_curve_comparisons(mapping))
     if comparisons:
         overall_qid = qid_frames.get("Partial Match")
         if overall_qid is not None and not overall_qid.empty:
@@ -368,21 +401,19 @@ def main() -> int:
                     }
                 # Hide comparisons where the target metric is lower than base
                 if "precision" in wilcoxon_map:
-                    base_val = None
-                    if overall_qid is not None and not overall_qid.empty:
-                        base_col = model_to_column.get("base")
-                        if base_col:
-                            base_row = overall_qid[overall_qid["model"] == base_col]
-                            if not base_row.empty:
-                                base_val = base_row["precision"].mean()
-                    if base_val is not None:
-                        filtered = {}
-                        for key, pval in wilcoxon_map["precision"].items():
-                            comp_val = _lookup_model_metric(overall_qid, key[1], model_to_column)
-                            if comp_val is None or comp_val < base_val:
-                                continue
-                            filtered[key] = pval
-                        wilcoxon_map["precision"] = filtered
+                    filtered_precision: Dict[tuple, float] = {}
+                    for (family, comparison), pval in wilcoxon_map["precision"].items():
+                        model_map = family_model_to_column.get(family, {})
+                        base_col = model_map.get("base")
+                        if not base_col:
+                            continue
+                        base_row = overall_qid[overall_qid["model"] == base_col]
+                        base_val = base_row["precision"].mean() if not base_row.empty else None
+                        comp_val = _lookup_model_metric(overall_qid, comparison, model_map)
+                        if base_val is None or comp_val is None or comp_val < base_val:
+                            continue
+                        filtered_precision[(family, comparison)] = pval
+                    wilcoxon_map["precision"] = filtered_precision
                 serialized: Dict[str, Dict[str, Dict[str, float]]] = {}
                 for metric, mapping in wilcoxon_map.items():
                     fam_map: Dict[str, Dict[str, float]] = {}

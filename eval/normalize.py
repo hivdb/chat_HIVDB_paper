@@ -144,6 +144,10 @@ def _expand_token(token: str, for_match: bool = False) -> List[str]:
         if " " in key or len(key) > 3:
             if re.search(rf"\b{re.escape(key)}\b", lowered):
                 tokens.append(value)
+        else:
+            # For short keys (<=3 chars), require exact match to avoid noisy hits.
+            if lowered == key:
+                tokens.append(value)
     arv = ARV_SYNONYMS.get(token)
     if arv:
         tokens.extend(part.strip() for part in arv.split("|") if part.strip())

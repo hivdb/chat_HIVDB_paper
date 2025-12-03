@@ -347,12 +347,19 @@ def save_table(df, title: str, path: Path) -> None:
     plt.close(fig)
 
 
-def generate_figures(subset: pd.DataFrame, scenario: str, output_dir: Path, significance=None, comparisons=None) -> None:
+def generate_figures(
+    subset: pd.DataFrame,
+    scenario: str,
+    output_dir: Path,
+    significance=None,
+    comparisons=None,
+    base_name: str | None = None,
+) -> None:
     """Render accuracy bar chart and metrics table per scenario."""
     if subset.empty:
         return
     output_dir.mkdir(parents=True, exist_ok=True)
-    slug = slugify(scenario)
+    slug = base_name or slugify(scenario)
     plot_metric_panels(
         subset,
         qid_df=None,

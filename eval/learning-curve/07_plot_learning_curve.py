@@ -26,12 +26,18 @@ COMBINED_CSV = LC_DIR / "results/learning_curve_overall_combined.csv"
 SIGNIFICANCE_JSON = LC_DIR / "results/learning_curve_significance.json"
 
 DISPLAY_SLOTS = [
-    ("base", 0, ["GPT-4o base"]),
-    ("FT-50", 50, ["GPT-4o FT-50", "GPT-4o LC size050"]),
-    ("FT-100", 100, ["GPT-4o FT-100", "GPT-4o LC size100", "GPT-4o LC (100)"]),
-    ("FT-150", 150, ["GPT-4o FT-150", "GPT-4o LC size150"]),
-    ("FT-200", 200, ["GPT-4o FT-200", "GPT-4o FT (200)"]),
-    ("FT", 250, ["GPT-4o FT", "GPT-4o FT (250)"]),
+    ("GPT-4o base", 0, ["GPT-4o base"]),
+    ("GPT-4o FT-50", 50, ["GPT-4o FT-50", "GPT-4o LC size050"]),
+    ("GPT-4o FT-100", 100, ["GPT-4o FT-100", "GPT-4o LC size100", "GPT-4o LC (100)"]),
+    ("GPT-4o FT-150", 150, ["GPT-4o FT-150", "GPT-4o LC size150"]),
+    ("GPT-4o FT-200", 200, ["GPT-4o FT-200", "GPT-4o FT (200)"]),
+    ("GPT-4o FT", 250, ["GPT-4o FT", "GPT-4o FT (250)"]),
+    ("Llama3.1-70B base", 0, ["Llama3.1-70B base"]),
+    ("Llama3.1-70B FT-50", 50, ["Llama3.1-70B FT-50"]),
+    ("Llama3.1-70B FT-100", 100, ["Llama3.1-70B FT-100"]),
+    ("Llama3.1-70B FT-150", 150, ["Llama3.1-70B FT-150"]),
+    ("Llama3.1-70B FT-200", 200, ["Llama3.1-70B FT-200"]),
+    ("Llama3.1-70B FT", 250, ["Llama3.1-70B FT"]),
 ]
 
 
@@ -69,10 +75,6 @@ def build_combined() -> pd.DataFrame:
     base_df = load_metrics(BASE_RESULTS, target_scenarios)
     all_df = pd.concat([lc_df, base_df], ignore_index=True)
     combined = select_models(all_df)
-    if combined.empty:
-        return combined
-    combined.sort_values("training_size", inplace=True)
-    combined.reset_index(drop=True, inplace=True)
     return combined
 
 
@@ -101,8 +103,15 @@ def main() -> int:
     significance, comparisons = load_significance(SIGNIFICANCE_JSON)
     COMBINED_CSV.parent.mkdir(parents=True, exist_ok=True)
     combined.to_csv(COMBINED_CSV, index=False)
-    title = "GPT-4o Learning Curve"
-    generate_figures(combined, title, OUTPUT_DIR, significance=significance, comparisons=comparisons)
+    title = "Learning Curve Analysis"
+    generate_figures(
+        combined,
+        title,
+        OUTPUT_DIR,
+        significance=significance,
+        comparisons=comparisons,
+        base_name="learning-curve",
+    )
     print(f"Wrote combined metrics to {COMBINED_CSV}")
     print(f"Figures saved to {OUTPUT_DIR}")
     return 0

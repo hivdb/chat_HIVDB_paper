@@ -29,6 +29,7 @@ NEGATIVE_TOKENS = _unique(
         "no",
         "none",
         "zero",
+        "not found",
         "not reported",
         "not applicable",
         "notapplicable",

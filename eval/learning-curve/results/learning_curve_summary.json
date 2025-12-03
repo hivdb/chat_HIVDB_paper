@@ -1,40 +1,84 @@
 {
   "runs": [
     {
+      "family": "GPT-4o",
       "label": "FT-50",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size050_responses.csv",
       "column": "GPT-4o FT-50",
-      "accuracy": 0.8682291666666667,
-      "precision": 0.8418300653594771,
-      "recall": 0.8298969072164949,
-      "f1": 0.8358208955223881
+      "accuracy": 0.8692708333333333,
+      "precision": 0.8422425032594524,
+      "recall": 0.8324742268041238,
+      "f1": 0.8373298768632534
     },
     {
+      "family": "GPT-4o",
       "label": "FT-100",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size100_responses.csv",
       "column": "GPT-4o FT-100",
-      "accuracy": 0.8552083333333333,
-      "precision": 0.8477653631284916,
-      "recall": 0.7822164948453608,
-      "f1": 0.8136729222520108
+      "accuracy": 0.8557291666666667,
+      "precision": 0.8479776847977685,
+      "recall": 0.7835051546391752,
+      "f1": 0.8144675150703282
     },
     {
+      "family": "GPT-4o",
       "label": "FT-150",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size150_responses.csv",
       "column": "GPT-4o FT-150",
-      "accuracy": 0.8609375,
-      "precision": 0.855944055944056,
-      "recall": 0.788659793814433,
-      "f1": 0.8209255533199195
+      "accuracy": 0.8619791666666666,
+      "precision": 0.8563458856345886,
+      "recall": 0.7912371134020618,
+      "f1": 0.8225050234427327
     },
     {
+      "family": "GPT-4o",
       "label": "FT-200",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size200_responses.csv",
       "column": "GPT-4o FT-200",
-      "accuracy": 0.865625,
-      "precision": 0.843501326259947,
+      "accuracy": 0.8661458333333333,
+      "precision": 0.8437086092715231,
+      "recall": 0.8208762886597938,
+      "f1": 0.8321358589157414
+    },
+    {
+      "family": "Llama3.1-70B",
+      "label": "FT-50",
+      "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 50_parsed.csv",
+      "column": "Llama3.1-70B FT-50",
+      "accuracy": 0.8276041666666667,
+      "precision": 0.7730061349693251,
+      "recall": 0.8118556701030928,
+      "f1": 0.7919547454431176
+    },
+    {
+      "family": "Llama3.1-70B",
+      "label": "FT-100",
+      "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 100_parsed.csv",
+      "column": "Llama3.1-70B FT-100",
+      "accuracy": 0.821875,
+      "precision": 0.7571090047393365,
+      "recall": 0.8234536082474226,
+      "f1": 0.788888888888889
+    },
+    {
+      "family": "Llama3.1-70B",
+      "label": "FT-150",
+      "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 150_parsed.csv",
+      "column": "Llama3.1-70B FT-150",
+      "accuracy": 0.821875,
+      "precision": 0.7589498806682577,
       "recall": 0.8195876288659794,
-      "f1": 0.8313725490196078
+      "f1": 0.7881040892193307
+    },
+    {
+      "family": "Llama3.1-70B",
+      "label": "FT-200",
+      "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 200_parsed.csv",
+      "column": "Llama3.1-70B FT-200",
+      "accuracy": 0.8208333333333333,
+      "precision": 0.7547169811320755,
+      "recall": 0.8247422680412371,
+      "f1": 0.7881773399014779
     }
   ]
 }
