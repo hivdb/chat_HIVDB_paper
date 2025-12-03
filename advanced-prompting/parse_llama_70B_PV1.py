@@ -15,16 +15,7 @@ SECTION_RE = re.compile(r"^(?P<label>Evidence|Rationale|Answer)\s*[:\-\u2013]?\s
 QUESTION_RE = re.compile(r"^Question\s*[:\-\u2013]?\s*(?P<qid>\d+)\s*(?P<question>.*)", re.IGNORECASE)
 QUESTION_NO_ID_RE = re.compile(r"^Question\s*[:\-\u2013]?\s*(?P<question>.+)", re.IGNORECASE)
 DEFAULT_INPUTS = [
-    pathlib.Path("./csv/llama-3.1-70B-FT 50.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 100.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 150.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 200.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-base_new30.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 50_new30.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 100_new30.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 150_new30.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 200_new30.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT_new30.csv"),
+    pathlib.Path("./csv/llama-3.1-70B-PV1_new30.csv"),
 ]
 
 QID_MAP = {

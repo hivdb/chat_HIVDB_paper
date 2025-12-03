@@ -15,7 +15,6 @@ SECTION_RE = re.compile(r"^(?P<label>Evidence|Rationale|Answer)\s*[:\-\u2013]?\s
 QUESTION_RE = re.compile(r"^Question\s*[:\-\u2013]?\s*(?P<qid>\d+)\s*(?P<question>.*)", re.IGNORECASE)
 QUESTION_NO_ID_RE = re.compile(r"^Question\s*[:\-\u2013]?\s*(?P<question>.+)", re.IGNORECASE)
 DEFAULT_INPUTS = [
-    pathlib.Path("./csv/llama-3.1-8B-PV1_new30.csv"),
     pathlib.Path("./csv/llama-3.1-8B-base_new30.csv"),
     pathlib.Path("./csv/llama-3.1-8B-FT_new30.csv"),
 ]

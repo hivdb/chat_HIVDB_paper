@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Parse the FT answers in one or more Llama 3.1 70B FT CSVs into per-question rows."""
+"""Parse the FT answers in one or more Llama 3.1 8B CSVs into per-question rows."""
 
 from __future__ import annotations
 
 import argparse
 import pathlib
 import re
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 import pandas as pd
 
@@ -15,16 +15,7 @@ SECTION_RE = re.compile(r"^(?P<label>Evidence|Rationale|Answer)\s*[:\-\u2013]?\s
 QUESTION_RE = re.compile(r"^Question\s*[:\-\u2013]?\s*(?P<qid>\d+)\s*(?P<question>.*)", re.IGNORECASE)
 QUESTION_NO_ID_RE = re.compile(r"^Question\s*[:\-\u2013]?\s*(?P<question>.+)", re.IGNORECASE)
 DEFAULT_INPUTS = [
-    pathlib.Path("./csv/llama-3.1-70B-FT 50.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 100.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 150.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 200.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-base_new30.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 50_new30.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 100_new30.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 150_new30.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 200_new30.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT_new30.csv"),
+    pathlib.Path("./csv/llama-3.1-8B-PV1_new30.csv"),
 ]
 
 QID_MAP = {
@@ -226,7 +217,7 @@ def build_parser() -> argparse.ArgumentParser:
         type=pathlib.Path,
         nargs="*",
         default=DEFAULT_INPUTS,
-        help="Input CSV files to parse (default: the Llama 70B FT/base CSVs in ./csv/)",
+        help="Input CSV files to parse (default: the Llama 8B CSVs in ./csv/)",
     )
     parser.add_argument(
         "--output",
