@@ -60,13 +60,13 @@ def load_dataset() -> pd.DataFrame:
     return df
 
 
-def ensure_norm(df: pd.DataFrame, column: str, convert: bool, cache: dict) -> str:
-    key = (column, convert)
+def ensure_norm(df: pd.DataFrame, column: str, cache: dict) -> str:
+    key = column
     if key in cache:
         return cache[key]
-    norm_col = f"{column}__norm__{'cno' if convert else 'raw'}"
+    norm_col = f"{column}__norm"
     if norm_col not in df.columns:
-        df[norm_col] = df[column].apply(lambda value: canonicalize_answer(value, convert_special_no=convert))
+        df[norm_col] = df[column].apply(canonicalize_answer)
     cache[key] = norm_col
     return norm_col
 
@@ -109,7 +109,6 @@ def evaluate_group(
     ref_col: str,
     scenario: str,
     norm_lookup: dict[str, str],
-    convert_special_no: bool,
     allow_partial_list: bool = False,
 ) -> pd.DataFrame:
     rows = []
@@ -121,7 +120,7 @@ def evaluate_group(
         if not pred_norm:
             continue
         metrics = evaluate_model(df, model, ref_col, pred_norm, ref_norm, allow_partial_list)
-        metrics.update({"model": model, "scenario": scenario, "reference": ref_col, "convert_no": convert_special_no})
+        metrics.update({"model": model, "scenario": scenario})
         rows.append(metrics)
     return pd.DataFrame(rows)
 
@@ -134,9 +133,10 @@ def build_detail_rows(
     detail_types: Set[str] | None = None,
 ) -> List[dict]:
     records = []
-    ref_col = scenario["reference"]
+    ref_col = config.REF_COL
     ref_norm = norm_lookup[ref_col]
     include_scenario = scenario.get("include_scenario_label", False)
+    scenario_label = scenario.get("title") or match_label
     allowed_types = {value.lower() for value in detail_types} if detail_types else None
     for _, row in df.iterrows():
         question_type = str(row.get("Type", ""))
@@ -150,7 +150,7 @@ def build_detail_rows(
             "Human Answer": row.get("Human Answer", ""),
             "sort_key": row.get("sort_key", 0),
         }
-        base["Scenario"] = match_label
+        base["Scenario"] = scenario_label
         if include_scenario:
             base["Scenario Title"] = scenario["title"]
         for model in scenario["models"]:

@@ -32,7 +32,7 @@ This package scores multiple model outputs against human‐curated answers and p
 
 ## Dataset Loading & Metric Aggregation (`eval/scoring.py`)
 - `load_dataset` merges the human spreadsheet with GPT‑5 responses, normalizes identifiers, and adds convenience columns.
-- `ensure_norm` caches canonicalized columns per `(column, convert_special_no)` combination so multiple scenarios reuse the work.
+- `ensure_norm` caches canonicalized columns so multiple scenarios reuse the work.
 - `evaluate_model` iterates rows, invokes `human_answer_counts`, accumulates TP/FP/TN/FN, and derives accuracy/precision/recall/F1.
 - `evaluate_group` applies `evaluate_model` to every model in a scenario, tagging results with scenario metadata.
 - `build_detail_rows` produces a per-question audit table containing raw answers and a binary correctness flag per model.

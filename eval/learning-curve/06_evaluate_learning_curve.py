@@ -163,10 +163,9 @@ def evaluate(df: pd.DataFrame, scenarios: Iterable[dict]) -> Tuple[pd.DataFrame,
             scenario_df = df[df["Type"] == filter_type].copy()
         if scenario_df.empty:
             continue
-        convert = scenario["convert_special_no"]
-        relevant_columns = [scenario["reference"], *scenario["models"]]
+        relevant_columns = [config.REF_COL, *scenario["models"]]
         norm_lookup = {
-            col: ensure_norm(df, col, convert, cache)
+            col: ensure_norm(df, col, cache)
             for col in relevant_columns
             if col in df.columns
         }
@@ -177,10 +176,9 @@ def evaluate(df: pd.DataFrame, scenarios: Iterable[dict]) -> Tuple[pd.DataFrame,
         subset = evaluate_group(
             scenario_df,
             scenario["models"],
-            scenario["reference"],
+            config.REF_COL,
             scenario["title"],
             norm_lookup,
-            convert,
             allow_partial_list=allow_partial,
         )
         if subset.empty:
@@ -192,7 +190,6 @@ def evaluate(df: pd.DataFrame, scenarios: Iterable[dict]) -> Tuple[pd.DataFrame,
             scenario_df,
             scenario,
             norm_lookup,
-            convert,
         )
         qid_frames[scenario["title"]] = pd.DataFrame(scenario_qid)
     metrics = pd.concat(scenario_frames, ignore_index=True) if scenario_frames else pd.DataFrame()
@@ -318,7 +315,7 @@ def main() -> int:
                 subset.to_excel(ft200_export_path, index=False)
                 logging.info("Wrote FT-200 incorrect partial rows to %s", ft200_export_path)
     summary = []
-    overall = metrics[metrics["scenario"] == "Overall - partial match"]
+    overall = metrics[metrics["scenario"] == "Partial Match"]
     for run in runs:
         row = overall[overall["model"] == run.column]
         summary.append(
@@ -340,7 +337,7 @@ def main() -> int:
     significance_path = args.output_dir / "learning_curve_significance.json"
     comparisons = build_learning_curve_comparisons(model_to_column)
     if comparisons:
-        overall_qid = qid_frames.get("Overall - partial match")
+        overall_qid = qid_frames.get("Partial Match")
         if overall_qid is not None and not overall_qid.empty:
             metrics_to_test = ["accuracy", "precision", "recall"]
             stats_df, wilcoxon_map, ttest_map = stat_utils.compute_pairwise_tests(
@@ -397,7 +394,7 @@ def main() -> int:
                     json.dump(payload, handle, indent=2)
                 logging.info("Saved learning-curve significance map to %s", significance_path)
         else:
-            logging.warning("No QID metrics found for Overall - partial match; skipping pairwise tests.")
+            logging.warning("No QID metrics found for Partial Match; skipping pairwise tests.")
 
     print(f"Metrics written to {metrics_path}")
     print(f"Details written to {details_path}")

@@ -10,18 +10,10 @@ evaluation:
 	$(PYTHON) evaluation.py
 
 learning_curve:
-	if ls learning-curve/responses/*_responses.csv >/dev/null 2>&1; then \
-		$(PYTHON) learning-curve/06_evaluate_learning_curve.py; \
-	else \
-		echo "Skipping learning-curve evaluation: no responses found under learning-curve/responses/"; \
-	fi
+	$(PYTHON) learning-curve/06_evaluate_learning_curve.py
 
 plot_learning_curve: learning_curve
-	if [ -f learning-curve/results/learning_curve_metrics.csv ]; then \
-		$(PYTHON) learning-curve/07_plot_learning_curve.py; \
-	else \
-		echo "Skipping learning-curve plotting: missing learning_curve_metrics.csv"; \
-	fi
+	$(PYTHON) learning-curve/07_plot_learning_curve.py
 
 failure_prev:
 	$(PYTHON) error_analysis/failure_prev.py

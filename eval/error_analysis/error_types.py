@@ -15,10 +15,7 @@ EVAL_DIR = Path(__file__).resolve().parent.parent
 if str(EVAL_DIR.parent) not in sys.path:
     sys.path.append(str(EVAL_DIR.parent))
 
-from eval.normalize import (  # type: ignore
-    canonicalize_answer,
-    list_match_stats,
-)
+from eval.normalize import canonicalize_answer, list_match_stats  # type: ignore
 from eval.constants import LIST_PARTIAL_THRESHOLD  # type: ignore
 
 FIGURES_DIR = EVAL_DIR / "error_analysis" / "figures"
@@ -31,12 +28,8 @@ def _is_negative_answer(text: str) -> bool:
     """Check if answer is negative/empty (not reported, not applicable, etc.)."""
     if pd.isna(text):
         return True
-    normalized = str(text).strip().lower()
-    negative_phrases = {
-        "", "no", "not reported", "not applicable", "n/a", "na",
-        "not available", "not provided", "unknown", "not stated"
-    }
-    return normalized in negative_phrases
+    norm = canonicalize_answer(text)
+    return norm in {"", "no"}
 
 
 def _classify_error(human_answer: str, model_answer: str) -> str:
@@ -63,8 +56,8 @@ def _classify_error(human_answer: str, model_answer: str) -> str:
 
     # Both non-empty - normalize and check overlap using existing evaluation logic
     if not human_is_empty and not model_is_empty:
-        human_norm = canonicalize_answer(human_answer, convert_special_no=False)
-        model_norm = canonicalize_answer(model_answer, convert_special_no=False)
+        human_norm = canonicalize_answer(human_answer)
+        model_norm = canonicalize_answer(model_answer)
 
         matches, total = list_match_stats(human_norm, model_norm, str(model_answer))
 
@@ -98,17 +91,17 @@ def analyze_q16_errors(sheet_name: str = "Q16") -> pd.DataFrame:
         "Llama3.1-70B base",
         "Llama3.1-70B FT",
         "Llama3.1-70B QSP",
-        "Llama3.1-70B RAG",
     ]
 
     error_records: List[Dict] = []
 
     for _, row in df.iterrows():
         human_answer = row.get("Human Answer", "")
-
         for model in models:
-            model_answer = row.get(model, "")
-            model_correct = row.get(f"{model} Correct", 1)
+            answer_col = f"{model} Answer"
+            correct_col = f"{model} Correct"
+            model_answer = row.get(answer_col, "")
+            model_correct = row.get(correct_col, 1)
 
             # Only analyze incorrect predictions
             if model_correct == 0:
@@ -148,7 +141,7 @@ def plot_error_types(error_df: pd.DataFrame, output_path: Path) -> None:
     error_counts.index = error_counts.index.str.replace("Llama3.1-70B ", "")
 
     # Reorder models: base, FT, QSP, RAG
-    model_order = ["base", "FT", "QSP", "RAG"]
+    model_order = ["base", "FT", "QSP"]
     error_counts = error_counts.reindex(model_order, fill_value=0)
 
     # Create the plot

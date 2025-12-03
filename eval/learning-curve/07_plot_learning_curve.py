@@ -39,7 +39,7 @@ def load_metrics(path: Path, scenarios: List[str] | None = None) -> pd.DataFrame
     if not path.exists():
         raise FileNotFoundError(f"Metrics file missing: {path}")
     df = pd.read_csv(path)
-    scenarios = scenarios or ["Overall - partial match"]
+    scenarios = scenarios or ["Partial Match"]
     df = df[df["scenario"].isin(scenarios)].copy()
     return df
 
@@ -64,7 +64,7 @@ def select_models(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_combined() -> pd.DataFrame:
-    target_scenarios = ["Overall - partial match"]
+    target_scenarios = ["Partial Match"]
     lc_df = load_metrics(LC_RESULTS, target_scenarios)
     base_df = load_metrics(BASE_RESULTS, target_scenarios)
     all_df = pd.concat([lc_df, base_df], ignore_index=True)
@@ -102,7 +102,7 @@ def main() -> int:
     COMBINED_CSV.parent.mkdir(parents=True, exist_ok=True)
     combined.to_csv(COMBINED_CSV, index=False)
     title = "GPT-4o Learning Curve"
-    generate_figures(combined, title, OUTPUT_DIR, significance=significance, comparisons=comparisons, layout="vertical")
+    generate_figures(combined, title, OUTPUT_DIR, significance=significance, comparisons=comparisons)
     print(f"Wrote combined metrics to {COMBINED_CSV}")
     print(f"Figures saved to {OUTPUT_DIR}")
     return 0

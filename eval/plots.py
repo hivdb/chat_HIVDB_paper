@@ -36,27 +36,15 @@ METRIC_PALETTE = {
 FAMILY_COMPARISONS = {
     "GPT-4o": {
         "base": "GPT-4o base",
-        "targets": [
-            "GPT-4o FT",
-            "GPT-4o QSP",
-            "GPT-4o RAG",
-        ],
+        "targets": ["GPT-4o FT", "GPT-4o QSP"],
     },
     "Llama3.1-70B": {
         "base": "Llama3.1-70B base",
-        "targets": [
-            "Llama3.1-70B FT",
-            "Llama3.1-70B QSP",
-            "Llama3.1-70B RAG",
-        ],
+        "targets": ["Llama3.1-70B FT", "Llama3.1-70B QSP"],
     },
     "Llama3.1-8B": {
         "base": "Llama3.1-8B base",
-        "targets": [
-            "Llama3.1-8B FT",
-            "Llama3.1-8B QSP",
-            "Llama3.1-8B RAG",
-        ],
+        "targets": ["Llama3.1-8B FT", "Llama3.1-8B QSP"],
     },
 }
 
@@ -242,14 +230,14 @@ def plot_metric_panels(
     df,
     qid_df,
     title: str,
-    path: Path,
+    output_path: Path,
     significance: dict | None = None,
     comparisons: dict | None = None,
     layout: str = "vertical",
 ) -> None:
     if df.empty:
         return
-    path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     models = df["model"].tolist()
     positions, family_bounds = _group_positions(models)
     pos_lookup = _position_lookup(models)
@@ -329,9 +317,9 @@ def plot_metric_panels(
         axes[-1].set_xticks(positions)
         axes[-1].set_xticklabels(variant_labels, rotation=25, ha="right", fontsize=AXIS_TICK_SIZE)
     _annotate_families(axes[-1], family_bounds)
-    fig.suptitle(title, fontsize=TITLE_FONT_SIZE, y=0.965)
-    fig.tight_layout(rect=[0, 0, 0.98, 0.9])
-    fig.savefig(path, dpi=300)
+    fig.suptitle(title, fontsize=TITLE_FONT_SIZE)
+    fig.tight_layout()
+    fig.savefig(output_path, dpi=300)
     plt.close(fig)
 
 
@@ -359,7 +347,19 @@ def save_table(df, title: str, path: Path) -> None:
     plt.close(fig)
 
 
-def generate_figures(subset, title: str, output_dir: Path, qid_df=None, significance=None, comparisons=None, layout: str = "vertical") -> None:
-    slug = slugify(title)
-    plot_metric_panels(subset, qid_df, title, output_dir / f"{slug}_accuracy.png", significance, comparisons, layout=layout)
-    save_table(subset, f"{title} Metrics", output_dir / f"{slug}_table.png")
+def generate_figures(subset: pd.DataFrame, scenario: str, output_dir: Path, significance=None, comparisons=None) -> None:
+    """Render accuracy bar chart and metrics table per scenario."""
+    if subset.empty:
+        return
+    output_dir.mkdir(parents=True, exist_ok=True)
+    slug = slugify(scenario)
+    plot_metric_panels(
+        subset,
+        qid_df=None,
+        title=scenario,
+        output_path=output_dir / f"{slug}-bar-chart.png",
+        significance=significance,
+        comparisons=comparisons or FAMILY_COMPARISONS,
+        layout="vertical",
+    )
+    save_table(subset, f"{scenario} Metrics", output_dir / f"{slug}-table.png")

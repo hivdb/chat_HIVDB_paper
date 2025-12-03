@@ -20,25 +20,23 @@ EXACT_VS_PARTIAL_DETAILS = OUTPUT_DIR / "exact_vs_partial_evaluation.csv"
 LEARNING_CURVE_RESPONSES = {
     "GPT-4o FT-100": EVAL_DIR / "learning-curve/responses/size100_responses.csv",
 }
+REF_COL = "Human Answer"
 
 MODEL_GROUPS = {
     "gpt_family": [
         "GPT-4o base",
         "GPT-4o FT",
         "GPT-4o QSP",
-        "GPT-4o RAG",
     ],
     "llama_70b": [
         "Llama3.1-70B base",
         "Llama3.1-70B FT",
         "Llama3.1-70B QSP",
-        "Llama3.1-70B RAG",
     ],
     "llama_8b": [
         "Llama3.1-8B base",
         "Llama3.1-8B FT",
         "Llama3.1-8B QSP",
-        "Llama3.1-8B RAG",
     ],
 }
 
@@ -52,8 +50,6 @@ COLUMN_RENAMES = {
     "llama-3.1-70B PV1": "Llama3.1-70B QSP",
     "Llama3.1-8B Question-specific Prompt": "Llama3.1-8B QSP",
     "llama-3.1-8B PV1": "Llama3.1-8B QSP",
-    "llama-3.1-70B RAG": "Llama3.1-70B RAG",
-    "llama-3.1-8B RAG": "Llama3.1-8B RAG",
     "llama-3.1-70B AP": "Llama3.1-70B AP",
     "llama-3.1-70B AP before": "Llama3.1-70B AP Before",
     "llama-3.1-70B AP after": "Llama3.1-70B AP After",
@@ -68,46 +64,13 @@ COLUMN_RENAMES = {
 
 SCENARIOS = [
     {
-        "title": "Overall - exact match",
-        "reference": "Human Answer",
+        "title": "Exact Match",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
-        "convert_special_no": True,
     },
     {
-        "title": "Overall - partial match",
-        "reference": "Human Answer",
+        "title": "Partial Match",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
-        "convert_special_no": True,
         "allow_partial_list": True,
-        "detail_types": ["List"],
-    },
-    {
-        "title": "Yes/No questions",
-        "reference": "Human Answer",
-        "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
-        "convert_special_no": True,
-        "filter_type": "Boolean",
-        "include_details": False,
-    },
-    {
-        "title": "List questions - exact match",
-        "reference": "Human Answer",
-        "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
-        "convert_special_no": True,
-        "filter_type": "List",
-        "allow_partial_list": False,
-        "include_details": False,
-        "include_scenario_label": True,
-    },
-    {
-        "title": "List questions - partial match",
-        "reference": "Human Answer",
-        "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
-        "convert_special_no": True,
-        "filter_type": "List",
-        "allow_partial_list": True,
-        "include_details": False,
-        "include_scenario_label": True,
     },
 ]
 

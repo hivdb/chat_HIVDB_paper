@@ -26,22 +26,22 @@ import numpy as np
 
 
 LIST_SCENARIO_TITLES = {
-    "List questions - exact match",
-    "List questions - partial match",
+    "Exact Match",
+    "Partial Match",
 }
 
 FAMILY_COMPARISONS = {
     "GPT-4o": {
         "base": "GPT-4o base",
-        "targets": ["GPT-4o FT", "GPT-4o QSP", "GPT-4o RAG"],
+        "targets": ["GPT-4o FT", "GPT-4o QSP"],
     },
     "Llama3.1-70B": {
         "base": "Llama3.1-70B base",
-        "targets": ["Llama3.1-70B FT", "Llama3.1-70B QSP", "Llama3.1-70B RAG"],
+        "targets": ["Llama3.1-70B FT", "Llama3.1-70B QSP"],
     },
     "Llama3.1-8B": {
         "base": "Llama3.1-8B base",
-        "targets": ["Llama3.1-8B FT", "Llama3.1-8B QSP", "Llama3.1-8B RAG"],
+        "targets": ["Llama3.1-8B FT", "Llama3.1-8B QSP"],
     },
 }
 
@@ -50,13 +50,12 @@ def build_qid_metrics(
     scenario_df: pd.DataFrame,
     scenario: dict,
     norm_lookup: dict[str, str],
-    convert_special_no: bool,
 ) -> List[dict]:
     rows: List[dict] = []
     if scenario_df.empty:
         return rows
     allow_partial = scenario.get("allow_partial_list", False)
-    ref_col = scenario["reference"]
+    ref_col = config.REF_COL
     ref_norm = norm_lookup.get(ref_col)
     if not ref_norm:
         return rows
@@ -79,8 +78,6 @@ def build_qid_metrics(
                 {
                     "model": model,
                     "scenario": scenario["title"],
-                    "reference": ref_col,
-                    "convert_no": convert_special_no,
                     "QID": qid,
                     "Type": q_type,
                     "Question": question,
@@ -123,19 +120,17 @@ def run(limit: int | None) -> Tuple[
         if missing_models:
             logging.warning("Scenario '%s' missing models: %s", scenario["title"], ", ".join(missing_models))
 
-        convert = scenario["convert_special_no"]
         allow_partial = scenario.get("allow_partial_list", False)
         match_label = match_scenario_label(allow_partial)
         detail_type_filter = scenario.get("detail_types")
         detail_types = set(detail_type_filter) if detail_type_filter else None
-        norm_lookup = {col: ensure_norm(df, col, convert, cache) for col in [scenario["reference"], *scenario["models"]] if col in df.columns}
+        norm_lookup = {col: ensure_norm(df, col, cache) for col in [config.REF_COL, *scenario["models"]] if col in df.columns}
         subset = evaluate_group(
             scenario_df,
             scenario["models"],
-            scenario["reference"],
+            config.REF_COL,
             scenario["title"],
             norm_lookup,
-            convert,
             allow_partial_list=allow_partial,
         )
         if subset.empty:
@@ -173,7 +168,6 @@ def run(limit: int | None) -> Tuple[
             scenario_df,
             scenario,
             norm_lookup,
-            convert,
         )
         qid_metrics_rows.extend(scenario_qid)
         scenario_qid_df = pd.DataFrame(scenario_qid)
@@ -194,25 +188,41 @@ def run(limit: int | None) -> Tuple[
     return combined, detail_rows, figure_specs, exact_partial_details, partial_only_details, qid_metrics_rows, scenario_qid_frames
 
 
-def write_outputs(metrics: pd.DataFrame, details: List[dict], extra_details: List[dict], partial_details: List[dict]) -> None:
+def _write_excel(path: Path, sheets: dict[str, pd.DataFrame]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with pd.ExcelWriter(path, engine="openpyxl") as writer:
+        for name, df in sheets.items():
+            df.to_excel(writer, sheet_name=name, index=False)
+
+
+def write_outputs(
+    metrics: pd.DataFrame,
+    details: List[dict],
+    extra_details: List[dict],
+    partial_details: List[dict],
+    scenario_qid_frames: dict[str, pd.DataFrame],
+) -> None:
+    # Metrics: two sheets (Exact, Partial)
+    metric_sheets = {
+        title: metrics[metrics["scenario"] == title].drop(columns=["scenario"], errors="ignore")
+        for title in ["Exact Match", "Partial Match"]
+    }
     metrics.to_csv(config.OUTPUT_METRICS, index=False, encoding="utf-8-sig")
+    _write_excel(config.OUTPUT_METRICS.with_suffix(".xlsx"), metric_sheets)
+
+    # Detail rows workbook
     detail_df = pd.DataFrame(details)
     detail_df.sort_values(["sort_key"], inplace=True)
     detail_df.drop(columns=["sort_key"], inplace=True, errors="ignore")
-    detail_df.to_csv(config.DETAIL_METRICS_HUMAN, index=False, encoding="utf-8-sig")
-    if extra_details:
-        extra_df = pd.DataFrame(extra_details)
-        sort_cols = ["Scenario Title", "Scenario", "sort_key"]
-        present_cols = [col for col in sort_cols if col in extra_df.columns]
-        if present_cols:
-            extra_df.sort_values(present_cols, inplace=True)
-        extra_df.drop(columns=["sort_key"], inplace=True, errors="ignore")
-        extra_df.to_csv(config.EXACT_VS_PARTIAL_DETAILS, index=False, encoding="utf-8-sig")
-    if partial_details:
-        partial_df = pd.DataFrame(partial_details)
-        partial_df.sort_values(["sort_key"], inplace=True)
-        partial_df.drop(columns=["sort_key", "Scenario Title"], inplace=True, errors="ignore")
-        partial_df.to_csv(config.DETAIL_METRICS_PARTIAL, index=False, encoding="utf-8-sig")
+    detail_sheets = {title: detail_df[detail_df.get("Scenario") == title] for title in ["Exact Match", "Partial Match"]}
+    _write_excel(config.DETAIL_METRICS_HUMAN.with_suffix(".xlsx"), detail_sheets)
+
+    # Per-QID metrics workbook
+    qid_sheets = {title: df.drop(columns=["scenario"], errors="ignore") for title, df in scenario_qid_frames.items()}
+    combined_qid = pd.concat(scenario_qid_frames.values(), ignore_index=True) if scenario_qid_frames else pd.DataFrame()
+    if not combined_qid.empty:
+        combined_qid.to_csv(config.OUTPUT_METRICS_BY_QID, index=False, encoding="utf-8-sig")
+    _write_excel(config.OUTPUT_METRICS_BY_QID.with_suffix(".xlsx"), qid_sheets)
 
 
 def main() -> int:
@@ -233,15 +243,12 @@ def main() -> int:
     if metrics.empty:
         logging.error("No scenarios produced metrics.")
         return 1
-    write_outputs(metrics, details, extra_details, partial_details)
-    if qid_rows:
-        qid_df = pd.DataFrame(qid_rows)
-        qid_df.to_csv(config.OUTPUT_METRICS_BY_QID, index=False, encoding="utf-8-sig")
-        logging.info("Wrote per-QID metrics to %s", config.OUTPUT_METRICS_BY_QID)
+    write_outputs(metrics, details, extra_details, partial_details, scenario_qid_frames)
     overall_stats = {}
     fisher_df = pd.DataFrame()
     pair_df = pd.DataFrame()
-    overall_qid_df = scenario_qid_frames.get("Overall - partial match")
+    overall_qid_df = scenario_qid_frames.get("Partial Match")
+    exact_qid_df = scenario_qid_frames.get("Exact Match")
     if overall_qid_df is not None and not overall_qid_df.empty:
         fisher_df = stat_utils.compute_fisher_tests(
             overall_qid_df,
@@ -261,6 +268,13 @@ def main() -> int:
             config.PAIRWISE_RESULTS.parent.mkdir(parents=True, exist_ok=True)
             pair_df.to_csv(config.PAIRWISE_RESULTS, index=False, encoding="utf-8-sig")
             logging.info("Wrote pairwise tests to %s", config.PAIRWISE_RESULTS)
+    exact_stats = {}
+    if exact_qid_df is not None and not exact_qid_df.empty:
+        _, exact_stats, _ = stat_utils.compute_pairwise_tests(
+            exact_qid_df,
+            FAMILY_COMPARISONS,
+            ["accuracy", "precision", "recall"],
+        )
     logging.info("Wrote metrics to %s", config.OUTPUT_METRICS)
     logging.info("Wrote detail rows to %s", config.DETAIL_METRICS_HUMAN)
     if extra_details:
@@ -268,8 +282,8 @@ def main() -> int:
     if partial_details:
         logging.info("Wrote partial-list detail rows to %s", config.DETAIL_METRICS_PARTIAL)
     for display_title, scenario_title, subset, scenario_qid_df in figures:
-        annotations = overall_stats if scenario_title == "Overall - partial match" else None
-        generate_figures(subset, display_title, config.OUTPUT_TABLE_DIR, scenario_qid_df, annotations)
+        sig = overall_stats if scenario_title == "Partial Match" else exact_stats if scenario_title == "Exact Match" else None
+        generate_figures(subset, scenario_title, config.OUTPUT_TABLE_DIR, significance=sig, comparisons=FAMILY_COMPARISONS)
     return 0
 
 

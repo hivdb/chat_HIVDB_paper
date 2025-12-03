@@ -54,10 +54,7 @@ def compute_distributions(
     tall_records: list[dict[str, object]] = []
     overlap_values: dict[str, list[float]] = {col.replace(" Answer", ""): [] for col in answer_cols}
 
-    normalized_cols: dict[str, pd.Series] = {
-        col: df[col].apply(lambda value: canonicalize_answer(value, convert_special_no=False))
-        for col in answer_cols
-    }
+    normalized_cols: dict[str, pd.Series] = {col: df[col].apply(canonicalize_answer) for col in answer_cols}
     token_lists: dict[str, pd.Series] = {
         col: series.apply(lambda value: human_tokens(value) if value not in {"", "no"} else [])
         for col, series in normalized_cols.items()
