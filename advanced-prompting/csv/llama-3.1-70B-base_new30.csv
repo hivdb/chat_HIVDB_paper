@@ -1,0 +1,4231 @@
+﻿PMID,Multiple Answer,time_usage
+40872801,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: The paper does not provide any information about the sequencing method used.
+
+Rationale: The paper does not mention the sequencing method used, so we cannot determine the answer.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The paper does not provide any information about the specific HIV genes that were sequenced.
+
+Rationale: The paper does not mention the specific HIV genes that were sequenced, so we cannot determine the answer.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: The paper mentions that the studies were conducted in Tanzania.
+
+Rationale: The paper specifically mentions Tanzania as the country where the studies were conducted.
+
+Answer: Tanzania
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: The paper mentions that the samples were obtained from HIV patients on ART.
+
+Rationale: The paper does not specifically mention the type of samples, but it can be inferred that the samples were likely plasma or whole blood.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: The paper mentions that the studies were conducted from 2004 to 2024.
+
+Rationale: The paper provides a range of years during which the studies were conducted.
+
+Answer: 2004-2024
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: The paper does not provide any information about cloning prior to sequencing.
+
+Rationale: The paper does not mention cloning, so we cannot determine the answer.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: The paper mentions that the studies were conducted among HIV patients on ART.
+
+Rationale: The paper specifically mentions that the patients were on ART, which implies that they had previously received ARV drugs.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: The paper mentions that a total of 9685 HIV patients were analyzed.
+
+Rationale: The paper provides the total number of patients analyzed.
+
+Answer: 9685
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: The paper mentions that virological failure was reported in 22 of the included studies.
+
+Rationale: The paper specifically mentions virological failure, which implies that sequences were obtained from individuals with virological failure.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: The paper does not provide any information about a clinical trial.
+
+Rationale: The paper does not mention a clinical trial, so we cannot determine the answer.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: The paper mentions that the studies were conducted among HIV patients on ART.
+
+Rationale: The paper specifically mentions patient samples.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: The paper does not provide any information about in vitro drug susceptibility data.
+
+Rationale: The paper does not mention in vitro drug susceptibility data, so we cannot determine the answer.
+
+Answer: No
+""""""",48
+40938120,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: HIV-1 sequence data generated in this study have been deposited in GenBank and are available under accession numbers PX133190-PX134237.
+
+Rationale: The question asks for the GenBank accession numbers for the sequenced HIV isolates. The evidence from the paper provides the accession numbers, which are PX133190-PX134237.
+
+Answer: PX133190-PX134237
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: The paper does not explicitly mention the sequencing method used.
+
+Rationale: The question asks for the sequencing method used, but the paper does not provide this information.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: An in-house RT nested PCR was used to amplify a 1,061 bp fragment of the pol gene, covering the full-length protease (PR, 99 codons) and the first 299 codons of the RT gene.
+
+Rationale: The question asks for the HIV genes that were sequenced. The evidence from the paper indicates that the pol gene, which includes the protease (PR) and reverse transcriptase (RT) genes, was sequenced.
+
+Answer: Protease, PR; Reverse transcriptase, RT
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: The study was conducted in Nanning City, Guangxi Province, China.
+
+Rationale: The question asks for the countries where the sequenced samples were obtained. The evidence from the paper indicates that the study was conducted in China.
+
+Answer: China
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Venous blood samples (10 mL) were collected from each participant.
+
+Rationale: The question asks for the type of samples that were sequenced. The evidence from the paper indicates that venous blood samples were collected, but it does not specify the type of sample that was sequenced. However, based on the context, it is likely that plasma was sequenced.
+
+Answer: Plasma
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: The study was conducted from 1 January 2019 to 31 December 2022.
+
+Rationale: The question asks for the years when the sequenced samples were obtained. The evidence from the paper provides the study period, which is from 2019 to 2022.
+
+Answer: 2019-2022
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: The paper does not mention cloning prior to sequencing.
+
+Rationale: The question asks if samples were cloned prior to sequencing. The evidence from the paper does not provide this information.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: The participant inclusion criteria were as follows: (i) aged 18 years or older; (ii) newly diagnosed with HIV and ART naive;
+
+Rationale: The question asks if the paper reports HIV sequences from individuals who had previously received ARV drugs. The evidence from the paper indicates that the participants were ART naive, which means they had not previously received ARV drugs.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: The paper does not mention virological failure on a treatment regimen.
+
+Rationale: The question asks if any sequences were obtained from individuals with virological failure on a treatment regimen. The evidence from the paper does not provide this information.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: The paper does not mention a clinical trial.
+
+Rationale: The question asks if the patients in the study were in a clinical trial. The evidence from the paper does not provide this information.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: The paper reports HIV sequences from patient samples.
+
+Rationale: The question asks if the paper reports HIV sequences from patient samples. The evidence from the paper indicates that it does.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: The paper does not mention in vitro drug susceptibility data.
+
+Rationale: The question asks if the paper reports in vitro drug susceptibility data. The evidence from the paper does not provide this information.
+
+Answer: No
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: A total of 1,048 eligible pol sequences were analyzed.
+
+Rationale: The question asks for the number of individuals who had samples obtained for HIV sequencing. The evidence from the paper provides the number of eligible pol sequences analyzed, which is 1,048.
+
+Answer: 1048
+""""""",63
+40938996,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Oxford Nanopore methods (Psomagen).
+
+Rationale: The paper mentions that genomic DNA was extracted from infected cells and sequenced by Sanger or Oxford Nanopore methods.
+
+Answer: Oxford Nanopore sequencing.
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The Gag-Pol and Env-Nef coding regions were amplified by PrimeSTAR GXL DNA polymerase and sequenced.
+
+Rationale: The paper mentions that the Gag-Pol and Env-Nef coding regions were sequenced.
+
+Answer: Protease, PR; Reverse transcriptase, RT; Integrase, IN; Envelope.
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about cloning prior to sequencing.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Not Found.
+
+Rationale: The paper does not provide any information about the countries from which the sequenced samples were obtained.
+
+Answer: Not Found.
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: PBMC.
+
+Rationale: The paper mentions that genomic DNA was extracted from infected cells, specifically PBMCs.
+
+Answer: PBMC.
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: Not Found.
+
+Rationale: The paper does not provide any information about the years from which the sequenced samples were obtained.
+
+Answer: Not Found.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about the treatment history of the individuals from whom the samples were obtained.
+
+Answer: Unknown.
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about the treatment outcomes of the individuals from whom the samples were obtained.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about a clinical trial.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: No.
+
+Rationale: The paper does not report HIV sequences from patient samples, but rather from in vitro experiments.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Yes.
+
+Rationale: The paper reports in vitro drug susceptibility data, specifically the susceptibility of HIV-1 to integrase strand transfer inhibitors.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about the number of individuals from whom samples were obtained.
+
+Answer: 0.
+""""""",41
+41129268,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Sanger sequencing technology.
+
+Rationale: The paper mentions that the eligible VL samples were tested using Sanger sequencing technology.
+
+Answer: Sanger sequencing.
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The paper does not specifically mention which HIV genes were sequenced, but it does mention that drug resistance mutations (DRMs) were identified and antiretroviral susceptibility was interpreted using the Stanford University HIVDR Database algorithms.
+
+Rationale: The paper does not provide explicit information about which HIV genes were sequenced, but it implies that the sequencing was done to identify DRMs and interpret antiretroviral susceptibility.
+
+Answer: Unknown.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Yes, the paper reports HIV sequences from children living with HIV who were experiencing virologic failure on first-line antiretroviral therapy.
+
+Rationale: The paper explicitly states that the study included children who were failing on first-line antiretroviral therapy, which implies that they had previously received ARV drugs.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Uganda.
+
+Rationale: The paper mentions that the study was conducted in Uganda and that the samples were obtained from children living with HIV in Uganda.
+
+Answer: Uganda.
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about whether the samples were cloned prior to sequencing.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Plasma.
+
+Rationale: The paper mentions that the samples were plasma samples.
+
+Answer: Plasma.
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: 2021.
+
+Rationale: The paper mentions that the samples were obtained between January and November 2021.
+
+Answer: 2021.
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: 333.
+
+Rationale: The paper mentions that 333 samples were successfully genotyped.
+
+Answer: 333.
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Yes, the paper reports sequences from children living with HIV who were experiencing virologic failure on first-line antiretroviral therapy.
+
+Rationale: The paper explicitly states that the study included children who were failing on first-line antiretroviral therapy.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: No.
+
+Rationale: The paper does not mention that the patients were in a clinical trial.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: Yes, the paper reports HIV sequences from children living with HIV who were experiencing virologic failure on first-line antiretroviral therapy.
+
+Rationale: The paper explicitly states that the study included children who were failing on first-line antiretroviral therapy.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: No.
+
+Rationale: The paper does not mention in vitro drug susceptibility data.
+
+Answer: No.
+""""""",46
+40490983,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Sanger sequencing of plasma HIV-1 RNA was performed by the Kisumu Kenya Medical Research Institute and Nairobi National HIV Reference Laboratories.
+
+Rationale: The paper mentions that Sanger sequencing was used for sequencing.
+
+Answer: Sanger sequencing.
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: Protease and reverse transcriptase resistance mutations were obtained from sequences requested from laboratories, and when unavailable, from genotyping reports from charts.
+
+Rationale: The paper mentions that protease and reverse transcriptase resistance mutations were obtained, which indicates that the protease and reverse transcriptase genes were sequenced.
+
+Answer: Protease, PR; Reverse transcriptase, RT.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Yes, the paper reports HIV sequences from individuals who had previously received ARV drugs, as indicated by the fact that they had experienced second-line failure.
+
+Rationale: The paper mentions that the individuals had experienced second-line failure, which implies that they had previously received ARV drugs.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Kenya.
+
+Rationale: The paper mentions that the study was conducted in western Kenya.
+
+Answer: Kenya.
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Plasma.
+
+Rationale: The paper mentions that Sanger sequencing of plasma HIV-1 RNA was performed.
+
+Answer: Plasma.
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: 2011-2021.
+
+Rationale: The paper mentions that the study was conducted from 2011 to 2021.
+
+Answer: 2011-2021.
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: No.
+
+Rationale: The paper does not mention cloning as a step prior to sequencing.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: 187.
+
+Rationale: The paper mentions that 187 participants had genotypes analyzed.
+
+Answer: 187.
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Yes.
+
+Rationale: The paper mentions that the individuals had experienced second-line failure, which implies that they had virological failure on a treatment regimen.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: No.
+
+Rationale: The paper does not mention a clinical trial.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: Yes.
+
+Rationale: The paper reports HIV sequences from patient samples, as indicated by the fact that they had experienced second-line failure.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: No.
+
+Rationale: The paper does not mention in vitro drug susceptibility data.
+
+Answer: No.
+""""""",41
+40974886,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: The paper does not explicitly mention the sequencing method used, but it mentions that ""Bioinformatic filters removed APOBEC-mediated, hypermutated deep-sequence reads from GenoSure Archive results to prevent RAM overreporting"".
+
+Rationale: The mention of ""deep-sequence reads"" suggests that the sequencing method used was Next-generation sequencing (NGS), but the specific NGS method is not specified.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The paper mentions that ""Genotyping of protease, reverse transcriptase, and integrase from 3 bictegravir/emtricitabine/ tenofovir alafenamide switch studies was included.""
+
+Rationale: The paper specifically mentions that the protease, reverse transcriptase, and integrase genes were sequenced.
+
+Answer: Protease, PR; Reverse transcriptase, RT; Integrase, IN
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Not Found.
+
+Rationale: The paper does not provide any information about the countries from which the sequenced samples were obtained.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: The paper mentions that ""From each whole blood sample, reproducibility (%) of proviral RAM reporting was the number of times the mutation was detected per number of assays run (2-4 replicates).""
+
+Rationale: The paper specifically mentions that whole blood samples were used for sequencing.
+
+Answer: Whole Blood
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about whether the samples were cloned prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: The paper mentions that ""Genotype reports were collected from March 1997 to March 2019.""
+
+Rationale: The paper provides a range of years during which the genotype reports were collected.
+
+Answer: 1997-2019
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: The paper mentions that ""The study included treatment-experienced PWH aged ≥ 18 years, randomized to B/F/TAF or comparator regimens in studies GS-US-380-4449 (NCT03405935 [5,6]; ≥ 65 years), GS-US-380-4030 (NCT03110380 [7]), and GS-US-380-4580 (NCT03631732 [8]), with virologic suppression (HIV-1 RNA < 50 copies/mL) for ≥ 3 - 6 months and no prior virologic failure on integrase strand transfer inhibitor (INSTI)-containing regimens (GS-US-380-4030, GS-US-380-4580) or no HIV-1 RNA ≥ 400 copies/mL (GS-US-380-4449).""
+
+Rationale: The paper specifically mentions that the study included treatment-experienced individuals.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: The paper mentions that ""Overall, 241 participants (35 from GS-US-380-4449, 93 from GS-US-380-4030, and 113 from GS-US-380-4580) were included, with genotype reports collected from March 1997 to March 2019.""
+
+Rationale: The paper provides the total number of participants included in the study.
+
+Answer: 241
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: The paper mentions that ""The study included treatment-experienced PWH aged ≥ 18 years, randomized to B/F/TAF or comparator regimens in studies GS-US-380-4449 (NCT03405935 [5,6]; ≥ 65 years), GS-US-380-4030 (NCT03110380 [7]), and GS-US-380-4580 (NCT03631732 [8]), with virologic suppression (HIV-1 RNA < 50 copies/mL) for ≥ 3 - 6 months and no prior virologic failure on integrase strand transfer inhibitor (INSTI)-containing regimens (GS-US-380-4030, GS-US-380-4580) or no HIV-1 RNA ≥ 400 copies/mL (GS-US-380-4449).""
+
+Rationale: The paper specifically mentions that the study included individuals with virologic suppression and no prior virologic failure.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: The paper mentions that ""The study included treatment-experienced PWH aged ≥ 18 years, randomized to B/F/TAF or comparator regimens in studies GS-US-380-4449 (NCT03405935 [5,6]; ≥ 65 years), GS-US-380-4030 (NCT03110380 [7]), and GS-US-380-4580 (NCT03631732 [8]), with virologic suppression (HIV-1 RNA < 50 copies/mL) for ≥ 3 - 6 months and no prior virologic failure on integrase strand transfer inhibitor (INSTI)-containing regimens (GS-US-380-4030, GS-US-380-4580) or no HIV-1 RNA ≥ 400 copies/mL (GS-US-380-4449).""
+
+Rationale: The paper specifically mentions that the study included individuals randomized to different regimens in clinical trials.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: The paper mentions that ""Genotyping of protease, reverse transcriptase, and integrase from 3 bictegravir/emtricitabine/ tenofovir alafenamide switch studies was included.""
+
+Rationale: The paper specifically mentions that genotyping was performed on patient samples.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about in vitro drug susceptibility data.
+
+Answer: No
+""""""",81
+41091504,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the sequencing method used.
+
+Answer: Unknown.
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The paper mentions that the study used a series of 28 variants of HIV-1 protease.
+
+Rationale: Based on the information provided, it can be inferred that the protease gene was sequenced.
+
+Answer: Protease, PR.
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Not Found.
+
+Rationale: The paper does not provide any information about the countries from which the sequenced samples were obtained.
+
+Answer: Not Found.
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the type of samples sequenced.
+
+Answer: Unknown.
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about whether samples were cloned prior to sequencing.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: Not Found.
+
+Rationale: The paper does not provide any information about the years from which the sequenced samples were obtained.
+
+Answer: Not Found.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: The paper mentions that the study used a series of 28 variants of HIV-1 protease, but it does not provide information about the treatment history of the individuals.
+
+Rationale: Based on the information provided, it cannot be determined whether the individuals had previously received ARV drugs.
+
+Answer: Unknown.
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about whether the patients were in a clinical trial.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about whether sequences were obtained from individuals with virological failure on a treatment regimen.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: The paper mentions that the study used a series of 28 variants of HIV-1 protease, which were likely obtained from patient samples.
+
+Rationale: Based on the information provided, it can be inferred that the paper reports HIV sequences from patient samples.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: The paper mentions that the study used experimental enzyme inhibition potencies to train a machine learning model.
+
+Rationale: Based on the information provided, it can be inferred that the paper reports in vitro drug susceptibility data.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the number of individuals who had samples obtained for HIV sequencing.
+
+Answer: Unknown.
+""""""",41
+40763144,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not mention GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Sequencing, where individual mutations are identified using either Sanger sequencing or Next generation sequencing is then carried out.
+
+Rationale: The paper mentions that sequencing was performed using either Sanger sequencing or Next generation sequencing.
+
+Answer: Sanger sequencing; Next-generation sequencing
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: Not explicitly reported.
+
+Rationale: The paper does not explicitly mention which HIV genes were sequenced, but it does mention that RNA extraction is done using commercial kits followed by reverse transcription and Polymerase Chain Reaction (PCR) amplification, and that sequencing is then carried out.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Yes, the paper reports on HIV drug resistance among people living with HIV failing on ART.
+
+Rationale: The paper explicitly states that it reports on HIV drug resistance among people living with HIV failing on ART, which implies that the individuals had previously received ARV drugs.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Uganda.
+
+Rationale: The paper mentions that the study was conducted in the West-Nile region of Uganda.
+
+Answer: Uganda
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not mention whether samples were cloned prior to sequencing.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Plasma or dried blood spot (DBS) samples.
+
+Rationale: The paper mentions that a Plasma or dried blood spot (DBS) sample is collected and referred to the HIVDR testing facility.
+
+Answer: Plasma; DBS
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: 2021-2023.
+
+Rationale: The paper mentions that the study included PLHIV who underwent an HIVDR test between 1st January 2021– 30th December 2023.
+
+Answer: 2021-2023
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: 295.
+
+Rationale: The paper mentions that a total of 295 records were analyzed.
+
+Answer: 295
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Yes, the paper reports on HIV drug resistance among people living with HIV failing on ART.
+
+Rationale: The paper explicitly states that it reports on HIV drug resistance among people living with HIV failing on ART, which implies that the individuals had virological failure on a treatment regimen.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: No.
+
+Rationale: The paper does not mention that the patients were in a clinical trial.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: Yes, the paper reports on HIV drug resistance among people living with HIV failing on ART.
+
+Rationale: The paper explicitly states that it reports on HIV drug resistance among people living with HIV failing on ART, which implies that it reports HIV sequences from patient samples.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: No.
+
+Rationale: The paper does not mention in vitro drug susceptibility data.
+
+Answer: No
+""""""",44
+41004608,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not mention the GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: The complete genomic sequencing of HIV was performed using a previously described sequence capture method and the short read data were assembled into consensus whole genomes using Genomancer, an in-house viral genome assembly pipeline.
+
+Rationale: The paper mentions that the complete genomic sequencing of HIV was performed using a previously described sequence capture method, which suggests that next-generation sequencing (NGS) was used.
+
+Answer: Other
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The presence of clinically relevant drug resistance mutations (surveillance drug resistance mutations [SDRMs]) was identified by submitting sequences to the Stanford Calibrated Population Resistance tool. We also identified accessory INSTI resistance mutations using the Stanford HIVdb program to assess the co-occurrence of known integrase mutations with the mutations of interest.
+
+Rationale: The paper mentions that the presence of clinically relevant drug resistance mutations was identified by submitting sequences to the Stanford Calibrated Population Resistance tool, which suggests that the full genome was sequenced.
+
+Answer: Full genome
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: The UKHSA has sequenced HIV whole genomes from all individuals identified to have recently acquired HIV-1 in the UK since 2015 as part of routine HIV surveillance.
+
+Rationale: The paper mentions that the UKHSA has sequenced HIV whole genomes from all individuals identified to have recently acquired HIV-1 in the UK.
+
+Answer: United Kingdom
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Not reported.
+
+Rationale: The paper does not mention the type of samples that were sequenced.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: The UKHSA has sequenced HIV whole genomes from all individuals identified to have recently acquired HIV-1 in the UK since 2015 as part of routine HIV surveillance.
+
+Rationale: The paper mentions that the UKHSA has sequenced HIV whole genomes from all individuals identified to have recently acquired HIV-1 in the UK since 2015.
+
+Answer: 2015-2021
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not mention whether samples were cloned prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: RITA excludes those with evidence of treatment at time of sampling, and so the sequences to which WGS was applied were strictly pretreatment.
+
+Rationale: The paper mentions that the sequences were strictly pretreatment, which suggests that the individuals had not previously received ARV drugs.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Not reported.
+
+Rationale: The paper does not mention whether any sequences were obtained from individuals with virological failure on a treatment regimen.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: Not reported.
+
+Rationale: The paper does not mention whether the patients were in a clinical trial.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: The UKHSA has sequenced HIV whole genomes from all individuals identified to have recently acquired HIV-1 in the UK since 2015 as part of routine HIV surveillance.
+
+Rationale: The paper mentions that the UKHSA has sequenced HIV whole genomes from all individuals identified to have recently acquired HIV-1 in the UK.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Not reported.
+
+Rationale: The paper does not mention in vitro drug susceptibility data.
+
+Answer: No
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: A total of 1182 people had available WGS data between 2015 and 2021.
+
+Rationale: The paper mentions that a total of 1182 people had available WGS data between 2015 and 2021.
+
+Answer: 1182
+""""""",52
+40965168,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not mention GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Sequence analysis was conducted using Geneious Prime software version 2024.0.5 (Aukland, New Zealand).
+
+Rationale: The paper does not explicitly mention the sequencing method used, but it mentions the software used for sequence analysis, which suggests that the sequencing method is not the focus of the paper.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The HIV-1 gag-protease DNA fragment from various HIV-1 isolates was cloned (pXXLAI vector), and viruses were generated by transfection. The capsid and reverse transcriptase sequence from the selected viruses were analyzed to determine the presence of resistance mutations.
+
+Rationale: The paper mentions that the gag-protease DNA fragment was cloned and that the capsid and reverse transcriptase sequences were analyzed.
+
+Answer: Protease, PR; Reverse transcriptase, RT; Capsid, CA
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Not Found.
+
+Rationale: The paper does not mention the countries from which the sequenced samples were obtained.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Patient plasma samples were obtained from studies GS-US-380-1490, GS-US-292-0104, GS-US-200-4334, and GS-US-200-4625.
+
+Rationale: The paper mentions that patient plasma samples were obtained from various studies.
+
+Answer: Plasma
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: The HIV-1 gag-protease fragment from these plasma samples was amplified by two rounds of 30 cycles of PCR and subcloned into Zero Blunt TOPO pCR vector (Thermo Fisher, #450031).
+
+Rationale: The paper mentions that the HIV-1 gag-protease fragment was subcloned into a vector.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: Not Found.
+
+Rationale: The paper does not mention the years from which the sequenced samples were obtained.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Patient informed consent was obtained prior to the collection of the clinical samples used in this study. The plasma samples were from participants who were treatment naive to the capsid inhibitor class.
+
+Rationale: The paper mentions that the participants were treatment naive to the capsid inhibitor class.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Not Found.
+
+Rationale: The paper does not mention virological failure on a treatment regimen.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: Patient plasma samples were obtained from studies GS-US-380-1490, GS-US-292-0104, GS-US-200-4334, and GS-US-200-4625.
+
+Rationale: The paper mentions that the plasma samples were obtained from various studies, which suggests that the patients were in a clinical trial.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: Patient plasma samples were obtained from studies GS-US-380-1490, GS-US-292-0104, GS-US-200-4334, and GS-US-200-4625.
+
+Rationale: The paper mentions that patient plasma samples were obtained from various studies.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Drug susceptibilities of the 24 clinical isolates were characterized in the MT-2 multicycle phenotypic assay.
+
+Rationale: The paper mentions that drug susceptibilities were characterized in a multicycle phenotypic assay.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: The gag-protease DNA fragment from a total of 24 patient samples was cloned into pXXLAI.
+
+Rationale: The paper mentions that the gag-protease DNA fragment was cloned from 24 patient samples.
+
+Answer: 24
+""""""",53
+41130593,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Genotypic CA resistance testing at Monogram was conducted using a next-generation sequencing platform (MiSeq; Illumina), with reporting of mutants present in ≥10% of sequences obtained for a given sample.
+
+Rationale: The paper mentions that next-generation sequencing was used for genotypic CA resistance testing, specifically using the Illumina MiSeq platform.
+
+Answer: Illumina sequencing
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: HIV-1 single-copy assay (SCA) testing was performed retrospectively on the Hologic Panther platform using a multiple replicate strategy (Accelevir Diagnostics, Baltimore, Maryland) on samples from EAP participants in the LEN group who acquired HIV-1. Upon HIV-1 diagnosis, plasma samples were collected for HIV-1 RNA quantification and resistance analyses. Samples with HIV-1 RNA ≥200 copies/mL were analyzed for genotypic resistance in the HIV-1 CA, protease (PR), reverse transcriptase (RT), and integrase coding regions using the GenoSure GAG PRO and GenoSure PRIme assays (Monogram Biosciences, South San Francisco, California), which are validated tests run in a Clinical Laboratory Improvement Amendments-certified laboratory.
+
+Rationale: The paper mentions that the HIV-1 CA, protease (PR), reverse transcriptase (RT), and integrase coding regions were analyzed for genotypic resistance.
+
+Answer: Capsid, CA; Protease, PR; Reverse transcriptase, RT; Integrase, IN
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Not Found.
+
+Rationale: The paper does not provide any information about the countries from which the sequenced samples were obtained.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about whether samples were cloned prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Non-study drug resistance was detected in 20 of the 60 P1 participants tested for resistance. The NNRTI resistance mutations K103N, V106M, E138A/Q, Y188L, G190A, H221Y, and P225H, and the integrase strand transfer inhibitor (INSTI) resistance mutations T66I and E92E/G, were among the mutations detected (Table 3; Supplementary Table 4) and likely represent transmitted drug resistance in this population.
+
+Rationale: The paper mentions that non-study drug resistance was detected in some participants, which likely represents transmitted drug resistance.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Plasma samples were collected for HIV-1 RNA quantification and resistance analyses.
+
+Rationale: The paper mentions that plasma samples were collected for HIV-1 RNA quantification and resistance analyses.
+
+Answer: Plasma
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: Not Found.
+
+Rationale: The paper does not provide any information about the years from which the sequenced samples were obtained.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about whether sequences were obtained from individuals with virological failure on a treatment regimen.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: P1 evaluated the safety and efficacy of twice-yearly SC LEN and daily oral F/TAF for PrEP in cisgender adolescent girls and young women who have sex with male partners and are 16-25 years of age [8]. P2 evaluated the safety and efficacy of twice-yearly SC LEN for PrEP in cisgender gay, bisexual and other men who have sex with men, transgender women, transgender men and gender nonbinary people who have condomless receptive anal sex with partners assigned male at birth and are ≥16 years of age [9].
+
+Rationale: The paper mentions that the study evaluated the safety and efficacy of different treatments for PrEP, indicating that the patients were in a clinical trial.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: Of the 5338 participants in the P1 EAP, 55 acquired HIV-1 after Day 1 (at primary analysis; Table 1) [8]. Of the 3265 participants in the P2 EAP, 11 acquired HIV-1 after Day 1: nine in the F/TDF group and two in the LEN group (Table 1; Figure 3) [9].
+
+Rationale: The paper mentions that 55 participants in P1 and 11 participants in P2 acquired HIV-1, but it does not provide a total number of individuals who had samples obtained for HIV sequencing.
+
+Answer: 66
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: Yes, the paper reports HIV sequences from patient samples.
+
+Rationale: The paper mentions that HIV-1 single-copy assay (SCA) testing was performed retrospectively on the Hologic Panther platform using a multiple replicate strategy (Accelevir Diagnostics, Baltimore, Maryland) on samples from EAP participants in the LEN group who acquired HIV-1.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: The N74D substitution has been shown to have reduced susceptibility to LEN compared with wild type (WT) in vitro (14-22 fold) [11].
+
+Rationale: The paper mentions that the N74D substitution has been shown to have reduced susceptibility to LEN in vitro.
+
+Answer: Yes
+""""""",72
+41056006,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the sequencing method used.
+
+Answer: Unknown.
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: HIV-1 capsid genotypic and phenotypic data were assessed at study entry using the GenoSure Gag-Pro and PhenoSense Gag-Pro assays.
+
+Rationale: The paper mentions that HIV-1 capsid genotypic and phenotypic data were assessed, which suggests that the capsid gene was sequenced.
+
+Answer: Capsid, CA.
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Participants were enrolled across 41 sites in the USA and Dominican Republic.
+
+Rationale: The paper mentions that participants were enrolled in the USA and Dominican Republic, which suggests that the sequenced samples were obtained from these countries.
+
+Answer: USA, Dominican Republic.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the treatment history of the individuals from whom the sequenced samples were obtained.
+
+Answer: Unknown.
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the type of samples that were sequenced.
+
+Answer: Unknown.
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about whether the samples were cloned prior to sequencing.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: Between 22 November 2019 and 27 August 2020.
+
+Rationale: The paper mentions that participants were enrolled between 22 November 2019 and 27 August 2020, which suggests that the sequenced samples were obtained during this time period.
+
+Answer: 2019-2020.
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: 182 participants received ≥1 dose of study drug.
+
+Rationale: The paper mentions that 182 participants received ≥1 dose of study drug, which suggests that samples were obtained from these individuals.
+
+Answer: 182.
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: 10 participants met virologic failure criteria and were included in the RAP.
+
+Rationale: The paper mentions that 10 participants met virologic failure criteria, which suggests that sequences were obtained from individuals with virological failure.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: CALIBRATE was a Phase 2, randomized, open-label study.
+
+Rationale: The paper mentions that the study was a Phase 2, randomized, open-label study, which suggests that the patients were in a clinical trial.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: HIV-1 capsid genotypic and phenotypic data were assessed at study entry using the GenoSure Gag-Pro and PhenoSense Gag-Pro assays.
+
+Rationale: The paper mentions that HIV-1 capsid genotypic and phenotypic data were assessed, which suggests that the paper reports HIV sequences from patient samples.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about in vitro drug susceptibility data.
+
+Answer: No.
+""""""",45
+41057785,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the sequencing method used.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the specific HIV genes that were sequenced.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Yes, the study included individuals who had previously received ARV drugs, as indicated by the fact that they were experiencing virological failure.
+
+Rationale: The paper reports on the prevalence of drug resistance mutations in individuals who had previously received ARV drugs.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the type of samples that were sequenced.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Uganda.
+
+Rationale: The paper mentions that the study was conducted at the Mildmay Uganda Hospital.
+
+Answer: Uganda
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about whether samples were cloned prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: 2018-2023.
+
+Rationale: The paper mentions that the study included individuals who underwent HIV drug resistance testing at the Mildmay-Uganda Hospital from 2018 to 2023.
+
+Answer: 2018-2023
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: 235.
+
+Rationale: The paper mentions that the study included 235 individuals who underwent HIV drug resistance testing.
+
+Answer: 235
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Yes, the study included individuals who were experiencing virological failure on a treatment regimen.
+
+Rationale: The paper reports on the prevalence of drug resistance mutations in individuals who were experiencing virological failure.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: No.
+
+Rationale: The paper does not provide any information about a clinical trial.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: Yes, the study included HIV sequences from patient samples.
+
+Rationale: The paper reports on the prevalence of drug resistance mutations in individuals who were experiencing virological failure.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: No.
+
+Rationale: The paper does not provide any information about in vitro drug susceptibility data.
+
+Answer: No
+""""""",37
+41112839,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: The RT-generated sequences were deposited in the National Institutes of Health GenBank database under accession numbers PP280627 to PP280757.
+
+Rationale: The question asks for the GenBank accession numbers for the sequenced HIV isolates. The evidence is found in the ""Material and methodology"" section, where it is stated that the RT-generated sequences were deposited in the National Institutes of Health GenBank database under accession numbers PP280627 to PP280757.
+
+Answer: PP280627 to PP280757
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: The resulting RNA was used to synthesize complementary deoxyribonucleic acid (cDNA), which was amplified using the ANRS AC11 genotyping technique targeting the first 240 amino acids of RT. Primer pairs used for polymerase chain reaction were MJ3/MJ4 and A35/N35. Purified and quantified polymerase chain reaction products were sequenced by using Big Dye Terminator v3.1 (Life Technologies, Courtaboeuf, France), and electrophoresis was performed on the ABI 3100 Avant sequencer (Applied Biosystems, France) as previously described [6].
+
+Rationale: The question asks for the method used for sequencing. The evidence is found in the ""Material and methodology"" section, where it is stated that the ANRS AC11 genotyping technique was used for amplification, and Big Dye Terminator v3.1 was used for sequencing.
+
+Answer: Sanger sequencing
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The ANRS AC11 genotyping technique targeting the first 240 amino acids of RT.
+
+Rationale: The question asks for the HIV genes that were reported to have been sequenced. The evidence is found in the ""Material and methodology"" section, where it is stated that the ANRS AC11 genotyping technique targeted the first 240 amino acids of RT.
+
+Answer: Reverse transcriptase, RT
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: HIV-1 genetic diversity and pretreatment drug resistance survey prior to dolutegravir introduction in Senegal.
+
+Rationale: The question asks for the countries from which the sequenced samples were obtained. The evidence is found in the title of the paper, which mentions Senegal.
+
+Answer: Senegal
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: One type of sample (dried blood spots [DBS] or venous blood) was used for each consenting patient.
+
+Rationale: The question asks for the type of samples that were sequenced. The evidence is found in the ""Material and methodology"" section, where it is stated that either dried blood spots (DBS) or venous blood was used for each consenting patient.
+
+Answer: DBS; Whole Blood
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: A pretreatment drug resistance survey was carried out in 35 sites throughout the country between 2017 and 2018.
+
+Rationale: The question asks for the years from which the sequenced samples were obtained. The evidence is found in the ""Material and methodology"" section, where it is stated that the survey was carried out between 2017 and 2018.
+
+Answer: 2017-2018
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not mentioned in the provided paper.
+
+Rationale: The question asks if the samples were cloned prior to sequencing. Since this information is not mentioned in the provided paper, the answer is ""Unknown"".
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: The inclusion criteria for patients in the sites were to be HIV-1-positive men or women, aged at least 18, ART-naive (defined as never having received any antiretroviral therapy, including prevention of mother-to-child transmission [PMTCT] regimens), and newly diagnosed based on the patient and the healthcare provider declarations.
+
+Rationale: The question asks if the paper reports HIV sequences from individuals who had previously received ARV drugs. The evidence is found in the ""Material and methodology"" section, where it is stated that the patients were ART-naive, meaning they had never received any antiretroviral therapy.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Not mentioned in the provided paper.
+
+Rationale: The question asks if any sequences were obtained from individuals with virological failure on a treatment regimen. Since this information is not mentioned in the provided paper, the answer is ""No"".
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: Not mentioned in the provided paper.
+
+Rationale: The question asks if the patients in the study were in a clinical trial. Since this information is not mentioned in the provided paper, the answer is ""No"".
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: A total of 237 samples from different patients were analyzed.
+
+Rationale: The question asks if the paper reports HIV sequences from patient samples. The evidence is found in the ""Results"" section, where it is stated that a total of 237 samples from different patients were analyzed.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Not mentioned in the provided paper.
+
+Rationale: The question asks if the paper reports in vitro drug susceptibility data. Since this information is not mentioned in the provided paper, the answer is ""No"".
+
+Answer: No
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: A total of 237 samples from different patients were analyzed.
+
+Rationale: The question asks for the number of individuals who had samples obtained for HIV sequencing. The evidence is found in the ""Results"" section, where it is stated that a total of 237 samples from different patients were analyzed.
+
+Answer: 237
+""""""",71
+41093949,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: The NCBI repository accession numbers for the AE/B recombinants are: PQ735970-PQ735985.
+
+Rationale: The question asks for the GenBank accession numbers for sequenced HIV isolates. The evidence is found in the ""Data availability"" section of the paper, which mentions the NCBI repository accession numbers for the AE/B recombinants.
+
+Answer: PQ735970-PQ735985
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Sanger sequencing was used to sequence the plasmids containing the resistance sites.
+
+Rationale: The question asks for the method used for sequencing. The evidence is found in the ""Construction of infectious clones containing resistance mutation sites"" section of the paper, which mentions that Sanger sequencing was used to sequence the plasmids containing the resistance sites.
+
+Answer: Sanger sequencing
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The HIV-1 CRF01_AE and subtype B Pol region sequences were downloaded from the HIV Sequence Database.
+
+Rationale: The question asks which HIV genes were reported to have been sequenced. The evidence is found in the ""Selection of RTI DRMs"" section of the paper, which mentions that the HIV-1 CRF01_AE and subtype B Pol region sequences were downloaded from the HIV Sequence Database.
+
+Answer: Reverse transcriptase, RT
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: The HIV-1 CRF01_AE and subtype B Pol region sequences were downloaded from the HIV Sequence Database, and the country labeled as CN (China) or US (United States).
+
+Rationale: The question asks from which countries the sequenced samples were obtained. The evidence is found in the ""Selection of RTI DRMs"" section of the paper, which mentions that the country labeled as CN (China) or US (United States).
+
+Answer: China, United States
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Not Found
+
+Rationale: The question asks what type of samples were sequenced. However, the paper does not mention the type of samples sequenced.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Site-directed mutagenesis containing resistance sites was performed on HIV-1 pNL4-3 and pGX002.
+
+Rationale: The question asks if samples were cloned prior to sequencing. The evidence is found in the ""Construction of infectious clones containing resistance mutation sites"" section of the paper, which mentions that site-directed mutagenesis containing resistance sites was performed on HIV-1 pNL4-3 and pGX002.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: The HIV-1 CRF01_AE and subtype B Pol region sequences were downloaded from the HIV Sequence Database, and the sequences were sampled from 1978 to 2023.
+
+Rationale: The question asks from what years the sequenced samples were obtained. The evidence is found in the ""Selection of RTI DRMs"" section of the paper, which mentions that the sequences were sampled from 1978 to 2023.
+
+Answer: 1978-2023
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Not Found
+
+Rationale: The question asks if the paper reports HIV sequences from individuals who had previously received ARV drugs. However, the paper does not mention this information.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: Not Found
+
+Rationale: The question asks if the patients in the study were in a clinical trial. However, the paper does not mention this information.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Not Found
+
+Rationale: The question asks if any sequences were obtained from individuals with virological failure on a treatment regimen. However, the paper does not mention this information.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: Not Found
+
+Rationale: The question asks if the paper reports HIV sequences from patient samples. However, the paper does not mention this information.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: The experimental results revealed that mutations such as M41L and V106M were more likely to occur in the CRF01_AE subtype.
+
+Rationale: The question asks if the paper reports in vitro drug susceptibility data. The evidence is found in the ""Results"" section of the paper, which mentions the experimental results of the in vitro drug susceptibility tests.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: Not Found
+
+Rationale: The question asks how many individuals had samples obtained for HIV sequencing. However, the paper does not mention this information.
+
+Answer: Not Found
+""""""",59
+41029850,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: The authors of this manuscript confirm that the data supporting the findings and conclusions of this study are available on request from the corresponding authors. The data are not publicly available due to their containing information that could compromise the privacy of research participants. However, sequences have been submitted to Genebank with available accession numbers provided (PQ893197, PQ893192, OQ985810, OR259747 and PQ893191) in the current version of the manuscript while the rest will be completed when made available by Genbank (submission ID: 2961867).
+
+Rationale: The question asks for the GenBank accession numbers for sequenced HIV isolates. The evidence from the paper shows that the authors have submitted the sequences to GenBank and provided some of the accession numbers.
+
+Answer: PQ893197, PQ893192, OQ985810, OR259747, PQ893191
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: GRT was performed in the pol gene (protease (PR) and reverse transcriptase (RT)) on the stored samples with plasma viral load ≥ 1000 copies/ml, using the previously validated inhouse protocol as described by Fokam et al. [21]. Sequences were assembled and edited using Recall v2.28 [22], interpreted using Stanford HIV drug resistance database (https://hivdb.stanford.edu/) version 8.5 and subtyping performed using rapid subtyping tools as previously described [23].
+
+Rationale: The question asks for the sequencing method used. The evidence from the paper shows that the authors used a previously validated in-house protocol for sequencing, which is not explicitly mentioned as Sanger or NGS. However, based on the protocol and software used, it can be inferred that Sanger sequencing was used.
+
+Answer: Sanger sequencing
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: GRT was performed in the pol gene (protease (PR) and reverse transcriptase (RT)) on the stored samples with plasma viral load ≥ 1000 copies/ml, using the previously validated inhouse protocol as described by Fokam et al. [21].
+
+Rationale: The question asks for the HIV genes that were sequenced. The evidence from the paper shows that the authors sequenced the pol gene, which contains the protease (PR) and reverse transcriptase (RT) genes.
+
+Answer: Protease, PR; Reverse transcriptase, RT
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Participants were on documented ART for at least 12 months and experiencing virological failure (viral load ≥ 1000 copies/ml).
+
+Rationale: The question asks if the paper reports HIV sequences from individuals who had previously received ARV drugs. The evidence from the paper shows that the participants were on antiretroviral therapy (ART) for at least 12 months, indicating that they had previously received ARV drugs.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: This study describes patterns of acquired drug resistance (ADR) and potentially active drugs for subsequent ART regimens in individuals failing treatment in Cameroon.
+
+Rationale: The question asks for the country where the sequenced samples were obtained. The evidence from the paper shows that the study was conducted in Cameroon.
+
+Answer: Cameroon
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: GRT was performed in the pol gene (protease (PR) and reverse transcriptase (RT)) on the stored samples with plasma viral load ≥ 1000 copies/ml, using the previously validated inhouse protocol as described by Fokam et al. [21].
+
+Rationale: The question asks for the type of samples that were sequenced. The evidence from the paper shows that the authors used plasma samples for sequencing.
+
+Answer: Plasma
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: We conducted a cross-sectional, laboratory-based sentinel study among ART-failing individuals from October 2022 through April 2023 at the ""Chantal Biya"" International Reference Centre, Yaoundé-Cameroon.
+
+Rationale: The question asks for the years when the sequenced samples were obtained. The evidence from the paper shows that the study was conducted from October 2022 to April 2023.
+
+Answer: 2022-2023
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The question asks if the samples were cloned prior to sequencing. The evidence from the paper does not mention cloning, so the answer is No.
+
+Answer: No
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: Of 2109 individuals assessed, 203 met inclusion criteria.
+
+Rationale: The question asks for the number of individuals who had samples obtained for HIV sequencing. The evidence from the paper shows that 203 individuals met the inclusion criteria.
+
+Answer: 203
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Participants were on documented ART for at least 12 months and experiencing virological failure (viral load ≥ 1000 copies/ml).
+
+Rationale: The question asks if any sequences were obtained from individuals with virological failure on a treatment regimen. The evidence from the paper shows that the participants were experiencing virological failure.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The question asks if the patients in the study were in a clinical trial. The evidence from the paper does not mention a clinical trial, so the answer is No.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: This study describes patterns of acquired drug resistance (ADR) and potentially active drugs for subsequent ART regimens in individuals failing treatment in Cameroon.
+
+Rationale: The question asks if the paper reports HIV sequences from patient samples. The evidence from the paper shows that the study was conducted on individuals failing treatment.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The question asks if the paper reports in vitro drug susceptibility data. The evidence from the paper does not mention in vitro drug susceptibility data, so the answer is No.
+
+Answer: No
+""""""",75
+41140464,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the GenBank accession numbers for the sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the sequencing method used.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The HIV-1 pol gene sequences were retrieved from the Los Alamos HIV sequence database.
+
+Rationale: The paper mentions that the HIV-1 pol gene sequences were analyzed, which includes the protease, reverse transcriptase, and integrase genes.
+
+Answer: Protease, PR; Reverse transcriptase, RT; Integrase, IN
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: The HIV-1 pol gene sequences were deposited between 2015 and 2025.
+
+Rationale: The paper mentions the time period during which the sequences were deposited in the database.
+
+Answer: 2015-2025
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: The sequences were sourced from four East African countries: Kenya, Uganda, Tanzania, and Ethiopia.
+
+Rationale: The paper mentions the countries from which the sequences were obtained.
+
+Answer: Kenya, Uganda, Tanzania, Ethiopia
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about cloning prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the type of samples sequenced.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: The paper reports on the prevalence of drug-resistant mutations in the HIV-1 pol gene sequences.
+
+Rationale: The paper implies that some of the individuals may have received ARV drugs, but it does not explicitly state this.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: A total of 7724 HIV-1 pol gene sequences were initially retrieved from the LANL HIV sequence database.
+
+Rationale: The paper mentions the number of sequences retrieved, but it does not provide information about the number of individuals.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about virological failure on a treatment regimen.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about a clinical trial.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: The paper reports on the genetic diversity and drug resistance patterns of HIV-1 pol gene sequences.
+
+Rationale: The paper implies that the sequences were obtained from patient samples, but it does not explicitly state this.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: The paper reports on the levels of antiretroviral drug resistance in HIV-1 pol gene sequences.
+
+Rationale: The paper implies that the data are based on in vitro drug susceptibility testing, but it does not explicitly state this.
+
+Answer: Yes
+""""""",41
+40431742,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: The sequencing products were analyzed on an Applied Biosystems/Hitachi 3500 Genetic Analyzer (Waltham, MA, USA).
+
+Rationale: The paper mentions the use of an Applied Biosystems/Hitachi 3500 Genetic Analyzer, which is a type of Sanger sequencing equipment.
+
+Answer: Sanger sequencing.
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The final PCR product was 1084 base pairs in length, encompassing the protease and reverse-transcriptase regions of the HIV-1 pol gene.
+
+Rationale: The paper mentions that the PCR product encompassed the protease and reverse-transcriptase regions of the HIV-1 pol gene, which suggests that the protease and reverse transcriptase genes were sequenced.
+
+Answer: Protease, PR; Reverse transcriptase, RT.
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: The study was conducted in Buenos Aires, Argentina.
+
+Rationale: The paper mentions that the study was conducted in Buenos Aires, Argentina, which suggests that the sequenced samples were obtained from Argentina.
+
+Answer: Argentina.
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: All plasma samples were processed and stored for the determination of drug resistance mutations.
+
+Rationale: The paper mentions that plasma samples were processed and stored for the determination of drug resistance mutations, which suggests that plasma samples were sequenced.
+
+Answer: Plasma.
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: The study was conducted over the period 2017-09/2021.
+
+Rationale: The paper mentions that the study was conducted over the period 2017-09/2021, which suggests that the sequenced samples were obtained from 2017 to 2021.
+
+Answer: 2017-2021.
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about whether samples were cloned prior to sequencing.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: The study analyzed genotype results gathered from plasma samples drawn as part of routine clinical practice from naïve adult PLWHA.
+
+Rationale: The paper mentions that the study analyzed genotype results from naïve adult PLWHA, which suggests that the individuals had not previously received ARV drugs.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about whether sequences were obtained from individuals with virological failure on a treatment regimen.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: PLWHA participating in clinical trials for HIV treatment or prevention were excluded from the study.
+
+Rationale: The paper mentions that PLWHA participating in clinical trials for HIV treatment or prevention were excluded from the study, which suggests that the patients in the study were not in a clinical trial.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: The study analyzed genotype results gathered from plasma samples drawn as part of routine clinical practice from naïve adult PLWHA.
+
+Rationale: The paper mentions that the study analyzed genotype results from plasma samples drawn as part of routine clinical practice from naïve adult PLWHA, which suggests that the paper reports HIV sequences from patient samples.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about in vitro drug susceptibility data.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: A total of 1677 genotypes from PLWHA classified as ART-naive were recorded.
+
+Rationale: The paper mentions that a total of 1677 genotypes from PLWHA classified as ART-naive were recorded, which suggests that 1677 individuals had samples obtained for HIV sequencing.
+
+Answer: 1677.
+""""""",51
+40779404,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Retrospective proviral DNA genotyping of PR/RT/IN using GenoSure Archive (Monogram Biosciences, CA), which uses NGS technology was performed on BL whole blood samples.
+
+Rationale: The paper mentions that GenoSure Archive, which uses NGS technology, was used for sequencing.
+
+Answer: Other
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: Retrospective proviral DNA genotyping of PR/RT/IN using GenoSure Archive (Monogram Biosciences, CA), which uses NGS technology was performed on BL whole blood samples.
+
+Rationale: The paper mentions that the PR, RT, and IN genes were sequenced.
+
+Answer: Protease, PR; Reverse transcriptase, RT; Integrase, IN
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about the countries from which the sequenced samples were obtained.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Before enrollment, participants had been treated with TFV (80.0%), INSTIs (50.0%), non-nucleoside RT inhibitors (NNRTI; 45.0%), and PR inhibitors (PI; 75.0%) (Table 1).
+
+Rationale: The paper mentions that the participants had previously received ARV drugs.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about whether the samples were cloned prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Retrospective proviral DNA genotyping of PR/RT/IN using GenoSure Archive (Monogram Biosciences, CA), which uses NGS technology was performed on BL whole blood samples.
+
+Rationale: The paper mentions that whole blood samples were sequenced.
+
+Answer: Whole Blood
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about the years from which the sequenced samples were obtained.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: Preexisting K65R/N mutations were detected in 20 of 2028 VS participants who received B/F/TAF.
+
+Rationale: The paper mentions that 20 individuals had samples obtained for HIV sequencing.
+
+Answer: 20
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: All participants with preexisting K65R/N receiving B/F/TAF (n = 20/20) had virologic suppression (HIV-1 RNA < 50 copies/mL) through end of study, with no virologic failure or treatment-emergent resistance to B/F/TAF.
+
+Rationale: The paper mentions that there were no individuals with virological failure on a treatment regimen.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: From the Phase 2/3/3b B/F/TAF Studies GS-US-380-1474 (NCT02881320),[12] GS-US-380-1844 (NCT02603120),[15] GS-US-380-1878 (NCT02603107),[11] GS-US-380-4030 (NCT03110380),[16] GS-US-380-4449 (NCT03405935),[14] and GS-US-380-4580 (NCT03631732),[13] VS adults and children (>2 and < 18 years old) who received B/F/TAF were identified, and participants with baseline (BL) RT genotypic data were included in the analysis.
+
+Rationale: The paper mentions that the patients were in a clinical trial.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: Preexisting K65R/N mutations were detected in 20 of 2028 VS participants who received B/F/TAF.
+
+Rationale: The paper mentions that HIV sequences were obtained from patient samples.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about in vitro drug susceptibility data.
+
+Answer: No
+""""""",55
+40573423,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about the GenBank accession numbers for the sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Sanger sequencing was performed using in-house sequencing primers.
+
+Rationale: The paper mentions that Sanger sequencing was performed using in-house sequencing primers, indicating that Sanger sequencing was the method used.
+
+Answer: Sanger sequencing.
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The genes targeted for analysis included protease, reverse transcriptase, and integrase.
+
+Rationale: The paper mentions that the genes targeted for analysis included protease, reverse transcriptase, and integrase, indicating that these genes were sequenced.
+
+Answer: Protease, PR; Reverse transcriptase, RT; Integrase, IN.
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: The study was conducted in South Korea, and the countries of origin for non-Koreans were primarily in Asia and the Americas or were unspecified.
+
+Rationale: The paper mentions that the study was conducted in South Korea and that the countries of origin for non-Koreans were primarily in Asia and the Americas or were unspecified, indicating that the sequenced samples were obtained from South Korea and other countries in Asia and the Americas.
+
+Answer: South Korea, Asia, Americas.
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about whether the samples were cloned prior to sequencing.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Viral RNA was extracted from 140 μL of plasma or serum.
+
+Rationale: The paper mentions that viral RNA was extracted from plasma or serum, indicating that these were the types of samples sequenced.
+
+Answer: Plasma; Serum.
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: The study included 487 PWH from 2021 to 2024.
+
+Rationale: The paper mentions that the study included 487 PWH from 2021 to 2024, indicating that the sequenced samples were obtained from these years.
+
+Answer: 2021-2024.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: The study included recently diagnosed PWH who had not been exposed to ART.
+
+Rationale: The paper mentions that the study included recently diagnosed PWH who had not been exposed to ART, indicating that the paper does not report HIV sequences from individuals who had previously received ARV drugs.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about whether any sequences were obtained from individuals with virological failure on a treatment regimen.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about whether the patients in the study were in a clinical trial.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: The study included 487 PWH from 2021 to 2024.
+
+Rationale: The paper mentions that the study included 487 PWH from 2021 to 2024, indicating that the paper reports HIV sequences from patient samples.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about in vitro drug susceptibility data.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: The study included 487 PWH from 2021 to 2024.
+
+Rationale: The paper mentions that the study included 487 PWH from 2021 to 2024, indicating that 487 individuals had samples obtained for HIV sequencing.
+
+Answer: 487.
+""""""",49
+41088231,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: The NFLG sequence of 230794, which was 8260 nucleotides (nt) in length, was obtained and submitted to GenBank (accession number PV187006).
+
+Rationale: The question asks for the GenBank accession numbers for sequenced HIV isolates. The evidence from the paper shows that the accession number for the NFLG sequence of 230794 is PV187006.
+
+Answer: PV187006
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Positive products were directly purified and sequenced by Sangon Biotech (Shanghai) Co., Ltd with Sanger sequencing method.
+
+Rationale: The question asks for the method used for sequencing. The evidence from the paper shows that Sanger sequencing method was used.
+
+Answer: Sanger sequencing
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The near full-length genome (NFLG) of HIV-1 was amplified with two overlapping segments by the near endpoint dilution method.
+
+Rationale: The question asks for the HIV genes that were reported to have been sequenced. The evidence from the paper shows that the near full-length genome (NFLG) of HIV-1 was amplified, which includes multiple genes.
+
+Answer: Near full length genome
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Specimen 230794 was collected in Oct. 2023 from a 47-year-old man who claimed to have contracted HIV-1 through heterosexual contact in Guangzhou City, Guangdong Province, China.
+
+Rationale: The question asks for the countries from which the sequenced samples were obtained. The evidence from the paper shows that the sample was collected from a man in Guangzhou City, Guangdong Province, China.
+
+Answer: China
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Viral RNA was extracted from the 2023 plasma sample using a magnetic bead-based method. Proviral DNA was extracted from the whole-blood sample collected in 2025 with the Viral DNA Extraction Kit (Supbio, China).
+
+Rationale: The question asks for the type of samples that were sequenced. The evidence from the paper shows that both plasma and whole-blood samples were used.
+
+Answer: Plasma; Whole Blood
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The question asks if the samples were cloned prior to sequencing. The evidence from the paper does not mention cloning.
+
+Answer: No
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: Specimen 230794 was collected in Oct. 2023 from a 47-year-old man who claimed to have contracted HIV-1 through heterosexual contact in Guangzhou City, Guangdong Province, China. From the 2025 whole blood sample, we successfully amplified and sequenced three SGA sequences from the 5′ half-genome and the 3′ half-genome, respectively.
+
+Rationale: The question asks for the years from which the sequenced samples were obtained. The evidence from the paper shows that the samples were collected in 2023 and 2025.
+
+Answer: 2023; 2025
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: In the previous drug resistance surveillance among 5602 HIV-1-infected antiretroviral therapy (ART)-naive individuals in Guangdong Province from Jan. 2023 to Dec. 2023, we identified one partial pol gene sequence in a plasma specimen collected from an HIV-1-infected patient, 230794, as a suspected recombinant of subtype F2 and CRF02_AG.
+
+Rationale: The question asks if the paper reports HIV sequences from individuals who had previously received ARV drugs. The evidence from the paper shows that the individuals were ART-naive.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The question asks if the patients in the study were in a clinical trial. The evidence from the paper does not mention a clinical trial.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The question asks if any sequences were obtained from individuals with virological failure on a treatment regimen. The evidence from the paper does not mention virological failure.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: The near full-length genome (NFLG) of HIV-1 was amplified with two overlapping segments by the near endpoint dilution method.
+
+Rationale: The question asks if the paper reports HIV sequences from patient samples. The evidence from the paper shows that the NFLG of HIV-1 was amplified from patient samples.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The question asks if the paper reports in vitro drug susceptibility data. The evidence from the paper does not mention in vitro drug susceptibility data.
+
+Answer: No
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: Specimen 230794 was collected in Oct. 2023 from a 47-year-old man who claimed to have contracted HIV-1 through heterosexual contact in Guangzhou City, Guangdong Province, China.
+
+Rationale: The question asks for the number of individuals who had samples obtained for HIV sequencing. The evidence from the paper shows that only one individual, 230794, had a sample collected.
+
+Answer: 1
+""""""",66
+40596906,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Genotypic sequences of the HIV pol region (protease/reverse transcriptase-PR/RT) were obtained using the ViroSeq Genotyping System, carried out in the laboratories of the National Genotyping Network (RENAGENO) coordinated by the Department of HIV/AIDS of the Brazilian Ministry of Health (GenBank accession number PV526713-PV526742).
+
+Rationale: The GenBank accession numbers for the sequenced HIV isolates are provided in the paper as PV526713-PV526742.
+
+Answer: PV526713-PV526742
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Genotypic sequences of the HIV pol region (protease/reverse transcriptase-PR/RT) were obtained using the ViroSeq Genotyping System.
+
+Rationale: The ViroSeq Genotyping System is a Sanger sequencing method.
+
+Answer: Sanger sequencing
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: Genotypic sequences of the HIV pol region (protease/reverse transcriptase-PR/RT) were obtained using the ViroSeq Genotyping System.
+
+Rationale: The pol gene contains protease, reverse transcriptase, and integrase. However, the paper only mentions the protease and reverse transcriptase genes.
+
+Answer: Protease, PR; Reverse transcriptase, RT
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: This study was conducted from October 2021 to September 2023 in São Luís, Maranhão, and Recife, Pernambuco.
+
+Rationale: The study was conducted in Brazil.
+
+Answer: Brazil
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Data were obtained from secondary sources, including medical records from hospital and outpatient services where patients were followed.
+
+Rationale: The type of samples sequenced is not explicitly mentioned in the paper.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: This study aimed to describe the transmission of drug-resistant HIV-1 variants and phylogenetic characterisation of viral strains in mother-child pairs from the cities of Recife and São Luís, located in the Northeast region of Brazil, in 2007–2022.
+
+Rationale: The sequenced samples were obtained from 2007 to 2022.
+
+Answer: 2007-2022
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The paper does not mention whether the samples were cloned prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Among the 15 mother-child pairs, eight (53%) were from Maranhão and seven (47%) from Pernambuco. Of the children, eight (53%) were male, and 10 (66.7%) started ART within the first 2 years of life.
+
+Rationale: The paper mentions that some children started ART within the first 2 years of life, indicating that they had previously received ARV drugs.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Among the 15 mother-child pairs, eight (53%) were from Maranhão and seven (47%) from Pernambuco. Of the children, eight (53%) were male, and 10 (66.7%) started ART within the first 2 years of life.
+
+Rationale: The paper does not explicitly mention virological failure, but it does mention that some children started ART, which may indicate treatment failure.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The paper does not mention whether the patients were in a clinical trial.
+
+Answer: No
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: This study included 15 mother-child pairs with confirmed vertical transmission of HIV-1.
+
+Rationale: The study included 15 mother-child pairs, which means 30 individuals.
+
+Answer: 30
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: This study included 15 mother-child pairs with confirmed vertical transmission of HIV-1.
+
+Rationale: The paper reports HIV sequences from patient samples.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The paper does not mention in vitro drug susceptibility data.
+
+Answer: No
+""""""",54
+40839365,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: 
+
+Rationale: The paper does not mention GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: HIV RNA was extracted using NUCLISENS easyMAG (BioMerieux) from 200 μL of plasma, with 10 μL of extracted RNA; gene fragments of protease and reverse transcriptase and integrase were amplified and sequenced using HIV-1 Genotyping kit with Integrase and the 3500XL Genetic Analyzers (Applied Biosystems).
+
+Rationale: The sequencing method used in the study is Sanger sequencing, as indicated by the use of the 3500XL Genetic Analyzers (Applied Biosystems), which is a Sanger sequencing platform.
+
+Answer: Sanger sequencing
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: HIV RNA was extracted using NUCLISENS easyMAG (BioMerieux) from 200 μL of plasma, with 10 μL of extracted RNA; gene fragments of protease and reverse transcriptase and integrase were amplified and sequenced using HIV-1 Genotyping kit with Integrase and the 3500XL Genetic Analyzers (Applied Biosystems).
+
+Rationale: The paper mentions that gene fragments of protease, reverse transcriptase, and integrase were amplified and sequenced.
+
+Answer: Protease, PR; Reverse transcriptase, RT; Integrase, IN
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: In Malawi, 95.6% of adult people living with HIV (PLHIV) on antiretroviral therapy (ART) use dolutegravir-based regimens (DBR), however, prevalence of dolutegravir resistance is unknown.
+
+Rationale: The paper mentions that the study was conducted in Malawi.
+
+Answer: Malawi
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: A 5-mL whole venous blood sample was obtained from consenting participants for an additional VL and HIVDR testing.
+
+Rationale: The paper mentions that a 5-mL whole venous blood sample was obtained from consenting participants.
+
+Answer: Whole Blood
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: The survey was conducted between July 2022 and February 2023.
+
+Rationale: The paper mentions that the survey was conducted between July 2022 and February 2023.
+
+Answer: 2022-2023
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: 
+
+Rationale: The paper does not mention whether samples were cloned prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: We enrolled consenting adults (≥ 15 years), on DBR for ≥ 9 months, when returning for follow-up VL testing after a previous high VL (≥ 1000 copies/mL) and completing IAC.
+
+Rationale: The paper mentions that the study included individuals who were on dolutegravir-based regimens (DBR) for ≥ 9 months, indicating that they had previously received ARV drugs.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: Among 213 participants with confirmed virologic failure, 212 samples were successfully genotyped for protease, reverse transcriptase, and integrase.
+
+Rationale: The paper mentions that 212 samples were successfully genotyped.
+
+Answer: 212
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: 
+
+Rationale: The paper does not mention whether the patients were in a clinical trial.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Among 213 participants with confirmed virologic failure, 212 samples were successfully genotyped for protease, reverse transcriptase, and integrase.
+
+Rationale: The paper mentions that the study included individuals with confirmed virologic failure.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: Among 213 participants with confirmed virologic failure, 212 samples were successfully genotyped for protease, reverse transcriptase, and integrase.
+
+Rationale: The paper mentions that the study included HIV sequences from patient samples.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: 
+
+Rationale: The paper does not mention in vitro drug susceptibility data.
+
+Answer: No
+""""""",56
+41012586,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: 
+
+Rationale: The paper does not mention GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: 
+
+Rationale: The paper does not mention the sequencing method used.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: 
+
+Rationale: The paper does not mention specific HIV genes that were sequenced.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: 
+
+Rationale: The paper does not mention cloning of samples prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: 
+
+Rationale: The paper does not mention the type of samples sequenced.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: 
+
+Rationale: The paper does not mention the countries from which the sequenced samples were obtained.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: 
+
+Rationale: The paper does not mention HIV sequences from individuals who had previously received ARV drugs.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: 
+
+Rationale: The paper does not mention the years from which the sequenced samples were obtained.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: 
+
+Rationale: The paper does not mention the number of individuals who had samples obtained for HIV sequencing.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: 
+
+Rationale: The paper does not mention sequences obtained from individuals with virological failure on a treatment regimen.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: 
+
+Rationale: The paper does not mention whether the patients in the study were in a clinical trial.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: 
+
+Rationale: The paper does not mention HIV sequences from patient samples.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: 
+
+Rationale: The paper does not mention in vitro drug susceptibility data.
+
+Answer: No
+""""""",29
+40431710,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: Not reported.
+
+Rationale: The paper does not provide any information about GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Next-generation sequencing (NGS) is being increasingly used but is less common than Sanger sequencing.
+
+Rationale: The paper mentions that a genotypic resistance test using next generation sequencing showed a complete ""wild type"" for all RAMs with a sensitivity cut-off of 1.5% at a minimum depth of 1750 reads.
+
+Answer: Next-generation sequencing.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: The patient was diagnosed with HIV-1 infection Subtype B in 1994 and had been on various antiretroviral therapies since then.
+
+Rationale: The paper reports a case study of a patient who had been living with HIV for over 25 years and had received multiple antiretroviral therapies.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The paper mentions that a phylogenetic analysis of the HIV-1 resistance-associated regions PR (protease) and RT (reverse transcriptase) confirmed that the re-emerged virus strain was an ancient archived wild type.
+
+Rationale: The paper specifically mentions the sequencing of the protease and reverse transcriptase genes.
+
+Answer: Protease, PR; Reverse transcriptase, RT.
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: The patient was enrolled in the Swiss HIV Cohort Study.
+
+Rationale: The paper does not explicitly mention the country of origin of the sequenced samples, but it mentions the Swiss HIV Cohort Study, which suggests that the samples were obtained from Switzerland.
+
+Answer: Switzerland.
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about cloning prior to sequencing.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: The paper mentions that a genotypic resistance test was carried out on plasma RNA and that phylogenetic analysis was performed on proviral DNA obtained from peripheral blood mononuclear cells (PBMCs).
+
+Rationale: The paper specifically mentions the sequencing of plasma RNA and PBMCs.
+
+Answer: Plasma; PBMC.
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: The patient was diagnosed with HIV-1 infection Subtype B in 1994 and had been on various antiretroviral therapies since then.
+
+Rationale: The paper reports a case study of a patient who had been living with HIV for over 25 years, but it does not provide specific information about the years when the sequenced samples were obtained.
+
+Answer: Not Found.
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: The paper reports a case study of a single patient.
+
+Rationale: The paper specifically mentions that the study is a case report of a single patient.
+
+Answer: 1.
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: The patient experienced virological failure on a quadruple therapy with BIC/3TC/TAF and DOR.
+
+Rationale: The paper reports a case study of a patient who experienced virological failure on a treatment regimen.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: The patient was part of the Swiss HIV Cohort Study and had participated in several clinical trials, including the TMC-125 trial.
+
+Rationale: The paper mentions that the patient was part of the Swiss HIV Cohort Study and had participated in several clinical trials.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: The paper reports a case study of a patient who had been living with HIV for over 25 years.
+
+Rationale: The paper specifically mentions that the study is a case report of a patient.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Not mentioned.
+
+Rationale: The paper does not provide any information about in vitro drug susceptibility data.
+
+Answer: No.
+""""""",50
+40857111,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about the sequencing method used.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: Assessments of HIV-1 viral load, HIV-1 subtype, and of baseline and postbaseline HIV-1 resistance were performed as described previously. RAMs in protease (PR), reverse transcriptase (RT), and integrase (IN) are based on the International Antiviral Society-USA list and are detailed in our previous publication.
+
+Rationale: The paper mentions that assessments of HIV-1 viral load, HIV-1 subtype, and of baseline and postbaseline HIV-1 resistance were performed, and that RAMs in protease (PR), reverse transcriptase (RT), and integrase (IN) are based on the International Antiviral Society-USA list.
+
+Answer: Protease, PR; Reverse transcriptase, RT; Integrase, IN
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about the treatment history of the individuals.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about the countries from which the sequenced samples were obtained.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about cloning prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about the type of samples sequenced.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about the years from which the sequenced samples were obtained.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Participants meeting these criteria, and with HIV-1 RNA ≥200 copies/mL at the confirmation visit or last visit on study drugs, underwent genotypic/phenotypic resistance analyses for PR/RT/IN.
+
+Rationale: The paper mentions that participants with virologic failure underwent genotypic/phenotypic resistance analyses.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: The design of the phase 3 randomized ALLIANCE study (GS-US-380-4458; NCT03547908) has been described previously.
+
+Rationale: The paper mentions that the study is a phase 3 randomized ALLIANCE study.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: One hundred and twenty-two participants received DTG+F/TDF in the randomized phase. In total, 208 participants received ≥1 dose of B/F/TAF in either phase and had ≥1 on-treatment, postbaseline HIV-1 RNA and HBV DNA result;
+
+Rationale: The paper mentions the number of participants in the study, but it does not provide the exact number of individuals who had samples obtained for HIV sequencing.
+
+Answer: 208
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about HIV sequences from patient samples.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about in vitro drug susceptibility data.
+
+Answer: No
+""""""",45
+41023944,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Sequencing of the HIV integrase region was performed using the Sanger method at INQABA Biotechnical Industries, South Africa.
+
+Rationale: The paper explicitly states that Sanger sequencing was used for sequencing.
+
+Answer: Sanger sequencing
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: Sequencing of the HIV integrase region was performed using the Sanger method at INQABA Biotechnical Industries, South Africa. Resistance mutations were identified in the integrase region, and, when available, in the reverse transcriptase and protease regions.
+
+Rationale: The paper mentions that the integrase region was sequenced, and also mentions reverse transcriptase and protease regions.
+
+Answer: Integrase, IN; Reverse transcriptase, RT; Protease, PR
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: This is a retrospective observational study conducted across five centers of the DREAM program in Mozambique, including two centers in Maputo City, one in Maputo Province, and two in Sofala Province.
+
+Rationale: The paper explicitly states that the study was conducted in Mozambique.
+
+Answer: Mozambique
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Plasma samples from participants with confirmed virological failure were collected and sent to the Zimpeto DREAM laboratory, where viral RNA was extracted and amplified using an in-house reverse transcription and nested PCR method.
+
+Rationale: The paper explicitly states that plasma samples were used.
+
+Answer: Plasma
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: We included HIV-positive individuals on dolutegravir (DTG)-based antiretroviral therapy (ART) who experienced virological failure, defined as HIV RNA  \(>1000\)  copies/mL, between June 1, 2023, and December 31, 2024.
+
+Rationale: The paper explicitly states that the samples were obtained between 2023 and 2024.
+
+Answer: 2023-2024
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: We included HIV-positive individuals on dolutegravir (DTG)-based antiretroviral therapy (ART) who experienced virological failure, defined as HIV RNA  \(>1000\)  copies/mL, between June 1, 2023, and December 31, 2024.
+
+Rationale: The paper explicitly states that the individuals were on antiretroviral therapy (ART), which implies that they had previously received ARV drugs.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about cloning prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: In the considered period, 28 individuals on DTG-based ART who underwent resistance testing following confirmed virological failure (HIV RNA  \(\geq 1000\)  copies/mL) after six months of enhanced adherence support were included in the analysis.
+
+Rationale: The paper explicitly states that 28 individuals had samples obtained for HIV sequencing.
+
+Answer: 28
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: We included HIV-positive individuals on dolutegravir (DTG)-based antiretroviral therapy (ART) who experienced virological failure, defined as HIV RNA  \(>1000\)  copies/mL, between June 1, 2023, and December 31, 2024.
+
+Rationale: The paper explicitly states that the individuals had virological failure on a treatment regimen.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about a clinical trial.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: We included HIV-positive individuals on dolutegravir (DTG)-based antiretroviral therapy (ART) who experienced virological failure, defined as HIV RNA  \(>1000\)  copies/mL, between June 1, 2023, and December 31, 2024.
+
+Rationale: The paper explicitly states that the study included HIV-positive individuals, which implies that the sequences were from patient samples.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about in vitro drug susceptibility data.
+
+Answer: No
+""""""",56
+40713598,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: 
+
+Rationale: The paper does not provide any information about the GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: HIV-1 pol was amplified using two-round PCR, and next-generation sequencing (NGS) was conducted on the Illumina MiSeq platform following previously published protocols.
+
+Rationale: The method used for sequencing is mentioned in the methods section of the paper, which states that next-generation sequencing (NGS) was conducted on the Illumina MiSeq platform.
+
+Answer: Illumina sequencing
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: The HIV-1 pol gene, which was amplified and sequenced in this study, encompasses the protease (PR) and reverse transcriptase (RT) regions.
+
+Rationale: The paper mentions that the HIV-1 pol gene was sequenced, which includes the protease (PR) and reverse transcriptase (RT) regions.
+
+Answer: Protease, PR; Reverse transcriptase, RT
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Participants included CAWH from a previous study that examined the virologic response to NNRTI-based ART from the Pediatric HIV/AIDS Care Program at Korle-Bu Teaching Hospital in Ghana.
+
+Rationale: The paper mentions that the participants were previously on NNRTI-based ART, indicating that they had received ARV drugs.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Participants included CAWH from a previous study that examined the virologic response to NNRTI-based ART from the Pediatric HIV/AIDS Care Program at Korle-Bu Teaching Hospital in Ghana.
+
+Rationale: The paper mentions that the participants were from Ghana.
+
+Answer: Ghana
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Frozen plasma samples were shipped on dry ice to the Virology Quality Assurance-approved laboratory.
+
+Rationale: The paper mentions that frozen plasma samples were used for sequencing.
+
+Answer: Plasma
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: 
+
+Rationale: The paper does not mention whether samples were cloned prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: 
+
+Rationale: The paper does not provide information on the specific years when the sequenced samples were obtained.
+
+Answer: Not Found
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: Participants included CAWH from a previous study that examined the virologic response to NNRTI-based ART from the Pediatric HIV/AIDS Care Program at Korle-Bu Teaching Hospital in Ghana.
+
+Rationale: The paper mentions that the participants had virologic failure on NNRTI-based ART.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: 
+
+Rationale: The paper does not mention whether the patients were in a clinical trial.
+
+Answer: No
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: Twenty samples were successfully amplified and sequenced.
+
+Rationale: The paper mentions that 20 samples were successfully amplified and sequenced.
+
+Answer: 20
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: Twenty samples were successfully amplified and sequenced.
+
+Rationale: The paper mentions that 20 samples were successfully amplified and sequenced, indicating that HIV sequences were obtained from patient samples.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: 
+
+Rationale: The paper does not mention in vitro drug susceptibility data.
+
+Answer: No
+""""""",45
+40391923,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: The sequences have been uploaded to GenBank under accession numbers PV008448-PV008641, PV407014-PV407203, and PV419497-PV419583.
+
+Rationale: The GenBank accession numbers for the sequenced HIV isolates were provided in the ""Data sharing"" section of the paper.
+
+Answer: PV008448-PV008641, PV407014-PV407203, and PV419497-PV419583.
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: Sanger sequencing of integrase (IN) and protease/reverse transcriptase (PR/RT) regions was conducted using the ThermoFisher HIV-1 Genotyping Kit.
+
+Rationale: The method used for sequencing was mentioned in the ""METHODS"" section of the paper, which stated that Sanger sequencing was used.
+
+Answer: Sanger sequencing.
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: Sanger sequencing of integrase (IN) and protease/reverse transcriptase (PR/RT) regions was conducted using the ThermoFisher HIV-1 Genotyping Kit.
+
+Rationale: The HIV genes that were reported to have been sequenced were mentioned in the ""METHODS"" section of the paper, which stated that the integrase (IN) and protease/reverse transcriptase (PR/RT) regions were sequenced.
+
+Answer: Integrase, IN; Reverse transcriptase, RT; Protease, PR.
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: Here, we present data from participants enrolled between June 2022 and December 2024 at 16 study sites in 7 African countries: Cameroon, Côte d'Ivoire, Malawi, Republic of Congo, Uganda, Zambia, and Zimbabwe.
+
+Rationale: The countries from which the sequenced samples were obtained were mentioned in the ""METHODS"" section of the paper.
+
+Answer: Cameroon, Côte d'Ivoire, Malawi, Republic of Congo, Uganda, Zambia, and Zimbabwe.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: Most participants (n = 421, 86.3%) had prior exposure to at least 1 ART regimen, while 67 (13.7%) were treatment-naive when they started DTG.
+
+Rationale: The paper reported that most participants had prior exposure to at least 1 ART regimen, indicating that they had previously received ARV drugs.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: Plasma or dried blood spots (DBS) are collected depending on local storage capacities.
+
+Rationale: The type of samples that were sequenced were mentioned in the ""METHODS"" section of the paper, which stated that plasma or dried blood spots (DBS) were collected.
+
+Answer: Plasma; DBS.
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: Enrollment began in June 2022 and will continue until May 2025.
+
+Rationale: The years from which the sequenced samples were obtained were mentioned in the ""METHODS"" section of the paper, which stated that enrollment began in June 2022 and will continue until May 2025.
+
+Answer: 2022-2025.
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The paper did not mention whether samples were cloned prior to sequencing.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: Of the 488 samples (420 plasma, 68 DBS samples), 234 (48%) had a VL >1000 copies/mL and underwent sequencing.
+
+Rationale: The number of individuals who had samples obtained for HIV sequencing was mentioned in the ""RESULTS"" section of the paper.
+
+Answer: 234.
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: The study includes adults and adolescents (aged 10-19 years) with at least 1 routine viral load (VL) >1000 copies/mL while on DTG-based ART.
+
+Rationale: The paper reported that sequences were obtained from individuals with virological failure on a treatment regimen, specifically those with a VL >1000 copies/mL while on DTG-based ART.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The paper did not mention whether the patients in the study were in a clinical trial.
+
+Answer: No.
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: The study involves prospective enrollment from routine clinical care at sites in Asia, South America, and sub-Saharan Africa selected to represent diverse settings, programmatic contexts, and non-B HIV subtypes.
+
+Rationale: The paper reported that the study involved prospective enrollment from routine clinical care, indicating that HIV sequences were obtained from patient samples.
+
+Answer: Yes.
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: Not mentioned in the paper.
+
+Rationale: The paper did not mention whether in vitro drug susceptibility data were reported.
+
+Answer: No.
+""""""",62
+40400229,"""""""
+Question: What were the GenBank accession numbers for sequenced HIV isolates?
+
+Evidence: 
+
+Rationale: The paper does not mention GenBank accession numbers for sequenced HIV isolates.
+
+Answer: Not reported
+""""""
+
+
+""""""
+Question: What method was used for sequencing?
+
+Evidence: The Stanford algorithm was used in genotypic typing [2].
+
+Rationale: The paper does not explicitly mention the sequencing method used, but it mentions the use of the Stanford algorithm for genotypic typing, which suggests that Sanger sequencing may have been used, as it is a common method for genotypic resistance testing. However, without more information, we cannot be certain.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Which HIV genes were reported to have been sequenced?
+
+Evidence: Genotypic viral resistance profiles were available for 47 of the participants who seroconverted (Figure 1).
+
+Rationale: The paper does not explicitly mention which HIV genes were sequenced, but it does mention that genotypic viral resistance profiles were available, which suggests that the genes commonly associated with drug resistance (such as protease, reverse transcriptase, and integrase) may have been sequenced.
+
+Answer: Reverse transcriptase, RT; Integrase, IN; Protease, PR
+""""""
+
+
+""""""
+Question: From which countries were the sequenced samples obtained?
+
+Evidence: The PrEP Impact trial was a prospective, open-label, single-arm, multicentre trial conducted at 157 Sexual Health Services (SHS) across England between Oct 13, 2017, and July 12, 2020.
+
+Rationale: The paper mentions that the trial was conducted in England, which suggests that the sequenced samples were obtained from England.
+
+Answer: England
+""""""
+
+
+""""""
+Question: What type of samples were sequenced?
+
+Evidence: 
+
+Rationale: The paper does not explicitly mention the type of samples sequenced, but it does mention that genotypic viral resistance profiles were available, which suggests that plasma or whole blood samples may have been used.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: From what years were the sequenced samples obtained?
+
+Evidence: The PrEP Impact trial was a prospective, open-label, single-arm, multicentre trial conducted at 157 Sexual Health Services (SHS) across England between Oct 13, 2017, and July 12, 2020.
+
+Rationale: The paper mentions that the trial was conducted between 2017 and 2020, which suggests that the sequenced samples were obtained during this time period.
+
+Answer: 2017-2020
+""""""
+
+
+""""""
+Question: Were samples cloned prior to sequencing?
+
+Evidence: 
+
+Rationale: The paper does not mention whether samples were cloned prior to sequencing.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+
+Evidence: 
+
+Rationale: The paper does not mention whether the individuals had previously received ARV drugs.
+
+Answer: Unknown
+""""""
+
+
+""""""
+Question: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+
+Evidence: 
+
+Rationale: The paper does not mention virological failure on a treatment regimen.
+
+Answer: No
+""""""
+
+
+""""""
+Question: Were the patients in the study in a clinical trial?
+
+Evidence: The PrEP Impact trial was a prospective, open-label, single-arm, multicentre trial conducted at 157 Sexual Health Services (SHS) across England between Oct 13, 2017, and July 12, 2020.
+
+Rationale: The paper explicitly mentions that the patients were in a clinical trial, specifically the PrEP Impact trial.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report HIV sequences from patient samples?
+
+Evidence: Genotypic viral resistance profiles were available for 47 of the participants who seroconverted (Figure 1).
+
+Rationale: The paper explicitly mentions that genotypic viral resistance profiles were available for participants who seroconverted, which suggests that HIV sequences were reported from patient samples.
+
+Answer: Yes
+""""""
+
+
+""""""
+Question: Does the paper report in vitro drug susceptibility data?
+
+Evidence: 
+
+Rationale: The paper does not mention in vitro drug susceptibility data.
+
+Answer: No
+""""""
+
+
+""""""
+Question: How many individuals had samples obtained for HIV sequencing?
+
+Evidence: A total of 54 out of 24 268 participants were newly diagnosed with HIV; 11 of the 54 were at baseline. Genotypic viral resistance profiles were available for 47 of the participants who seroconverted.
+
+Rationale: The paper mentions that genotypic viral resistance profiles were available for 47 participants, which suggests that at least 47 individuals had samples obtained for HIV sequencing.
+
+Answer: 47
+""""""",52

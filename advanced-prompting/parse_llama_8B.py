@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
-"""Parse the FT answers in one or more Llama 3.1 70B FT CSVs into per-question rows."""
+"""Parse the FT answers in one or more Llama 3.1 8B CSVs into per-question rows."""
 
 from __future__ import annotations
 
 import argparse
 import pathlib
 import re
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 import pandas as pd
 
 DELIMITER_LINES = {'"""', "'''", "```", '""'}
 SECTION_RE = re.compile(r"^(?P<label>Evidence|Rationale|Answer)\s*[:\-\u2013]?\s*(?P<rest>.*)", re.IGNORECASE)
 QUESTION_RE = re.compile(r"^Question\s*[:\-\u2013]?\s*(?P<qid>\d+)\s*(?P<question>.*)", re.IGNORECASE)
+QUESTION_NO_ID_RE = re.compile(r"^Question\s*[:\-\u2013]?\s*(?P<question>.+)", re.IGNORECASE)
 DEFAULT_INPUTS = [
-    pathlib.Path("./csv/llama-3.1-70B-FT 50.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 100.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 150.csv"),
-    pathlib.Path("./csv/llama-3.1-70B-FT 200.csv"),
+    pathlib.Path("./csv/llama-3.1-8B-PV1_new30.csv"),
+    pathlib.Path("./csv/llama-3.1-8B-base_new30.csv"),
+    pathlib.Path("./csv/llama-3.1-8B-FT_new30.csv"),
 ]
 
 QID_MAP = {
@@ -55,53 +55,89 @@ def normalise_cell(cell: object) -> str:
     return text.replace("\r\n", "\n").replace("\r", "\n").replace("\\n", "\n")
 
 
-def parse_ft_answer(text: str) -> Dict[str, Dict[str, str]]:
-    """Return a mapping of qid -> extracted sections (and inline question text, if any)."""
-    parsed: Dict[str, Dict[str, List[str] | str]] = {}
-    current_qid: str | None = None
+def normalise_question_text(question: str) -> str:
+    cleaned = clean_text(question)
+    cleaned = re.sub(r"\s+", " ", cleaned).strip().lower()
+    return cleaned.rstrip("?:.")
+
+
+def parse_ft_answer(text: str) -> List[Dict[str, str]]:
+    """Return a list of extracted sections, including question text and optional qid."""
+    parsed: List[Dict[str, List[str] | str]] = []
+    current: Dict[str, List[str] | str] | None = None
     current_section: str | None = None
+
+    def start_entry(qid: str | None, question_text: str) -> None:
+        nonlocal current, current_section
+        if current:
+            parsed.append(current)
+        current = {
+            "qid": str(qid).strip() if qid else "",
+            "question": question_text.strip(),
+            "evidence": [],
+            "rationale": [],
+            "answer": [],
+        }
+        current_section = None
 
     for raw_line in text.splitlines():
         line = raw_line.strip()
-        if not line:
-            if current_section:
-                parsed[current_qid][current_section].append("") if current_qid else None
+        cleaned_line = line.strip("*_ ").lstrip("> \t*-")
+        if not cleaned_line:
+            if current_section and current:
+                current[current_section].append("")
             continue
-        if line in DELIMITER_LINES:
+        if cleaned_line in DELIMITER_LINES:
             continue
 
-        question_match = QUESTION_RE.match(line)
+        question_match = QUESTION_RE.match(cleaned_line)
         if question_match:
-            current_qid = question_match.group("qid")
             inline_question = question_match.group("question").lstrip(".\u2013- \t")
-            parsed.setdefault(current_qid, {"question": "", "evidence": [], "rationale": [], "answer": []})
-            if inline_question:
-                parsed[current_qid]["question"] = inline_question
-            current_section = None
+            start_entry(question_match.group("qid"), inline_question)
             continue
 
-        section_match = SECTION_RE.match(line)
+        question_no_id_match = QUESTION_NO_ID_RE.match(cleaned_line)
+        if question_no_id_match:
+            inline_question = question_no_id_match.group("question").lstrip(".\u2013- \t")
+            start_entry(None, inline_question)
+            continue
+
+        section_match = SECTION_RE.match(cleaned_line)
         if section_match:
             current_section = section_match.group("label").lower()
             rest = section_match.group("rest").strip()
-            if rest:
-                if current_qid:
-                    parsed[current_qid][current_section].append(rest)
+            if rest and current:
+                current[current_section].append(rest)
             continue
 
-        if current_section and current_qid:
-            parsed[current_qid][current_section].append(raw_line.rstrip())
+        if current_section and current:
+            current[current_section].append(raw_line.rstrip())
 
-    normalised: Dict[str, Dict[str, str]] = {}
-    for qid, sections in parsed.items():
-        normalised[qid] = {
-            "question": str(sections.get("question", "")).strip(),
-            "evidence": "\n".join(sections.get("evidence", [])).strip(),
-            "rationale": "\n".join(sections.get("rationale", [])).strip(),
-            "answer": "\n".join(sections.get("answer", [])).strip(),
-        }
+    if current:
+        parsed.append(current)
+
+    normalised: List[Dict[str, str]] = []
+    for sections in parsed:
+        normalised.append(
+            {
+                "qid": str(sections.get("qid", "")).strip(),
+                "question": str(sections.get("question", "")).strip(),
+                "evidence": "\n".join(sections.get("evidence", [])).strip(),
+                "rationale": "\n".join(sections.get("rationale", [])).strip(),
+                "answer": "\n".join(sections.get("answer", [])).strip(),
+            }
+        )
 
     return normalised
+
+
+def build_question_lookup(qid_questions: Dict[str, str]) -> Dict[str, str]:
+    lookup: Dict[str, str] = {}
+    for qid, question_text in qid_questions.items():
+        key = normalise_question_text(question_text)
+        if key and key not in lookup:
+            lookup[key] = qid
+    return lookup
 
 
 def load_qid_questions(table_path: pathlib.Path) -> Dict[str, str]:
@@ -119,6 +155,8 @@ def load_qid_questions(table_path: pathlib.Path) -> Dict[str, str]:
 
 def parse_file(input_path: pathlib.Path, output_path: pathlib.Path, s4_table_path: pathlib.Path) -> None:
     qid_questions = load_qid_questions(s4_table_path)
+    question_lookup = build_question_lookup(qid_questions)
+    expected_qids = sorted(set(QID_MAP.values()) | set(qid_questions.keys()), key=lambda q: int(q))
 
     df = pd.read_csv(input_path)
     pmid_order: List[str] = []
@@ -130,11 +168,17 @@ def parse_file(input_path: pathlib.Path, output_path: pathlib.Path, s4_table_pat
             continue
         if pmid not in pmid_order:
             pmid_order.append(pmid)
-        ft_answer_text = normalise_cell(row.get("FT Answer"))
-        parsed = parse_ft_answer(ft_answer_text) if ft_answer_text else {}
+        answer_cell = row.get("FT Answer")
+        if clean_text(answer_cell) == "":
+            answer_cell = row.get("Multiple Answer")
+        ft_answer_text = normalise_cell(answer_cell)
+        parsed_entries = parse_ft_answer(ft_answer_text) if ft_answer_text else []
 
-        for qid, sections in parsed.items():
-            mapped_qid = QID_MAP.get(qid)
+        for sections in parsed_entries:
+            raw_qid = sections.get("qid", "")
+            mapped_qid = QID_MAP.get(raw_qid) if raw_qid else None
+            if not mapped_qid and sections.get("question"):
+                mapped_qid = question_lookup.get(normalise_question_text(sections.get("question", "")))
             if not mapped_qid:
                 continue
             question_text = qid_questions.get(mapped_qid, "") or sections.get("question", "")
@@ -148,7 +192,7 @@ def parse_file(input_path: pathlib.Path, output_path: pathlib.Path, s4_table_pat
     rows: List[Dict[str, str]] = []
     for pmid in pmid_order:
         qid_rows = pmid_to_qid_rows.get(pmid, {})
-        for qid in EXPECTED_QIDS:
+        for qid in expected_qids:
             parsed_entry = qid_rows.get(qid, {})
             question_text = qid_questions.get(qid, "") or parsed_entry.get("question", "")
             rows.append(
@@ -175,7 +219,7 @@ def build_parser() -> argparse.ArgumentParser:
         type=pathlib.Path,
         nargs="*",
         default=DEFAULT_INPUTS,
-        help="Input CSV files to parse (default: the four FT CSVs in ./csv/)",
+        help="Input CSV files to parse (default: the Llama 8B CSVs in ./csv/)",
     )
     parser.add_argument(
         "--output",
