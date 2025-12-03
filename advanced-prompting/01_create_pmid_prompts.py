@@ -62,7 +62,13 @@ def collect_articles(papers_dir: Path) -> list[tuple[str, Path]]:
         pmid = entry.name
         md_path = entry / f"{pmid}.checked.md"
         if not md_path.exists():
-            raise FileNotFoundError(f"Missing markdown file for PMID {pmid}: {md_path}")
+            alt_path = entry / f"{pmid}_checked.md"
+            if alt_path.exists():
+                md_path = alt_path
+            else:
+                raise FileNotFoundError(
+                    f"Missing markdown file for PMID {pmid}: tried {md_path} and {alt_path}"
+                )
         articles.append((pmid, md_path))
     return sorted(articles, key=lambda item: item[0])
 
