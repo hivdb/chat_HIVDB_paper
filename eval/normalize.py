@@ -362,8 +362,8 @@ def compare_lists(pred_norm: str, ref_norm: str) -> bool:
             return True
 
     # Convert to sets and compare
-    pred_set = set(_expand_pol(pred_norm.split("|")))
-    ref_set = set(_expand_pol(ref_norm.split("|")))
+    pred_set = _prune_redundant_tokens(set(_expand_pol(pred_norm.split("|"))))
+    ref_set = _prune_redundant_tokens(set(_expand_pol(ref_norm.split("|"))))
 
     if not pred_set or not ref_set:
         return False
@@ -378,6 +378,19 @@ def compare_lists(pred_norm: str, ref_norm: str) -> bool:
     if (diff_prd == {"in"} and not diff_ref) or (diff_ref == {"in"} and not diff_prd):
         return True
     return False
+
+
+def _prune_redundant_tokens(tokens: set[str]) -> set[str]:
+    """Drop shorter tokens that are strict prefixes of longer tokens (e.g., 'tenofovir' vs 'tenofovir alafenamide')."""
+    cleaned = set(tokens)
+    for token in list(tokens):
+        for other in tokens:
+            if token == other:
+                continue
+            if other.startswith(f"{token} "):
+                cleaned.discard(token)
+                break
+    return cleaned
 
 
 def _list_partial_match(pred_norm: str, ref_norm: str, pred_raw: str) -> bool:
