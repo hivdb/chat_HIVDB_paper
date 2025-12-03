@@ -229,7 +229,6 @@ ARV_SYNONYMS = _dedup(
         ("rt inhibitors", "nrti | nnrti"),
         ("reverse transcriptase inhibitor", "nrti | nnrti"),
         ("reverse transcriptase inhibitors", "nrti | nnrti"),
-        ("pi", "pr"),
     ]
 )
 

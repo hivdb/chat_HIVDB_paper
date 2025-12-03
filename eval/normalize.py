@@ -95,11 +95,11 @@ def _canonical_list(lowered: str, raw: str) -> str:
     raw_lower = raw.lower()
     embedded_tokens: list[str] = []
     for phrase, replacement in EMBEDDED_MAP.items():
-        if phrase in raw_lower and replacement:
+        if _contains_phrase(raw_lower, phrase) and replacement:
             for part in replacement.split("|"):
                 embedded_tokens.extend(_list_tokens(part))
 
-    tokens_to_process = embedded_tokens if embedded_tokens else tokens
+    tokens_to_process = tokens + embedded_tokens if embedded_tokens else tokens
     canonical_tokens: list[str] = []
     for token in tokens_to_process:
         if not token:
@@ -177,6 +177,13 @@ def _list_tokens(text: str) -> list[str]:
     if "|" in normalized:
         return [part.strip() for part in normalized.split("|") if part.strip()]
     return [" ".join(NON_ALPHANUM.sub(" ", normalized).split())] if normalized.strip() else []
+
+
+def _contains_phrase(text: str, phrase: str) -> bool:
+    """Check if `phrase` occurs in `text` as a stand-alone token."""
+    if not phrase or not text:
+        return False
+    return re.search(rf"(?<![a-z0-9]){re.escape(phrase)}(?![a-z0-9])", text) is not None
 
 
 # ---------------------------------------------------------------------------
@@ -358,7 +365,15 @@ def compare_lists(pred_norm: str, ref_norm: str) -> bool:
         return False
 
     # Exact match: both sets must be identical
-    return pred_set == ref_set
+    if pred_set == ref_set:
+        return True
+
+    # Allow treating "pol" as either {pr, rt, in} or {pr, rt}
+    diff_prd = pred_set - ref_set
+    diff_ref = ref_set - pred_set
+    if (diff_prd == {"in"} and not diff_ref) or (diff_ref == {"in"} and not diff_prd):
+        return True
+    return False
 
 
 def _list_partial_match(pred_norm: str, ref_norm: str, pred_raw: str) -> bool:
