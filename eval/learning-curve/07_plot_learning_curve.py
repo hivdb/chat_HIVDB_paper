@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -13,8 +14,9 @@ import pandas as pd
 LC_DIR = Path(__file__).resolve().parent
 ROOT = LC_DIR.parents[1]
 ROOT_PARENT = ROOT.parent
-if str(ROOT_PARENT) not in sys.path:
-    sys.path.insert(0, str(ROOT_PARENT))
+for path in (ROOT, ROOT_PARENT):
+    if str(path) not in sys.path:
+        sys.path.insert(0, str(path))
 
 from eval.plots import generate_figures  # type: ignore
 
@@ -39,6 +41,18 @@ DISPLAY_SLOTS = [
     ("Llama3.1-70B FT-200", 200, ["Llama3.1-70B FT-200"]),
     ("Llama3.1-70B FT", 250, ["Llama3.1-70B FT"]),
 ]
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--metrics", type=Path, default=None, help="Learning-curve metrics CSV.")
+    parser.add_argument("--base-results", type=Path, default=None, help="Base evaluation metrics CSV.")
+    parser.add_argument("--output-dir", type=Path, default=None, help="Directory for figure outputs.")
+    parser.add_argument("--combined-csv", type=Path, default=None, help="Combined metrics CSV output path.")
+    parser.add_argument("--significance", type=Path, default=None, help="Significance JSON path.")
+    parser.add_argument("--suffix", type=str, default="", help="Suffix appended to output filenames (e.g., new30).")
+    parser.add_argument("--title", type=str, default="Learning Curve Analysis", help="Plot title.")
+    return parser.parse_args()
 
 
 def load_metrics(path: Path, scenarios: List[str] | None = None) -> pd.DataFrame:
@@ -69,10 +83,10 @@ def select_models(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def build_combined() -> pd.DataFrame:
-    target_scenarios = ["Partial Match"]
-    lc_df = load_metrics(LC_RESULTS, target_scenarios)
-    base_df = load_metrics(BASE_RESULTS, target_scenarios)
+def build_combined(lc_path: Path, base_path: Path, scenarios: List[str] | None = None) -> pd.DataFrame:
+    target_scenarios = scenarios or ["Partial Match"]
+    lc_df = load_metrics(lc_path, target_scenarios)
+    base_df = load_metrics(base_path, target_scenarios)
     all_df = pd.concat([lc_df, base_df], ignore_index=True)
     combined = select_models(all_df)
     return combined
@@ -96,24 +110,33 @@ def load_significance(path: Path) -> Tuple[Dict[str, Dict[Tuple[str, str], float
 
 
 def main() -> int:
-    combined = build_combined()
+    args = parse_args()
+    suffix = args.suffix.strip()
+    suffix = f"_{suffix}" if suffix else ""
+    lc_results = args.metrics or LC_RESULTS
+    base_results = args.base_results or BASE_RESULTS
+    output_dir = args.output_dir or OUTPUT_DIR
+    combined_csv = args.combined_csv or COMBINED_CSV.with_name(f"{COMBINED_CSV.stem}{suffix}{COMBINED_CSV.suffix}")
+    significance_json = args.significance or SIGNIFICANCE_JSON.with_name(f"{SIGNIFICANCE_JSON.stem}{suffix}{SIGNIFICANCE_JSON.suffix}")
+
+    combined = build_combined(lc_results, base_results)
     if combined.empty:
         print("No learning-curve metrics available.")
         return 1
-    significance, comparisons = load_significance(SIGNIFICANCE_JSON)
-    COMBINED_CSV.parent.mkdir(parents=True, exist_ok=True)
-    combined.to_csv(COMBINED_CSV, index=False)
-    title = "Learning Curve Analysis"
+    significance, comparisons = load_significance(significance_json)
+    combined_csv.parent.mkdir(parents=True, exist_ok=True)
+    combined.to_csv(combined_csv, index=False)
+    base_name = f"learning-curve{suffix}" if suffix else "learning-curve"
     generate_figures(
         combined,
-        title,
-        OUTPUT_DIR,
+        args.title,
+        output_dir,
         significance=significance,
         comparisons=comparisons,
-        base_name="learning-curve",
+        base_name=base_name,
     )
-    print(f"Wrote combined metrics to {COMBINED_CSV}")
-    print(f"Figures saved to {OUTPUT_DIR}")
+    print(f"Wrote combined metrics to {combined_csv}")
+    print(f"Figures saved to {output_dir}")
     return 0
 
 

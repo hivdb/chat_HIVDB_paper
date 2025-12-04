@@ -88,10 +88,10 @@ class Progress:
 def default_jobs(log_dir: Path) -> list[JobConfig]:
     return [
         JobConfig(
-            label="nov17_v1_before",
-            prompts_path=Path("advanced-prompting/jsonl/pmid_prompts_Nov17_Version1.jsonl"),
-            responses_path=Path("advanced-prompting/jsonl/pmid_responses_Nov17_Version1.jsonl"),
-            log_path=log_dir / "pmid_responses_Nov17_Version1.log",
+            label="nov17_v1_before_2025_30",
+            prompts_path=Path("advanced-prompting/jsonl/pmid_prompts_Nov17_Version1_2025_30.jsonl"),
+            responses_path=Path("advanced-prompting/jsonl/pmid_responses_Nov17_Version1_2025_30.jsonl"),
+            log_path=log_dir / "pmid_responses_Nov17_Version1_2025_30.log",
         )
     ]
 

@@ -9,6 +9,7 @@ import csv
 import json
 import logging
 import os
+import re
 import time
 from collections import defaultdict, deque
 from dataclasses import dataclass
@@ -23,10 +24,14 @@ from pydantic import BaseModel, Field, create_model
 
 
 DEFAULT_OUTPUT_DIR = Path("eval/learning-curve/responses")
-QUESTIONS_PATH_DEFAULT = Path("advanced-prompting/csv/merged_answers.xlsx")
-PAPERS_DIR_DEFAULT = Path("advanced-prompting/papers")
+DEFAULT_OUTPUT_SUFFIX = "new30"
+QUESTIONS_PATH_DEFAULT = Path("advanced-prompting/csv/gpt-4o-mini-2024-07-18_PV1_new30.xlsx")
+PAPERS_DIR_DEFAULT = Path("advanced-prompting/papers_2025_30")
 TRAIN_FILE_DEFAULT = Path("advanced-prompting/train_val/train_set.jsonl")
+JOBS_FILE_DEFAULT = Path("eval/learning-curve/archive/finetune_jobs.jsonl")
 TOTAL_QUESTIONS = 16
+BASE_MODEL_DEFAULT = "gpt-4o-mini-2024-07-18"
+FULL_FT_JOB_ID_DEFAULT = "ftjob-KcO0ZDfs21Hq688zDsZwvtDN"
 TOKEN_BUFFER = 200
 CSV_FIELDS = ["PMID", "QID", "Question", "Answer", "Evidence", "Rationale"]
 FAILED_STATUSES = {"failed", "cancelled", "rejected"}
@@ -198,10 +203,21 @@ def load_question_table(path: Path) -> Dict[str, List[Question]]:
 
 def read_paper_text(pmid: str, papers_dir: Path) -> str:
     pmid_dir = papers_dir / pmid
-    paper_path = pmid_dir / f"{pmid}.checked.md"
-    if not paper_path.exists():
-        raise FileNotFoundError(f"Missing markdown for PMID {pmid}: {paper_path}")
-    return paper_path.read_text(encoding="utf-8")
+    if not pmid_dir.exists():
+        raise FileNotFoundError(f"Missing paper directory for PMID {pmid}: {pmid_dir}")
+    candidates = [
+        pmid_dir / f"{pmid}.checked.md",
+        pmid_dir / f"{pmid}_checked.md",
+        pmid_dir / f"{pmid}.md",
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate.read_text(encoding="utf-8")
+    available = sorted(path.name for path in pmid_dir.glob("*.md"))
+    raise FileNotFoundError(
+        f"Missing markdown for PMID {pmid}. Tried: {', '.join(str(p) for p in candidates)}."
+        f" Available: {', '.join(available) if available else 'none'}"
+    )
 
 
 def build_question_block(questions: Iterable[Question]) -> str:
@@ -557,8 +573,17 @@ def is_failed_status(status: str | None) -> bool:
 
 def sanitize_tag(value: str) -> str:
     text = value.strip().lower()
-    cleaned = re.sub(r"[^a-z0-9]+", "-", text).strip("-")
+    cleaned = re.sub(r"[^a-z0-9_]+", "-", text).strip("-")
     return cleaned or "run"
+
+
+def apply_suffix(tag: str, suffix: str | None) -> str:
+    cleaned_tag = sanitize_tag(tag)
+    if suffix:
+        cleaned_suffix = sanitize_tag(suffix)
+        if cleaned_suffix and not cleaned_tag.endswith(f"_{cleaned_suffix}") and not cleaned_tag.endswith(f"-{cleaned_suffix}"):
+            cleaned_tag = f"{cleaned_tag}_{cleaned_suffix}"
+    return cleaned_tag
 
 
 def parse_args() -> argparse.Namespace:
@@ -568,7 +593,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--jobs-file",
         type=Path,
-        default=Path("eval/learning-curve/finetune_jobs.jsonl"),
+        default=JOBS_FILE_DEFAULT,
         help="JSONL file containing fine-tune metadata (enables batch mode).",
     )
     parser.add_argument(
@@ -576,6 +601,18 @@ def parse_args() -> argparse.Namespace:
         type=str,
         default="size{size:03d}",
         help="Format string for tags when using --jobs-file.",
+    )
+    parser.add_argument(
+        "--base-model",
+        type=str,
+        default=BASE_MODEL_DEFAULT,
+        help="Base model to include alongside fine-tuned runs.",
+    )
+    parser.add_argument(
+        "--full-ft-job-id",
+        type=str,
+        default=FULL_FT_JOB_ID_DEFAULT,
+        help="Job ID for the fully fine-tuned model to include in batch mode.",
     )
     parser.add_argument(
         "--train-file",
@@ -603,6 +640,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--limit", type=int, default=None, help="Optional limit on PMIDs.")
     parser.add_argument("--max-concurrency", type=int, default=10, help="Concurrent API calls.")
+    parser.add_argument(
+        "--output-suffix",
+        type=str,
+        default=DEFAULT_OUTPUT_SUFFIX,
+        help="Suffix appended to output tags to separate datasets (e.g., new30).",
+    )
     return parser.parse_args()
 
 
@@ -656,7 +699,7 @@ def main() -> int:
     args = parse_args()
     load_env()
     if args.model:
-        tag = args.tag or sanitize_tag(args.model)
+        tag = apply_suffix(args.tag or args.model, args.output_suffix)
         run_single(args.model, tag, args)
         return 0
 
@@ -670,6 +713,20 @@ def main() -> int:
     if not jobs:
         raise SystemExit(f"No jobs found in {jobs_file}")
     client = OpenAI()
+    run_specs: List[tuple[str, str]] = []
+    seen_models: set[str] = set()
+
+    def add_run(model_name: str, tag: str) -> None:
+        if not model_name or model_name in seen_models:
+            return
+        seen_models.add(model_name)
+        run_specs.append((model_name, apply_suffix(tag, args.output_suffix)))
+
+    # Always include the base model for comparison.
+    add_run(args.base_model, "base")
+
+    job_ids = {job.get("job_id") for job in jobs if job.get("job_id")}
+
     for job in jobs:
         try:
             job_id = job.get("job_id")
@@ -694,6 +751,23 @@ def main() -> int:
             print(f"Skipping job {job_id}: {exc}")
             continue
         tag = args.tag_template.format(size=job.get("size", "run"))
+        add_run(model_name, tag)
+
+    if args.full_ft_job_id and args.full_ft_job_id not in job_ids:
+        try:
+            info = client.fine_tuning.jobs.retrieve(args.full_ft_job_id)
+            api_status = getattr(info, "status", None)
+            if is_failed_status(api_status):
+                print(f"Skipping full FT job {args.full_ft_job_id}: API status={api_status}")
+            else:
+                model_name = info.fine_tuned_model
+                if not model_name:
+                    raise RuntimeError("Full fine-tuned model not ready.")
+                add_run(model_name, "ft")
+        except (OpenAIError, RuntimeError) as exc:
+            print(f"Skipping full FT job {args.full_ft_job_id}: {exc}")
+
+    for model_name, tag in run_specs:
         run_single(model_name, tag, args)
     return 0
 

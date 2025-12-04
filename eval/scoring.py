@@ -30,10 +30,13 @@ def load_dataset() -> pd.DataFrame:
         merged.rename(columns=config.COLUMN_RENAMES, inplace=True)
     merged["PMID"] = merged["PMID"].apply(format_identifier)
     merged["QID"] = merged["QID"].apply(format_identifier)
+    # Convert QID to int for proper numeric sorting (critical fix for alignment)
+    merged["QID"] = merged["QID"].astype(int)
 
     gpt5 = pd.read_csv(config.GPT5_PATH, dtype={"PMID": str}).rename(columns={"Answer": "GPT-5 base"})
     gpt5["PMID"] = gpt5["PMID"].apply(format_identifier)
     gpt5["QID"] = gpt5["QID"].apply(format_identifier)
+    gpt5["QID"] = gpt5["QID"].astype(int)
 
     df = merged.merge(gpt5[["PMID", "QID", "GPT-5 base"]], on=["PMID", "QID"], how="left")
 
@@ -47,6 +50,7 @@ def load_dataset() -> pd.DataFrame:
             continue
         extra["PMID"] = extra["PMID"].apply(format_identifier)
         extra["QID"] = extra["QID"].apply(format_identifier)
+        extra["QID"] = extra["QID"].astype(int)
         extra = extra.rename(columns={"Answer": column})
         df = df.merge(extra[["PMID", "QID", column]], on=["PMID", "QID"], how="left")
 
@@ -55,8 +59,10 @@ def load_dataset() -> pd.DataFrame:
             logging.warning("Column '%s' missing from merged answers; filling with blanks.", column)
             df[column] = ""
     df = df[(df["PMID"] != "") & (df["QID"] != "")]
+    # Ensure QID is int for proper sorting
+    df["QID"] = df["QID"].astype(int)
     df["sort_key"] = range(len(df))
-    df["sample_id"] = df["PMID"] + "-" + df["QID"]
+    df["sample_id"] = df["PMID"] + "-" + df["QID"].astype(str)
     return df
 
 

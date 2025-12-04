@@ -10,8 +10,8 @@ from pathlib import Path
 
 import pandas as pd
 
-PROMPTS_EXCEL = Path("advanced-prompting/csv/S4Table.xlsx")
-
+# PROMPTS_EXCEL = Path("advanced-prompting/csv/S4Table.xlsx")
+PROMPTS_EXCEL = Path("advanced-prompting/test/2025_new30.xlsx")
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -49,7 +49,8 @@ def extract_answers(text: str) -> list[str]:
 
 
 def process_dataset(responses_jsonl: Path, output_excel: Path, column_name: str) -> None:
-    df = pd.read_excel(PROMPTS_EXCEL, usecols=["PMID", "QID", "Question", "Type", "Category"])
+    # df = pd.read_excel(PROMPTS_EXCEL, usecols=["PMID", "QID", "Question", "Type", "Category"])
+    df = pd.read_excel(PROMPTS_EXCEL, usecols=["PMID", "QID", "Question"])
     responses: dict[str, list[str]] = {}
 
     if responses_jsonl.exists():
@@ -75,7 +76,8 @@ def process_dataset(responses_jsonl: Path, output_excel: Path, column_name: str)
 
     df[column_name] = df[column_name].apply(lambda x: "" if pd.isna(x) else str(x))
 
-    output_columns = ["PMID", "QID", "Question", "Type", "Category", column_name]
+    # output_columns = ["PMID", "QID", "Question", "Type", "Category", column_name]
+    output_columns = ["PMID", "QID", "Question", column_name]
     df[output_columns].to_excel(output_excel, index=False)
 
 

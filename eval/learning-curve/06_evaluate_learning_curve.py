@@ -16,8 +16,9 @@ import pandas as pd
 LC_DIR = Path(__file__).resolve().parent
 ROOT = LC_DIR.parents[1]
 ROOT_PARENT = ROOT.parent
-if str(ROOT_PARENT) not in sys.path:
-    sys.path.insert(0, str(ROOT_PARENT))
+for path in (ROOT, ROOT_PARENT):
+    if str(path) not in sys.path:
+        sys.path.insert(0, str(path))
 
 from eval import config  # type: ignore
 from eval.evaluation import build_qid_metrics  # type: ignore
@@ -112,6 +113,9 @@ def parse_args() -> argparse.Namespace:
         help="Directory for metrics/details/summary outputs.",
     )
     parser.add_argument("--limit", type=int, default=None, help="Optional limit on evaluation rows.")
+    parser.add_argument("--merged-path", type=Path, default=None, help="Override merged answers path.")
+    parser.add_argument("--output-suffix", type=str, default="", help="Suffix for output filenames (e.g., new30).")
+    parser.add_argument("--pairwise-baseline", type=Path, default=None, help="Optional baseline pairwise stats to align with.")
     return parser.parse_args()
 
 
@@ -124,6 +128,9 @@ def discover_default_responses() -> List[Tuple[str, Path]]:
     for path in candidates:
         stem = path.stem
         if not stem.endswith("_responses"):
+            continue
+        if "new30" in stem or "full150" in stem:
+            # new30/full150 variants are handled by explicit targets/args
             continue
         label = stem[: -len("_responses")]
         if label:
@@ -263,6 +270,13 @@ def load_baseline_wilcoxon(path: Path) -> Dict[str, Dict[Tuple[str, str], float]
 
 def main() -> int:
     args = parse_args()
+    if args.merged_path:
+        config.MERGED_PATH = args.merged_path
+    suffix = args.output_suffix.strip()
+    suffix = f"_{suffix}" if suffix else ""
+    if args.pairwise_baseline:
+        config.PAIRWISE_RESULTS = args.pairwise_baseline
+
     responses = args.responses or discover_default_responses()
     families: List[Tuple[str, List[Tuple[str, Path]]]] = []
     if responses:
@@ -278,7 +292,7 @@ def main() -> int:
     df = load_dataset()
     if args.limit:
         df = df.head(args.limit)
-    df["sample_id"] = df["PMID"] + "-" + df["QID"]
+    df["sample_id"] = df["PMID"] + "-" + df["QID"].astype(str)
 
     runs: List[RunSpec] = []
     family_model_to_column: Dict[str, Dict[str, str]] = {}
@@ -320,8 +334,8 @@ def main() -> int:
         raise SystemExit("No metrics produced. Check response coverage.")
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    metrics_path = args.output_dir / "learning_curve_metrics.csv"
-    details_path = args.output_dir / "learning_curve_details.csv"
+    metrics_path = args.output_dir / f"learning_curve_metrics{suffix}.csv"
+    details_path = args.output_dir / f"learning_curve_details{suffix}.csv"
     metrics.to_csv(metrics_path, index=False, encoding="utf-8-sig")
     pd.DataFrame(detail_rows).to_csv(details_path, index=False, encoding="utf-8-sig")
 
@@ -360,12 +374,12 @@ def main() -> int:
                 "f1": float(row["f1"].iloc[0]) if not row.empty else None,
             }
         )
-    summary_path = args.output_dir / "learning_curve_summary.json"
+    summary_path = args.output_dir / f"learning_curve_summary{suffix}.json"
     with summary_path.open("w", encoding="utf-8") as outfile:
         json.dump({"runs": summary}, outfile, indent=2)
 
-    stats_path = args.output_dir / "learning_curve_pairwise_stats.csv"
-    significance_path = args.output_dir / "learning_curve_significance.json"
+    stats_path = args.output_dir / f"learning_curve_pairwise_stats{suffix}.csv"
+    significance_path = args.output_dir / f"learning_curve_significance{suffix}.json"
     comparisons = {}
     for family, mapping in family_model_to_column.items():
         comparisons.update(build_learning_curve_comparisons(mapping))

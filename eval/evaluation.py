@@ -24,6 +24,8 @@ from eval.normalize import match_scenario_label  # type: ignore
 from scipy.stats import fisher_exact, ttest_rel, wilcoxon
 import numpy as np
 
+from eval.normalize import slugify
+
 
 LIST_SCENARIO_TITLES = {
     "Exact Match",
@@ -228,7 +230,30 @@ def write_outputs(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--limit", type=int, default=None, help="Optional limit on number of rows.")
+    parser.add_argument("--merged-path", type=Path, default=None, help="Override merged answers path.")
+    parser.add_argument("--gpt5-path", type=Path, default=None, help="Override GPT-5 responses path.")
+    parser.add_argument("--output-dir", type=Path, default=None, help="Directory for metrics/results outputs.")
+    parser.add_argument("--figures-dir", type=Path, default=None, help="Directory for figure outputs.")
+    parser.add_argument("--output-suffix", type=str, default="", help="Suffix appended to output filenames (e.g., new30).")
     args = parser.parse_args()
+
+    suffix = args.output_suffix.strip()
+    suffix = f"_{suffix}" if suffix else ""
+    if args.merged_path:
+        config.MERGED_PATH = args.merged_path
+    if args.gpt5_path:
+        config.GPT5_PATH = args.gpt5_path
+    if args.output_dir:
+        config.OUTPUT_DIR = args.output_dir
+    config.OUTPUT_METRICS = config.OUTPUT_DIR / f"evaluation_metrics{suffix}.csv"
+    config.OUTPUT_METRICS_BY_QID = config.OUTPUT_DIR / f"evaluation_metrics_by_qid{suffix}.csv"
+    config.FISHER_RESULTS = config.OUTPUT_DIR / f"fisher_exact_results{suffix}.csv"
+    config.PAIRWISE_RESULTS = config.OUTPUT_DIR / f"pairwise_stats{suffix}.csv"
+    config.DETAIL_METRICS_HUMAN = config.OUTPUT_DIR / f"detailed_evaluation{suffix}.csv"
+    config.DETAIL_METRICS_PARTIAL = config.OUTPUT_DIR / f"detailed_evaluation_partial_list_matches{suffix}.csv"
+    config.EXACT_VS_PARTIAL_DETAILS = config.OUTPUT_DIR / f"exact_vs_partial_evaluation{suffix}.csv"
+    if args.figures_dir:
+        config.OUTPUT_TABLE_DIR = args.figures_dir
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     (
@@ -267,7 +292,7 @@ def main() -> int:
         if not pair_df.empty:
             config.PAIRWISE_RESULTS.parent.mkdir(parents=True, exist_ok=True)
             pair_df.to_csv(config.PAIRWISE_RESULTS, index=False, encoding="utf-8-sig")
-            logging.info("Wrote pairwise tests to %s", config.PAIRWISE_RESULTS)
+        logging.info("Wrote pairwise tests to %s", config.PAIRWISE_RESULTS)
     exact_stats = {}
     if exact_qid_df is not None and not exact_qid_df.empty:
         _, exact_stats, _ = stat_utils.compute_pairwise_tests(
@@ -283,7 +308,10 @@ def main() -> int:
         logging.info("Wrote partial-list detail rows to %s", config.DETAIL_METRICS_PARTIAL)
     for display_title, scenario_title, subset, scenario_qid_df in figures:
         sig = overall_stats if scenario_title == "Partial Match" else exact_stats if scenario_title == "Exact Match" else None
-        generate_figures(subset, scenario_title, config.OUTPUT_TABLE_DIR, significance=sig, comparisons=FAMILY_COMPARISONS)
+        base_name = slugify(scenario_title)
+        if suffix:
+            base_name = f"{base_name}{suffix}"
+        generate_figures(subset, scenario_title, config.OUTPUT_TABLE_DIR, significance=sig, comparisons=FAMILY_COMPARISONS, base_name=base_name)
     return 0
 
 
