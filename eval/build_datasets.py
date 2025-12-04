@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import re
 import sys
 from pathlib import Path
 from typing import Dict, Iterable, List, Set
@@ -48,6 +49,9 @@ MODEL_SOURCES_NEW30: Dict[str, tuple[Path, str | None, bool]] = {
     "llama-3.1-70B-FT 150": (ADV_CSV / "llama-3.1-70B-FT 150_new30_parsed.csv", None, True),
     "llama-3.1-70B-FT 200": (ADV_CSV / "llama-3.1-70B-FT 200_new30_parsed.csv", None, True),
 }
+
+# Excel forbids certain control characters; strip them before writing workbooks
+ILLEGAL_CHARS = re.compile(r"[\x00-\x08\x0B-\x0C\x0E-\x1F]")
 
 
 def normalize_ids(df: pd.DataFrame) -> pd.DataFrame:
@@ -203,6 +207,11 @@ def build_outputs(base_merged: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame
     return new30_df, combined
 
 
+def sanitize_for_excel(df: pd.DataFrame) -> pd.DataFrame:
+    """Strip control characters that Excel/openpyxl disallow."""
+    return df.map(lambda v: ILLEGAL_CHARS.sub("", v) if isinstance(v, str) else v)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base-merged", type=Path, default=BASE_MERGED, help="Base merged answers file.")
@@ -216,6 +225,9 @@ def main() -> int:
 
     base_merged = pd.read_excel(args.base_merged)
     new30_df, combined_df = build_outputs(base_merged)
+
+    new30_df = sanitize_for_excel(new30_df)
+    combined_df = sanitize_for_excel(combined_df)
 
     args.output_new30.parent.mkdir(parents=True, exist_ok=True)
     args.output_full.parent.mkdir(parents=True, exist_ok=True)

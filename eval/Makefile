@@ -12,6 +12,7 @@ MERGED_FULL150 = $(REPO_ROOT)/advanced-prompting/csv/merged_answers_full_150.xls
 LC_RESP_SIZE050_NEW30 = $(REPO_ROOT)/eval/learning-curve/responses/size050_new30_responses.csv
 LC_RESP_SIZE100_NEW30 = $(REPO_ROOT)/eval/learning-curve/responses/size100_new30_responses.csv
 LC_RESP_SIZE150_NEW30 = $(REPO_ROOT)/eval/learning-curve/responses/size150_new30_responses.csv
+LC_RESP_SIZE200_NEW30 = $(REPO_ROOT)/eval/learning-curve/responses/size200_new30_responses.csv
 LC_RESP_FT_NEW30 = $(REPO_ROOT)/eval/learning-curve/responses/ft_new30_responses.csv
 LC_RESP_BASE_NEW30 = $(REPO_ROOT)/eval/learning-curve/responses/base_new30_responses.csv
 
@@ -41,6 +42,7 @@ learning_curve_new30: datasets
 		--responses size050=$(LC_RESP_SIZE050_NEW30) \
 		--responses size100=$(LC_RESP_SIZE100_NEW30) \
 		--responses size150=$(LC_RESP_SIZE150_NEW30) \
+		--responses size200=$(LC_RESP_SIZE200_NEW30) \
 		--responses ft=$(LC_RESP_FT_NEW30) \
 		--responses base=$(LC_RESP_BASE_NEW30)
 
