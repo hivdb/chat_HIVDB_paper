@@ -1,5 +1,5 @@
 write a new python script to parse
-csv/llama-3.1-8B-PV1_new30_parsed.csv. 'Multiple Answer' column, save to a csv file with suffix '_parsed.csv'.
+csv/llama-3.1-70B-FT_new30.csv. 'Multiple Answer' column, save to a csv file with suffix '_parsed.csv'.
 
 Extract Question or QID or Both.
 Extract Answer.
@@ -13,7 +13,7 @@ It can be in other similar formats.
 remove "Question: " and question id
 save to Question, After that, use Table S4.xlsx to get QID.
 
-Otherwise Extract QID in text like 'Question: 2', save to QID,
+Otherwise Extract QID in text like 'Question: 16', save to QID,
 
 then, use python dict below to remap QID
 
