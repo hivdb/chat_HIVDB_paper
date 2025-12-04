@@ -143,6 +143,22 @@ PMID,QID,Question,Answer
 26559830,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Not reported
 26559830,15,Which drug classes were received by individuals in the study before sample sequencing?,
 26559830,16,Which drugs were received by individuals in the study before sample sequencing?,
+27009474,1,Does the paper report HIV sequences from patient samples?,Yes
+27009474,2,Does the paper report in vitro drug susceptibility data?,Yes
+27009474,3,Were sequences from the paper made publicly available?,Yes
+27009474,4,What were the GenBank accession numbers for sequenced HIV isolates?,KU761565
+27009474,5,How many individuals had samples obtained for HIV sequencing?,1
+27009474,6,From which countries were the sequenced samples obtained?,Not reported
+27009474,7,From what years were the sequenced samples obtained?,2014
+27009474,8,Were samples cloned prior to sequencing?,Yes
+27009474,9,Which HIV genes were reported to have been sequenced?,IN
+27009474,10,What method was used for sequencing?,Not reported
+27009474,11,What type of samples were sequenced?,Plasma
+27009474,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+27009474,13,Were the patients in the study in a clinical trial?,No
+27009474,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+27009474,15,Which drug classes were received by individuals in the study before sample sequencing?,INSTIs
+27009474,16,Which drugs were received by individuals in the study before sample sequencing?,"Tenofovir, Emtricitabine, Elvitegravir, Cobicistat"
 27124362,1,Does the paper report HIV sequences from patient samples?,Yes
 27124362,2,Does the paper report in vitro drug susceptibility data?,Yes
 27124362,3,Were sequences from the paper made publicly available?,No
@@ -670,6 +686,7 @@ PMID,QID,Question,Answer
 36982978,13,Were the patients in the study in a clinical trial?,Not reported
 36982978,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
 36982978,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs, PIs, and INSTIs"
+36982978,16,Which drugs were received by individuals in the study before sample sequencing?,
 37017009,1,Does the paper report HIV sequences from patient samples?,Yes
 37017009,2,Does the paper report in vitro drug susceptibility data?,Yes
 37017009,3,Were sequences from the paper made publicly available?,No
@@ -958,22 +975,22 @@ PMID,QID,Question,Answer
 37439411,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
 37439411,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs, PIs, INSTIs"
 37439411,16,Which drugs were received by individuals in the study before sample sequencing?,Not reported
-37495103,1,Does the paper report HIV sequences from patient samples?,
-37495103,2,Does the paper report in vitro drug susceptibility data?,
-37495103,3,Were sequences from the paper made publicly available?,
-37495103,4,What were the GenBank accession numbers for sequenced HIV isolates?,
-37495103,5,How many individuals had samples obtained for HIV sequencing?,
-37495103,6,From which countries were the sequenced samples obtained?,
-37495103,7,From what years were the sequenced samples obtained?,
-37495103,8,Were samples cloned prior to sequencing?,
-37495103,9,Which HIV genes were reported to have been sequenced?,
-37495103,10,What method was used for sequencing?,
-37495103,11,What type of samples were sequenced?,
-37495103,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
-37495103,13,Were the patients in the study in a clinical trial?,
-37495103,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
-37495103,15,Which drug classes were received by individuals in the study before sample sequencing?,
-37495103,16,Which drugs were received by individuals in the study before sample sequencing?,
+37495103,1,Does the paper report HIV sequences from patient samples?,Yes
+37495103,2,Does the paper report in vitro drug susceptibility data?,No
+37495103,3,Were sequences from the paper made publicly available?,No
+37495103,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+37495103,5,How many individuals had samples obtained for HIV sequencing?,271
+37495103,6,From which countries were the sequenced samples obtained?,Russia
+37495103,7,From what years were the sequenced samples obtained?,2018-2022
+37495103,8,Were samples cloned prior to sequencing?,Not reported
+37495103,9,Which HIV genes were reported to have been sequenced?,Pol
+37495103,10,What method was used for sequencing?,Sanger sequencing
+37495103,11,What type of samples were sequenced?,Plasma
+37495103,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+37495103,13,Were the patients in the study in a clinical trial?,Not applicable
+37495103,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+37495103,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs, Pis"
+37495103,16,Which drugs were received by individuals in the study before sample sequencing?,"TDF, 3TC, ABC, EFV, DTG, LPV/r"
 37498738,1,Does the paper report HIV sequences from patient samples?,Yes
 37498738,2,Does the paper report in vitro drug susceptibility data?,No
 37498738,3,Were sequences from the paper made publicly available?,Yes
@@ -1070,21 +1087,22 @@ PMID,QID,Question,Answer
 37540331,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
 37540331,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs"
 37540331,16,Which drugs were received by individuals in the study before sample sequencing?,"Tenofovir, Lamivudine, Efavirenz"
-37541705,1,Does the paper report HIV sequences from patient samples?,
-37541705,2,Does the paper report in vitro drug susceptibility data?,
-37541705,3,Were sequences from the paper made publicly available?,
-37541705,4,What were the GenBank accession numbers for sequenced HIV isolates?,
-37541705,5,How many individuals had samples obtained for HIV sequencing?,
-37541705,6,From which countries were the sequenced samples obtained?,
-37541705,7,From what years were the sequenced samples obtained?,
-37541705,8,Were samples cloned prior to sequencing?,
-37541705,9,Which HIV genes were reported to have been sequenced?,
-37541705,10,What method was used for sequencing?,
-37541705,11,What type of samples were sequenced?,
-37541705,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
-37541705,13,Were the patients in the study in a clinical trial?,
-37541705,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
-37541705,15,Which drug classes were received by individuals in the study before sample sequencing?,
+37541705,1,Does the paper report HIV sequences from patient samples?,Yes
+37541705,2,Does the paper report in vitro drug susceptibility data?,No
+37541705,3,Were sequences from the paper made publicly available?,No
+37541705,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+37541705,5,How many individuals had samples obtained for HIV sequencing?,57
+37541705,6,From which countries were the sequenced samples obtained?,"Botswana, South Africa, Thailand, and the U.S."
+37541705,7,From what years were the sequenced samples obtained?,2020-2021
+37541705,8,Were samples cloned prior to sequencing?,Not reported
+37541705,9,Which HIV genes were reported to have been sequenced?,Not reported
+37541705,10,What method was used for sequencing?,Not reported
+37541705,11,What type of samples were sequenced?,Blood
+37541705,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No
+37541705,13,Were the patients in the study in a clinical trial?,Yes
+37541705,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+37541705,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs, and/or INSTIs"
+37541705,16,Which drugs were received by individuals in the study before sample sequencing?,
 37546367,1,Does the paper report HIV sequences from patient samples?,Yes
 37546367,2,Does the paper report in vitro drug susceptibility data?,No
 37546367,3,Were sequences from the paper made publicly available?,Yes
@@ -1133,22 +1151,22 @@ PMID,QID,Question,Answer
 37573167,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
 37573167,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs, PIs, and INSTIs"
 37573167,16,Which drugs were received by individuals in the study before sample sequencing?,Not reported
-37574435,1,Does the paper report HIV sequences from patient samples?,
-37574435,2,Does the paper report in vitro drug susceptibility data?,
-37574435,3,Were sequences from the paper made publicly available?,
-37574435,4,What were the GenBank accession numbers for sequenced HIV isolates?,
-37574435,5,How many individuals had samples obtained for HIV sequencing?,
-37574435,6,From which countries were the sequenced samples obtained?,
-37574435,7,From what years were the sequenced samples obtained?,
-37574435,8,Were samples cloned prior to sequencing?,
-37574435,9,Which HIV genes were reported to have been sequenced?,
-37574435,10,What method was used for sequencing?,
-37574435,11,What type of samples were sequenced?,
-37574435,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
-37574435,13,Were the patients in the study in a clinical trial?,
-37574435,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
-37574435,15,Which drug classes were received by individuals in the study before sample sequencing?,
-37574435,16,Which drugs were received by individuals in the study before sample sequencing?,
+37574435,1,Does the paper report HIV sequences from patient samples?,Yes
+37574435,2,Does the paper report in vitro drug susceptibility data?,No
+37574435,3,Were sequences from the paper made publicly available?,Not reported
+37574435,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+37574435,5,How many individuals had samples obtained for HIV sequencing?,79
+37574435,6,From which countries were the sequenced samples obtained?,Taiwan
+37574435,7,From what years were the sequenced samples obtained?,2016-2022
+37574435,8,Were samples cloned prior to sequencing?,Not reported
+37574435,9,Which HIV genes were reported to have been sequenced?,Pol
+37574435,10,What method was used for sequencing?,Not reported
+37574435,11,What type of samples were sequenced?,Plasma
+37574435,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+37574435,13,Were the patients in the study in a clinical trial?,No
+37574435,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+37574435,15,Which drug classes were received by individuals in the study before sample sequencing?,Not reported
+37574435,16,Which drugs were received by individuals in the study before sample sequencing?,Not reported
 37585352,1,Does the paper report HIV sequences from patient samples?,Yes
 37585352,2,Does the paper report in vitro drug susceptibility data?,No
 37585352,3,Were sequences from the paper made publicly available?,Yes
@@ -1308,6 +1326,7 @@ PMID,QID,Question,Answer
 37716367,13,Were the patients in the study in a clinical trial?,Not applicable
 37716367,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No
 37716367,15,Which drug classes were received by individuals in the study before sample sequencing?,Not reported
+37716367,16,Which drugs were received by individuals in the study before sample sequencing?,
 37755428,1,Does the paper report HIV sequences from patient samples?,Yes
 37755428,2,Does the paper report in vitro drug susceptibility data?,No
 37755428,3,Were sequences from the paper made publicly available?,No
@@ -1323,6 +1342,7 @@ PMID,QID,Question,Answer
 37755428,13,Were the patients in the study in a clinical trial?,No
 37755428,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
 37755428,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, INSTIs"
+37755428,16,Which drugs were received by individuals in the study before sample sequencing?,
 37775947,1,Does the paper report HIV sequences from patient samples?,Yes
 37775947,2,Does the paper report in vitro drug susceptibility data?,No
 37775947,3,Were sequences from the paper made publicly available?,Not reported
@@ -1786,6 +1806,7 @@ PMID,QID,Question,Answer
 38140553,13,Were the patients in the study in a clinical trial?,No
 38140553,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
 38140553,15,Which drug classes were received by individuals in the study before sample sequencing?,
+38140553,16,Which drugs were received by individuals in the study before sample sequencing?,
 38140649,1,Does the paper report HIV sequences from patient samples?,Yes
 38140649,2,Does the paper report in vitro drug susceptibility data?,No
 38140649,3,Were sequences from the paper made publicly available?,Yes
@@ -1977,7 +1998,9 @@ PMID,QID,Question,Answer
 40490983,13,Were the patients in the study in a clinical trial?,No
 40490983,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
 40490983,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs, PIs"
-40490983,16,Which drugs were received by individuals in the study before sample sequencing?,"TDF/3TC/ATV/r, TDF/3TC/LPV/r, AZT/3TC/LPV/r, ABC/3TC/LPV/r, etc."
+40490983,16,Which drugs were received by individuals in the study before sample sequencing?,"TDF/3TC/ATV/r, TDF/3TC/LPV/r, AZT/3TC/LPV/r, ABC/3TC/LPV/r, etc.
+
+Here are the answers in the requested format:"
 40573423,1,Does the paper report HIV sequences from patient samples?,Yes
 40573423,2,Does the paper report in vitro drug susceptibility data?,Yes
 40573423,3,Were sequences from the paper made publicly available?,Yes
@@ -1994,22 +2017,22 @@ PMID,QID,Question,Answer
 40573423,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No
 40573423,15,Which drug classes were received by individuals in the study before sample sequencing?,Not reported
 40573423,16,Which drugs were received by individuals in the study before sample sequencing?,Not reported
-40596906,1,Does the paper report HIV sequences from patient samples?,
-40596906,2,Does the paper report in vitro drug susceptibility data?,
-40596906,3,Were sequences from the paper made publicly available?,
-40596906,4,What were the GenBank accession numbers for sequenced HIV isolates?,
-40596906,5,How many individuals had samples obtained for HIV sequencing?,
-40596906,6,From which countries were the sequenced samples obtained?,
-40596906,7,From what years were the sequenced samples obtained?,
-40596906,8,Were samples cloned prior to sequencing?,
-40596906,9,Which HIV genes were reported to have been sequenced?,
-40596906,10,What method was used for sequencing?,
-40596906,11,What type of samples were sequenced?,
-40596906,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
-40596906,13,Were the patients in the study in a clinical trial?,
-40596906,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
-40596906,15,Which drug classes were received by individuals in the study before sample sequencing?,
-40596906,16,Which drugs were received by individuals in the study before sample sequencing?,
+40596906,1,Does the paper report HIV sequences from patient samples?,Yes
+40596906,2,Does the paper report in vitro drug susceptibility data?,No
+40596906,3,Were sequences from the paper made publicly available?,Yes
+40596906,4,What were the GenBank accession numbers for sequenced HIV isolates?,PV526713-PV526742
+40596906,5,How many individuals had samples obtained for HIV sequencing?,15
+40596906,6,From which countries were the sequenced samples obtained?,Brazil
+40596906,7,From what years were the sequenced samples obtained?,2007-2022
+40596906,8,Were samples cloned prior to sequencing?,No
+40596906,9,Which HIV genes were reported to have been sequenced?,"PR, RT"
+40596906,10,What method was used for sequencing?,ViroSeq
+40596906,11,What type of samples were sequenced?,Not reported
+40596906,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+40596906,13,Were the patients in the study in a clinical trial?,No
+40596906,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+40596906,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs"
+40596906,16,Which drugs were received by individuals in the study before sample sequencing?,"ZDV, 3TC, EFV, NVP"
 40713598,1,Does the paper report HIV sequences from patient samples?,Yes
 40713598,2,Does the paper report in vitro drug susceptibility data?,No
 40713598,3,Were sequences from the paper made publicly available?,Not reported
@@ -2042,22 +2065,22 @@ PMID,QID,Question,Answer
 40763144,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
 40763144,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs, PIs, and INSTIs"
 40763144,16,Which drugs were received by individuals in the study before sample sequencing?,Not reported
-40779404,1,Does the paper report HIV sequences from patient samples?,
-40779404,2,Does the paper report in vitro drug susceptibility data?,
-40779404,3,Were sequences from the paper made publicly available?,
-40779404,4,What were the GenBank accession numbers for sequenced HIV isolates?,
-40779404,5,How many individuals had samples obtained for HIV sequencing?,
-40779404,6,From which countries were the sequenced samples obtained?,
-40779404,7,From what years were the sequenced samples obtained?,
-40779404,8,Were samples cloned prior to sequencing?,
-40779404,9,Which HIV genes were reported to have been sequenced?,
-40779404,10,What method was used for sequencing?,
-40779404,11,What type of samples were sequenced?,
-40779404,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
-40779404,13,Were the patients in the study in a clinical trial?,
-40779404,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
-40779404,15,Which drug classes were received by individuals in the study before sample sequencing?,
-40779404,16,Which drugs were received by individuals in the study before sample sequencing?,
+40779404,1,Does the paper report HIV sequences from patient samples?,Yes
+40779404,2,Does the paper report in vitro drug susceptibility data?,No
+40779404,3,Were sequences from the paper made publicly available?,Not reported
+40779404,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+40779404,5,How many individuals had samples obtained for HIV sequencing?,20
+40779404,6,From which countries were the sequenced samples obtained?,Not reported
+40779404,7,From what years were the sequenced samples obtained?,Not reported
+40779404,8,Were samples cloned prior to sequencing?,No
+40779404,9,Which HIV genes were reported to have been sequenced?,"PR, RT, IN"
+40779404,10,What method was used for sequencing?,NGS
+40779404,11,What type of samples were sequenced?,Whole blood
+40779404,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+40779404,13,Were the patients in the study in a clinical trial?,Yes
+40779404,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+40779404,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, INSTIs, NNRTIs, PIs"
+40779404,16,Which drugs were received by individuals in the study before sample sequencing?,"TFV, INSTIs, NNRTIs, PIs"
 40839365,1,Does the paper report HIV sequences from patient samples?,Yes
 40839365,2,Does the paper report in vitro drug susceptibility data?,No
 40839365,3,Were sequences from the paper made publicly available?,Not reported
@@ -2122,22 +2145,22 @@ PMID,QID,Question,Answer
 40938120,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No
 40938120,15,Which drug classes were received by individuals in the study before sample sequencing?,
 40938120,16,Which drugs were received by individuals in the study before sample sequencing?,
-40938996,1,Does the paper report HIV sequences from patient samples?,
-40938996,2,Does the paper report in vitro drug susceptibility data?,
-40938996,3,Were sequences from the paper made publicly available?,
-40938996,4,What were the GenBank accession numbers for sequenced HIV isolates?,
-40938996,5,How many individuals had samples obtained for HIV sequencing?,
-40938996,6,From which countries were the sequenced samples obtained?,
-40938996,7,From what years were the sequenced samples obtained?,
-40938996,8,Were samples cloned prior to sequencing?,
-40938996,9,Which HIV genes were reported to have been sequenced?,
-40938996,10,What method was used for sequencing?,
-40938996,11,What type of samples were sequenced?,
-40938996,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
-40938996,13,Were the patients in the study in a clinical trial?,
-40938996,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
-40938996,15,Which drug classes were received by individuals in the study before sample sequencing?,
-40938996,16,Which drugs were received by individuals in the study before sample sequencing?,
+40938996,1,Does the paper report HIV sequences from patient samples?,Yes
+40938996,2,Does the paper report in vitro drug susceptibility data?,Yes
+40938996,3,Were sequences from the paper made publicly available?,Yes
+40938996,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported (since the actual accession numbers are not provided in the given text)
+40938996,5,How many individuals had samples obtained for HIV sequencing?,Not reported (since the actual number of individuals is not provided in the given text)
+40938996,6,From which countries were the sequenced samples obtained?,Not reported
+40938996,7,From what years were the sequenced samples obtained?,Not reported
+40938996,8,Were samples cloned prior to sequencing?,Yes
+40938996,9,Which HIV genes were reported to have been sequenced?,"NC, IN"
+40938996,10,What method was used for sequencing?,Sanger sequencing
+40938996,11,What type of samples were sequenced?,PBMC
+40938996,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+40938996,13,Were the patients in the study in a clinical trial?,Not applicable
+40938996,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+40938996,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs, PIs, INSTIs"
+40938996,16,Which drugs were received by individuals in the study before sample sequencing?,"DTG, RPV, CAB, RAL"
 40965168,1,Does the paper report HIV sequences from patient samples?,Yes
 40965168,2,Does the paper report in vitro drug susceptibility data?,Yes
 40965168,3,Were sequences from the paper made publicly available?,No
@@ -2221,7 +2244,7 @@ PMID,QID,Question,Answer
 41029850,1,Does the paper report HIV sequences from patient samples?,Yes
 41029850,2,Does the paper report in vitro drug susceptibility data?,No
 41029850,3,Were sequences from the paper made publicly available?,Yes
-41029850,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+41029850,4,What were the GenBank accession numbers for sequenced HIV isolates?,"PQ893197, PQ893192, OQ985810, OR259747, and PQ893191"
 41029850,5,How many individuals had samples obtained for HIV sequencing?,203
 41029850,6,From which countries were the sequenced samples obtained?,Cameroon
 41029850,7,From what years were the sequenced samples obtained?,2022-2023
@@ -2301,7 +2324,7 @@ PMID,QID,Question,Answer
 41093949,1,Does the paper report HIV sequences from patient samples?,No
 41093949,2,Does the paper report in vitro drug susceptibility data?,Yes
 41093949,3,Were sequences from the paper made publicly available?,Yes
-41093949,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+41093949,4,What were the GenBank accession numbers for sequenced HIV isolates?,PQ735970-PQ735985
 41093949,5,How many individuals had samples obtained for HIV sequencing?,Not reported
 41093949,6,From which countries were the sequenced samples obtained?,USA
 41093949,7,From what years were the sequenced samples obtained?,1978-2023
@@ -2349,7 +2372,7 @@ PMID,QID,Question,Answer
 41130593,1,Does the paper report HIV sequences from patient samples?,Yes
 41130593,2,Does the paper report in vitro drug susceptibility data?,No
 41130593,3,Were sequences from the paper made publicly available?,Not reported
-41130593,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+41130593,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
 41130593,5,How many individuals had samples obtained for HIV sequencing?,55 (PURPOSE 1) and 11 (PURPOSE 2)
 41130593,6,From which countries were the sequenced samples obtained?,Not reported
 41130593,7,From what years were the sequenced samples obtained?,2021-2023
@@ -2362,19 +2385,19 @@ PMID,QID,Question,Answer
 41130593,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
 41130593,15,Which drug classes were received by individuals in the study before sample sequencing?,Not reported
 41130593,16,Which drugs were received by individuals in the study before sample sequencing?,Not reported
-41140464,1,Does the paper report HIV sequences from patient samples?,
-41140464,2,Does the paper report in vitro drug susceptibility data?,
-41140464,3,Were sequences from the paper made publicly available?,
-41140464,4,What were the GenBank accession numbers for sequenced HIV isolates?,
-41140464,5,How many individuals had samples obtained for HIV sequencing?,
-41140464,6,From which countries were the sequenced samples obtained?,
-41140464,7,From what years were the sequenced samples obtained?,
-41140464,8,Were samples cloned prior to sequencing?,
-41140464,9,Which HIV genes were reported to have been sequenced?,
-41140464,10,What method was used for sequencing?,
-41140464,11,What type of samples were sequenced?,
-41140464,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
-41140464,13,Were the patients in the study in a clinical trial?,
-41140464,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
-41140464,15,Which drug classes were received by individuals in the study before sample sequencing?,
-41140464,16,Which drugs were received by individuals in the study before sample sequencing?,
+41140464,1,Does the paper report HIV sequences from patient samples?,Yes
+41140464,2,Does the paper report in vitro drug susceptibility data?,Yes
+41140464,3,Were sequences from the paper made publicly available?,Yes
+41140464,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+41140464,5,How many individuals had samples obtained for HIV sequencing?,7614
+41140464,6,From which countries were the sequenced samples obtained?,"Kenya, Uganda, Tanzania, and Ethiopia"
+41140464,7,From what years were the sequenced samples obtained?,2015-2025
+41140464,8,Were samples cloned prior to sequencing?,Not reported
+41140464,9,Which HIV genes were reported to have been sequenced?,"PR, RT, and IN"
+41140464,10,What method was used for sequencing?,Not reported
+41140464,11,What type of samples were sequenced?,"Plasma, PBMC, and whole blood"
+41140464,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+41140464,13,Were the patients in the study in a clinical trial?,No
+41140464,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+41140464,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs, PIs, and INSTIs"
+41140464,16,Which drugs were received by individuals in the study before sample sequencing?,"Tenofovir, Lamivudine, Dolutegravir, Nevirapine, Efavirenz, Rilpivirine, Doravirine, Atazanavir, Lopinavir, Darunavir, Raltegravir, Elvitegravir, Cabotegravir, Lenacapavir, Maraviroc, Fostemsavir, Enfuvirtide, Ibalizumab"

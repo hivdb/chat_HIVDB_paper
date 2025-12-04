@@ -1,5 +1,5 @@
 write a new python script to parse
-csv/llama-3.1-70B-FT_new30.csv. 'FT Answer' column, save to a csv file with suffix '_parsed.csv'.
+csv/llama-3.1-8B-PV1_new30.csv. 'FT Answer' column, save to a csv file with suffix '_parsed.csv'.
 
 column headers are PMID, QID, Question, Answer.
 

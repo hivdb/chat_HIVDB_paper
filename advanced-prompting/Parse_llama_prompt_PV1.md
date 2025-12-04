@@ -1,5 +1,5 @@
 write a new python script to parse
-csv/llama-3.1-8B-PV1_new30_parsed.csv. 'Multiple Answer' column, save to a csv file with suffix '_parsed.csv'.
+csv/llama-3.1-8B-PV1.csv. 'Multiple Answer' column, save to a csv file with suffix '_parsed.csv'.
 
 Extract Question or QID or Both.
 Extract Answer.
@@ -9,6 +9,11 @@ column headers are PMID, QID, Question, Answer.
 
 Parse Question from Question line like
 "Question: From what years were the sequenced samples obtained"
+"Question: Question 1", remove them before matching.
+"**Question 10 – What method was used for sequencing?**"
+"# Q1 – Does the paper report HIV sequences from patient samples?"
+
+
 It can be in other similar formats.
 remove "Question: " and question id
 save to Question, After that, use Table S4.xlsx to get QID.

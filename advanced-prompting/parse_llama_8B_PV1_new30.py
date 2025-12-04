@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Parse PV1 multiple answers in csv/llama-3.1-8B-PV1.csv into per-question rows.
+"""Parse PV1 multiple answers in csv/llama-3.1-8B-PV1_new30.csv into per-question rows.
 
 The script reads the `Multiple Answer` column, extracts per-question answers,
 maps questions/QIDs to the canonical wording from Table S4.xlsx, and writes a
@@ -16,7 +16,7 @@ from typing import Dict, Iterable, List, Tuple
 
 import pandas as pd
 
-DEFAULT_INPUT = pathlib.Path("./csv/llama-3.1-8B-PV1.csv")
+DEFAULT_INPUT = pathlib.Path("./csv/llama-3.1-8B-PV1_new30.csv")
 DEFAULT_S4 = pathlib.Path("./csv/S4Table.xlsx")
 
 QUESTION_SYNONYMS = {
@@ -93,26 +93,15 @@ def detect_question_header(line: str, allow_plain_without_id: bool = False) -> T
         trimmed = trimmed[2:-2].strip()
     trimmed = trimmed.lstrip("*")
 
-    match = re.match(r"(?i)^(?:question|q)\s*(?P<rest>.*)", trimmed)
-    if not match:
+    lowered = trimmed.lower()
+    if not lowered.startswith("question"):
         return None
 
-    remainder = match.group("rest").lstrip(" .:-\u2013")
-    while True:
-        lowered = remainder.lower()
-        if lowered.startswith("question"):
-            remainder = remainder[len("question") :].lstrip(" .:-\u2013")
-            continue
-        if lowered.startswith("qid"):
-            remainder = remainder[3:].lstrip(" .:-\u2013")
-            continue
-        if lowered.startswith("id"):
-            remainder = remainder[2:].lstrip(" .:-\u2013")
-            continue
-        if lowered.startswith("q"):
-            remainder = remainder[1:].lstrip(" .:-\u2013")
-            continue
-        break
+    remainder = trimmed[len("question") :].lstrip(" .:-\u2013")
+    while remainder.lower().startswith("question"):
+        remainder = remainder[len("question") :].lstrip(" .:-\u2013")
+    if remainder.lower().startswith("id"):
+        remainder = remainder[2:].lstrip(" .:-\u2013")
 
     digits_match = re.match(r"(?P<digits>\d+)(?P<rest>.*)", remainder)
     qid = ""
@@ -328,7 +317,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--input",
         type=pathlib.Path,
         default=DEFAULT_INPUT,
-        help="Input CSV path (default: ./csv/llama-3.1-8B-PV1.csv)",
+        help="Input CSV path (default: ./csv/llama-3.1-8B-PV1_new30.csv)",
     )
     parser.add_argument(
         "--output",
