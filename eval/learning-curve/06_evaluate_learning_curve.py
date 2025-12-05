@@ -31,6 +31,7 @@ from eval.scoring import (  # type: ignore
 )
 from eval.normalize import match_scenario_label  # type: ignore
 from eval import statistics as stat_utils  # type: ignore
+from eval.build_datasets import get_canonical_qid_mapping, normalize_question  # type: ignore
 
 
 @dataclass
@@ -174,6 +175,23 @@ def integrate_responses(df: pd.DataFrame, path: Path) -> pd.Series:
     required = {"PMID", "QID"}
     if missing := required - set(df_resp.columns):
         raise ValueError(f"{path} missing required columns: {', '.join(sorted(missing))}")
+    # Remap QIDs to canonical values using question text when available
+    canonical_qids = get_canonical_qid_mapping()
+    if "Question" in df_resp.columns:
+        df_resp["QID_raw"] = df_resp["QID"]
+        df_resp["QID"] = df_resp.apply(
+            lambda row: canonical_qids.get(normalize_question(row.get("Question", "")), row["QID"]),
+            axis=1,
+        )
+        remapped = df_resp[df_resp["QID"] != df_resp["QID_raw"]]
+        if not remapped.empty:
+            logging.info(
+                "Remapped %d QIDs to canonical values for %s (first: %s -> %s)",
+                len(remapped),
+                path.name,
+                remapped.iloc[0]["QID_raw"],
+                remapped.iloc[0]["QID"],
+            )
     answer_col = _select_answer_column(df_resp.columns)
     if not answer_col:
         raise ValueError(f"{path} missing an answer column (expected one ending with 'Answer').")
@@ -182,6 +200,53 @@ def integrate_responses(df: pd.DataFrame, path: Path) -> pd.Series:
     df_resp["sample_id"] = df_resp["PMID"] + "-" + df_resp["QID"]
     mapping = df_resp.set_index("sample_id")[answer_col].to_dict()
     return df["sample_id"].map(mapping).fillna("")
+
+
+def _load_canonical_lookup(path: Path) -> Dict[str, dict]:
+    """Load the canonical PMID/QID -> question/answer mapping from merged_answers.xlsx."""
+    if not path.exists():
+        raise FileNotFoundError(f"Canonical merged answers missing: {path}")
+    df = pd.read_excel(
+        path,
+        dtype={"PMID": str},
+        keep_default_na=False,
+    )
+    if getattr(config, "COLUMN_RENAMES", None):
+        df.rename(columns=config.COLUMN_RENAMES, inplace=True)
+    df["PMID"] = df["PMID"].apply(format_identifier)
+    df["QID"] = df["QID"].apply(format_identifier)
+    df["QID"] = df["QID"].astype(int)
+    df["sample_id"] = df["PMID"] + "-" + df["QID"].astype(str)
+    dupes = df[df.duplicated("sample_id", keep=False)]["sample_id"].unique()
+    if len(dupes):
+        raise ValueError(f"Canonical merged answers contain duplicate sample_ids: {', '.join(dupes)}")
+    fields = ["Question", "Type", config.REF_COL]
+    missing_cols = [col for col in fields if col not in df.columns]
+    if missing_cols:
+        raise ValueError(f"Canonical merged answers missing required columns: {', '.join(missing_cols)}")
+    return df.set_index("sample_id")[fields].to_dict(orient="index")
+
+
+def reconcile_with_canonical(df: pd.DataFrame, canonical: Dict[str, dict]) -> pd.DataFrame:
+    """Ensure question/answer fields match the canonical mapping; raise if unseen sample_ids."""
+    df = df.copy()
+    corrections = 0
+    missing = []
+    for idx, row in df.iterrows():
+        sid = row["sample_id"]
+        ref = canonical.get(sid)
+        if not ref:
+            missing.append(sid)
+            continue
+        for col, value in ref.items():
+            if row.get(col, "") != value:
+                df.at[idx, col] = value
+                corrections += 1
+    if missing:
+        raise SystemExit(f"{len(missing)} samples missing from canonical merged answers, e.g. {missing[:3]}")
+    if corrections:
+        logging.info("Reconciled %d fields against canonical merged answers.", corrections)
+    return df
 
 
 def scenario_copy(models: Sequence[str]) -> List[dict]:
@@ -272,6 +337,7 @@ def main() -> int:
     args = parse_args()
     if args.merged_path:
         config.MERGED_PATH = args.merged_path
+    canonical_path = ROOT / "advanced-prompting/csv/merged_answers.xlsx"
     suffix = args.output_suffix.strip()
     suffix = f"_{suffix}" if suffix else ""
     if args.pairwise_baseline:
@@ -289,10 +355,12 @@ def main() -> int:
             "No responses provided. Run with --responses LABEL=PATH, store CSVs under eval/learning-curve/responses/, "
             "or ensure Llama3.1-70B parsed responses are available."
         )
+    canonical_lookup = _load_canonical_lookup(canonical_path)
     df = load_dataset()
     if args.limit:
         df = df.head(args.limit)
     df["sample_id"] = df["PMID"] + "-" + df["QID"].astype(str)
+    df = reconcile_with_canonical(df, canonical_lookup)
 
     runs: List[RunSpec] = []
     family_model_to_column: Dict[str, Dict[str, str]] = {}

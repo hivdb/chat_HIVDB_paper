@@ -26,6 +26,7 @@ ADV_TEST = ROOT / "advanced-prompting" / "test"
 BASE_MERGED = ADV_CSV / "merged_answers.xlsx"
 OUTPUT_NEW30 = ADV_CSV / "merged_answers_new30.xlsx"
 OUTPUT_FULL = ADV_CSV / "merged_answers_full_150.xlsx"
+S4TABLE = ADV_CSV / "S4Table.xlsx"
 
 PAPERS_DIR = ADV_CSV.parent / "papers"
 NEW30_PAPERS_DIR = ADV_CSV.parent / "papers_2025_30"
