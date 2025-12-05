@@ -26,6 +26,7 @@ ADV_TEST = ROOT / "advanced-prompting" / "test"
 BASE_MERGED = ADV_CSV / "merged_answers.xlsx"
 OUTPUT_NEW30 = ADV_CSV / "merged_answers_new30.xlsx"
 OUTPUT_FULL = ADV_CSV / "merged_answers_full_150.xlsx"
+OUTPUT_ORIGINAL120 = ADV_CSV / "merged_answers_original_120.xlsx"
 S4TABLE = ADV_CSV / "S4Table.xlsx"
 
 PAPERS_DIR = ADV_CSV.parent / "papers"
@@ -168,12 +169,14 @@ def build_outputs(base_merged: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame
     # Split out the new30 PMIDs using the papers_2025_30 directory
     new30_pmids = load_new30_pmids()
     new30_df = base_merged[base_merged["PMID"].isin(new30_pmids)].copy()
+    original120_df = base_merged[~base_merged["PMID"].isin(new30_pmids)].copy()
     combined = base_merged.copy()
 
     new30_df = order_columns(new30_df)
+    original120_df = order_columns(original120_df)
     combined = order_columns(combined)
 
-    return new30_df, combined
+    return new30_df, combined, original120_df
 
 
 def sanitize_for_excel(df: pd.DataFrame) -> pd.DataFrame:
@@ -186,6 +189,7 @@ def main() -> int:
     parser.add_argument("--base-merged", type=Path, default=BASE_MERGED, help="Base merged answers file.")
     parser.add_argument("--output-new30", type=Path, default=OUTPUT_NEW30, help="Output path for new30 merged answers.")
     parser.add_argument("--output-full", type=Path, default=OUTPUT_FULL, help="Output path for full 150 merged answers.")
+    parser.add_argument("--output-original120", type=Path, default=OUTPUT_ORIGINAL120, help="Output path for original 120 (full minus new30).")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -193,18 +197,22 @@ def main() -> int:
         raise SystemExit(f"Base merged file missing: {args.base_merged}")
 
     base_merged = pd.read_excel(args.base_merged)
-    new30_df, combined_df = build_outputs(base_merged)
+    new30_df, combined_df, original120_df = build_outputs(base_merged)
 
     new30_df = sanitize_for_excel(new30_df)
     combined_df = sanitize_for_excel(combined_df)
+    original120_df = sanitize_for_excel(original120_df)
 
     args.output_new30.parent.mkdir(parents=True, exist_ok=True)
     args.output_full.parent.mkdir(parents=True, exist_ok=True)
+    args.output_original120.parent.mkdir(parents=True, exist_ok=True)
     new30_df.to_excel(args.output_new30, index=False)
     combined_df.to_excel(args.output_full, index=False)
+    original120_df.to_excel(args.output_original120, index=False)
 
     logging.info("Wrote new30 merged answers to %s (rows=%d)", args.output_new30, len(new30_df))
     logging.info("Wrote full merged answers to %s (rows=%d)", args.output_full, len(combined_df))
+    logging.info("Wrote original120 merged answers to %s (rows=%d)", args.output_original120, len(original120_df))
     return 0
 
 

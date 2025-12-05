@@ -4,10 +4,11 @@ export PYTHONPATH
 
 REPO_ROOT := $(abspath ..)
 
-.PHONY: all datasets evaluation evaluation_new30 evaluation_full150 learning_curve learning_curve_new30 learning_curve_full150 plot_learning_curve plot_learning_curve_new30 plot_learning_curve_full150 failure_prev analysis_by_qid error_types
+.PHONY: all datasets evaluation evaluation_new30 evaluation_full150 evaluation_original120 learning_curve learning_curve_new30 learning_curve_full150 plot_learning_curve plot_learning_curve_new30 plot_learning_curve_full150 failure_prev analysis_by_qid error_types
 
 MERGED_NEW30 = $(REPO_ROOT)/advanced-prompting/csv/merged_answers_new30.xlsx
 MERGED_FULL150 = $(REPO_ROOT)/advanced-prompting/csv/merged_answers_full_150.xlsx
+MERGED_ORIGINAL120 = $(REPO_ROOT)/advanced-prompting/csv/merged_answers_original_120.xlsx
 
 LC_RESP_SIZE050_NEW30 = $(REPO_ROOT)/eval/learning-curve/responses/size050_new30_responses.csv
 LC_RESP_SIZE100_NEW30 = $(REPO_ROOT)/eval/learning-curve/responses/size100_new30_responses.csv
@@ -20,7 +21,7 @@ LC_RESP_SIZE050_FULL150 = $(REPO_ROOT)/eval/learning-curve/responses/size050_ful
 LC_RESP_SIZE100_FULL150 = $(REPO_ROOT)/eval/learning-curve/responses/size100_full150_responses.csv
 LC_RESP_SIZE150_FULL150 = $(REPO_ROOT)/eval/learning-curve/responses/size150_full150_responses.csv
 
-all: datasets evaluation evaluation_new30 evaluation_full150 learning_curve learning_curve_new30 learning_curve_full150 plot_learning_curve plot_learning_curve_new30 plot_learning_curve_full150 failure_prev analysis_by_qid error_types
+all: datasets evaluation evaluation_new30 evaluation_full150 evaluation_original120 learning_curve learning_curve_new30 learning_curve_full150 plot_learning_curve plot_learning_curve_new30 plot_learning_curve_full150 failure_prev analysis_by_qid error_types
 
 datasets:
 	$(PYTHON) build_datasets.py
@@ -33,6 +34,9 @@ evaluation_new30: datasets
 
 evaluation_full150: datasets
 	$(PYTHON) evaluation.py --merged-path $(MERGED_FULL150) --output-suffix full150
+
+evaluation_original120: datasets
+	$(PYTHON) evaluation.py --merged-path $(MERGED_ORIGINAL120) --output-suffix original120
 
 learning_curve: datasets
 	$(PYTHON) learning-curve/06_evaluate_learning_curve.py
