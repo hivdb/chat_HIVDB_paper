@@ -197,6 +197,19 @@ def _write_excel(path: Path, sheets: dict[str, pd.DataFrame]) -> None:
             df.to_excel(writer, sheet_name=name, index=False)
 
 
+def _dataset_label_from_suffix(suffix: str) -> str:
+    normalized = suffix.strip("_").lower()
+    if not normalized:
+        return "Full 150"
+    if "full150" in normalized:
+        return "Full 150"
+    if "new30" in normalized:
+        return "New 30"
+    if "original120" in normalized or "orig120" in normalized:
+        return "Original 120"
+    return normalized.replace("_", " ").title()
+
+
 def write_outputs(
     metrics: pd.DataFrame,
     details: List[dict],
@@ -204,13 +217,8 @@ def write_outputs(
     partial_details: List[dict],
     scenario_qid_frames: dict[str, pd.DataFrame],
 ) -> None:
-    # Metrics: two sheets (Exact, Partial)
-    metric_sheets = {
-        title: metrics[metrics["scenario"] == title].drop(columns=["scenario"], errors="ignore")
-        for title in ["Exact Match", "Partial Match"]
-    }
+    # Metrics: write CSV only (avoid duplicate Excel outputs)
     metrics.to_csv(config.OUTPUT_METRICS, index=False, encoding="utf-8-sig")
-    _write_excel(config.OUTPUT_METRICS.with_suffix(".xlsx"), metric_sheets)
 
     # Detail rows workbook
     detail_df = pd.DataFrame(details)
@@ -220,11 +228,9 @@ def write_outputs(
     _write_excel(config.DETAIL_METRICS_HUMAN.with_suffix(".xlsx"), detail_sheets)
 
     # Per-QID metrics workbook
-    qid_sheets = {title: df.drop(columns=["scenario"], errors="ignore") for title, df in scenario_qid_frames.items()}
     combined_qid = pd.concat(scenario_qid_frames.values(), ignore_index=True) if scenario_qid_frames else pd.DataFrame()
     if not combined_qid.empty:
         combined_qid.to_csv(config.OUTPUT_METRICS_BY_QID, index=False, encoding="utf-8-sig")
-    _write_excel(config.OUTPUT_METRICS_BY_QID.with_suffix(".xlsx"), qid_sheets)
 
 
 def main() -> int:
@@ -247,8 +253,7 @@ def main() -> int:
         config.OUTPUT_DIR = args.output_dir
     config.OUTPUT_METRICS = config.OUTPUT_DIR / f"evaluation_metrics{suffix}.csv"
     config.OUTPUT_METRICS_BY_QID = config.OUTPUT_DIR / f"evaluation_metrics_by_qid{suffix}.csv"
-    config.FISHER_RESULTS = config.OUTPUT_DIR / f"fisher_exact_results{suffix}.csv"
-    config.PAIRWISE_RESULTS = config.OUTPUT_DIR / f"pairwise_stats{suffix}.csv"
+    config.STAT_RESULTS = config.OUTPUT_DIR / f"statistical_tests{suffix}.xlsx"
     config.DETAIL_METRICS_HUMAN = config.OUTPUT_DIR / f"detailed_evaluation{suffix}.csv"
     config.DETAIL_METRICS_PARTIAL = config.OUTPUT_DIR / f"detailed_evaluation_partial_list_matches{suffix}.csv"
     config.EXACT_VS_PARTIAL_DETAILS = config.OUTPUT_DIR / f"exact_vs_partial_evaluation{suffix}.csv"
@@ -280,19 +285,11 @@ def main() -> int:
             FAMILY_COMPARISONS,
             ["accuracy", "precision", "recall"],
         )
-        if not fisher_df.empty:
-            config.FISHER_RESULTS.parent.mkdir(parents=True, exist_ok=True)
-            fisher_df.to_csv(config.FISHER_RESULTS, index=False, encoding="utf-8-sig")
-            logging.info("Wrote Fisher tests to %s", config.FISHER_RESULTS)
         pair_df, overall_stats, _ = stat_utils.compute_pairwise_tests(
             overall_qid_df,
             FAMILY_COMPARISONS,
             ["accuracy", "precision", "recall"],
         )
-        if not pair_df.empty:
-            config.PAIRWISE_RESULTS.parent.mkdir(parents=True, exist_ok=True)
-            pair_df.to_csv(config.PAIRWISE_RESULTS, index=False, encoding="utf-8-sig")
-        logging.info("Wrote pairwise tests to %s", config.PAIRWISE_RESULTS)
     exact_stats = {}
     if exact_qid_df is not None and not exact_qid_df.empty:
         _, exact_stats, _ = stat_utils.compute_pairwise_tests(
@@ -306,12 +303,29 @@ def main() -> int:
         logging.info("Wrote list scenario details to %s", config.EXACT_VS_PARTIAL_DETAILS)
     if partial_details:
         logging.info("Wrote partial-list detail rows to %s", config.DETAIL_METRICS_PARTIAL)
+    if not pair_df.empty or not fisher_df.empty:
+        with pd.ExcelWriter(config.STAT_RESULTS, engine="openpyxl") as writer:
+            if not pair_df.empty:
+                pair_df.to_excel(writer, sheet_name="Paired Tests", index=False)
+            if not fisher_df.empty:
+                fisher_df.to_excel(writer, sheet_name="Fisher Exact Test", index=False)
+        logging.info("Wrote combined statistical tests to %s", config.STAT_RESULTS)
+    dataset_label = _dataset_label_from_suffix(args.output_suffix)
     for display_title, scenario_title, subset, scenario_qid_df in figures:
         sig = overall_stats if scenario_title == "Partial Match" else exact_stats if scenario_title == "Exact Match" else None
         base_name = slugify(scenario_title)
         if suffix:
             base_name = f"{base_name}{suffix}"
-        generate_figures(subset, scenario_title, config.OUTPUT_TABLE_DIR, significance=sig, comparisons=FAMILY_COMPARISONS, base_name=base_name)
+        full_title = f"{scenario_title} ({dataset_label})"
+        generate_figures(
+            subset,
+            scenario_title,
+            config.OUTPUT_TABLE_DIR,
+            significance=sig,
+            comparisons=FAMILY_COMPARISONS,
+            base_name=base_name,
+            display_title=full_title,
+        )
     return 0
 
 

@@ -1,54 +1,45 @@
-# Evaluation Package Overview
+# Evaluation Guide
 
-This package scores multiple model outputs against human‐curated answers and produces tabular/graphical summaries. The files work together as follows.
+## Quickstart (reproduce all suffixed results)
+From the repo root:
+```bash
+make -C eval
+```
+This runs the suffixed evaluation and learning-curve pipelines for Full 150, New 30, and Original 120, regenerating metrics, figures, and statistical test workbooks. Unsuffixed artifacts are not produced.
 
-## Configuration (`eval/config.py`)
-- Defines file locations for the merged dataset, GPT‑5 responses, and all outputs.
-- Groups model columns into families (`MODEL_GROUPS`) and lists evaluation scenarios (`SCENARIOS`). Each scenario specifies:
-  * The human reference column.
-  * Which model columns to compare.
-  * Whether to collapse “special no” answers (None/Not reported/0/etc.) into `no`.
-  * Optional filtering on question type (e.g., Boolean only).
-  * Footnotes that are appended to generated figures/tables.
+This folder scores model outputs against human answers and emits metrics, details, figures, and statistical tests. All outputs are suffix-specific (e.g., `full150`, `new30`, `original120`) to avoid ambiguity.
 
-## Constants (`eval/constants.py`)
-- Provides the vocabulary that powers normalization and scoring:
-  * Synonym sets for `yes`/`no`, negation phrases, lab-only contexts, text/drug/gene variants, and “special no” tokens.
-  * Numeric word mappings and scale words to recover numbers written as text.
-  * Threshold for partial list credit (`LIST_PARTIAL_THRESHOLD`) and cue words that implicitly signal positive Boolean answers (`BOOLEAN_POSITIVE_CUES`).
+## Key scripts
+- `evaluation.py`: end-to-end scoring for a merged answer sheet. Outputs per-suffix metrics CSVs, detailed evaluation CSVs, figures (`eval/figures/*_<suffix>-*.png`), and a combined stats workbook `statistical_tests_<suffix>.xlsx` (sheets: Paired Tests, Fisher Exact Test).
+- `learning-curve/06_evaluate_learning_curve.py`: same stack for learning-curve runs; writes `learning_curve_metrics_<suffix>.csv`, `learning_curve_details_<suffix>.csv`, `learning_curve_summary_<suffix>.json`, `statistical_tests<suffix>.xlsx`, and significance JSON.
+- `learning-curve/07_plot_learning_curve.py`: renders learning-curve figures (`learning-curve_<suffix>-bar-chart.png`/`table.png`) from the suffixed metrics/significance files.
 
-## Normalization & Scoring Helpers (`eval/normalize.py`)
-- `canonicalize_answer` cleans every reference/model answer by:
-  * Pulling off leading “Answer:” prefixes.
-  * Collapsing recognized Boolean variants to `yes`/`no`.
-  * Normalizing numbers or year ranges (with optional conversion of `0`/“None” to `no`).
-  * Sorting and deduplicating list tokens, while mapping drug/gene synonyms to canonical forms.
-- Extra utilities detect negations, lab-only phrases, numeric mentions (digits or words), year references, and synonym-expanded list matches. These signals support lenient scoring.
-- `human_answer_counts` dispatches each question to a handler based on `Type`:
-  * **Boolean:** Positive human answers grant TP if either the normalized token is `yes` or the raw model text contains scenario-specific positive cues; negatives are TN unless the model says `yes`.
-  * **List:** Non-empty human lists award TP when the model reproduces every token (exact match) or, in the more permissive scenario, when at least 66 % of the tokens are present. Empty human answers become TN when the model is empty, negated, or restricted to lab-only contexts; otherwise FP.
-  * **Number:** Non-zero references require any overlapping number between human/model texts (or exact list equivalence) to earn TP; zero/empty references produce TN when the model negates or is also zero.
-  * **Generic fallback:** Empty human answers + empty/negated model → TN; otherwise TP requires list equality, else FN.
+## Core helpers
+- `config.py`: paths and model groupings.
+- `constants.py`: synonym maps and normalization vocab.
+- `normalize.py`: canonicalization and matching utilities.
+- `scoring.py`: dataset loading, per-row scoring, aggregation.
+- `plots.py`: shared figure rendering (titles include dataset label derived from the suffix).
 
-## Dataset Loading & Metric Aggregation (`eval/scoring.py`)
-- `load_dataset` merges the human spreadsheet with GPT‑5 responses, normalizes identifiers, and adds convenience columns.
-- `ensure_norm` caches canonicalized columns so multiple scenarios reuse the work.
-- `evaluate_model` iterates rows, invokes `human_answer_counts`, accumulates TP/FP/TN/FN, and derives accuracy/precision/recall/F1.
-- `evaluate_group` applies `evaluate_model` to every model in a scenario, tagging results with scenario metadata.
-- `build_detail_rows` produces a per-question audit table containing raw answers and a binary correctness flag per model.
+## Make targets (suffixed only)
+Run from repo root: `make -C eval`
+- `evaluation_full150`, `evaluation_new30`, `evaluation_original120`
+- `learning_curve_full150`, `learning_curve_new30`
+- `plot_learning_curve_full150`, `plot_learning_curve_new30`
+All of these recompute metrics, figures, and the stats workbooks for their suffix.
 
-## Orchestration (`eval/evaluation.py`)
-- Loads the dataset, applies optional row limits, and loops through all scenarios.
-- For each scenario it filters rows (when requested), normalizes the necessary columns, evaluates each model, appends detailed per-question rows, and queues figure specifications.
-- After all scenarios run, it writes (under `eval/results/`):
-  * `evaluation_metrics.csv` — stacked model/scenario metrics (including TP/FP/TN/FN counts).
-  * `detailed_evaluation.csv` — per-question correctness table for manual inspection.
+## Inputs
+- Merged answers: `advanced-prompting/csv/merged_answers_full_150.xlsx`, `merged_answers_new30.xlsx`, `merged_answers_original_120.xlsx`
+- GPT-5 responses: `eval/gpt-5/gpt5_responses.csv`
+- Learning-curve responses: `eval/learning-curve/responses/*`
 
-## Visualization (`eval/plots.py`)
-- `generate_figures` creates, per scenario, a bar chart of accuracies and a table of accuracy/precision/recall/F1.
-- Footnotes from the scenario configuration are rendered beneath both outputs, and files are saved under `eval/figures/` using slugified titles.
+## Outputs (examples)
+- `eval/results/evaluation_metrics_full150.csv`
+- `eval/results/detailed_evaluation_full150.csv`
+- `eval/results/statistical_tests_full150.xlsx`
+- `eval/figures/exact-match_full150-bar-chart.png`, `partial-match_full150-table.png`
+- `eval/learning-curve/results/learning_curve_metrics_full150.csv`
+- `eval/learning-curve/results/statistical_tests_full150.xlsx`
+- `eval/learning-curve/figures/learning-curve_full150-bar-chart.png`
 
-## Typical Workflow
-1. Ensure `advanced-prompting/merged_answers.xlsx` and `eval/gpt5_responses.csv` are up to date.
-2. Run `python eval/evaluation.py` (optionally with `--limit N` during debugging).
-3. Inspect `eval/results/evaluation_metrics.csv`, `eval/results/detailed_evaluation.csv`, and the generated figures for insights or auditing borderline TP/FN cases.
+Use the suffix variants (`*_new30`, `*_original120`) for the other datasets. Unsuffixed artifacts have been removed and are no longer generated.***

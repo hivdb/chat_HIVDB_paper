@@ -5,100 +5,100 @@
       "label": "FT-50",
       "responses": "eval/learning-curve/responses/size050_new30_responses.csv",
       "column": "GPT-4o FT-50",
-      "accuracy": 0.8083333333333333,
-      "precision": 0.875,
-      "recall": 0.7631578947368421,
-      "f1": 0.8152610441767069
+      "accuracy": 0.8166666666666667,
+      "precision": 0.8771186440677966,
+      "recall": 0.7781954887218046,
+      "f1": 0.8247011952191234
     },
     {
       "family": "GPT-4o",
       "label": "FT-100",
       "responses": "eval/learning-curve/responses/size100_new30_responses.csv",
       "column": "GPT-4o FT-100",
-      "accuracy": 0.8,
-      "precision": 0.8794642857142857,
-      "recall": 0.7406015037593985,
-      "f1": 0.8040816326530613
+      "accuracy": 0.80625,
+      "precision": 0.8810572687224669,
+      "recall": 0.7518796992481203,
+      "f1": 0.8113590263691683
     },
     {
       "family": "GPT-4o",
       "label": "FT-150",
       "responses": "eval/learning-curve/responses/size150_new30_responses.csv",
       "column": "GPT-4o FT-150",
-      "accuracy": 0.8020833333333334,
-      "precision": 0.8904109589041096,
-      "recall": 0.7330827067669173,
-      "f1": 0.8041237113402062
+      "accuracy": 0.8083333333333333,
+      "precision": 0.8918918918918919,
+      "recall": 0.7443609022556391,
+      "f1": 0.8114754098360655
     },
     {
       "family": "GPT-4o",
       "label": "FT-200",
       "responses": "eval/learning-curve/responses/size200_new30_responses.csv",
       "column": "GPT-4o FT-200",
-      "accuracy": 0.7916666666666666,
-      "precision": 0.8738738738738738,
-      "recall": 0.7293233082706767,
-      "f1": 0.7950819672131147
+      "accuracy": 0.8,
+      "precision": 0.8761061946902655,
+      "recall": 0.7443609022556391,
+      "f1": 0.8048780487804879
     },
     {
       "family": "GPT-4o",
       "label": "FT",
       "responses": "eval/learning-curve/responses/ft_new30_responses.csv",
       "column": "GPT-4o FT",
-      "accuracy": 0.775,
-      "precision": 0.8185483870967742,
-      "recall": 0.7631578947368421,
-      "f1": 0.7898832684824902
+      "accuracy": 0.78125,
+      "precision": 0.8207171314741036,
+      "recall": 0.7744360902255639,
+      "f1": 0.7969052224371374
     },
     {
       "family": "GPT-4o",
       "label": "base",
       "responses": "eval/learning-curve/responses/base_new30_responses.csv",
       "column": "GPT-4o base",
-      "accuracy": 0.73125,
-      "precision": 0.7546468401486989,
-      "recall": 0.7631578947368421,
-      "f1": 0.7588785046728972
+      "accuracy": 0.7333333333333333,
+      "precision": 0.7555555555555555,
+      "recall": 0.7669172932330827,
+      "f1": 0.7611940298507462
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-50",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 50_parsed.csv",
       "column": "Llama3.1-70B FT-50",
-      "accuracy": 0.7875,
-      "precision": 0.8106060606060606,
-      "recall": 0.8045112781954887,
-      "f1": 0.8075471698113208
+      "accuracy": 0.79375,
+      "precision": 0.8127340823970037,
+      "recall": 0.8157894736842105,
+      "f1": 0.8142589118198874
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-100",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 100_parsed.csv",
       "column": "Llama3.1-70B FT-100",
-      "accuracy": 0.7854166666666667,
-      "precision": 0.8052434456928839,
-      "recall": 0.8082706766917294,
-      "f1": 0.8067542213883677
+      "accuracy": 0.7895833333333333,
+      "precision": 0.8066914498141264,
+      "recall": 0.8157894736842105,
+      "f1": 0.811214953271028
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-150",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 150_parsed.csv",
       "column": "Llama3.1-70B FT-150",
-      "accuracy": 0.76875,
-      "precision": 0.8087649402390438,
-      "recall": 0.7631578947368421,
-      "f1": 0.7852998065764023
+      "accuracy": 0.7770833333333333,
+      "precision": 0.8117647058823529,
+      "recall": 0.7781954887218046,
+      "f1": 0.7946257197696738
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-200",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 200_parsed.csv",
       "column": "Llama3.1-70B FT-200",
-      "accuracy": 0.7729166666666667,
-      "precision": 0.8007662835249042,
-      "recall": 0.7857142857142857,
-      "f1": 0.793168880455408
+      "accuracy": 0.78125,
+      "precision": 0.8037735849056604,
+      "recall": 0.8007518796992481,
+      "f1": 0.8022598870056498
     }
   ]
 }

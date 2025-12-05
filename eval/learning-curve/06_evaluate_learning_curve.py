@@ -404,6 +404,7 @@ def main() -> int:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     metrics_path = args.output_dir / f"learning_curve_metrics{suffix}.csv"
     details_path = args.output_dir / f"learning_curve_details{suffix}.csv"
+    stat_xlsx_path = args.output_dir / f"statistical_tests{suffix}.xlsx"
     metrics.to_csv(metrics_path, index=False, encoding="utf-8-sig")
     pd.DataFrame(detail_rows).to_csv(details_path, index=False, encoding="utf-8-sig")
 
@@ -446,7 +447,8 @@ def main() -> int:
     with summary_path.open("w", encoding="utf-8") as outfile:
         json.dump({"runs": summary}, outfile, indent=2)
 
-    stats_path = args.output_dir / f"learning_curve_pairwise_stats{suffix}.csv"
+    stats_path = None  # legacy CSV disabled
+    fisher_path = None  # legacy CSV disabled
     significance_path = args.output_dir / f"learning_curve_significance{suffix}.json"
     comparisons = {}
     for family, mapping in family_model_to_column.items():
@@ -456,6 +458,11 @@ def main() -> int:
         if overall_qid is not None and not overall_qid.empty:
             metrics_to_test = ["accuracy", "precision", "recall"]
             stats_df, wilcoxon_map, ttest_map = stat_utils.compute_pairwise_tests(
+                overall_qid,
+                comparisons,
+                metrics_to_test,
+            )
+            fisher_df = stat_utils.compute_fisher_tests(
                 overall_qid,
                 comparisons,
                 metrics_to_test,
@@ -471,9 +478,13 @@ def main() -> int:
                         if (family, comparison) in wilcoxon_map[metric]:
                             wilcoxon_map[metric][(family, comparison)] = value
                             logging.info("Aligned %s %s vs %s wilcoxon p-value with baseline results", metric, family, comparison)
-            if not stats_df.empty:
-                stats_df.to_csv(stats_path, index=False, encoding="utf-8-sig")
-                logging.info("Wrote learning-curve pairwise stats to %s", stats_path)
+            if (fisher_df is not None and not fisher_df.empty) or not stats_df.empty:
+                with pd.ExcelWriter(stat_xlsx_path, engine="openpyxl") as writer:
+                    if not stats_df.empty:
+                        stats_df.to_excel(writer, sheet_name="Paired Tests", index=False)
+                    if fisher_df is not None and not fisher_df.empty:
+                        fisher_df.to_excel(writer, sheet_name="Fisher Exact Test", index=False)
+                logging.info("Wrote combined statistical tests to %s", stat_xlsx_path)
             if wilcoxon_map:
                 # Remove FT-50 vs base for Precision metric
                 if "precision" in wilcoxon_map:
@@ -512,8 +523,8 @@ def main() -> int:
     print(f"Metrics written to {metrics_path}")
     print(f"Details written to {details_path}")
     print(f"Summary written to {summary_path}")
-    if stats_path.exists():
-        print(f"Pairwise stats written to {stats_path}")
+    if stat_xlsx_path.exists():
+        print(f"Statistical tests workbook written to {stat_xlsx_path}")
     if significance_path.exists():
         print(f"Significance map written to {significance_path}")
     return 0

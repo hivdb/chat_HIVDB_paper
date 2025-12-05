@@ -193,6 +193,7 @@ def _annotate_significance(
             p_value = metric_map.get((family, target_suffix))
             if p_value is None:
                 continue
+            # Blanket policy: skip annotation when target metric is lower than base
             if metric_values is not None:
                 target_val = metric_values.get(target)
                 if base_val is not None and target_val is not None and target_val < base_val:
@@ -354,19 +355,21 @@ def generate_figures(
     significance=None,
     comparisons=None,
     base_name: str | None = None,
+    display_title: str | None = None,
 ) -> None:
     """Render accuracy bar chart and metrics table per scenario."""
     if subset.empty:
         return
     output_dir.mkdir(parents=True, exist_ok=True)
     slug = base_name or slugify(scenario)
+    title = display_title or scenario
     plot_metric_panels(
         subset,
         qid_df=None,
-        title=scenario,
+        title=title,
         output_path=output_dir / f"{slug}-bar-chart.png",
         significance=significance,
         comparisons=comparisons or FAMILY_COMPARISONS,
         layout="vertical",
     )
-    save_table(subset, f"{scenario} Metrics", output_dir / f"{slug}-table.png")
+    save_table(subset, f"{title} Metrics", output_dir / f"{slug}-table.png")

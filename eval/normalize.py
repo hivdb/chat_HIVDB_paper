@@ -118,6 +118,7 @@ def _canonical_list(lowered: str, raw: str) -> str:
 
 
 _expansion_cache: dict[tuple[str, bool], list[str]] = {}
+_OPTIONAL_BOOSTERS = {"ritonavir", "rtv", "cobicistat", "cobi", "c"}
 
 
 def _expand_token(token: str, for_match: bool = False) -> List[str]:
@@ -165,10 +166,10 @@ def _expand_token(token: str, for_match: bool = False) -> List[str]:
     normalized_tokens = []
     for t in tokens:
         cleaned = NON_ALPHANUM.sub(" ", t.lower()).strip()
-        normalized_tokens.append(cleaned)
         stripped = _normalize_ritonavir_suffix(cleaned)
-        if stripped and stripped != cleaned:
-            normalized_tokens.append(stripped)
+        if not stripped or stripped in _OPTIONAL_BOOSTERS:
+            continue
+        normalized_tokens.append(stripped)
     result = [t for t in normalized_tokens if t]
     _expansion_cache[cache_key] = result
     return result
@@ -261,13 +262,20 @@ def _token_matches(token: str, haystack: str) -> bool:
 
 
 def _normalize_ritonavir_suffix(text: str) -> str:
-    """Strip optional ritonavir suffixes from drug names."""
+    """Strip optional booster suffixes (ritonavir/cobicistat) from drug names."""
     if not text:
         return text
-    # Remove /r, /ritonavir, or comma-separated ritonavir
-    normalized = re.sub(r'\s*/\s*r(?:itonavir)?\s*$', '', text, flags=re.IGNORECASE)
-    normalized = re.sub(r'\s*,\s*r(?:itonavir)?\s*$', '', normalized, flags=re.IGNORECASE)
-    normalized = re.sub(r'\s+ritonavir\s*$', '', normalized, flags=re.IGNORECASE)
+    normalized = text
+    for booster in _OPTIONAL_BOOSTERS:
+        patterns = [
+            rf'\s*/\s*{booster}\s*$',  # /r, /c, /cobi, etc.
+            rf'\s*,\s*{booster}\s*$',  # , ritonavir
+            rf'\s+boosted\s+with\s+{booster}\s*$',  # boosted with cobicistat
+            rf'\s+{booster}\s*$',  # trailing booster word
+            rf'^{booster}\s*$',  # booster alone
+        ]
+        for pattern in patterns:
+            normalized = re.sub(pattern, '', normalized, flags=re.IGNORECASE)
     return normalized.strip()
 
 

@@ -48,18 +48,17 @@ python eval/learning-curve/query_finetuned.py \
 ## 4. Score the runs with the existing evaluation stack
 
 ```bash
-python eval/learning-curve/evaluate_learning_curve.py \
+python eval/learning-curve/06_evaluate_learning_curve.py \
   --responses size050=eval/learning-curve/responses/size050_responses.csv \
              size100=eval/learning-curve/responses/size100_responses.csv \
-             size150=eval/learning-curve/responses/size150_responses.csv
+             size150=eval/learning-curve/responses/size150_responses.csv \
+  --output-suffix full150 \
+  --merged-path advanced-prompting/csv/merged_answers_full_150.xlsx
 ```
 
 * Loads the merged answer sheet via `eval.scoring.load_dataset`, injects each run as a new column (prefix `GPT-4o LC` by default), and reuses the same scenarios defined in `eval/config.py` (overall, Boolean only, list exact, and list partial).
-* Produces three outputs under `eval/learning-curve/results/`:
-  * `learning_curve_metrics.csv` — stacked metrics for every scenario.
-  * `learning_curve_details.csv` — per-question correctness flags for auditing.
-  * `learning_curve_summary.json` — shortcut view of overall accuracy/precision/recall/F1 per subset size.
-* If you omit `--responses`, the script auto-discovers every `*_responses.csv` under `eval/learning-curve/responses/`, so the one-liner `python eval/learning-curve/evaluate_learning_curve.py` will “just work” after you gather the three runs.
+* Produces metrics/details/summary under `eval/learning-curve/results/` with whatever suffix you pass (e.g., `learning_curve_metrics_full150.csv`, `learning_curve_details_full150.csv`, `learning_curve_summary_full150.json`). Use `--output-suffix original120 --merged-path advanced-prompting/csv/merged_answers_original_120.xlsx` to score the original 120-paper set. The unsuffixed outputs have been removed to avoid ambiguity; rely on the suffixed files for each dataset.
+* If you omit `--responses`, the script auto-discovers every `*_responses.csv` under `eval/learning-curve/responses/`, so the one-liner `python eval/learning-curve/06_evaluate_learning_curve.py --output-suffix full150 --merged-path ...` will “just work” after you gather the runs.
 
 ## Environment requirements
 

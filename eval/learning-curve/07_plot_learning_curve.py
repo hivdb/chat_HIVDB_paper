@@ -21,11 +21,10 @@ for path in (ROOT, ROOT_PARENT):
 from eval.plots import generate_figures  # type: ignore
 
 
-LC_RESULTS = LC_DIR / "results/learning_curve_metrics.csv"
-BASE_RESULTS = ROOT / "eval/results/evaluation_metrics.csv"
+LC_RESULTS = LC_DIR / "results/learning_curve_metrics_full150.csv"
+BASE_RESULTS = ROOT / "eval/results/evaluation_metrics_full150.csv"
 OUTPUT_DIR = LC_DIR / "figures"
-COMBINED_CSV = LC_DIR / "results/learning_curve_overall_combined.csv"
-SIGNIFICANCE_JSON = LC_DIR / "results/learning_curve_significance.json"
+SIGNIFICANCE_JSON = LC_DIR / "results/learning_curve_significance_full150.json"
 
 DISPLAY_SLOTS = [
     ("GPT-4o base", 0, ["GPT-4o base"]),
@@ -48,7 +47,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--metrics", type=Path, default=None, help="Learning-curve metrics CSV.")
     parser.add_argument("--base-results", type=Path, default=None, help="Base evaluation metrics CSV.")
     parser.add_argument("--output-dir", type=Path, default=None, help="Directory for figure outputs.")
-    parser.add_argument("--combined-csv", type=Path, default=None, help="Combined metrics CSV output path.")
     parser.add_argument("--significance", type=Path, default=None, help="Significance JSON path.")
     parser.add_argument("--suffix", type=str, default="", help="Suffix appended to output filenames (e.g., new30).")
     parser.add_argument("--title", type=str, default="Learning Curve Analysis", help="Plot title.")
@@ -116,7 +114,6 @@ def main() -> int:
     lc_results = args.metrics or LC_RESULTS
     base_results = args.base_results or BASE_RESULTS
     output_dir = args.output_dir or OUTPUT_DIR
-    combined_csv = args.combined_csv or COMBINED_CSV.with_name(f"{COMBINED_CSV.stem}{suffix}{COMBINED_CSV.suffix}")
     significance_json = args.significance or SIGNIFICANCE_JSON.with_name(f"{SIGNIFICANCE_JSON.stem}{suffix}{SIGNIFICANCE_JSON.suffix}")
 
     combined = build_combined(lc_results, base_results)
@@ -124,8 +121,6 @@ def main() -> int:
         print("No learning-curve metrics available.")
         return 1
     significance, comparisons = load_significance(significance_json)
-    combined_csv.parent.mkdir(parents=True, exist_ok=True)
-    combined.to_csv(combined_csv, index=False)
     base_name = f"learning-curve{suffix}" if suffix else "learning-curve"
     generate_figures(
         combined,
@@ -135,7 +130,6 @@ def main() -> int:
         comparisons=comparisons,
         base_name=base_name,
     )
-    print(f"Wrote combined metrics to {combined_csv}")
     print(f"Figures saved to {output_dir}")
     return 0
 
