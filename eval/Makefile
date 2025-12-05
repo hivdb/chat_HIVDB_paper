@@ -20,6 +20,7 @@ LC_RESP_BASE_NEW30 = $(REPO_ROOT)/eval/learning-curve/responses/base_new30_respo
 LC_RESP_SIZE050_FULL150 = $(REPO_ROOT)/eval/learning-curve/responses/size050_full150_responses.csv
 LC_RESP_SIZE100_FULL150 = $(REPO_ROOT)/eval/learning-curve/responses/size100_full150_responses.csv
 LC_RESP_SIZE150_FULL150 = $(REPO_ROOT)/eval/learning-curve/responses/size150_full150_responses.csv
+LC_RESP_SIZE200_FULL150 = $(REPO_ROOT)/eval/learning-curve/responses/size200_full150_responses.csv
 
 all: datasets evaluation evaluation_new30 evaluation_full150 evaluation_original120 learning_curve learning_curve_new30 learning_curve_full150 plot_learning_curve plot_learning_curve_new30 plot_learning_curve_full150 failure_prev analysis_by_qid error_types
 
@@ -54,7 +55,8 @@ learning_curve_full150: datasets
 	$(PYTHON) learning-curve/06_evaluate_learning_curve.py --merged-path $(MERGED_FULL150) --output-suffix full150 \
 		--responses size050=$(LC_RESP_SIZE050_FULL150) \
 		--responses size100=$(LC_RESP_SIZE100_FULL150) \
-		--responses size150=$(LC_RESP_SIZE150_FULL150)
+		--responses size150=$(LC_RESP_SIZE150_FULL150) \
+		--responses size200=$(LC_RESP_SIZE200_FULL150)
 
 plot_learning_curve: learning_curve
 	$(PYTHON) learning-curve/07_plot_learning_curve.py
