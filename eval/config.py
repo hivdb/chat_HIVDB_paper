@@ -43,6 +43,26 @@ MODEL_GROUPS = {
 ALL_MODEL_COLUMNS = sorted({model for models in MODEL_GROUPS.values() for model in models})
 
 COLUMN_RENAMES = {
+    # Collaborator-provided column names
+    "Human-Answer": "Human Answer",
+    "gpt-4o-mini base": "GPT-4o base",
+    "gpt-4o-mini-FT": "GPT-4o FT",
+    "gpt-4o-mini-FT 50": "GPT-4o FT-50",
+    "gpt-4o-mini-FT 100": "GPT-4o FT-100",
+    "gpt-4o-mini-FT 150": "GPT-4o FT-150",
+    "gpt-4o-mini-FT 200": "GPT-4o FT-200",
+    "gpt-4o-mini PV1": "GPT-4o QSP",
+    "llama-3.1-8B base": "Llama3.1-8B base",
+    "llama-3.1-8B-FT": "Llama3.1-8B FT",
+    "llama-3.1-8B PV1": "Llama3.1-8B QSP",
+    "llama-3.1-70B base": "Llama3.1-70B base",
+    "llama-3.1-70B-FT 50": "Llama3.1-70B FT-50",
+    "llama-3.1-70B-FT 100": "Llama3.1-70B FT-100",
+    "llama-3.1-70B-FT 150": "Llama3.1-70B FT-150",
+    "llama-3.1-70B-FT 200": "Llama3.1-70B FT-200",
+    "llama-3.1-70B-FT": "Llama3.1-70B FT",
+    "llama-3.1-70B PV1": "Llama3.1-70B QSP",
+    # Legacy
     "GPT-4o FT (100)": "GPT-4o FT-100",
     "GPT-4o Question-specific Prompt": "GPT-4o QSP",
     "GPT-4o PV1": "GPT-4o QSP",

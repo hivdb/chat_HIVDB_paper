@@ -24,30 +24,30 @@ ADV_CSV = ROOT / "advanced-prompting" / "csv"
 ADV_TEST = ROOT / "advanced-prompting" / "test"
 
 BASE_MERGED = ADV_CSV / "merged_answers.xlsx"
-NEW30_HUMAN = ADV_TEST / "2025_new30.xlsx"
-S4TABLE = ADV_CSV / "S4Table.xlsx"  # Canonical QID ordering
-PV1_QUESTIONS = ADV_CSV / "gpt-4o-mini-2024-07-18_PV1_new30.xlsx"
 OUTPUT_NEW30 = ADV_CSV / "merged_answers_new30.xlsx"
 OUTPUT_FULL = ADV_CSV / "merged_answers_full_150.xlsx"
 
-MODEL_SOURCES_NEW30: Dict[str, tuple[Path, str | None, bool]] = {
-    # GPT-4o base/FT/PV1 use wrong QID ordering, need remapping to S4Table
-    "GPT-4o base": (ROOT / "eval/learning-curve/responses/base_new30_responses.csv", "Answer", True),
-    "GPT-4o FT": (ROOT / "eval/learning-curve/responses/ft_new30_responses.csv", "Answer", True),
-    "GPT-4o PV1": (ADV_CSV / "gpt-4o-mini-2024-07-18_PV1_new30.xlsx", None, True),
-    # Llama QSP (PV1) models already use correct S4Table ordering - NO remapping needed
-    "llama-3.1-70B PV1": (ADV_CSV / "llama-3.1-70B-PV1_new30_parsed.csv", None, False),
-    "llama-3.1-8B PV1": (ADV_CSV / "llama-3.1-8B-PV1_new30_parsed.csv", None, False),
-    # Check if Llama base/FT use correct ordering (likely need remapping if from similar pipeline as GPT)
-    "Llama3.1-70B base": (ADV_CSV / "llama-3.1-70B-base_new30_parsed.csv", None, True),
-    "Llama3.1-70B FT": (ADV_CSV / "llama-3.1-70B-FT_new30_parsed.csv", None, True),
-    "Llama3.1-8B base": (ADV_CSV / "llama-3.1-8B-base_new30_parsed.csv", None, True),
-    "Llama3.1-8B FT": (ADV_CSV / "llama-3.1-8B-FT_new30_parsed.csv", None, True),
-    # Learning-curve intermediate columns
-    "llama-3.1-70B-FT 50": (ADV_CSV / "llama-3.1-70B-FT 50_new30_parsed.csv", None, True),
-    "llama-3.1-70B-FT 100": (ADV_CSV / "llama-3.1-70B-FT 100_new30_parsed.csv", None, True),
-    "llama-3.1-70B-FT 150": (ADV_CSV / "llama-3.1-70B-FT 150_new30_parsed.csv", None, True),
-    "llama-3.1-70B-FT 200": (ADV_CSV / "llama-3.1-70B-FT 200_new30_parsed.csv", None, True),
+PAPERS_DIR = ADV_CSV.parent / "papers"
+NEW30_PAPERS_DIR = ADV_CSV.parent / "papers_2025_30"
+
+# Map collaborator column names to the canonical evaluation names.
+COLUMN_RENAMES: Dict[str, str] = {
+    "Human-Answer": "Human Answer",
+    "gpt-4o-mini base": "GPT-4o base",
+    "gpt-4o-mini-FT": "GPT-4o FT",
+    "gpt-4o-mini-FT 50": "GPT-4o FT-50",
+    "gpt-4o-mini-FT 100": "GPT-4o FT-100",
+    "gpt-4o-mini-FT 150": "GPT-4o FT-150",
+    "gpt-4o-mini-FT 200": "GPT-4o FT-200",
+    "gpt-4o-mini PV1": "GPT-4o QSP",
+    "llama-3.1-8B base": "Llama3.1-8B base",
+    "llama-3.1-8B-FT": "Llama3.1-8B FT",
+    "llama-3.1-8B PV1": "Llama3.1-8B QSP",
+    "llama-3.1-70B base": "Llama3.1-70B base",
+    "llama-3.1-70B-FT 50": "Llama3.1-70B FT-50",
+    "llama-3.1-70B-FT 100": "Llama3.1-70B FT-100",
+    "llama-3.1-70B-FT 150": "Llama3.1-70B FT-150",
+    "llama-3.1-70B-FT 200": "Llama3.1-70B FT-200",
 }
 
 # Excel forbids certain control characters; strip them before writing workbooks
@@ -140,69 +140,37 @@ def normalize_question(text: str) -> str:
     return " ".join(str(text or "").strip().lower().split())
 
 
-def build_new30_human_rows(base_template: pd.DataFrame) -> pd.DataFrame:
-    """Remap human answers from 2025_new30.xlsx to canonical S4Table QID ordering."""
-    human_df = pd.read_excel(NEW30_HUMAN).rename(columns={"Human answer": "Human Answer"})
-    human_df = normalize_ids(human_df)
+def load_new30_pmids() -> Set[str]:
+    pmids: Set[str] = set()
+    if NEW30_PAPERS_DIR.exists():
+        for entry in NEW30_PAPERS_DIR.iterdir():
+            if entry.is_dir():
+                pmids.add(format_identifier(entry.name))
+    return pmids
 
-    # Get canonical QID mapping from S4Table
-    question_to_qid = get_canonical_qid_mapping()
 
-    # Get Type and Category from base template by matching question text
-    type_map = {
-        normalize_question(row["Question"]): {"Type": row.get("Type", ""), "Category": row.get("Category", "")}
-        for _, row in base_template.iterrows()
-    }
-
-    rows: List[dict] = []
-    remapped_count = 0
-    for _, row in human_df.iterrows():
-        q_norm = normalize_question(row["Question"])
-        canonical_qid = question_to_qid.get(q_norm)
-        if canonical_qid is None:
-            logging.warning("Question not found in S4Table: %s", row["Question"])
-            continue
-        if canonical_qid != int(row["QID"]):
-            remapped_count += 1
-        type_cat = type_map.get(q_norm, {"Type": "", "Category": ""})
-        rows.append(
-            {
-                "PMID": str(row["PMID"]),
-                "QID": canonical_qid,  # Use canonical QID from S4Table
-                "Question": str(row["Question"]).strip(),
-                "Type": type_cat.get("Type", "") or "",
-                "Category": type_cat.get("Category", "") or "",
-                "Human Answer": str(row.get("Human Answer", "")).strip(),
-            }
-        )
-
-    if remapped_count > 0:
-        logging.info("Remapped %d human answer QIDs to match S4Table canonical ordering", remapped_count)
-
-    df = pd.DataFrame(rows)
-    df = normalize_ids(df)
-    for col in ["Type", "Category"]:
-        if col in df.columns:
-            df[col] = df[col].fillna("").astype(str)
-    return df
+def order_columns(df: pd.DataFrame) -> pd.DataFrame:
+    core = ["PMID", "QID", "Question", "Type", "Category", "Human Answer"]
+    rest = [col for col in df.columns if col not in core]
+    return df[core + rest]
 
 
 def build_outputs(base_merged: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    # Clean column names and identifiers
+    base_merged = base_merged.rename(columns=COLUMN_RENAMES)
     base_merged = normalize_ids(base_merged)
-    new30_df = build_new30_human_rows(base_merged)
-    # Align columns to base template
-    new30_df = new30_df.reindex(columns=base_merged.columns, fill_value="")
+    base_merged["QID"] = base_merged["QID"].astype(int)
+    for col in ["Type", "Category", "Human Answer"]:
+        if col in base_merged.columns:
+            base_merged[col] = base_merged[col].fillna("").astype(str)
 
-    new30_df = inject_models(new30_df, MODEL_SOURCES_NEW30)
+    # Split out the new30 PMIDs using the papers_2025_30 directory
+    new30_pmids = load_new30_pmids()
+    new30_df = base_merged[base_merged["PMID"].isin(new30_pmids)].copy()
+    combined = base_merged.copy()
 
-    combined = pd.concat([base_merged, new30_df], ignore_index=True)
-    combined = inject_models(combined, MODEL_SOURCES_NEW30)
-    combined = combined.drop_duplicates(subset=MERGE_KEYS, keep="last")
-
-    # CRITICAL FIX: Convert QID to int for proper numeric sorting in Excel
-    # normalize_ids converts to string via format_identifier, but we need int for sorting
-    new30_df["QID"] = new30_df["QID"].astype(int)
-    combined["QID"] = combined["QID"].astype(int)
+    new30_df = order_columns(new30_df)
+    combined = order_columns(combined)
 
     return new30_df, combined
 
