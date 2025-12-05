@@ -35,14 +35,14 @@
 30,0.9666666666666667,1.0,0.8571428571428571,0.923076923076923,6,23,0,1,Llama3.1-8B base,Exact Match,4,List,What were the GenBank accession numbers for sequenced HIV isolates?
 30,0.9,1.0,0.5714285714285714,0.7272727272727273,4,23,0,3,Llama3.1-8B FT,Exact Match,4,List,What were the GenBank accession numbers for sequenced HIV isolates?
 30,0.9666666666666667,1.0,0.8571428571428571,0.923076923076923,6,23,0,1,Llama3.1-8B QSP,Exact Match,4,List,What were the GenBank accession numbers for sequenced HIV isolates?
-30,0.5,0.7368421052631579,0.5833333333333334,0.6511627906976745,14,1,5,10,GPT-4o base,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
-30,0.5,0.8,0.5,0.6153846153846154,12,3,3,12,GPT-4o FT,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
-30,0.6,0.8333333333333334,0.625,0.7142857142857143,15,3,3,9,GPT-4o QSP,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
+30,0.5333333333333333,0.75,0.625,0.6818181818181818,15,1,5,9,GPT-4o base,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
+30,0.5333333333333333,0.8125,0.5416666666666666,0.65,13,3,3,11,GPT-4o FT,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
+30,0.6333333333333333,0.8421052631578947,0.6666666666666666,0.744186046511628,16,3,3,8,GPT-4o QSP,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
 30,0.6666666666666666,0.8888888888888888,0.6666666666666666,0.761904761904762,16,4,2,8,Llama3.1-70B base,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
-30,0.7,1.0,0.625,0.7692307692307693,15,6,0,9,Llama3.1-70B FT,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
-30,0.6333333333333333,0.8823529411764706,0.625,0.7317073170731708,15,4,2,9,Llama3.1-70B QSP,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
+30,0.7333333333333333,1.0,0.6666666666666666,0.8,16,6,0,8,Llama3.1-70B FT,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
+30,0.6666666666666666,0.8888888888888888,0.6666666666666666,0.761904761904762,16,4,2,8,Llama3.1-70B QSP,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
 30,0.43333333333333335,0.7692307692307693,0.4166666666666667,0.5405405405405406,10,3,3,14,Llama3.1-8B base,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
-30,0.4,0.8,0.3333333333333333,0.47058823529411764,8,4,2,16,Llama3.1-8B FT,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
+30,0.43333333333333335,0.8181818181818182,0.375,0.5142857142857142,9,4,2,15,Llama3.1-8B FT,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
 30,0.6,0.8333333333333334,0.625,0.7142857142857143,15,3,3,9,Llama3.1-8B QSP,Exact Match,5,Number,How many individuals had samples obtained for HIV sequencing?
 30,0.7666666666666667,0.7916666666666666,0.9047619047619048,0.8444444444444444,19,4,5,2,GPT-4o base,Exact Match,6,List,From which countries were the sequenced samples obtained?
 30,0.7666666666666667,0.7916666666666666,0.9047619047619048,0.8444444444444444,19,4,5,2,GPT-4o FT,Exact Match,6,List,From which countries were the sequenced samples obtained?
@@ -179,14 +179,14 @@
 30,0.9666666666666667,1.0,0.8571428571428571,0.923076923076923,6,23,0,1,Llama3.1-8B base,Partial Match,4,List,What were the GenBank accession numbers for sequenced HIV isolates?
 30,0.9,1.0,0.5714285714285714,0.7272727272727273,4,23,0,3,Llama3.1-8B FT,Partial Match,4,List,What were the GenBank accession numbers for sequenced HIV isolates?
 30,0.9666666666666667,1.0,0.8571428571428571,0.923076923076923,6,23,0,1,Llama3.1-8B QSP,Partial Match,4,List,What were the GenBank accession numbers for sequenced HIV isolates?
-30,0.5,0.7368421052631579,0.5833333333333334,0.6511627906976745,14,1,5,10,GPT-4o base,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
-30,0.5,0.8,0.5,0.6153846153846154,12,3,3,12,GPT-4o FT,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
-30,0.6,0.8333333333333334,0.625,0.7142857142857143,15,3,3,9,GPT-4o QSP,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
+30,0.5333333333333333,0.75,0.625,0.6818181818181818,15,1,5,9,GPT-4o base,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
+30,0.5333333333333333,0.8125,0.5416666666666666,0.65,13,3,3,11,GPT-4o FT,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
+30,0.6333333333333333,0.8421052631578947,0.6666666666666666,0.744186046511628,16,3,3,8,GPT-4o QSP,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
 30,0.6666666666666666,0.8888888888888888,0.6666666666666666,0.761904761904762,16,4,2,8,Llama3.1-70B base,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
-30,0.7,1.0,0.625,0.7692307692307693,15,6,0,9,Llama3.1-70B FT,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
-30,0.6333333333333333,0.8823529411764706,0.625,0.7317073170731708,15,4,2,9,Llama3.1-70B QSP,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
+30,0.7333333333333333,1.0,0.6666666666666666,0.8,16,6,0,8,Llama3.1-70B FT,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
+30,0.6666666666666666,0.8888888888888888,0.6666666666666666,0.761904761904762,16,4,2,8,Llama3.1-70B QSP,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
 30,0.43333333333333335,0.7692307692307693,0.4166666666666667,0.5405405405405406,10,3,3,14,Llama3.1-8B base,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
-30,0.4,0.8,0.3333333333333333,0.47058823529411764,8,4,2,16,Llama3.1-8B FT,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
+30,0.43333333333333335,0.8181818181818182,0.375,0.5142857142857142,9,4,2,15,Llama3.1-8B FT,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
 30,0.6,0.8333333333333334,0.625,0.7142857142857143,15,3,3,9,Llama3.1-8B QSP,Partial Match,5,Number,How many individuals had samples obtained for HIV sequencing?
 30,0.7666666666666667,0.7916666666666666,0.9047619047619048,0.8444444444444444,19,4,5,2,GPT-4o base,Partial Match,6,List,From which countries were the sequenced samples obtained?
 30,0.7666666666666667,0.7916666666666666,0.9047619047619048,0.8444444444444444,19,4,5,2,GPT-4o FT,Partial Match,6,List,From which countries were the sequenced samples obtained?

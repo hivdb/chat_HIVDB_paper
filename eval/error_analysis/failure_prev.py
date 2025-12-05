@@ -20,10 +20,8 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-from eval.config import OUTPUT_METRICS_BY_QID  # type: ignore
-
-
-DATA_PATH = OUTPUT_METRICS_BY_QID
+DEFAULT_DATA_PATH = Path(__file__).resolve().parents[1] / "results" / "evaluation_metrics_by_qid_full150.csv"
+DATA_PATH = DEFAULT_DATA_PATH
 SCENARIO_NAME = "Partial Match"
 OUTPUT_DIR = Path(__file__).resolve().parent / "figures"
 
@@ -59,10 +57,10 @@ QID_TOPICS = {
 }
 
 
-def load_data() -> pd.DataFrame:
-    if not DATA_PATH.exists():
-        raise FileNotFoundError(f"Per-QID metrics file missing: {DATA_PATH}")
-    df = pd.read_csv(DATA_PATH)
+def load_data(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        raise FileNotFoundError(f"Per-QID metrics file missing: {path}")
+    df = pd.read_csv(path)
     df = df[df["scenario"] == SCENARIO_NAME].copy()
     if df.empty:
         return df
@@ -167,10 +165,11 @@ def plot_rate_grid(
 
 
 def main() -> int:
+    path = Path(sys.argv[1]) if len(sys.argv) > 1 else DATA_PATH
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    df = load_data()
+    df = load_data(path)
     if df.empty:
-        raise SystemExit(f"No rows found in {DATA_PATH} for scenario '{SCENARIO_NAME}'.")
+        raise SystemExit(f"No rows found in {path} for scenario '{SCENARIO_NAME}'.")
     type_map = df.groupby("QID")["Type"].first()
     question_map = df.groupby("QID")["Question"].first().to_dict()
     qids = sorted(type_map.index.tolist())

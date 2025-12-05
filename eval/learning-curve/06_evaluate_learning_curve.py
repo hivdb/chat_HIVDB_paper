@@ -340,8 +340,7 @@ def main() -> int:
     canonical_path = ROOT / "advanced-prompting/csv/merged_answers.xlsx"
     suffix = args.output_suffix.strip()
     suffix = f"_{suffix}" if suffix else ""
-    if args.pairwise_baseline:
-        config.PAIRWISE_RESULTS = args.pairwise_baseline
+    baseline_path = args.pairwise_baseline
 
     responses = args.responses or discover_default_responses()
     families: List[Tuple[str, List[Tuple[str, Path]]]] = []
@@ -467,7 +466,7 @@ def main() -> int:
                 comparisons,
                 metrics_to_test,
             )
-            baseline_map = load_baseline_wilcoxon(config.PAIRWISE_RESULTS)
+            baseline_map = load_baseline_wilcoxon(baseline_path) if baseline_path else {}
             if baseline_map:
                 for metric, entries in baseline_map.items():
                     if metric not in wilcoxon_map:

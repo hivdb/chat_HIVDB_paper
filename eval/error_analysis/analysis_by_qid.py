@@ -1,16 +1,17 @@
 from __future__ import annotations
 
 import logging
+import sys
 from pathlib import Path
 from typing import Dict
 
 import pandas as pd
 
-from eval import config  # type: ignore
-
 EVAL_DIR = Path(__file__).resolve().parent.parent
-DETAILS_PATH = config.DETAIL_METRICS_HUMAN.with_suffix(".xlsx")
-OUTPUT_PATH = EVAL_DIR / "error_analysis" / "results" / "analysis_by_qid.xlsx"
+RESULTS_DIR = EVAL_DIR / "results"
+
+# Default to full150; allow override via argv
+DEFAULT_SUFFIX = "full150"
 
 COLUMN_ORDER = [
     "PMID",
@@ -44,10 +45,10 @@ SHEET_CONFIG = {
 }
 
 
-def _load_frames() -> Dict[str, pd.DataFrame]:
+def _load_frames(details_path: Path) -> Dict[str, pd.DataFrame]:
     frames = {}
     # Expect a single workbook with two sheets: "Exact Match" and "Partial Match"
-    book = pd.read_excel(DETAILS_PATH, sheet_name=None)
+    book = pd.read_excel(details_path, sheet_name=None)
     partial = book.get("Partial Match", pd.DataFrame())
     exact = book.get("Exact Match", pd.DataFrame())
     frames["partial"] = partial.assign(Scenario="Partial Match")
@@ -68,8 +69,8 @@ def _prepare_sheet(df: pd.DataFrame, qid: int, scenario: str) -> pd.DataFrame:
     return subset
 
 
-def build_workbook(output_path: Path = OUTPUT_PATH) -> None:
-    frames = _load_frames()
+def build_workbook(details_path: Path, output_path: Path) -> None:
+    frames = _load_frames(details_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with pd.ExcelWriter(output_path, engine="openpyxl") as writer:
         for sheet_name, config in SHEET_CONFIG.items():
@@ -88,8 +89,11 @@ def build_workbook(output_path: Path = OUTPUT_PATH) -> None:
 
 def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    build_workbook()
-    logging.info("Saved workbook to %s", OUTPUT_PATH)
+    suffix = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_SUFFIX
+    details_path = RESULTS_DIR / f"detailed_evaluation_{suffix}.xlsx"
+    output_path = EVAL_DIR / "error_analysis" / "results" / f"analysis_by_qid_{suffix}.xlsx"
+    build_workbook(details_path, output_path)
+    logging.info("Saved workbook to %s", output_path)
     return 0
 
 

@@ -356,6 +356,12 @@ def compare_lists(pred_norm: str, ref_norm: str) -> bool:
     Check if prediction exactly matches reference (100% = 100%).
     Both sets must be identical after normalization.
     """
+    # Accept when every reference token is found anywhere in the prediction/haystack,
+    # even if the prediction includes extra text (e.g., full sentences listing the items).
+    matches, total = list_match_stats(ref_norm, pred_norm, "")
+    if total and matches == total:
+        return True
+
     if pred_norm == ref_norm:
         return True
 
