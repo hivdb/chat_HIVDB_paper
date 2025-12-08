@@ -5,80 +5,80 @@
       "label": "FT-50",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size050_full150_responses.csv",
       "column": "GPT-4o FT-50",
-      "accuracy": 0.85,
-      "precision": 0.8490759753593429,
-      "recall": 0.7951923076923076,
-      "f1": 0.8212512413108243
+      "accuracy": 0.8616666666666667,
+      "precision": 0.8702928870292888,
+      "recall": 0.8,
+      "f1": 0.8336673346693387
     },
     {
       "family": "GPT-4o",
       "label": "FT-100",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size100_full150_responses.csv",
       "column": "GPT-4o FT-100",
-      "accuracy": 0.84375,
-      "precision": 0.8563772775991425,
-      "recall": 0.7682692307692308,
-      "f1": 0.809934110491637
+      "accuracy": 0.855,
+      "precision": 0.8769063180827886,
+      "recall": 0.7740384615384616,
+      "f1": 0.822267620020429
     },
     {
       "family": "GPT-4o",
       "label": "FT-150",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size150_full150_responses.csv",
       "column": "GPT-4o FT-150",
-      "accuracy": 0.8404166666666667,
-      "precision": 0.8566775244299675,
-      "recall": 0.7586538461538461,
-      "f1": 0.8046914839367669
+      "accuracy": 0.8483333333333334,
+      "precision": 0.8698030634573304,
+      "recall": 0.7644230769230769,
+      "f1": 0.8137154554759468
     },
     {
       "family": "GPT-4o",
       "label": "FT-200",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size200_full150_responses.csv",
       "column": "GPT-4o FT-200",
-      "accuracy": 0.8525,
-      "precision": 0.85,
-      "recall": 0.8009615384615385,
-      "f1": 0.8247524752475247
+      "accuracy": 0.86875,
+      "precision": 0.8819810326659642,
+      "recall": 0.8048076923076923,
+      "f1": 0.8416289592760181
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-50",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 50_parsed.csv",
       "column": "Llama3.1-70B FT-50",
-      "accuracy": 0.8208333333333333,
-      "precision": 0.7818853974121996,
-      "recall": 0.8134615384615385,
-      "f1": 0.7973609802073516
+      "accuracy": 0.8229166666666666,
+      "precision": 0.7828886844526219,
+      "recall": 0.8182692307692307,
+      "f1": 0.8001880582980724
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-100",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 100_parsed.csv",
       "column": "Llama3.1-70B FT-100",
-      "accuracy": 0.815,
-      "precision": 0.7679856115107914,
-      "recall": 0.8211538461538461,
-      "f1": 0.7936802973977695
+      "accuracy": 0.8166666666666667,
+      "precision": 0.7688172043010753,
+      "recall": 0.825,
+      "f1": 0.7959183673469388
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-150",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 150_parsed.csv",
       "column": "Llama3.1-70B FT-150",
-      "accuracy": 0.8129166666666666,
-      "precision": 0.7703568161024703,
-      "recall": 0.8096153846153846,
-      "f1": 0.7894983591186123
+      "accuracy": 0.8154166666666667,
+      "precision": 0.7716105550500455,
+      "recall": 0.8153846153846154,
+      "f1": 0.7928938756428238
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-200",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 200_parsed.csv",
       "column": "Llama3.1-70B FT-200",
-      "accuracy": 0.8133333333333334,
-      "precision": 0.7657091561938959,
-      "recall": 0.8201923076923077,
-      "f1": 0.7920148560817085
+      "accuracy": 0.8154166666666667,
+      "precision": 0.7667560321715817,
+      "recall": 0.825,
+      "f1": 0.794812413154238
     }
   ]
 }

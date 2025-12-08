@@ -5,20 +5,20 @@
       "label": "FT-50",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size050_new30_responses.csv",
       "column": "GPT-4o FT-50",
-      "accuracy": 0.81875,
-      "precision": 0.8776371308016878,
-      "recall": 0.7819548872180451,
-      "f1": 0.827037773359841
+      "accuracy": 0.83125,
+      "precision": 0.8870292887029289,
+      "recall": 0.7969924812030075,
+      "f1": 0.8396039603960396
     },
     {
       "family": "GPT-4o",
       "label": "FT-100",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size100_new30_responses.csv",
       "column": "GPT-4o FT-100",
-      "accuracy": 0.8083333333333333,
-      "precision": 0.881578947368421,
-      "recall": 0.7556390977443609,
-      "f1": 0.813765182186235
+      "accuracy": 0.81875,
+      "precision": 0.8942731277533039,
+      "recall": 0.7631578947368421,
+      "f1": 0.823529411764706
     },
     {
       "family": "GPT-4o",
@@ -35,30 +35,30 @@
       "label": "FT-200",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size200_new30_responses.csv",
       "column": "GPT-4o FT-200",
-      "accuracy": 0.8020833333333334,
-      "precision": 0.8766519823788547,
-      "recall": 0.7481203007518797,
-      "f1": 0.8073022312373225
+      "accuracy": 0.8125,
+      "precision": 0.8928571428571429,
+      "recall": 0.7518796992481203,
+      "f1": 0.8163265306122449
     },
     {
       "family": "GPT-4o",
       "label": "FT",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/ft_new30_responses.csv",
       "column": "GPT-4o FT",
-      "accuracy": 0.7833333333333333,
-      "precision": 0.8214285714285714,
-      "recall": 0.7781954887218046,
-      "f1": 0.7992277992277992
+      "accuracy": 0.8,
+      "precision": 0.84,
+      "recall": 0.7894736842105263,
+      "f1": 0.8139534883720929
     },
     {
       "family": "GPT-4o",
       "label": "base",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/base_new30_responses.csv",
       "column": "GPT-4o base",
-      "accuracy": 0.7354166666666667,
-      "precision": 0.7564575645756457,
-      "recall": 0.7706766917293233,
-      "f1": 0.7635009310986963
+      "accuracy": 0.7604166666666666,
+      "precision": 0.7849056603773585,
+      "recall": 0.7819548872180451,
+      "f1": 0.783427495291902
     },
     {
       "family": "Llama3.1-70B",
@@ -75,30 +75,30 @@
       "label": "FT-100",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 100_parsed.csv",
       "column": "Llama3.1-70B FT-100",
-      "accuracy": 0.7916666666666666,
-      "precision": 0.8074074074074075,
-      "recall": 0.8195488721804511,
-      "f1": 0.8134328358208956
+      "accuracy": 0.79375,
+      "precision": 0.8081180811808119,
+      "recall": 0.8233082706766918,
+      "f1": 0.8156424581005587
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-150",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 150_parsed.csv",
       "column": "Llama3.1-70B FT-150",
-      "accuracy": 0.7791666666666667,
-      "precision": 0.8125,
-      "recall": 0.7819548872180451,
-      "f1": 0.7969348659003832
+      "accuracy": 0.78125,
+      "precision": 0.8132295719844358,
+      "recall": 0.7857142857142857,
+      "f1": 0.7992351816443594
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-200",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 200_parsed.csv",
       "column": "Llama3.1-70B FT-200",
-      "accuracy": 0.78125,
-      "precision": 0.8037735849056604,
-      "recall": 0.8007518796992481,
-      "f1": 0.8022598870056498
+      "accuracy": 0.7833333333333333,
+      "precision": 0.8045112781954887,
+      "recall": 0.8045112781954887,
+      "f1": 0.8045112781954887
     }
   ]
 }

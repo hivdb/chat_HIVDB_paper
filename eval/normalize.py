@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import unicodedata
 import re
 from typing import List, Tuple
 
@@ -56,9 +57,16 @@ def _clean_answer_text(value: str | float | None) -> str:
     if value is None or (isinstance(value, float) and math.isnan(value)):
         return ""
     text = str(value).strip()
+    text = _strip_accents(text)
     if text.lower().startswith("answer:"):
         text = text[len("answer:") :].strip()
     return text
+
+
+def _strip_accents(text: str) -> str:
+    """Remove diacritics for more reliable matching (e.g., Côte -> Cote)."""
+    normalized = unicodedata.normalize("NFKD", text)
+    return "".join(ch for ch in normalized if not unicodedata.combining(ch))
 
 
 def _canonical_boolean(lowered: str) -> str | None:
@@ -161,7 +169,7 @@ def _expand_token(token: str, for_match: bool = False) -> List[str]:
             tokens.append(gene)
     if for_match:
         tokens.extend(ADDITIONAL_LIST_SYNONYMS.get(token, set()))
-    if not tokens:
+    if base and base not in tokens:
         tokens.append(base)
     normalized_tokens = []
     for t in tokens:
