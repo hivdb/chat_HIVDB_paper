@@ -59,6 +59,7 @@ NEGATIVE_PHRASES = _unique(
         "doesn't mention",
         "does not specify",
         "doesn't specify",
+        "not provided (multicenter trial)",
         "paper does not specify",
         "paper does not indicate",
         "paper does not report",

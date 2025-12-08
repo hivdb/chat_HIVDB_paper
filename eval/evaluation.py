@@ -304,11 +304,58 @@ def main() -> int:
     if partial_details:
         logging.info("Wrote partial-list detail rows to %s", config.DETAIL_METRICS_PARTIAL)
     if not pair_df.empty or not fisher_df.empty:
+        def _drop_qid_cols(df: pd.DataFrame) -> pd.DataFrame:
+            return df[
+                [
+                    c
+                    for c in df.columns
+                    if not (
+                        c.startswith("base_qid_")
+                        or c.startswith("target_qid_")
+                        or c.startswith("p_value_qid_")
+                        or c.startswith("adj_p_qid_")
+                    )
+                ]
+            ].copy()
+
+        def _build_qid_sheet(fisher: pd.DataFrame) -> pd.DataFrame:
+            if fisher.empty:
+                return pd.DataFrame()
+            records: list[dict] = []
+            for _, row in fisher.iterrows():
+                family = row.get("family")
+                comparison = row.get("comparison")
+                metric = row.get("metric")
+                test_name = row.get("test")
+                for col in fisher.columns:
+                    if not col.startswith("p_value_qid_"):
+                        continue
+                    qid = int(col.split("_")[-1])
+                    adj_col = f"adj_p_qid_{qid}"
+                    base_col = f"base_qid_{qid}"
+                    target_col = f"target_qid_{qid}"
+                    records.append(
+                        {
+                            "family": family,
+                            "comparison": comparison,
+                            "metric": metric,
+                            "test": test_name,
+                            "QID": qid,
+                            "base": row.get(base_col),
+                            "target": row.get(target_col),
+                            "p_value": row.get(col),
+                            "adj_p": row.get(adj_col),
+                        }
+                    )
+            return pd.DataFrame(records)
+
         with pd.ExcelWriter(config.STAT_RESULTS, engine="openpyxl") as writer:
             if not pair_df.empty:
-                pair_df.to_excel(writer, sheet_name="Paired Tests", index=False)
+                _drop_qid_cols(pair_df).to_excel(writer, sheet_name="Paired Tests", index=False)
             if not fisher_df.empty:
-                fisher_df.to_excel(writer, sheet_name="Fisher Exact Test", index=False)
+                qid_sheet = _build_qid_sheet(fisher_df)
+                if not qid_sheet.empty:
+                    qid_sheet.to_excel(writer, sheet_name="Fisher Exact Test", index=False)
         logging.info("Wrote combined statistical tests to %s", config.STAT_RESULTS)
     dataset_label = _dataset_label_from_suffix(args.output_suffix)
     for display_title, scenario_title, subset, scenario_qid_df in figures:

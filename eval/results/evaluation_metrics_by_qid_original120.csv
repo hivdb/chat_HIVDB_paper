@@ -71,15 +71,15 @@
 120,0.9416666666666667,0.16666666666666666,0.3333333333333333,0.2222222222222222,1,112,5,2,Llama3.1-8B base,Exact Match,8,Boolean,Were samples cloned prior to sequencing?
 120,0.9583333333333334,0.25,0.3333333333333333,0.28571428571428575,1,114,3,2,Llama3.1-8B FT,Exact Match,8,Boolean,Were samples cloned prior to sequencing?
 120,0.8166666666666667,0.08695652173913043,0.6666666666666666,0.15384615384615383,2,96,21,1,Llama3.1-8B QSP,Exact Match,8,Boolean,Were samples cloned prior to sequencing?
-120,0.6416666666666667,0.9818181818181818,0.5625,0.7152317880794701,54,23,1,42,GPT-4o base,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.7333333333333333,0.9324324324324325,0.71875,0.8117647058823529,69,19,5,27,GPT-4o FT,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.775,0.96,0.75,0.8421052631578947,72,21,3,24,GPT-4o QSP,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.6416666666666667,0.9491525423728814,0.5833333333333334,0.7225806451612903,56,21,3,40,Llama3.1-70B base,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.75,0.9852941176470589,0.6979166666666666,0.8170731707317074,67,23,1,29,Llama3.1-70B FT,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.8166666666666667,0.9512195121951219,0.8125,0.8764044943820225,78,20,4,18,Llama3.1-70B QSP,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.65,0.9821428571428571,0.5729166666666666,0.7236842105263158,55,23,1,41,GPT-4o base,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.7416666666666667,0.9333333333333333,0.7291666666666666,0.8187134502923976,70,19,5,26,GPT-4o FT,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.7666666666666667,0.9594594594594594,0.7395833333333334,0.835294117647059,71,21,3,25,GPT-4o QSP,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.65,0.95,0.59375,0.7307692307692308,57,21,3,39,Llama3.1-70B base,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.7416666666666667,0.9850746268656716,0.6875,0.8098159509202454,66,23,1,30,Llama3.1-70B FT,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.8083333333333333,0.9506172839506173,0.8020833333333334,0.8700564971751413,77,20,4,19,Llama3.1-70B QSP,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
 120,0.6166666666666667,0.9629629629629629,0.5416666666666666,0.6933333333333334,52,22,2,44,Llama3.1-8B base,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.5916666666666667,0.9795918367346939,0.5,0.6620689655172414,48,23,1,48,Llama3.1-8B FT,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.8583333333333333,0.9340659340659341,0.8854166666666666,0.909090909090909,85,18,6,11,Llama3.1-8B QSP,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.6,0.98,0.5104166666666666,0.6712328767123288,49,23,1,47,Llama3.1-8B FT,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.85,0.9333333333333333,0.875,0.9032258064516129,84,18,6,12,Llama3.1-8B QSP,Exact Match,9,List,Which HIV genes were reported to have been sequenced?
 120,0.8666666666666667,0.9772727272727273,0.7413793103448276,0.8431372549019609,43,61,1,15,GPT-4o base,Exact Match,10,List,What method was used for sequencing?
 120,0.9416666666666667,0.9811320754716981,0.896551724137931,0.9369369369369369,52,61,1,6,GPT-4o FT,Exact Match,10,List,What method was used for sequencing?
 120,0.8833333333333333,0.9782608695652174,0.7758620689655172,0.8653846153846154,45,61,1,13,GPT-4o QSP,Exact Match,10,List,What method was used for sequencing?
@@ -89,15 +89,15 @@
 120,0.8083333333333333,0.9487179487179487,0.6379310344827587,0.7628865979381444,37,60,2,21,Llama3.1-8B base,Exact Match,10,List,What method was used for sequencing?
 120,0.7166666666666667,0.8529411764705882,0.5,0.6304347826086956,29,57,5,29,Llama3.1-8B FT,Exact Match,10,List,What method was used for sequencing?
 120,0.8416666666666667,0.8979591836734694,0.7586206896551724,0.822429906542056,44,57,5,14,Llama3.1-8B QSP,Exact Match,10,List,What method was used for sequencing?
-120,0.7333333333333333,0.9743589743589743,0.5507246376811594,0.7037037037037037,38,50,1,31,GPT-4o base,Exact Match,11,List,What type of samples were sequenced?
-120,0.8916666666666667,0.9516129032258065,0.855072463768116,0.900763358778626,59,48,3,10,GPT-4o FT,Exact Match,11,List,What type of samples were sequenced?
-120,0.825,0.9,0.782608695652174,0.8372093023255814,54,45,6,15,GPT-4o QSP,Exact Match,11,List,What type of samples were sequenced?
-120,0.825,0.875,0.8115942028985508,0.8421052631578948,56,43,8,13,Llama3.1-70B base,Exact Match,11,List,What type of samples were sequenced?
-120,0.8583333333333333,1.0,0.7536231884057971,0.859504132231405,52,51,0,17,Llama3.1-70B FT,Exact Match,11,List,What type of samples were sequenced?
-120,0.8083333333333333,0.896551724137931,0.7536231884057971,0.8188976377952756,52,45,6,17,Llama3.1-70B QSP,Exact Match,11,List,What type of samples were sequenced?
-120,0.8166666666666667,0.8983050847457628,0.7681159420289855,0.828125,53,45,6,16,Llama3.1-8B base,Exact Match,11,List,What type of samples were sequenced?
-120,0.8,0.9411764705882353,0.6956521739130435,0.7999999999999999,48,48,3,21,Llama3.1-8B FT,Exact Match,11,List,What type of samples were sequenced?
-120,0.675,0.7083333333333334,0.7391304347826086,0.723404255319149,51,30,21,18,Llama3.1-8B QSP,Exact Match,11,List,What type of samples were sequenced?
+120,0.725,0.9473684210526315,0.5373134328358209,0.6857142857142856,36,51,2,31,GPT-4o base,Exact Match,11,List,What type of samples were sequenced?
+120,0.8833333333333333,0.9344262295081968,0.8507462686567164,0.8906250000000001,57,49,4,10,GPT-4o FT,Exact Match,11,List,What type of samples were sequenced?
+120,0.825,0.8833333333333333,0.7910447761194029,0.8346456692913385,53,46,7,14,GPT-4o QSP,Exact Match,11,List,What type of samples were sequenced?
+120,0.8166666666666667,0.8571428571428571,0.8059701492537313,0.8307692307692308,54,44,9,13,Llama3.1-70B base,Exact Match,11,List,What type of samples were sequenced?
+120,0.8583333333333333,0.9807692307692307,0.7611940298507462,0.8571428571428572,51,52,1,16,Llama3.1-70B FT,Exact Match,11,List,What type of samples were sequenced?
+120,0.8166666666666667,0.8813559322033898,0.7761194029850746,0.8253968253968255,52,46,7,15,Llama3.1-70B QSP,Exact Match,11,List,What type of samples were sequenced?
+120,0.8083333333333333,0.8793103448275862,0.7611940298507462,0.8160000000000001,51,46,7,16,Llama3.1-8B base,Exact Match,11,List,What type of samples were sequenced?
+120,0.8,0.9215686274509803,0.7014925373134329,0.7966101694915254,47,49,4,20,Llama3.1-8B FT,Exact Match,11,List,What type of samples were sequenced?
+120,0.675,0.6944444444444444,0.746268656716418,0.7194244604316546,50,31,22,17,Llama3.1-8B QSP,Exact Match,11,List,What type of samples were sequenced?
 120,0.875,0.9655172413793104,0.6666666666666666,0.7887323943661971,28,77,1,14,GPT-4o base,Exact Match,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?
 120,0.9166666666666666,0.8636363636363636,0.9047619047619048,0.8837209302325582,38,72,6,4,GPT-4o FT,Exact Match,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?
 120,0.9333333333333333,0.9047619047619048,0.9047619047619048,0.9047619047619048,38,74,4,4,GPT-4o QSP,Exact Match,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?
@@ -215,15 +215,15 @@
 120,0.9416666666666667,0.16666666666666666,0.3333333333333333,0.2222222222222222,1,112,5,2,Llama3.1-8B base,Partial Match,8,Boolean,Were samples cloned prior to sequencing?
 120,0.9583333333333334,0.25,0.3333333333333333,0.28571428571428575,1,114,3,2,Llama3.1-8B FT,Partial Match,8,Boolean,Were samples cloned prior to sequencing?
 120,0.8166666666666667,0.08695652173913043,0.6666666666666666,0.15384615384615383,2,96,21,1,Llama3.1-8B QSP,Partial Match,8,Boolean,Were samples cloned prior to sequencing?
-120,0.6416666666666667,0.9818181818181818,0.5625,0.7152317880794701,54,23,1,42,GPT-4o base,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.7333333333333333,0.9324324324324325,0.71875,0.8117647058823529,69,19,5,27,GPT-4o FT,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.775,0.96,0.75,0.8421052631578947,72,21,3,24,GPT-4o QSP,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.6416666666666667,0.9491525423728814,0.5833333333333334,0.7225806451612903,56,21,3,40,Llama3.1-70B base,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.75,0.9852941176470589,0.6979166666666666,0.8170731707317074,67,23,1,29,Llama3.1-70B FT,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.8166666666666667,0.9512195121951219,0.8125,0.8764044943820225,78,20,4,18,Llama3.1-70B QSP,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.65,0.9821428571428571,0.5729166666666666,0.7236842105263158,55,23,1,41,GPT-4o base,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.7416666666666667,0.9333333333333333,0.7291666666666666,0.8187134502923976,70,19,5,26,GPT-4o FT,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.7666666666666667,0.9594594594594594,0.7395833333333334,0.835294117647059,71,21,3,25,GPT-4o QSP,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.65,0.95,0.59375,0.7307692307692308,57,21,3,39,Llama3.1-70B base,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.7416666666666667,0.9850746268656716,0.6875,0.8098159509202454,66,23,1,30,Llama3.1-70B FT,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.8083333333333333,0.9506172839506173,0.8020833333333334,0.8700564971751413,77,20,4,19,Llama3.1-70B QSP,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
 120,0.6166666666666667,0.9629629629629629,0.5416666666666666,0.6933333333333334,52,22,2,44,Llama3.1-8B base,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.5916666666666667,0.9795918367346939,0.5,0.6620689655172414,48,23,1,48,Llama3.1-8B FT,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
-120,0.8583333333333333,0.9340659340659341,0.8854166666666666,0.909090909090909,85,18,6,11,Llama3.1-8B QSP,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.6,0.98,0.5104166666666666,0.6712328767123288,49,23,1,47,Llama3.1-8B FT,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
+120,0.85,0.9333333333333333,0.875,0.9032258064516129,84,18,6,12,Llama3.1-8B QSP,Partial Match,9,List,Which HIV genes were reported to have been sequenced?
 120,0.8666666666666667,0.9772727272727273,0.7413793103448276,0.8431372549019609,43,61,1,15,GPT-4o base,Partial Match,10,List,What method was used for sequencing?
 120,0.9416666666666667,0.9811320754716981,0.896551724137931,0.9369369369369369,52,61,1,6,GPT-4o FT,Partial Match,10,List,What method was used for sequencing?
 120,0.8833333333333333,0.9782608695652174,0.7758620689655172,0.8653846153846154,45,61,1,13,GPT-4o QSP,Partial Match,10,List,What method was used for sequencing?
@@ -233,15 +233,15 @@
 120,0.8083333333333333,0.9487179487179487,0.6379310344827587,0.7628865979381444,37,60,2,21,Llama3.1-8B base,Partial Match,10,List,What method was used for sequencing?
 120,0.7166666666666667,0.8529411764705882,0.5,0.6304347826086956,29,57,5,29,Llama3.1-8B FT,Partial Match,10,List,What method was used for sequencing?
 120,0.8416666666666667,0.8979591836734694,0.7586206896551724,0.822429906542056,44,57,5,14,Llama3.1-8B QSP,Partial Match,10,List,What method was used for sequencing?
-120,0.7333333333333333,0.9743589743589743,0.5507246376811594,0.7037037037037037,38,50,1,31,GPT-4o base,Partial Match,11,List,What type of samples were sequenced?
-120,0.8916666666666667,0.9516129032258065,0.855072463768116,0.900763358778626,59,48,3,10,GPT-4o FT,Partial Match,11,List,What type of samples were sequenced?
-120,0.825,0.9,0.782608695652174,0.8372093023255814,54,45,6,15,GPT-4o QSP,Partial Match,11,List,What type of samples were sequenced?
-120,0.825,0.875,0.8115942028985508,0.8421052631578948,56,43,8,13,Llama3.1-70B base,Partial Match,11,List,What type of samples were sequenced?
-120,0.8583333333333333,1.0,0.7536231884057971,0.859504132231405,52,51,0,17,Llama3.1-70B FT,Partial Match,11,List,What type of samples were sequenced?
-120,0.8083333333333333,0.896551724137931,0.7536231884057971,0.8188976377952756,52,45,6,17,Llama3.1-70B QSP,Partial Match,11,List,What type of samples were sequenced?
-120,0.8166666666666667,0.8983050847457628,0.7681159420289855,0.828125,53,45,6,16,Llama3.1-8B base,Partial Match,11,List,What type of samples were sequenced?
-120,0.8,0.9411764705882353,0.6956521739130435,0.7999999999999999,48,48,3,21,Llama3.1-8B FT,Partial Match,11,List,What type of samples were sequenced?
-120,0.675,0.7083333333333334,0.7391304347826086,0.723404255319149,51,30,21,18,Llama3.1-8B QSP,Partial Match,11,List,What type of samples were sequenced?
+120,0.725,0.9473684210526315,0.5373134328358209,0.6857142857142856,36,51,2,31,GPT-4o base,Partial Match,11,List,What type of samples were sequenced?
+120,0.8833333333333333,0.9344262295081968,0.8507462686567164,0.8906250000000001,57,49,4,10,GPT-4o FT,Partial Match,11,List,What type of samples were sequenced?
+120,0.825,0.8833333333333333,0.7910447761194029,0.8346456692913385,53,46,7,14,GPT-4o QSP,Partial Match,11,List,What type of samples were sequenced?
+120,0.8166666666666667,0.8571428571428571,0.8059701492537313,0.8307692307692308,54,44,9,13,Llama3.1-70B base,Partial Match,11,List,What type of samples were sequenced?
+120,0.8583333333333333,0.9807692307692307,0.7611940298507462,0.8571428571428572,51,52,1,16,Llama3.1-70B FT,Partial Match,11,List,What type of samples were sequenced?
+120,0.8166666666666667,0.8813559322033898,0.7761194029850746,0.8253968253968255,52,46,7,15,Llama3.1-70B QSP,Partial Match,11,List,What type of samples were sequenced?
+120,0.8083333333333333,0.8793103448275862,0.7611940298507462,0.8160000000000001,51,46,7,16,Llama3.1-8B base,Partial Match,11,List,What type of samples were sequenced?
+120,0.8,0.9215686274509803,0.7014925373134329,0.7966101694915254,47,49,4,20,Llama3.1-8B FT,Partial Match,11,List,What type of samples were sequenced?
+120,0.675,0.6944444444444444,0.746268656716418,0.7194244604316546,50,31,22,17,Llama3.1-8B QSP,Partial Match,11,List,What type of samples were sequenced?
 120,0.875,0.9655172413793104,0.6666666666666666,0.7887323943661971,28,77,1,14,GPT-4o base,Partial Match,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?
 120,0.9166666666666666,0.8636363636363636,0.9047619047619048,0.8837209302325582,38,72,6,4,GPT-4o FT,Partial Match,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?
 120,0.9333333333333333,0.9047619047619048,0.9047619047619048,0.9047619047619048,38,74,4,4,GPT-4o QSP,Partial Match,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?

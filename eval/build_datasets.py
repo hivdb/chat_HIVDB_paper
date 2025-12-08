@@ -166,6 +166,18 @@ def build_outputs(base_merged: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame
         if col in base_merged.columns:
             base_merged[col] = base_merged[col].fillna("").astype(str)
 
+    # Normalize question text/type/category to canonical S4Table definitions by QID
+    s4_df = pd.read_excel(S4TABLE)
+    s4_map = {int(row["QID"]): row for _, row in s4_df.iterrows()}
+    def _canon_for(qid: int, field: str, current: str) -> str:
+        entry = s4_map.get(int(qid))
+        if entry is None:
+            return current
+        return str(entry.get(field, current) or current)
+    base_merged["Question"] = base_merged.apply(lambda r: _canon_for(r["QID"], "Question", r.get("Question", "")), axis=1)
+    base_merged["Type"] = base_merged.apply(lambda r: _canon_for(r["QID"], "Type", r.get("Type", "")), axis=1)
+    base_merged["Category"] = base_merged.apply(lambda r: _canon_for(r["QID"], "Category", r.get("Category", "")), axis=1)
+
     # Split out the new30 PMIDs using the papers_2025_30 directory
     new30_pmids = load_new30_pmids()
     new30_df = base_merged[base_merged["PMID"].isin(new30_pmids)].copy()

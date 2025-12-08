@@ -5,10 +5,10 @@
       "label": "FT-50",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size050_full150_responses.csv",
       "column": "GPT-4o FT-50",
-      "accuracy": 0.8504166666666667,
-      "precision": 0.8502564102564103,
-      "recall": 0.7955854126679462,
-      "f1": 0.8220128904313336
+      "accuracy": 0.85,
+      "precision": 0.8490759753593429,
+      "recall": 0.7951923076923076,
+      "f1": 0.8212512413108243
     },
     {
       "family": "GPT-4o",
@@ -16,29 +16,29 @@
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size100_full150_responses.csv",
       "column": "GPT-4o FT-100",
       "accuracy": 0.84375,
-      "precision": 0.857449088960343,
-      "recall": 0.7677543186180422,
-      "f1": 0.810126582278481
+      "precision": 0.8563772775991425,
+      "recall": 0.7682692307692308,
+      "f1": 0.809934110491637
     },
     {
       "family": "GPT-4o",
       "label": "FT-150",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size150_full150_responses.csv",
       "column": "GPT-4o FT-150",
-      "accuracy": 0.8395833333333333,
-      "precision": 0.8574537540805223,
-      "recall": 0.7562380038387716,
-      "f1": 0.8036715961244264
+      "accuracy": 0.8404166666666667,
+      "precision": 0.8566775244299675,
+      "recall": 0.7586538461538461,
+      "f1": 0.8046914839367669
     },
     {
       "family": "GPT-4o",
       "label": "FT-200",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size200_full150_responses.csv",
       "column": "GPT-4o FT-200",
-      "accuracy": 0.8533333333333334,
-      "precision": 0.8513238289205702,
-      "recall": 0.8023032629558541,
-      "f1": 0.826086956521739
+      "accuracy": 0.8525,
+      "precision": 0.85,
+      "recall": 0.8009615384615385,
+      "f1": 0.8247524752475247
     },
     {
       "family": "Llama3.1-70B",
@@ -46,39 +46,39 @@
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 50_parsed.csv",
       "column": "Llama3.1-70B FT-50",
       "accuracy": 0.8208333333333333,
-      "precision": 0.7828096118299446,
-      "recall": 0.8128598848368522,
-      "f1": 0.7975517890772129
+      "precision": 0.7818853974121996,
+      "recall": 0.8134615384615385,
+      "f1": 0.7973609802073516
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-100",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 100_parsed.csv",
       "column": "Llama3.1-70B FT-100",
-      "accuracy": 0.8158333333333333,
-      "precision": 0.7692998204667864,
-      "recall": 0.8224568138195777,
-      "f1": 0.7949907235621522
+      "accuracy": 0.815,
+      "precision": 0.7679856115107914,
+      "recall": 0.8211538461538461,
+      "f1": 0.7936802973977695
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-150",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 150_parsed.csv",
       "column": "Llama3.1-70B FT-150",
-      "accuracy": 0.8133333333333334,
-      "precision": 0.7714808043875686,
-      "recall": 0.8099808061420346,
-      "f1": 0.7902621722846441
+      "accuracy": 0.8129166666666666,
+      "precision": 0.7703568161024703,
+      "recall": 0.8096153846153846,
+      "f1": 0.7894983591186123
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-200",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 200_parsed.csv",
       "column": "Llama3.1-70B FT-200",
-      "accuracy": 0.8141666666666667,
-      "precision": 0.7670250896057348,
-      "recall": 0.8214971209213052,
-      "f1": 0.7933271547729379
+      "accuracy": 0.8133333333333334,
+      "precision": 0.7657091561938959,
+      "recall": 0.8201923076923077,
+      "f1": 0.7920148560817085
     }
   ]
 }

@@ -477,12 +477,59 @@ def main() -> int:
                         if (family, comparison) in wilcoxon_map[metric]:
                             wilcoxon_map[metric][(family, comparison)] = value
                             logging.info("Aligned %s %s vs %s wilcoxon p-value with baseline results", metric, family, comparison)
+            def _drop_qid_cols(df: pd.DataFrame) -> pd.DataFrame:
+                return df[
+                    [
+                        c
+                        for c in df.columns
+                        if not (
+                            c.startswith("base_qid_")
+                            or c.startswith("target_qid_")
+                            or c.startswith("p_value_qid_")
+                            or c.startswith("adj_p_qid_")
+                        )
+                    ]
+                ].copy()
+
+            def _build_qid_sheet(fisher: pd.DataFrame) -> pd.DataFrame:
+                if fisher is None or fisher.empty:
+                    return pd.DataFrame()
+                records = []
+                for _, row in fisher.iterrows():
+                    family = row.get("family")
+                    comparison = row.get("comparison")
+                    metric = row.get("metric")
+                    test_name = row.get("test")
+                    for col in fisher.columns:
+                        if not col.startswith("p_value_qid_"):
+                            continue
+                        qid = int(col.split("_")[-1])
+                        adj_col = f"adj_p_qid_{qid}"
+                        base_col = f"base_qid_{qid}"
+                        target_col = f"target_qid_{qid}"
+                        records.append(
+                            {
+                                "family": family,
+                                "comparison": comparison,
+                                "metric": metric,
+                                "test": test_name,
+                                "QID": qid,
+                                "base": row.get(base_col),
+                                "target": row.get(target_col),
+                                "p_value": row.get(col),
+                                "adj_p": row.get(adj_col),
+                            }
+                        )
+                return pd.DataFrame(records)
+
             if (fisher_df is not None and not fisher_df.empty) or not stats_df.empty:
                 with pd.ExcelWriter(stat_xlsx_path, engine="openpyxl") as writer:
                     if not stats_df.empty:
-                        stats_df.to_excel(writer, sheet_name="Paired Tests", index=False)
+                        _drop_qid_cols(stats_df).to_excel(writer, sheet_name="Paired Tests", index=False)
                     if fisher_df is not None and not fisher_df.empty:
-                        fisher_df.to_excel(writer, sheet_name="Fisher Exact Test", index=False)
+                        qid_sheet = _build_qid_sheet(fisher_df)
+                        if not qid_sheet.empty:
+                            qid_sheet.to_excel(writer, sheet_name="Fisher Exact Test", index=False)
                 logging.info("Wrote combined statistical tests to %s", stat_xlsx_path)
             if wilcoxon_map:
                 # Remove FT-50 vs base for Precision metric
