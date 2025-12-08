@@ -9,9 +9,9 @@ Merge the three sheets in 20251203.xlsx into a single Excel file.
 from pathlib import Path
 import pandas as pd
 
-INPUT_FILE = Path("20251203.xlsx")
-MERGED_OUTPUT = Path("20251203_merged.xlsx")
-DIFFS_OUTPUT = Path("20251203_diffs.xlsx")
+INPUT_FILE = Path("20251208.xlsx")
+MERGED_OUTPUT = Path("20251208_merged.xlsx")
+DIFFS_OUTPUT = Path("20251208_diffs.xlsx")
 KEY_COLUMNS = ["PMID", "QID"]
 SHEETS = [
     ("Ground truth change", "truth"),

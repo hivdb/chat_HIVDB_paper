@@ -21,8 +21,8 @@ from pathlib import Path
 
 import pandas as pd
 
-DEFAULT_INPUT = Path("20251203_diffs_tagged.xlsx")
-DEFAULT_OUTPUT = Path("20251203_diffs_tagged_summary.xlsx")
+DEFAULT_INPUT = Path("20251208_diffs_tagged.xlsx")
+DEFAULT_OUTPUT = Path("20251208_diffs_tagged_summary.xlsx")
 CATEGORY_COLUMN = "change_category"
 DIR_COLUMN = "change_direction"
 

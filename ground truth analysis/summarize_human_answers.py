@@ -53,17 +53,31 @@ PMIDS_OF_INTEREST = {
 NEGATIVE_PREFIXES = (
     "not reported",
     "not applicable",
+    "not applicable.",
     "not stated",
     "none",
     "not provided",
     "not know",
+    'not known',
     "0"
 )
 
 
+def strip_trailing_parenthetical(value: str) -> str:
+    """
+    Remove any trailing parenthetical note starting with '('.
+
+    Example: "positive (per note)" -> "positive"
+    """
+    text = (value or "").strip()
+    if "(" in text:
+        return text.rsplit("(", 1)[0].rstrip()
+    return text
+
+
 def is_negative(value: str) -> bool:
     """Return True when the value is considered negative."""
-    text = (value or "").strip().lower()
+    text = strip_trailing_parenthetical(value).lower()
     if not text:
         return True
     if text == "no":
@@ -87,7 +101,7 @@ def summarize(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main() -> None:
-    input_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("Ground-Truth-150 Dec 4.xlsx")
+    input_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("Ground-Truth-150 Dec 5.xlsx")
     output_path = Path(sys.argv[2]) if len(sys.argv) > 2 else input_path.with_name(f"{input_path.stem}_summary.xlsx")
 
     df = pd.read_excel(input_path, dtype=str, keep_default_na=False)
@@ -95,6 +109,7 @@ def main() -> None:
     missing = required_columns.difference(df.columns)
     if missing:
         raise KeyError(f"Input file must contain columns: {', '.join(sorted(missing))}.")
+    df["Human-Answer"] = df["Human-Answer"].apply(strip_trailing_parenthetical)
 
     summary_all = summarize(df)
     summary_all.to_excel(output_path, index=False)

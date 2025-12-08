@@ -25,8 +25,8 @@ from pathlib import Path
 
 import pandas as pd
 
-DEFAULT_INPUT = Path("20251203_diffs.xlsx")
-DEFAULT_OUTPUT = Path("20251203_diffs_tagged.xlsx")
+DEFAULT_INPUT = Path("20251208_diffs.xlsx")
+DEFAULT_OUTPUT = Path("20251208_diffs_tagged.xlsx")
 FLAG_COLUMN = "truth_updated human answer?"
 CATEGORY_COLUMN = "change_category"
 DIR_COLUMN = "change_direction"
