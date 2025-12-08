@@ -204,9 +204,10 @@ TEXT_SYNONYMS = _dedup(
 )
 
 ADDITIONAL_LIST_SYNONYMS = {
-    "next generation sequencing": _unique(["illumina sequencing", "illumina", "miseq", "nextera", "ngs", "deep sequencing", "nanopore sequencing"]),
-    "nanopore sequencing": _unique(["nanopore", "oxford nanopore sequencing"]),
-    "sanger sequencing": _unique(["sanger"]),
+    "next generation sequencing": _unique(["illumina sequencing", "illumina", "miseq", "nextera", "ngs", "deep sequencing", "nanopore sequencing", "nanopore", "oxford nanopore sequencing", "sanger sequencing"]),
+    "ngs": _unique(["next generation sequencing", "nanopore sequencing", "sanger sequencing"]),
+    "nanopore sequencing": _unique(["nanopore", "oxford nanopore sequencing", "next generation sequencing", "ngs", "sanger sequencing"]),
+    "sanger sequencing": _unique(["sanger", "sanger ngs", "sanger sequencing ngs", "ngs", "next generation sequencing"]),
     "south korea": _unique(["korea"]),
     "united states": _unique(["usa", "u.s.", "us", "america", "san francisco", "united states of america"]),
     "united kingdom": _unique(["uk", "u.k.", "england"]),
@@ -319,6 +320,9 @@ EMBEDDED_MAP = {
     "nanopore sequencing": "nanopore sequencing",
     "oxford nanopore sequencing": "nanopore sequencing",
     "nanopore": "nanopore sequencing",
+    # cross-map NGS and nanopore
+    "oxford nanopore": "nanopore sequencing",
+    "nanopore sequencing technology": "nanopore sequencing",
     "sanger sequencing": "sanger sequencing",
     "sanger": "sanger sequencing",
     # Drug classes

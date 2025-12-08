@@ -5,80 +5,80 @@
       "label": "FT-50",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size050_full150_responses.csv",
       "column": "GPT-4o FT-50",
-      "accuracy": 0.8745833333333334,
-      "precision": 0.8914646996838778,
-      "recall": 0.8103448275862069,
-      "f1": 0.8489713998996488
+      "accuracy": 0.8754166666666666,
+      "precision": 0.8916929547844374,
+      "recall": 0.8122605363984674,
+      "f1": 0.8501253132832081
     },
     {
       "family": "GPT-4o",
       "label": "FT-100",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size100_full150_responses.csv",
       "column": "GPT-4o FT-100",
-      "accuracy": 0.8620833333333333,
-      "precision": 0.882921589688507,
-      "recall": 0.7873563218390804,
-      "f1": 0.8324050632911392
+      "accuracy": 0.8629166666666667,
+      "precision": 0.8831725616291533,
+      "recall": 0.789272030651341,
+      "f1": 0.8335862417804755
     },
     {
       "family": "GPT-4o",
       "label": "FT-150",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size150_full150_responses.csv",
       "column": "GPT-4o FT-150",
-      "accuracy": 0.8566666666666667,
-      "precision": 0.8796095444685467,
-      "recall": 0.7768199233716475,
-      "f1": 0.8250254323499491
+      "accuracy": 0.8579166666666667,
+      "precision": 0.88,
+      "recall": 0.7796934865900383,
+      "f1": 0.8268156424581006
     },
     {
       "family": "GPT-4o",
       "label": "FT-200",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size200_full150_responses.csv",
       "column": "GPT-4o FT-200",
-      "accuracy": 0.8733333333333333,
-      "precision": 0.8854166666666666,
-      "recall": 0.814176245210728,
-      "f1": 0.848303393213573
+      "accuracy": 0.8745833333333334,
+      "precision": 0.885773624091381,
+      "recall": 0.8170498084291188,
+      "f1": 0.8500249128051818
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-50",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 50_parsed.csv",
       "column": "Llama3.1-70B FT-50",
-      "accuracy": 0.8258333333333333,
-      "precision": 0.7861060329067642,
-      "recall": 0.8237547892720306,
-      "f1": 0.8044901777362021
+      "accuracy": 0.8279166666666666,
+      "precision": 0.7870791628753412,
+      "recall": 0.828544061302682,
+      "f1": 0.80727951469902
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-100",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 100_parsed.csv",
       "column": "Llama3.1-70B FT-100",
-      "accuracy": 0.8208333333333333,
-      "precision": 0.7726465364120781,
-      "recall": 0.8333333333333334,
-      "f1": 0.8018433179723502
+      "accuracy": 0.8225,
+      "precision": 0.7734513274336283,
+      "recall": 0.8371647509578544,
+      "f1": 0.8040478380864765
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-150",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 150_parsed.csv",
       "column": "Llama3.1-70B FT-150",
-      "accuracy": 0.81875,
-      "precision": 0.7750677506775068,
-      "recall": 0.8218390804597702,
-      "f1": 0.797768479776848
+      "accuracy": 0.8195833333333333,
+      "precision": 0.7754733994589721,
+      "recall": 0.8237547892720306,
+      "f1": 0.7988852763585694
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-200",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 200_parsed.csv",
       "column": "Llama3.1-70B FT-200",
-      "accuracy": 0.81875,
-      "precision": 0.7701863354037267,
-      "recall": 0.8314176245210728,
-      "f1": 0.7996315062183327
+      "accuracy": 0.8195833333333333,
+      "precision": 0.770593445527015,
+      "recall": 0.8333333333333334,
+      "f1": 0.800736309249885
     }
   ]
 }

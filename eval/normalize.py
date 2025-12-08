@@ -416,6 +416,10 @@ def compare_lists(pred_norm: str, ref_norm: str) -> bool:
     # Exact match: both sets must be identical
     if pred_set == ref_set:
         return True
+    # Allow Sanger+NGS combos to match when both sets include one of each family
+    ngs_tokens = {"ngs", "next generation sequencing", "nanopore sequencing", "illumina sequencing"}
+    if {"sanger"} <= pred_set and pred_set & ngs_tokens and {"sanger"} <= ref_set and ref_set & ngs_tokens:
+        return True
 
     # Allow treating "pol" as either {pr, rt, in} or {pr, rt}
     diff_prd = pred_set - ref_set
