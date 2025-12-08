@@ -455,7 +455,7 @@ def main() -> int:
     if comparisons:
         overall_qid = qid_frames.get("Partial Match")
         if overall_qid is not None and not overall_qid.empty:
-            metrics_to_test = ["accuracy", "precision", "recall"]
+            metrics_to_test = ["accuracy", "precision", "recall", "f1"]
             stats_df, wilcoxon_map, ttest_map = stat_utils.compute_pairwise_tests(
                 overall_qid,
                 comparisons,
@@ -464,7 +464,7 @@ def main() -> int:
             fisher_df = stat_utils.compute_fisher_tests(
                 overall_qid,
                 comparisons,
-                metrics_to_test,
+                ["accuracy", "precision", "recall", "f1"],
             )
             baseline_map = load_baseline_wilcoxon(baseline_path) if baseline_path else {}
             if baseline_map:

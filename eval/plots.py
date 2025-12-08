@@ -16,6 +16,7 @@ METRIC_COLUMNS = [
     ("accuracy", "Accuracy"),
     ("precision", "Precision"),
     ("recall", "Recall"),
+    ("f1", "F1"),
 ]
 
 TITLE_FONT_SIZE = 32
@@ -31,6 +32,7 @@ METRIC_PALETTE = {
     "accuracy": "#2a9d8f",
     "precision": "#e76f51",
     "recall": "#f4a261",
+    "f1": "#264653",
 }
 
 FAMILY_COMPARISONS = {

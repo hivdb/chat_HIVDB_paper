@@ -53,6 +53,9 @@ def _contingency_counts(row, metric: str, base: str, target: str) -> Tuple[Tuple
         if metric_name == "recall":
             denom = tp + fn
             return tp / denom if denom else math.nan
+        if metric_name == "f1":
+            denom = 2 * tp + fp + fn
+            return (2 * tp) / denom if denom else math.nan
         return math.nan
 
     if metric == "accuracy":
@@ -66,6 +69,10 @@ def _contingency_counts(row, metric: str, base: str, target: str) -> Tuple[Tuple
     elif metric == "recall":
         base_pos, base_neg = base_tp, base_fn
         target_pos, target_neg = target_tp, target_fn
+    elif metric == "f1":
+        # Scale TP by 2 so that f1 = pos / (pos + neg) for Fisher calculation
+        base_pos, base_neg = 2 * base_tp, base_fp + base_fn
+        target_pos, target_neg = 2 * target_tp, target_fp + target_fn
     else:
         return None, None
 

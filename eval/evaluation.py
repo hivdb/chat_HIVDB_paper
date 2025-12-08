@@ -280,22 +280,24 @@ def main() -> int:
     overall_qid_df = scenario_qid_frames.get("Partial Match")
     exact_qid_df = scenario_qid_frames.get("Exact Match")
     if overall_qid_df is not None and not overall_qid_df.empty:
+        fisher_metrics = ["accuracy", "precision", "recall", "f1"]
+        paired_metrics = ["accuracy", "precision", "recall", "f1"]
         fisher_df = stat_utils.compute_fisher_tests(
             overall_qid_df,
             FAMILY_COMPARISONS,
-            ["accuracy", "precision", "recall"],
+            fisher_metrics,
         )
         pair_df, overall_stats, _ = stat_utils.compute_pairwise_tests(
             overall_qid_df,
             FAMILY_COMPARISONS,
-            ["accuracy", "precision", "recall"],
+            paired_metrics,
         )
     exact_stats = {}
     if exact_qid_df is not None and not exact_qid_df.empty:
         _, exact_stats, _ = stat_utils.compute_pairwise_tests(
             exact_qid_df,
             FAMILY_COMPARISONS,
-            ["accuracy", "precision", "recall"],
+            ["accuracy", "precision", "recall", "f1"],
         )
     logging.info("Wrote metrics to %s", config.OUTPUT_METRICS)
     logging.info("Wrote detail rows to %s", config.DETAIL_METRICS_HUMAN)
