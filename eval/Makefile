@@ -4,7 +4,7 @@ export PYTHONPATH
 
 REPO_ROOT := $(abspath ..)
 
-.PHONY: all datasets evaluation evaluation_new30 evaluation_full150 evaluation_original120 learning_curve learning_curve_new30 learning_curve_full150 plot_learning_curve plot_learning_curve_new30 plot_learning_curve_full150 failure_prev analysis_by_qid error_types
+.PHONY: all datasets evaluation evaluation_new30 evaluation_full150 evaluation_original120 learning_curve learning_curve_new30 learning_curve_full150 plot_learning_curve plot_learning_curve_new30 plot_learning_curve_full150 failure_prev analysis_by_qid error_types tests
 
 MERGED_NEW30 = $(REPO_ROOT)/advanced-prompting/csv/merged_answers_new30.xlsx
 MERGED_FULL150 = $(REPO_ROOT)/advanced-prompting/csv/merged_answers_full_150.xlsx
@@ -22,7 +22,7 @@ LC_RESP_SIZE100_FULL150 = $(REPO_ROOT)/eval/learning-curve/responses/size100_ful
 LC_RESP_SIZE150_FULL150 = $(REPO_ROOT)/eval/learning-curve/responses/size150_full150_responses.csv
 LC_RESP_SIZE200_FULL150 = $(REPO_ROOT)/eval/learning-curve/responses/size200_full150_responses.csv
 
-all: datasets evaluation_full150 evaluation_new30 evaluation_original120 learning_curve_full150 learning_curve_new30 plot_learning_curve_full150 plot_learning_curve_new30 failure_prev analysis_by_qid error_types
+all: datasets evaluation_full150 evaluation_new30 evaluation_original120 learning_curve_full150 learning_curve_new30 plot_learning_curve_full150 plot_learning_curve_new30 failure_prev analysis_by_qid error_types tests
 
 datasets:
 	$(PYTHON) build_datasets.py
@@ -83,3 +83,6 @@ analysis_by_qid:
 
 error_types: analysis_by_qid
 	$(PYTHON) error_analysis/error_types.py
+
+tests: evaluation_full150 evaluation_new30 evaluation_original120
+	$(PYTHON) -m eval.tests
