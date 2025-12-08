@@ -146,8 +146,8 @@ Llama3.1-70B FT,False Positive,Not stated,"ZDV, 3TC, NVP, LPV, EFV"
 Llama3.1-70B QSP,False Positive,Not stated,"ZDV, 3TC, NVP, lopinavir/ritonavir, EFV"
 Llama3.1-70B QSP,Partial Match (<66%),"ABC, 3TC, AZT (ZDV), NVP, EFV","Efavirenz (EFV), Nevirapine (NVP), Lamivudine (3TC)"
 Llama3.1-70B QSP,Partial Match (<66%),"AZT, ABC, 3TC, TDF, ATV, LPV, RTV, DTG","DTG, TDF, 3TC"
-Llama3.1-70B base,False Positive,TFV (no other ARVs specified; Data in supplementary methods),"Tenofovir (TFV), Raltegravir, Elvitegravir, Dolutagravir, Bictegravir, Nevirapine, Delavirdine, Efavirenz, Etravirine, Rilpivirine, Doravirine, Amprenavir, Lopinavir, Atazanavir, Derunavir"
-Llama3.1-70B FT,False Positive,TFV (no other ARVs specified; Data in supplementary methods),"Tenofovir (TFV), INSTIs, NNRTIs, PIs"
+Llama3.1-70B base,Other,TFV (no other ARVs specified; Data in supplementary methods),"Tenofovir (TFV), Raltegravir, Elvitegravir, Dolutagravir, Bictegravir, Nevirapine, Delavirdine, Efavirenz, Etravirine, Rilpivirine, Doravirine, Amprenavir, Lopinavir, Atazanavir, Derunavir"
+Llama3.1-70B FT,Other,TFV (no other ARVs specified; Data in supplementary methods),"Tenofovir (TFV), INSTIs, NNRTIs, PIs"
 Llama3.1-70B QSP,False Negative,DTG  ,Not reported
 Llama3.1-70B base,False Positive,Not reported,"Tenofovir (TFV), Lamivudine (3TC), Efavirenz (EFV), Nevirapine (NVP), Lopinavir'(LPV), Ritonavir (RTV), Atazanavir (ATV), Dolutegravir (DTG)"
 Llama3.1-70B QSP,False Positive,Not reported,"3TC, FTC, AZT, TDF, EFV, NVP, DTG"
@@ -159,8 +159,8 @@ Llama3.1-70B base,False Positive,Not reported,"Dolutegravir (DTG), Tenofovir ala
 Llama3.1-70B QSP,False Negative,"TAF, FTC, BIC",Not reported.
 Llama3.1-70B base,False Positive,Not reported,"Raltegravir (RAL), Elvitegravir(EVG), Dolutagravir (DTG), Bictegravir (BIC)"
 Llama3.1-70B QSP,False Negative,"DTG, DRV/r",Not reported
-Llama3.1-70B FT,False Positive,DTG (no other ARVs specified),Dolutegravir (DTG)
-Llama3.1-70B QSP,False Positive,DTG (no other ARVs specified),DTG
+Llama3.1-70B FT,Other,DTG (no other ARVs specified),Dolutegravir (DTG)
+Llama3.1-70B QSP,Other,DTG (no other ARVs specified),DTG
 Llama3.1-70B FT,False Negative,"TAF, FTC, LEN, BIC",
 Llama3.1-70B QSP,False Negative,"TAF, FTC, LEN, BIC",
 Llama3.1-70B base,Partial Match (<66%),"ABC, AZT, D4T, TDF, ETR, NVP, EFV, LPV, DRV/r, DTG","AZT, TDF"

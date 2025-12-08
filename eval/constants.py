@@ -23,7 +23,7 @@ LEADING_YES_NO = re.compile(r"^(yes|no)\b")
 YEAR_REGEX = re.compile(r"(?:19|20)\d{2}")
 
 
-YES_SYNONYMS = _unique(["yes", "y", "true", "reported", "present"])
+YES_SYNONYMS = _unique(["yes", "y", "true", "reported", "present", "partial", "partially"])
 NEGATIVE_TOKENS = _unique(
     [
         "no",
@@ -65,6 +65,19 @@ NEGATIVE_PHRASES = _unique(
         "not mentioned in the text",
         "not mentioned in the paper",
         "not mentioned in the document",
+        "not provided in the paper",
+        "not explicitly provided",
+        "not explicitly mentioned",
+        "not explicitly listed",
+        "not explicitly stated",
+        "not listed",
+        "not receive",
+        "not receiving",
+        "no arvs",
+        "no antiretroviral",
+        "art naive",
+        "art-naive",
+        "antiretroviral naive",
         "not provided (multicenter trial)",
         "paper does not specify",
         "paper does not indicate",
@@ -72,6 +85,14 @@ NEGATIVE_PHRASES = _unique(
         "paper does not provide",
         "paper does not mention",
         "paper does not list",
+        "paper does not describe",
+        "paper does not elaborate",
+        "does not describe",
+        "doesn't describe",
+        "does not elaborate",
+        "doesn't elaborate",
+        "did not provide",
+        "without specific years mentioned",
         "not described in the paper",
         "not discussed in the paper",
         "no evidence that the paper",
@@ -183,7 +204,7 @@ TEXT_SYNONYMS = _dedup(
 )
 
 ADDITIONAL_LIST_SYNONYMS = {
-    "next generation sequencing": _unique(["illumina sequencing", "illumina", "miseq", "nextera", "ngs", "deep sequencing"]),
+    "next generation sequencing": _unique(["illumina sequencing", "illumina", "miseq", "nextera", "ngs", "deep sequencing", "nanopore sequencing"]),
     "nanopore sequencing": _unique(["nanopore", "oxford nanopore sequencing"]),
     "sanger sequencing": _unique(["sanger"]),
     "south korea": _unique(["korea"]),

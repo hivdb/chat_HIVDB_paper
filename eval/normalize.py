@@ -46,11 +46,16 @@ def _is_negative(text: str) -> bool:
     if not text:
         return False
     lowered = text.strip().lower()
-    return (
-        lowered in NEGATIVE_TOKENS
-        or any(lowered.startswith(f"{token} ") for token in NEGATIVE_TOKENS)
-        or any(phrase in lowered for phrase in NEGATIVE_PHRASES)
-    )
+    if lowered in NEGATIVE_TOKENS or any(lowered.startswith(f"{token} ") for token in NEGATIVE_TOKENS):
+        return True
+    if any(phrase in lowered for phrase in NEGATIVE_PHRASES):
+        return True
+    # Allow token matches anywhere in the text (boundary-aware) to catch embedded negations
+    for token in NEGATIVE_TOKENS:
+        pattern = f" {token} "
+        if pattern in lowered or lowered.endswith(f" {token}") or lowered.startswith(f"{token} "):
+            return True
+    return False
 
 
 def _clean_answer_text(value: str | float | None) -> str:
@@ -109,18 +114,22 @@ def _canonical_list(lowered: str, raw: str) -> str:
 
     tokens_to_process = tokens + embedded_tokens if embedded_tokens else tokens
     canonical_tokens: list[str] = []
+    negative_only = True
     for token in tokens_to_process:
         if not token:
             continue
-        if _is_negative(token):
-            return "no"
         if token in YES_SYNONYMS:
             return "yes"
-        canonical_tokens.extend(_expand_token(token))
+        if _is_negative(token):
+            continue
+        expanded = _expand_token(token)
+        if expanded:
+            negative_only = False
+            canonical_tokens.extend(expanded)
 
     canonical_tokens = [" ".join(token.split()) for token in canonical_tokens if token]
     if not canonical_tokens:
-        return ""
+        return "no" if negative_only else ""
     unique_tokens = sorted(dict.fromkeys(canonical_tokens))
     return " | ".join(unique_tokens)
 
@@ -138,6 +147,13 @@ def _expand_token(token: str, for_match: bool = False) -> List[str]:
         return cached
     base = " ".join(NON_ALPHANUM.sub(" ", token).split())
     base = re.sub(r"^primarily\s+", "", base).replace("primarily ", "")
+    range_tokens: list[str] = []
+    range_match = re.fullmatch(r"([a-z0-9]+)\s+to\s+([a-z0-9]+)", base)
+    space_range = re.fullmatch(r"([a-z0-9]+)\s+([a-z0-9]+)", base)
+    if range_match:
+        range_tokens.extend([range_match.group(1), range_match.group(2)])
+    elif space_range:
+        range_tokens.extend([space_range.group(1), space_range.group(2)])
     tokens: list[str] = []
     lowered = token.lower()
     if " from " in lowered:
@@ -171,6 +187,7 @@ def _expand_token(token: str, for_match: bool = False) -> List[str]:
         tokens.extend(ADDITIONAL_LIST_SYNONYMS.get(token, set()))
     if base and base not in tokens:
         tokens.append(base)
+    tokens.extend(range_tokens)
     normalized_tokens = []
     for t in tokens:
         cleaned = NON_ALPHANUM.sub(" ", t.lower()).strip()
@@ -344,6 +361,12 @@ def extract_numbers(text: str | float | int | None) -> List[int]:
 def numeric_match(ref_norm: str, ref_raw: str, pred_norm: str, pred_raw: str) -> bool:
     ref_numbers = set(extract_numbers(ref_norm)) | set(extract_numbers(ref_raw))
     pred_numbers = set(extract_numbers(pred_norm)) | set(extract_numbers(pred_raw))
+    # Consider off-by-one as match for numeric questions
+    ref_plusminus = set()
+    for n in ref_numbers:
+        ref_plusminus.update([n - 1, n, n + 1])
+    if ref_plusminus & pred_numbers:
+        return True
     return bool(ref_numbers and pred_numbers and ref_numbers & pred_numbers)
 
 

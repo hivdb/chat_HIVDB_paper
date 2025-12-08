@@ -25,7 +25,12 @@ def format_identifier(value: str | int | float | None) -> str:
 
 
 def load_dataset() -> pd.DataFrame:
-    merged = pd.read_excel(config.MERGED_PATH)
+    merged = pd.read_excel(
+        config.MERGED_PATH,
+        dtype=str,
+        keep_default_na=False,
+        na_filter=False,
+    )
     if getattr(config, "COLUMN_RENAMES", None):
         merged.rename(columns=config.COLUMN_RENAMES, inplace=True)
     merged["PMID"] = merged["PMID"].apply(format_identifier)
@@ -33,7 +38,12 @@ def load_dataset() -> pd.DataFrame:
     # Convert QID to int for proper numeric sorting (critical fix for alignment)
     merged["QID"] = merged["QID"].astype(int)
 
-    gpt5 = pd.read_csv(config.GPT5_PATH, dtype={"PMID": str}).rename(columns={"Answer": "GPT-5 base"})
+    gpt5 = pd.read_csv(
+        config.GPT5_PATH,
+        dtype={"PMID": str},
+        keep_default_na=False,
+        na_filter=False,
+    ).rename(columns={"Answer": "GPT-5 base"})
     gpt5["PMID"] = gpt5["PMID"].apply(format_identifier)
     gpt5["QID"] = gpt5["QID"].apply(format_identifier)
     gpt5["QID"] = gpt5["QID"].astype(int)
@@ -44,7 +54,12 @@ def load_dataset() -> pd.DataFrame:
         if not path.exists():
             logging.warning("Learning-curve response file missing for %s: %s", column, path)
             continue
-        extra = pd.read_csv(path, dtype={"PMID": str})
+        extra = pd.read_csv(
+            path,
+            dtype={"PMID": str},
+            keep_default_na=False,
+            na_filter=False,
+        )
         if "Answer" not in extra.columns:
             logging.warning("Response file %s missing 'Answer' column.", path)
             continue

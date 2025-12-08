@@ -208,7 +208,12 @@ def main() -> int:
     if not args.base_merged.exists():
         raise SystemExit(f"Base merged file missing: {args.base_merged}")
 
-    base_merged = pd.read_excel(args.base_merged)
+    base_merged = pd.read_excel(
+        args.base_merged,
+        dtype=str,
+        keep_default_na=False,
+        na_filter=False,
+    )
     new30_df, combined_df, original120_df = build_outputs(base_merged)
 
     new30_df = sanitize_for_excel(new30_df)
