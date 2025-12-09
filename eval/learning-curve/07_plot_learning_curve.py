@@ -33,12 +33,6 @@ DISPLAY_SLOTS = [
     ("GPT-4o FT-150", 150, ["GPT-4o FT-150", "GPT-4o LC size150"]),
     ("GPT-4o FT-200", 200, ["GPT-4o FT-200", "GPT-4o FT (200)"]),
     ("GPT-4o FT", 250, ["GPT-4o FT", "GPT-4o FT (250)"]),
-    ("Llama3.1-70B base", 0, ["Llama3.1-70B base"]),
-    ("Llama3.1-70B FT-50", 50, ["Llama3.1-70B FT-50"]),
-    ("Llama3.1-70B FT-100", 100, ["Llama3.1-70B FT-100"]),
-    ("Llama3.1-70B FT-150", 150, ["Llama3.1-70B FT-150"]),
-    ("Llama3.1-70B FT-200", 200, ["Llama3.1-70B FT-200"]),
-    ("Llama3.1-70B FT", 250, ["Llama3.1-70B FT"]),
 ]
 
 

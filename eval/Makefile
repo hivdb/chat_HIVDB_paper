@@ -73,7 +73,7 @@ plot_learning_curve_full150: learning_curve_full150 evaluation_full150
 		--metrics $(REPO_ROOT)/eval/learning-curve/results/learning_curve_metrics_full150.csv \
 		--base-results $(REPO_ROOT)/eval/results/evaluation_metrics_full150.csv \
 		--significance $(REPO_ROOT)/eval/learning-curve/results/learning_curve_significance_full150.json \
-		--suffix full150 --title "Learning Curve Analysis (full 150)"
+		--suffix full150 --title "GPT-4o: Learning Curve Analysis"
 
 failure_prev:
 	$(PYTHON) error_analysis/failure_prev.py

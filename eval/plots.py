@@ -131,6 +131,8 @@ def _group_positions(models: list[str]) -> tuple[list[float], dict[str, tuple[fl
 
 
 def _annotate_families(ax, family_bounds: dict[str, tuple[float, float]]) -> None:
+    if len(family_bounds) <= 1:
+        return
     for family, (start, end) in family_bounds.items():
         center = (start + end) / 2
         ax.text(
