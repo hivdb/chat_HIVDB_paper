@@ -283,6 +283,184 @@ def _aggregate_fisher_summary(
     return summary
 
 
+def _build_fisher_qid_sheet(fisher: pd.DataFrame) -> pd.DataFrame:
+    """Expand fisher results into a long per-QID dataframe."""
+    if fisher is None or fisher.empty:
+        return pd.DataFrame()
+    records: list[dict] = []
+    for _, row in fisher.iterrows():
+        family = row.get("family")
+        comparison = row.get("comparison")
+        metric = row.get("metric")
+        test_name = row.get("test")
+        for col in fisher.columns:
+            if not col.startswith("p_value_qid_"):
+                continue
+            qid = int(col.split("_")[-1])
+            adj_col = f"adj_p_qid_{qid}"
+            base_col = f"base_qid_{qid}"
+            target_col = f"target_qid_{qid}"
+            records.append(
+                {
+                    "family": family,
+                    "comparison": comparison,
+                    "metric": metric,
+                    "test": test_name,
+                    "QID": qid,
+                    "base": row.get(base_col),
+                    "target": row.get(target_col),
+                    "p_value": row.get(col),
+                    "adj_p": row.get(adj_col),
+                }
+            )
+    return pd.DataFrame(records)
+
+
+def _drop_qid_cols(df: pd.DataFrame) -> pd.DataFrame:
+    """Remove per-QID columns for compact summary output."""
+    return df[
+        [
+            c
+            for c in df.columns
+            if not (
+                c.startswith("base_qid_")
+                or c.startswith("target_qid_")
+                or c.startswith("p_value_qid_")
+                or c.startswith("adj_p_qid_")
+            )
+        ]
+    ].copy()
+
+
+def _build_table3(
+    fisher_qid_df: pd.DataFrame,
+    qid_metrics_df: pd.DataFrame | None,
+) -> pd.DataFrame:
+    """Construct Table3: precision/recall with significance markers for select QIDs."""
+    if fisher_qid_df is None or fisher_qid_df.empty or qid_metrics_df is None or qid_metrics_df.empty:
+        return pd.DataFrame()
+
+    qid_question = qid_metrics_df.groupby("QID")["Question"].first().to_dict()
+
+    # Identify where any metric is significant (p<0.05 and target > base) per family/target/QID
+    sig_map: dict[tuple[str, str, int], set[str]] = {}
+    sig_any: set[tuple[str, int]] = set()
+    sig_info: dict[tuple[str, str, str, int], tuple[float, float]] = {}
+    for _, row in fisher_qid_df.iterrows():
+        family = row.get("family")
+        comparison = row.get("comparison")
+        metric = row.get("metric")
+        qid = row.get("QID")
+        try:
+            p_val = float(row.get("p_value"))
+        except (TypeError, ValueError):
+            continue
+        try:
+            base_val = float(row.get("base"))
+            target_val = float(row.get("target"))
+        except (TypeError, ValueError):
+            continue
+        if p_val < 0.05 and target_val > base_val:
+            sig_map.setdefault((str(family), str(comparison), int(qid)), set()).add(str(metric))
+            sig_any.add((str(family), int(qid)))
+            sig_info[(str(family), str(comparison), str(metric), int(qid))] = (
+                p_val,
+                float(row.get("adj_p")) if row.get("adj_p") is not None else float("nan"),
+            )
+
+    def _metric_value(qid: int, model: str, metric: str) -> float | None:
+        subset = qid_metrics_df[(qid_metrics_df["QID"] == qid) & (qid_metrics_df["model"] == model)]
+        if subset.empty or metric not in subset:
+            return None
+        try:
+            return float(subset[metric].iloc[0])
+        except Exception:
+            return None
+
+    # Ordering of QIDs to keep the layout stable
+    qid_order = {
+        "GPT-4o": [1, 2, 6, 7, 9, 11, 12, 14, 15, 16],
+        "Llama3.1-70B": [14, 15, 16, 11, 3, 6],
+    }
+
+    def _target_model(family: str, label: str) -> str | None:
+        mapping = FAMILY_COMPARISONS.get(family, {})
+        for target in mapping.get("targets", []):
+            if label == "FT" and "FT" in target and "QSP" not in target:
+                return target
+            if label == "QSP" and "QSP" in target:
+                return target
+        return None
+
+    records: list[dict] = []
+    for family, order in qid_order.items():
+        base_model = FAMILY_COMPARISONS.get(family, {}).get("base")
+        ft_model = _target_model(family, "FT")
+        qsp_model = _target_model(family, "QSP")
+        if not base_model:
+            continue
+        for qid in order:
+            if (family, qid) not in sig_any:
+                continue
+            row = {
+                "Model": family,
+                "QID": qid,
+                "Question": qid_question.get(qid, ""),
+                "base_prec": _metric_value(qid, base_model, "precision"),
+                "FT_prec": "",
+                "QSP_prec": "",
+                "base_rec": _metric_value(qid, base_model, "recall"),
+                "FT_rec": "",
+                "QSP_rec": "",
+            }
+            # Evaluate FT/QSP with significance thresholds
+            for target_label, model_label in [("FT", ft_model), ("QSP", qsp_model)]:
+                if not model_label:
+                    continue
+                tgt_prec = _metric_value(qid, model_label, "precision")
+                tgt_rec = _metric_value(qid, model_label, "recall")
+                sig_metrics = sig_map.get((family, target_label, qid), set())
+                if not sig_metrics and (family, qid) not in sig_any:
+                    continue
+                for metric, tgt_val, field in [
+                    ("precision", tgt_prec, f"{target_label}_prec"),
+                    ("recall", tgt_rec, f"{target_label}_rec"),
+                ]:
+                    if tgt_val is None:
+                        continue
+                    suffix = ""
+                    if metric in sig_metrics:
+                        p_val, adj_val = sig_info.get((family, target_label, metric, qid), (None, None))
+                        if p_val is not None:
+                            if p_val < 0.001:
+                                suffix = "***"
+                            elif p_val < 0.01:
+                                suffix = "**"
+                            elif p_val < 0.05:
+                                suffix = "*"
+                        if adj_val is not None and not np.isnan(adj_val) and adj_val > 0.05:
+                            suffix = f"{suffix}\u2020" if suffix else "\u2020"
+                    row[field] = f"{tgt_val * 100:.1f}{suffix}"
+            # Format base values as percentages
+            if row["base_prec"] is not None:
+                row["base_prec"] = f"{row['base_prec'] * 100:.1f}"
+            else:
+                row["base_prec"] = ""
+            if row["base_rec"] is not None:
+                row["base_rec"] = f"{row['base_rec'] * 100:.1f}"
+            else:
+                row["base_rec"] = ""
+            records.append(row)
+    df = pd.DataFrame(records, columns=["Model", "QID", "Question", "base_prec", "FT_prec", "QSP_prec", "base_rec", "FT_rec", "QSP_rec"])
+    if df.empty:
+        return df
+    model_order = {"GPT-4o": 0, "Llama3.1-70B": 1}
+    df["__order"] = df["Model"].map(model_order).fillna(99)
+    df.sort_values(["__order", "QID"], inplace=True)
+    df.drop(columns="__order", inplace=True)
+    return df
+
+
 def write_outputs(
     metrics: pd.DataFrame,
     details: List[dict],
@@ -379,58 +557,17 @@ def main() -> int:
     if partial_details:
         logging.info("Wrote partial-list detail rows to %s", config.DETAIL_METRICS_PARTIAL)
     if not pair_df.empty or not fisher_df.empty:
-        def _drop_qid_cols(df: pd.DataFrame) -> pd.DataFrame:
-            return df[
-                [
-                    c
-                    for c in df.columns
-                    if not (
-                        c.startswith("base_qid_")
-                        or c.startswith("target_qid_")
-                        or c.startswith("p_value_qid_")
-                        or c.startswith("adj_p_qid_")
-                    )
-                ]
-            ].copy()
-
-        def _build_qid_sheet(fisher: pd.DataFrame) -> pd.DataFrame:
-            if fisher.empty:
-                return pd.DataFrame()
-            records: list[dict] = []
-            for _, row in fisher.iterrows():
-                family = row.get("family")
-                comparison = row.get("comparison")
-                metric = row.get("metric")
-                test_name = row.get("test")
-                for col in fisher.columns:
-                    if not col.startswith("p_value_qid_"):
-                        continue
-                    qid = int(col.split("_")[-1])
-                    adj_col = f"adj_p_qid_{qid}"
-                    base_col = f"base_qid_{qid}"
-                    target_col = f"target_qid_{qid}"
-                    records.append(
-                        {
-                            "family": family,
-                            "comparison": comparison,
-                            "metric": metric,
-                            "test": test_name,
-                            "QID": qid,
-                            "base": row.get(base_col),
-                            "target": row.get(target_col),
-                            "p_value": row.get(col),
-                            "adj_p": row.get(adj_col),
-                        }
-                    )
-            return pd.DataFrame(records)
-
+        fisher_qid_sheet = _build_fisher_qid_sheet(fisher_df)
+        table3_df = _build_table3(fisher_qid_sheet, overall_qid_df)
         with pd.ExcelWriter(config.STAT_RESULTS, engine="openpyxl") as writer:
             if not pair_df.empty:
                 _drop_qid_cols(pair_df).to_excel(writer, sheet_name="Paired Tests", index=False)
             if not fisher_df.empty:
-                qid_sheet = _build_qid_sheet(fisher_df)
+                qid_sheet = fisher_qid_sheet
                 if not qid_sheet.empty:
                     qid_sheet.to_excel(writer, sheet_name="Fisher Exact Test", index=False)
+            if table3_df is not None and not table3_df.empty:
+                table3_df.to_excel(writer, sheet_name="Table3", index=False)
         logging.info("Wrote combined statistical tests to %s", config.STAT_RESULTS)
     # Export Partial Match metrics with aggregated Fisher results
     fisher_summary = _aggregate_fisher_summary(
