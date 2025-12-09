@@ -210,6 +210,79 @@ def _dataset_label_from_suffix(suffix: str) -> str:
     return normalized.replace("_", " ").title()
 
 
+def _aggregate_fisher_summary(
+    qid_df: pd.DataFrame,
+    comparisons: dict,
+    fisher_metrics: list[str],
+) -> pd.DataFrame:
+    """Compute aggregated Fisher exact tests per family/target across all QIDs."""
+    if qid_df is None or qid_df.empty:
+        return pd.DataFrame()
+
+    def _sum_counts(model: str) -> tuple[int, int, int, int] | None:
+        subset = qid_df[qid_df["model"] == model]
+        if subset.empty or not {"tp", "fp", "tn", "fn"}.issubset(subset.columns):
+            return None
+        totals = subset[["tp", "fp", "tn", "fn"]].sum()
+        return int(totals["tp"]), int(totals["fp"]), int(totals["tn"]), int(totals["fn"])
+
+    rows: list[dict] = []
+    for family, mapping in comparisons.items():
+        base_model = mapping.get("base")
+        if not base_model:
+            continue
+        base_counts = _sum_counts(base_model)
+        if base_counts is None:
+            continue
+        for target_model in mapping.get("targets", []):
+            target_counts = _sum_counts(target_model)
+            if target_counts is None:
+                continue
+            base_tp, base_fp, base_tn, base_fn = base_counts
+            target_tp, target_fp, target_tn, target_fn = target_counts
+            for metric in fisher_metrics:
+                if metric == "accuracy":
+                    base_pos, base_neg = base_tp + base_tn, base_fp + base_fn
+                    target_pos, target_neg = target_tp + target_tn, target_fp + target_fn
+                elif metric == "precision":
+                    base_pos, base_neg = base_tp, base_fp
+                    target_pos, target_neg = target_tp, target_fp
+                elif metric == "recall":
+                    base_pos, base_neg = base_tp, base_fn
+                    target_pos, target_neg = target_tp, target_fn
+                elif metric == "f1":
+                    base_pos, base_neg = 2 * base_tp, base_fp + base_fn
+                    target_pos, target_neg = 2 * target_tp, target_fp + target_fn
+                else:
+                    continue
+                table = np.array([[base_pos, base_neg], [target_pos, target_neg]])
+                try:
+                    _, p_value = fisher_exact(table)
+                except ValueError:
+                    p_value = np.nan
+                rows.append(
+                    {
+                        "family": family,
+                        "comparison": target_model.replace(f"{family} ", ""),
+                        "base_model": base_model,
+                        "target_model": target_model,
+                        "metric": metric,
+                        "p_value": float(p_value),
+                    }
+                )
+    summary = pd.DataFrame(rows)
+    if summary.empty:
+        return summary
+    # Adjust p-values within each metric
+    summary["adj_p_value"] = np.nan
+    for metric in fisher_metrics:
+        mask = summary["metric"] == metric
+        metric_rows = summary.loc[mask]
+        adjusted = stat_utils.benjamini_hochberg(metric_rows["p_value"].tolist())
+        summary.loc[mask, "adj_p_value"] = adjusted
+    return summary
+
+
 def write_outputs(
     metrics: pd.DataFrame,
     details: List[dict],
@@ -279,8 +352,8 @@ def main() -> int:
     pair_df = pd.DataFrame()
     overall_qid_df = scenario_qid_frames.get("Partial Match")
     exact_qid_df = scenario_qid_frames.get("Exact Match")
+    fisher_metrics = ["accuracy", "precision", "recall", "f1"]
     if overall_qid_df is not None and not overall_qid_df.empty:
-        fisher_metrics = ["accuracy", "precision", "recall", "f1"]
         paired_metrics = ["accuracy", "precision", "recall", "f1"]
         fisher_df = stat_utils.compute_fisher_tests(
             overall_qid_df,
@@ -359,6 +432,31 @@ def main() -> int:
                 if not qid_sheet.empty:
                     qid_sheet.to_excel(writer, sheet_name="Fisher Exact Test", index=False)
         logging.info("Wrote combined statistical tests to %s", config.STAT_RESULTS)
+    # Export Partial Match metrics with aggregated Fisher results
+    fisher_summary = _aggregate_fisher_summary(
+        overall_qid_df if overall_qid_df is not None else pd.DataFrame(),
+        FAMILY_COMPARISONS,
+        fisher_metrics,
+    )
+    partial_metrics = metrics[metrics["scenario"] == "Partial Match"].copy()
+    if not partial_metrics.empty:
+        for metric_name in fisher_metrics:
+            partial_metrics[f"fisher_p_{metric_name}"] = np.nan
+            partial_metrics[f"fisher_adj_p_{metric_name}"] = np.nan
+    if not partial_metrics.empty and not fisher_summary.empty:
+        for _, row in fisher_summary.iterrows():
+            target_model = row["target_model"]
+            metric_name = row["metric"]
+            p_val = row.get("p_value")
+            adj_val = row.get("adj_p_value")
+            mask = partial_metrics["model"] == target_model
+            if mask.any():
+                partial_metrics.loc[mask, f"fisher_p_{metric_name}"] = p_val
+                partial_metrics.loc[mask, f"fisher_adj_p_{metric_name}"] = adj_val
+    if not partial_metrics.empty:
+        fisher_metrics_path = config.OUTPUT_DIR / f"evaluation_metrics_fisher{suffix}.xlsx"
+        partial_metrics.to_excel(fisher_metrics_path, index=False)
+        logging.info("Wrote Partial Match metrics with Fisher p-values to %s", fisher_metrics_path)
     dataset_label = _dataset_label_from_suffix(args.output_suffix)
     for display_title, scenario_title, subset, scenario_qid_df in figures:
         sig = overall_stats if scenario_title == "Partial Match" else exact_stats if scenario_title == "Exact Match" else None
