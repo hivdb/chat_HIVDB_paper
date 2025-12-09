@@ -378,10 +378,7 @@ def _build_table3(
             return None
 
     # Ordering of QIDs to keep the layout stable
-    qid_order = {
-        "GPT-4o": [1, 2, 6, 7, 9, 11, 12, 14, 15, 16],
-        "Llama3.1-70B": [14, 15, 16, 11, 3, 6],
-    }
+    qid_order: dict[str, list[int]] = {}
 
     def _target_model(family: str, label: str) -> str | None:
         mapping = FAMILY_COMPARISONS.get(family, {})
@@ -393,13 +390,18 @@ def _build_table3(
         return None
 
     records: list[dict] = []
-    for family, order in qid_order.items():
+    families = sorted({fam for fam, _ in sig_any}, key=lambda f: {"GPT-4o": 0, "Llama3.1-70B": 1, "Llama3.1-8B": 2}.get(f, 99))
+    for family in families:
+        fam_sig = [qid for fam, qid in sig_any if fam == family]
+        if not fam_sig:
+            continue
+        ordered_qids = sorted(fam_sig)
         base_model = FAMILY_COMPARISONS.get(family, {}).get("base")
         ft_model = _target_model(family, "FT")
         qsp_model = _target_model(family, "QSP")
         if not base_model:
             continue
-        for qid in order:
+        for qid in ordered_qids:
             if (family, qid) not in sig_any:
                 continue
             row = {
@@ -454,7 +456,7 @@ def _build_table3(
     df = pd.DataFrame(records, columns=["Model", "QID", "Question", "base_prec", "FT_prec", "QSP_prec", "base_rec", "FT_rec", "QSP_rec"])
     if df.empty:
         return df
-    model_order = {"GPT-4o": 0, "Llama3.1-70B": 1}
+    model_order = {"GPT-4o": 0, "Llama3.1-70B": 1, "Llama3.1-8B": 2}
     df["__order"] = df["Model"].map(model_order).fillna(99)
     df.sort_values(["__order", "QID"], inplace=True)
     df.drop(columns="__order", inplace=True)
