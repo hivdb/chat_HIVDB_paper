@@ -439,10 +439,37 @@ def main() -> int:
         fisher_metrics,
     )
     partial_metrics = metrics[metrics["scenario"] == "Partial Match"].copy()
+    fisher_col_map = {
+        "accuracy": ("p_acc_fisher", "adj_p_acc_fisher"),
+        "precision": ("p_prec_fisher", "adj_p_prec_fisher"),
+        "recall": ("p_rec_fisher", "adj_p_rec_fisher"),
+        "f1": ("p_f1_fisher", "adj_p_f1_fisher"),
+    }
+    desired_order = [
+        "scenario",
+        "samples",
+        "model",
+        "tp",
+        "tn",
+        "fp",
+        "fn",
+        "accuracy",
+        "p_acc_fisher",
+        "adj_p_acc_fisher",
+        "precision",
+        "p_prec_fisher",
+        "adj_p_prec_fisher",
+        "recall",
+        "p_rec_fisher",
+        "adj_p_rec_fisher",
+        "f1",
+        "p_f1_fisher",
+        "adj_p_f1_fisher",
+    ]
     if not partial_metrics.empty:
-        for metric_name in fisher_metrics:
-            partial_metrics[f"fisher_p_{metric_name}"] = np.nan
-            partial_metrics[f"fisher_adj_p_{metric_name}"] = np.nan
+        for metric_name, (p_col, adj_col) in fisher_col_map.items():
+            partial_metrics[p_col] = np.nan
+            partial_metrics[adj_col] = np.nan
     if not partial_metrics.empty and not fisher_summary.empty:
         for _, row in fisher_summary.iterrows():
             target_model = row["target_model"]
@@ -451,9 +478,16 @@ def main() -> int:
             adj_val = row.get("adj_p_value")
             mask = partial_metrics["model"] == target_model
             if mask.any():
-                partial_metrics.loc[mask, f"fisher_p_{metric_name}"] = p_val
-                partial_metrics.loc[mask, f"fisher_adj_p_{metric_name}"] = adj_val
+                p_col, adj_col = fisher_col_map.get(metric_name, (None, None))
+                if p_col:
+                    partial_metrics.loc[mask, p_col] = p_val
+                if adj_col:
+                    partial_metrics.loc[mask, adj_col] = adj_val
     if not partial_metrics.empty:
+        for col in desired_order:
+            if col not in partial_metrics.columns:
+                partial_metrics[col] = np.nan
+        partial_metrics = partial_metrics.reindex(columns=desired_order)
         fisher_metrics_path = config.OUTPUT_DIR / f"evaluation_metrics_fisher{suffix}.xlsx"
         partial_metrics.to_excel(fisher_metrics_path, index=False)
         logging.info("Wrote Partial Match metrics with Fisher p-values to %s", fisher_metrics_path)
