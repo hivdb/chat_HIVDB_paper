@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Call GPT-4o mini for each PubMed prompt using a rate-limited worker pool."""
+"""Call GPT-4o (base or fine-tuned) for each PubMed prompt using a rate-limited worker pool."""
 
 from __future__ import annotations
 
@@ -15,13 +15,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
-from openai import AsyncOpenAI
+from openai import AsyncOpenAI, OpenAI
 from dotenv import load_dotenv
 
 import tiktoken
 
 
-MODEL_NAME = "gpt-4o-mini-2024-07-18"
+BASE_MODEL_NAME = "gpt-4o-mini-2024-07-18"
 RATE_LIMIT_TOKENS_PER_MINUTE = 180_000_000
 DEFAULT_COMPLETION_BUDGET = 2_000
 MAX_WORKERS = int(os.environ.get("PMID_MAX_WORKERS", "8"))
@@ -44,14 +44,38 @@ FAILURE_SUBSTRINGS = (
     "cannot process",
 )
 ANSWER_PATTERN = re.compile(r"Answer:\s*", re.IGNORECASE)
+DEFAULT_FINETUNE_JOBS = {
+    # Use the concrete fine-tuned model names when available to avoid extra lookups.
+    "FT": "ft:gpt-4o-mini-2024-07-18:hivdb-team:hivdb:9zCcjynH",
+    "FT-200": "ft:gpt-4o-mini-2024-07-18:hivdb-team:hivdb-lc-200:Ci5S377y",
+    "FT-150": "ft:gpt-4o-mini-2024-07-18:hivdb-team:hivdb-lc-150:Ci4rNRRJ",
+    "FT-100": "ft:gpt-4o-mini-2024-07-18:hivdb-team:hivdb-lc-100:Ci4mC6uU",
+    "FT-50": "ft:gpt-4o-mini-2024-07-18:hivdb-team:hivdb-lc-050:Ci4jQkcN",
+}
+ENV_ORG = os.environ.get("OPENAI_ORG_ID")
+ENV_PROJECT = os.environ.get("OPENAI_PROJECT") or os.environ.get("OPENAI_PROJECT_ID")
 
 
 @dataclass(frozen=True)
 class JobConfig:
     label: str
+    model: str
     prompts_path: Path
     responses_path: Path
     log_path: Path
+
+
+@dataclass(frozen=True)
+class PromptSet:
+    name: str
+    prompts_path: Path
+    responses_template: str  # Must contain {suffix}
+
+
+@dataclass(frozen=True)
+class ModelTarget:
+    label: str
+    model: str
 
 
 def parse_args() -> argparse.Namespace:
@@ -59,9 +83,44 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--job",
         action="append",
-        nargs=3,
-        metavar=("LABEL", "PROMPTS", "RESPONSES"),
-        help="Add a job with label and paths to prompts/responses JSONL. Log path defaults to responses log.",
+        nargs="+",
+        metavar="LABEL PROMPTS RESPONSES [MODEL]",
+        help=(
+            "Add a job with label and paths to prompts/responses JSONL. "
+            "Optionally supply MODEL as a fourth value; otherwise --model-name is used. "
+            "Log path defaults to the responses file stem inside --log-dir."
+        ),
+    )
+    parser.add_argument(
+        "--model-name",
+        default=BASE_MODEL_NAME,
+        help=f"Base model to use when MODEL is omitted (default: {BASE_MODEL_NAME}).",
+    )
+    parser.add_argument(
+        "--include-base",
+        action="store_true",
+        help="Include the base model (label 'base') alongside fine-tuned runs.",
+    )
+    parser.add_argument(
+        "--skip-default-ft",
+        action="store_true",
+        help="Skip the built-in fine-tuned jobs mapping and rely solely on --ft-job/--job.",
+    )
+    parser.add_argument(
+        "--ft-job",
+        action="append",
+        metavar="LABEL=MODEL_OR_JOB",
+        help=(
+            "Add or override a fine-tuned target. "
+            "Provide either the fine-tuned model name (ft:...) or a job id (ftjob-...). "
+            "Example: --ft-job FT-150=ftjob-kTvmdUKa157FGovNZkr5cIx2"
+        ),
+    )
+    parser.add_argument(
+        "--prompt-set",
+        action="append",
+        choices=["original120", "new30"],
+        help="Limit runs to specific prompt sets (default: both).",
     )
     parser.add_argument(
         "--log-dir",
@@ -85,28 +144,99 @@ class Progress:
     completed: int = 0
 
 
-def default_jobs(log_dir: Path) -> list[JobConfig]:
+def default_prompt_sets() -> list[PromptSet]:
     return [
-        JobConfig(
-            label="nov17_v1_before_2025_30",
+        PromptSet(
+            name="original120",
+            prompts_path=Path("advanced-prompting/jsonl/pmid_prompts_Nov17_Version1.jsonl"),
+            responses_template="advanced-prompting/jsonl/pmid_responses_Nov17_Version1_{suffix}.jsonl",
+        ),
+        PromptSet(
+            name="new30",
             prompts_path=Path("advanced-prompting/jsonl/pmid_prompts_Nov17_Version1_2025_30.jsonl"),
-            responses_path=Path("advanced-prompting/jsonl/pmid_responses_Nov17_Version1_2025_30.jsonl"),
-            log_path=log_dir / "pmid_responses_Nov17_Version1_2025_30.log",
-        )
+            responses_template="advanced-prompting/jsonl/pmid_responses_Nov17_Version1_2025_30_{suffix}.jsonl",
+        ),
     ]
+
+
+def parse_ft_job_spec(spec: str) -> tuple[str, str]:
+    if "=" not in spec:
+        raise ValueError(f"Invalid --ft-job format (expected LABEL=MODEL_OR_JOB): {spec}")
+    label, identifier = spec.split("=", 1)
+    label = label.strip()
+    identifier = identifier.strip()
+    if not label or not identifier:
+        raise ValueError(f"Invalid --ft-job values: {spec}")
+    return label, identifier
+
+
+def load_env() -> None:
+    """Load environment variables, preferring eval/.env over a root .env."""
+    load_dotenv(override=False)
+    eval_env = Path("eval/.env")
+    if eval_env.exists():
+        load_dotenv(eval_env, override=True)
 
 
 def build_jobs(args: argparse.Namespace) -> list[JobConfig]:
     log_dir = args.log_dir
     log_dir.mkdir(parents=True, exist_ok=True)
-    if not args.job:
-        return default_jobs(log_dir)
+
+    if args.job:
+        jobs: list[JobConfig] = []
+        for entry in args.job:
+            if len(entry) not in (3, 4):
+                raise ValueError("Each --job entry must provide LABEL PROMPTS RESPONSES [MODEL].")
+            label, prompts, responses = entry[:3]
+            model = entry[3] if len(entry) == 4 else args.model_name
+            prompts_path = Path(prompts)
+            responses_path = Path(responses)
+            log_path = log_dir / f"{responses_path.stem}.log"
+            jobs.append(
+                JobConfig(
+                    label=label,
+                    model=model,
+                    prompts_path=prompts_path,
+                    responses_path=responses_path,
+                    log_path=log_path,
+                )
+            )
+        return jobs
+
+    prompt_sets = default_prompt_sets()
+    if args.prompt_set:
+        prompt_sets = [p for p in prompt_sets if p.name in args.prompt_set]
+    if not prompt_sets:
+        raise ValueError("No prompt sets selected. Check --prompt-set values.")
+
+    ft_jobs = {} if args.skip_default_ft else dict(DEFAULT_FINETUNE_JOBS)
+    if args.ft_job:
+        for spec in args.ft_job:
+            label, identifier = parse_ft_job_spec(spec)
+            ft_jobs[label] = identifier
+
+    targets: list[ModelTarget] = [
+        ModelTarget(label=label, model=model) for label, model in ft_jobs.items()
+    ]
+    if args.include_base:
+        targets.append(ModelTarget(label="base", model=args.model_name))
+
     jobs: list[JobConfig] = []
-    for label, prompts, responses in args.job:
-        prompts_path = Path(prompts)
-        responses_path = Path(responses)
-        log_path = log_dir / f"{label}.log"
-        jobs.append(JobConfig(label, prompts_path, responses_path, log_path))
+    for target in targets:
+        for prompt_set in prompt_sets:
+            responses_path = Path(
+                prompt_set.responses_template.format(suffix=target.label)
+            )
+            log_path = log_dir / f"{target.label}_{prompt_set.name}.log"
+            jobs.append(
+                JobConfig(
+                    label=f"{target.label}_{prompt_set.name}",
+                    model=target.model,
+                    prompts_path=prompt_set.prompts_path,
+                    responses_path=responses_path,
+                    log_path=log_path,
+                )
+            )
     return jobs
 
 
@@ -170,7 +300,7 @@ def load_processed(path: Path) -> tuple[set[str], set[str]]:
     return processed, retry
 
 
-def estimate_tokens(text: str, model_name: str = MODEL_NAME) -> int:
+def estimate_tokens(text: str, model_name: str = BASE_MODEL_NAME) -> int:
     """Return an estimated token count for the provided text."""
     if tiktoken is not None:
         try:
@@ -285,6 +415,7 @@ async def worker(
     write_lock: asyncio.Lock,
     progress: Progress,
     logger: logging.Logger,
+    model_name: str,
 ) -> None:
     while True:
         job = await queue.get()
@@ -302,7 +433,7 @@ async def worker(
         )
 
         try:
-            response = await client.responses.create(model=MODEL_NAME, input=job.prompt)
+            response = await client.responses.create(model=model_name, input=job.prompt)
             output_text = response.output_text
         except Exception as exc:  # pragma: no cover - network failures
             logger.exception(
@@ -333,12 +464,13 @@ async def process_jobs(
     responses_file,
     logger: logging.Logger,
     api_key: str,
+    model_name: str,
 ) -> None:
     if not jobs:
         logger.info("No new PMIDs to process.")
         return
 
-    client = AsyncOpenAI(api_key=api_key)
+    client = AsyncOpenAI(api_key=api_key, organization=ENV_ORG, project=ENV_PROJECT)
     worker_count = max(1, min(MAX_WORKERS, len(jobs)))
     queue: asyncio.Queue[PromptJob | None] = asyncio.Queue()
     for job in jobs:
@@ -367,6 +499,7 @@ async def process_jobs(
                 write_lock=write_lock,
                 progress=progress,
                 logger=logger,
+                model_name=model_name,
             )
         )
         for i in range(worker_count)
@@ -378,12 +511,46 @@ async def process_jobs(
     logger.info("Completed %d/%d PMIDs", progress.completed, progress.total)
 
 
+def resolve_model_name(model: str, api_key: str, logger: logging.Logger) -> str | None:
+    """Return a concrete model name, resolving fine-tune job ids when needed."""
+    if not model.startswith("ftjob-"):
+        return model
+
+    client = OpenAI(api_key=api_key)
+    try:
+        info = client.fine_tuning.jobs.retrieve(model)
+    except Exception as exc:  # pragma: no cover - network failures
+        logger.error("Failed to retrieve fine-tune job %s: %s", model, exc)
+        return None
+
+    model_name = getattr(info, "fine_tuned_model", None) or getattr(info, "result_model", None)
+    status = getattr(info, "status", None)
+    if not model_name:
+        logger.error("Fine-tune job %s is not ready (status=%s).", model, status)
+        return None
+
+    logger.info("Resolved job %s (status=%s) to model %s", model, status, model_name)
+    return model_name
+
+
 def run_job_config(config: JobConfig, api_key: str) -> int:
     logger = setup_logger(config.log_path, config.label)
 
     if not config.prompts_path.exists():
         logger.error("Prompts file not found at %s", config.prompts_path)
         return 1
+
+    model_name = resolve_model_name(config.model, api_key, logger)
+    if not model_name:
+        logger.error("Skipping job %s; model could not be resolved.", config.label)
+        return 1
+    logger.info(
+        "Starting job %s with model %s -> prompts=%s, responses=%s",
+        config.label,
+        model_name,
+        config.prompts_path,
+        config.responses_path,
+    )
 
     processed_pmids, retry_pmids = load_processed(config.responses_path)
     logger.info(
@@ -404,22 +571,35 @@ def run_job_config(config: JobConfig, api_key: str) -> int:
         else:
             logger.info(
                 "All %d retry PMIDs queued for reprocessing.", len(retry_pmids)
-            )
+        )
     if not pending_jobs:
         logger.info("No new prompts to process.")
         return 0
 
+    config.responses_path.parent.mkdir(parents=True, exist_ok=True)
     with config.responses_path.open("a", encoding="utf-8") as responses_file:
-        asyncio.run(process_jobs(pending_jobs, responses_file, logger, api_key))
+        asyncio.run(
+            process_jobs(
+                pending_jobs,
+                responses_file,
+                logger,
+                api_key,
+                model_name,
+            )
+        )
 
     logger.info("All pending PMIDs processed.")
     return 0
 
 
 def main() -> int:
-    load_dotenv()
+    load_env()
     args = parse_args()
-    jobs = build_jobs(args)
+    try:
+        jobs = build_jobs(args)
+    except ValueError as exc:
+        logging.error(str(exc))
+        return 1
     if not jobs:
         logging.error("No job configurations provided.")
         return 1
@@ -428,6 +608,12 @@ def main() -> int:
     if not api_key:
         print("OPENAI_API_KEY is not set.", file=sys.stderr)
         return 1
+
+    logging.info(
+        "Using OpenAI client with org=%s project=%s",
+        ENV_ORG or "None",
+        ENV_PROJECT or "None",
+    )
 
     exit_code = 0
     for config in jobs:
