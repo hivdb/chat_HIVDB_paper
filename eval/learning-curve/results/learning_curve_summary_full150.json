@@ -5,80 +5,80 @@
       "label": "FT-50",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size050_full150_responses.csv",
       "column": "GPT-4o FT-50",
-      "accuracy": 0.8754166666666666,
-      "precision": 0.8916929547844374,
-      "recall": 0.8122605363984674,
-      "f1": 0.8501253132832081
+      "accuracy": 0.8595833333333334,
+      "precision": 0.8871851040525739,
+      "recall": 0.7758620689655172,
+      "f1": 0.8277976494634645
     },
     {
       "family": "GPT-4o",
       "label": "FT-100",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size100_full150_responses.csv",
       "column": "GPT-4o FT-100",
-      "accuracy": 0.8629166666666667,
-      "precision": 0.8831725616291533,
-      "recall": 0.789272030651341,
-      "f1": 0.8335862417804755
+      "accuracy": 0.8508333333333333,
+      "precision": 0.879424778761062,
+      "recall": 0.7614942528735632,
+      "f1": 0.8162217659137576
     },
     {
       "family": "GPT-4o",
       "label": "FT-150",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size150_full150_responses.csv",
       "column": "GPT-4o FT-150",
-      "accuracy": 0.8579166666666667,
-      "precision": 0.88,
-      "recall": 0.7796934865900383,
-      "f1": 0.8268156424581006
+      "accuracy": 0.8420833333333333,
+      "precision": 0.874859075535513,
+      "recall": 0.7432950191570882,
+      "f1": 0.803728638011393
     },
     {
       "family": "GPT-4o",
       "label": "FT-200",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size200_full150_responses.csv",
       "column": "GPT-4o FT-200",
-      "accuracy": 0.8745833333333334,
-      "precision": 0.885773624091381,
-      "recall": 0.8170498084291188,
-      "f1": 0.8500249128051818
+      "accuracy": 0.8608333333333333,
+      "precision": 0.8817204301075269,
+      "recall": 0.7854406130268199,
+      "f1": 0.8308004052684902
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-50",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 50_parsed.csv",
       "column": "Llama3.1-70B FT-50",
-      "accuracy": 0.8279166666666666,
-      "precision": 0.7870791628753412,
-      "recall": 0.828544061302682,
-      "f1": 0.80727951469902
+      "accuracy": 0.8204166666666667,
+      "precision": 0.7835337650323775,
+      "recall": 0.8113026819923371,
+      "f1": 0.7971764705882354
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-100",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 100_parsed.csv",
       "column": "Llama3.1-70B FT-100",
-      "accuracy": 0.8225,
-      "precision": 0.7734513274336283,
-      "recall": 0.8371647509578544,
-      "f1": 0.8040478380864765
+      "accuracy": 0.8145833333333333,
+      "precision": 0.7695769576957696,
+      "recall": 0.8189655172413793,
+      "f1": 0.7935034802784222
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-150",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 150_parsed.csv",
       "column": "Llama3.1-70B FT-150",
-      "accuracy": 0.8195833333333333,
-      "precision": 0.7754733994589721,
-      "recall": 0.8237547892720306,
-      "f1": 0.7988852763585694
+      "accuracy": 0.8120833333333334,
+      "precision": 0.7717690192483959,
+      "recall": 0.8065134099616859,
+      "f1": 0.788758782201405
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-200",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 200_parsed.csv",
       "column": "Llama3.1-70B FT-200",
-      "accuracy": 0.8195833333333333,
-      "precision": 0.770593445527015,
-      "recall": 0.8333333333333334,
-      "f1": 0.800736309249885
+      "accuracy": 0.8116666666666666,
+      "precision": 0.7666666666666667,
+      "recall": 0.8151340996168582,
+      "f1": 0.7901578458681523
     }
   ]
 }

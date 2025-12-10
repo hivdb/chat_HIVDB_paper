@@ -443,18 +443,14 @@ def _prune_redundant_tokens(tokens: set[str]) -> set[str]:
 
 
 def _list_partial_match(pred_norm: str, ref_norm: str, pred_raw: str) -> bool:
-    matches, total = list_match_stats(ref_norm, pred_norm, pred_raw)
-    if total:
-        ratio = matches / total
-        if ratio >= LIST_PARTIAL_THRESHOLD:
-            return True
-    pred_set = {tok.strip() for tok in pred_norm.split("|") if tok.strip()}
-    ref_set = {tok.strip() for tok in ref_norm.split("|") if tok.strip()}
-    if ref_set:
-        overlap = len(pred_set & ref_set) / len(ref_set)
-        if overlap >= LIST_PARTIAL_THRESHOLD:
-            return True
-    return False
+    pred_set = _prune_redundant_tokens(set(_expand_pol(pred_norm.split("|"))))
+    ref_set = _prune_redundant_tokens(set(_expand_pol(ref_norm.split("|"))))
+    if not pred_set or not ref_set:
+        return False
+    overlap = len(pred_set & ref_set)
+    ref_cov = overlap / len(ref_set) if ref_set else 0.0
+    pred_cov = overlap / len(pred_set) if pred_set else 0.0
+    return ref_cov >= LIST_PARTIAL_THRESHOLD and pred_cov >= LIST_PARTIAL_THRESHOLD
 
 
 def slugify(text: str) -> str:
