@@ -29,6 +29,7 @@ SOURCE_GPT4O_FT_100 = "./csv/gpt-4o-mini-FT 100_parsed.csv"
 SOURCE_GPT4O_FT_150 = "./csv/gpt-4o-mini-FT 150_parsed.csv"
 SOURCE_GPT4O_FT_200 = "./csv/gpt-4o-mini-FT 200_parsed.csv"
 SOURCE_GPT4O_PV1 = "./csv/gpt-4o-mini-PV1_parsed.csv"
+SOURCE_GPT4O_FT_PV1 = "./csv/gpt-4o-mini-2024-07-18_FT_PV1.csv"
 
 SOURCE_LLAMA_70B = "./csv/llama-3.1-70B-base_parsed.csv"
 SOURCE_LLAMA_70B_FT_50 = "./csv/llama-3.1-70B-FT 50_parsed.csv"
@@ -36,6 +37,7 @@ SOURCE_LLAMA_70B_FT_100 = "./csv/llama-3.1-70B-FT 100_parsed.csv"
 SOURCE_LLAMA_70B_FT_150 = "./csv/llama-3.1-70B-FT 150_parsed.csv"
 SOURCE_LLAMA_70B_FT_200 = "./csv/llama-3.1-70B-FT 200_parsed.csv"
 SOURCE_LLAMA_70B_FT = "./csv/llama-3.1-70B-FT_parsed.csv"
+SOURCE_LLAMA_70B_FT_PV1 = "./csv/llama-3.1-70B-FT-PV1_parsed.csv"
 
 # SOURCE_LLAMA_70B_before = "./csv/llama-3.1-70B_before_parsed.csv"
 # SOURCE_LLAMA_70B_after = "./csv/llama-3.1-70B_after_parsed.csv"
@@ -45,6 +47,7 @@ SOURCE_LLAMA_70B_PV1 = "./csv/llama-3.1-70B-PV1_parsed.csv"
 SOURCE_LLAMA_8B = "./csv/llama-3.1-8B-base_parsed.csv"
 SOURCE_LLAMA_8B_FT = "./csv/llama-3.1-8B-FT_parsed.csv"
 SOURCE_LLAMA_8B_PV1 = "./csv/llama-3.1-8B-PV1_parsed.csv"
+SOURCE_LLAMA_8B_FT_PV1 = "./csv/llama-3.1-8B-FT-PV1_parsed.csv"
 
 # SOURCE_LLAMA_8B_5shot = "./csv/llama-3.1-8B_bm25_5-shot_parsed.csv"
 # SOURCE_LLAMA_8B_10shot = "./csv/llama-3.1-8B_bm25_10-shot_parsed.csv"
@@ -63,7 +66,14 @@ def _load_unique(path: str, usecols: list[str] | None) -> pd.DataFrame:
     """Load the given file and drop duplicate PMID/QID combinations."""
 
     loader = pd.read_excel if path.endswith(".xlsx") else pd.read_csv
-    df = loader(path, usecols=usecols)
+
+    if loader is pd.read_csv:
+        try:
+            df = loader(path, usecols=usecols)
+        except UnicodeDecodeError:
+            df = loader(path, usecols=usecols, encoding="latin-1")
+    else:
+        df = loader(path, usecols=usecols)
     # Keeping the last occurrence keeps the most recent revision if duplicates exist.
     return df.drop_duplicates(subset=MERGE_KEYS, keep="last")
 
@@ -108,6 +118,9 @@ def main() -> None:
     gpt4o_pv1 = _load_unique(
         SOURCE_GPT4O_PV1, usecols=MERGE_KEYS + ["Answer"]
     ).rename(columns={"Answer": "gpt-4o-mini PV1"})
+    gpt4o_ft_pv1 = _load_unique(
+        SOURCE_GPT4O_FT_PV1, usecols=MERGE_KEYS + ["GPT-4o FT_PV1"]
+    ).rename(columns={"GPT-4o FT_PV1": "gpt-4o-mini FT PV1"})
 
     llama_8b = _load_unique(SOURCE_LLAMA_8B, usecols=MERGE_KEYS + ["Answer"]).rename(
         columns={"Answer": "llama-3.1-8B base"}
@@ -127,6 +140,9 @@ def main() -> None:
     llama_8b_pv1 = _load_unique(
         SOURCE_LLAMA_8B_PV1, usecols=MERGE_KEYS + ["Answer"]
     ).rename(columns={"Answer": "llama-3.1-8B PV1"})
+    llama_8b_ft_pv1 = _load_unique(
+        SOURCE_LLAMA_8B_FT_PV1, usecols=MERGE_KEYS + ["Answer"]
+    ).rename(columns={"Answer": "llama-3.1-8B-FT PV1"})
 
     llama_70b = _load_unique(SOURCE_LLAMA_70B, usecols=MERGE_KEYS + ["Answer"]).rename(
         columns={"Answer": "llama-3.1-70B base"}
@@ -146,6 +162,9 @@ def main() -> None:
     llama_70b_ft_source = _load_unique(
         SOURCE_LLAMA_70B_FT, usecols=MERGE_KEYS + ["Answer"]
     ).rename(columns={"Answer": "llama-3.1-70B-FT"})
+    llama_70b_ft_pv1 = _load_unique(
+        SOURCE_LLAMA_70B_FT_PV1, usecols=MERGE_KEYS + ["Answer"]
+    ).rename(columns={"Answer": "llama-3.1-70B-FT PV1"})
 
     llama_70b_ft_50 = _load_unique(
         SOURCE_LLAMA_70B_FT_50, usecols=MERGE_KEYS + ["Answer"]
@@ -180,10 +199,12 @@ def main() -> None:
     merged = merged.merge(gpt4o_ft_150, on=MERGE_KEYS, how="left")
     merged = merged.merge(gpt4o_ft_200, on=MERGE_KEYS, how="left")
     merged = merged.merge(gpt4o_pv1, on=MERGE_KEYS, how="left")
+    merged = merged.merge(gpt4o_ft_pv1, on=MERGE_KEYS, how="left")
 
     merged = merged.merge(llama_8b, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b_ft_source, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b_pv1, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_8b_ft_pv1, on=MERGE_KEYS, how="left")
 
     merged = merged.merge(llama_70b, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_ft_50, on=MERGE_KEYS, how="left")
@@ -192,6 +213,7 @@ def main() -> None:
     merged = merged.merge(llama_70b_ft_200, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_ft_source, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_pv1, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_70b_ft_pv1, on=MERGE_KEYS, how="left")
 
     # merged = base.merge(adv, on=MERGE_KEYS, how="left")
     # merged = merged.merge(adv_before, on=MERGE_KEYS, how="left")

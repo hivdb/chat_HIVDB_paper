@@ -1,19 +1,20 @@
 write a new python script to parse
-csv/llama-3.1-70B-FT_new30.csv. 'FT Answer' column, save to a csv file with suffix '_parsed.csv'.
+csv/llama-3.1-70B-FT-PV1. 'FT Answer' column, save to a csv file with suffix '_parsed.csv'.
 
 column headers are PMID, QID, Question, Answer.
 
 Extract Question or QID or Both.
 Extract Answer.
 
-Find line startswith "Question:",
-then find in the text in the same line or next line that contains any quesetion that listed below.
-
-The question format can be
+Parse Question from Question line like
+"Question: From what years were the sequenced samples obtained"
+"Question: Question 1", remove them before matching.
+"**Question 10 – What method was used for sequencing?**"
+"# Q1 – Does the paper report HIV sequences from patient samples?"
 "Question: Question 1", remove them before matching.
 "**Question 10 – What method was used for sequencing?**"
 
-
+find in the text in the same line or next line that contains any quesetion that listed below.
 
 1. Does the paper report HIV sequences from patient samples?,
 2. Does the paper report in vitro drug susceptibility data?,
