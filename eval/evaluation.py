@@ -19,31 +19,24 @@ from eval import config  # type: ignore
 from eval import statistics as stat_utils  # type: ignore
 from eval.plots import generate_figures  # type: ignore
 from eval.scoring import build_detail_rows, ensure_norm, evaluate_group, evaluate_model, load_dataset  # type: ignore
-from eval.normalize import match_scenario_label  # type: ignore
 # Statistical helpers
-from scipy.stats import fisher_exact, ttest_rel, wilcoxon
+from scipy.stats import fisher_exact
 import numpy as np
 
 from eval.normalize import slugify
 
-
-LIST_SCENARIO_TITLES = {
-    "Exact Match",
-    "Partial Match",
-}
-
 FAMILY_COMPARISONS = {
     "GPT-4o": {
         "base": "GPT-4o base",
-        "targets": ["GPT-4o FT", "GPT-4o QSP"],
+        "targets": ["GPT-4o FT", "GPT-4o FT+QSP", "GPT-4o QSP"],
     },
     "Llama3.1-70B": {
         "base": "Llama3.1-70B base",
-        "targets": ["Llama3.1-70B FT", "Llama3.1-70B QSP"],
+        "targets": ["Llama3.1-70B FT", "Llama3.1-70B FT+QSP", "Llama3.1-70B QSP"],
     },
     "Llama3.1-8B": {
         "base": "Llama3.1-8B base",
-        "targets": ["Llama3.1-8B FT", "Llama3.1-8B QSP"],
+        "targets": ["Llama3.1-8B FT", "Llama3.1-8B FT+QSP", "Llama3.1-8B QSP"],
     },
 }
 
@@ -79,7 +72,6 @@ def build_qid_metrics(
             metrics.update(
                 {
                     "model": model,
-                    "scenario": scenario["title"],
                     "QID": qid,
                     "Type": q_type,
                     "Question": question,
@@ -94,8 +86,7 @@ def run(limit: int | None) -> Tuple[
     List[dict],
     List[Tuple[str, str, pd.DataFrame]],
     List[dict],
-    List[dict],
-    List[dict],
+    dict[str, pd.DataFrame],
 ]:
     df = load_dataset()
     if limit:
@@ -104,8 +95,6 @@ def run(limit: int | None) -> Tuple[
     scenario_frames: List[pd.DataFrame] = []
     detail_rows: List[dict] = []
     figure_specs: List[Tuple[str, str, pd.DataFrame]] = []
-    exact_partial_details: List[dict] = []
-    partial_only_details: List[dict] = []
     qid_metrics_rows: List[dict] = []
 
     cache: dict = {}
@@ -123,7 +112,6 @@ def run(limit: int | None) -> Tuple[
             logging.warning("Scenario '%s' missing models: %s", scenario["title"], ", ".join(missing_models))
 
         allow_partial = scenario.get("allow_partial_list", False)
-        match_label = match_scenario_label(allow_partial)
         detail_type_filter = scenario.get("detail_types")
         detail_types = set(detail_type_filter) if detail_type_filter else None
         norm_lookup = {col: ensure_norm(df, col, cache) for col in [config.REF_COL, *scenario["models"]] if col in df.columns}
@@ -131,7 +119,6 @@ def run(limit: int | None) -> Tuple[
             scenario_df,
             scenario["models"],
             config.REF_COL,
-            scenario["title"],
             norm_lookup,
             allow_partial_list=allow_partial,
         )
@@ -162,7 +149,6 @@ def run(limit: int | None) -> Tuple[
                     scenario_df,
                     scenario,
                     norm_lookup,
-                    match_label,
                     detail_types,
                 )
             )
@@ -174,10 +160,6 @@ def run(limit: int | None) -> Tuple[
         qid_metrics_rows.extend(scenario_qid)
         scenario_qid_df = pd.DataFrame(scenario_qid)
         scenario_qid_frames[scenario["title"]] = scenario_qid_df
-        if scenario["title"] in LIST_SCENARIO_TITLES:
-            exact_partial_details.extend(build_detail_rows(scenario_df, scenario, norm_lookup, match_label))
-            if scenario["title"] == "List questions - partial match":
-                partial_only_details.extend(build_detail_rows(scenario_df, scenario, norm_lookup, match_label))
         scenario_frames.append(subset)
         def _format_title(title: str) -> str:
             if " - " in title:
@@ -187,7 +169,7 @@ def run(limit: int | None) -> Tuple[
 
         figure_specs.append((_format_title(scenario["title"]), scenario["title"], subset, scenario_qid_df))
     combined = pd.concat(scenario_frames, ignore_index=True) if scenario_frames else pd.DataFrame()
-    return combined, detail_rows, figure_specs, exact_partial_details, partial_only_details, qid_metrics_rows, scenario_qid_frames
+    return combined, detail_rows, figure_specs, qid_metrics_rows, scenario_qid_frames
 
 
 def _write_excel(path: Path, sheets: dict[str, pd.DataFrame]) -> None:
@@ -466,8 +448,6 @@ def _build_table3(
 def write_outputs(
     metrics: pd.DataFrame,
     details: List[dict],
-    extra_details: List[dict],
-    partial_details: List[dict],
     scenario_qid_frames: dict[str, pd.DataFrame],
 ) -> None:
     # Metrics: write CSV only (avoid duplicate Excel outputs)
@@ -477,7 +457,7 @@ def write_outputs(
     detail_df = pd.DataFrame(details)
     detail_df.sort_values(["sort_key"], inplace=True)
     detail_df.drop(columns=["sort_key"], inplace=True, errors="ignore")
-    detail_sheets = {title: detail_df[detail_df.get("Scenario") == title] for title in ["Exact Match", "Partial Match"]}
+    detail_sheets: dict[str, pd.DataFrame] = {"All": detail_df}
     _write_excel(config.DETAIL_METRICS_HUMAN.with_suffix(".xlsx"), detail_sheets)
 
     # Per-QID metrics workbook
@@ -508,8 +488,6 @@ def main() -> int:
     config.OUTPUT_METRICS_BY_QID = config.OUTPUT_DIR / f"evaluation_metrics_by_qid{suffix}.csv"
     config.STAT_RESULTS = config.OUTPUT_DIR / f"statistical_tests{suffix}.xlsx"
     config.DETAIL_METRICS_HUMAN = config.OUTPUT_DIR / f"detailed_evaluation{suffix}.csv"
-    config.DETAIL_METRICS_PARTIAL = config.OUTPUT_DIR / f"detailed_evaluation_partial_list_matches{suffix}.csv"
-    config.EXACT_VS_PARTIAL_DETAILS = config.OUTPUT_DIR / f"exact_vs_partial_evaluation{suffix}.csv"
     if args.figures_dir:
         config.OUTPUT_TABLE_DIR = args.figures_dir
 
@@ -518,20 +496,17 @@ def main() -> int:
         metrics,
         details,
         figures,
-        extra_details,
-        partial_details,
         qid_rows,
         scenario_qid_frames,
     ) = run(args.limit)
     if metrics.empty:
         logging.error("No scenarios produced metrics.")
         return 1
-    write_outputs(metrics, details, extra_details, partial_details, scenario_qid_frames)
+    write_outputs(metrics, details, scenario_qid_frames)
     overall_stats = {}
     fisher_df = pd.DataFrame()
     pair_df = pd.DataFrame()
-    overall_qid_df = scenario_qid_frames.get("Partial Match")
-    exact_qid_df = scenario_qid_frames.get("Exact Match")
+    overall_qid_df = next(iter(scenario_qid_frames.values()), pd.DataFrame())
     fisher_metrics = ["accuracy", "precision", "recall", "f1"]
     if overall_qid_df is not None and not overall_qid_df.empty:
         paired_metrics = ["accuracy", "precision", "recall", "f1"]
@@ -545,19 +520,8 @@ def main() -> int:
             FAMILY_COMPARISONS,
             paired_metrics,
         )
-    exact_stats = {}
-    if exact_qid_df is not None and not exact_qid_df.empty:
-        _, exact_stats, _ = stat_utils.compute_pairwise_tests(
-            exact_qid_df,
-            FAMILY_COMPARISONS,
-            ["accuracy", "precision", "recall", "f1"],
-        )
     logging.info("Wrote metrics to %s", config.OUTPUT_METRICS)
     logging.info("Wrote detail rows to %s", config.DETAIL_METRICS_HUMAN)
-    if extra_details:
-        logging.info("Wrote list scenario details to %s", config.EXACT_VS_PARTIAL_DETAILS)
-    if partial_details:
-        logging.info("Wrote partial-list detail rows to %s", config.DETAIL_METRICS_PARTIAL)
     if not pair_df.empty or not fisher_df.empty:
         fisher_qid_sheet = _build_fisher_qid_sheet(fisher_df)
         table3_df = _build_table3(fisher_qid_sheet, overall_qid_df)
@@ -571,13 +535,13 @@ def main() -> int:
             if table3_df is not None and not table3_df.empty:
                 table3_df.to_excel(writer, sheet_name="Table3", index=False)
         logging.info("Wrote combined statistical tests to %s", config.STAT_RESULTS)
-    # Export Partial Match metrics with aggregated Fisher results
+    # Export aggregated Fisher results alongside metrics
     fisher_summary = _aggregate_fisher_summary(
         overall_qid_df if overall_qid_df is not None else pd.DataFrame(),
         FAMILY_COMPARISONS,
         fisher_metrics,
     )
-    partial_metrics = metrics[metrics["scenario"] == "Partial Match"].copy()
+    scenario_metrics = metrics.copy()
     fisher_col_map = {
         "accuracy": ("p_acc_fisher", "adj_p_acc_fisher"),
         "precision": ("p_prec_fisher", "adj_p_prec_fisher"),
@@ -585,7 +549,6 @@ def main() -> int:
         "f1": ("p_f1_fisher", "adj_p_f1_fisher"),
     }
     desired_order = [
-        "scenario",
         "samples",
         "model",
         "tp",
@@ -605,38 +568,39 @@ def main() -> int:
         "p_f1_fisher",
         "adj_p_f1_fisher",
     ]
-    if not partial_metrics.empty:
+    if not scenario_metrics.empty:
         for metric_name, (p_col, adj_col) in fisher_col_map.items():
-            partial_metrics[p_col] = np.nan
-            partial_metrics[adj_col] = np.nan
-    if not partial_metrics.empty and not fisher_summary.empty:
+            scenario_metrics[p_col] = np.nan
+            scenario_metrics[adj_col] = np.nan
+    if not scenario_metrics.empty and not fisher_summary.empty:
         for _, row in fisher_summary.iterrows():
             target_model = row["target_model"]
             metric_name = row["metric"]
             p_val = row.get("p_value")
             adj_val = row.get("adj_p_value")
-            mask = partial_metrics["model"] == target_model
+            mask = scenario_metrics["model"] == target_model
             if mask.any():
                 p_col, adj_col = fisher_col_map.get(metric_name, (None, None))
                 if p_col:
-                    partial_metrics.loc[mask, p_col] = p_val
+                    scenario_metrics.loc[mask, p_col] = p_val
                 if adj_col:
-                    partial_metrics.loc[mask, adj_col] = adj_val
-    if not partial_metrics.empty:
+                    scenario_metrics.loc[mask, adj_col] = adj_val
+    if not scenario_metrics.empty:
         for col in desired_order:
-            if col not in partial_metrics.columns:
-                partial_metrics[col] = np.nan
-        partial_metrics = partial_metrics.reindex(columns=desired_order)
+            if col not in scenario_metrics.columns:
+                scenario_metrics[col] = np.nan
+        scenario_metrics = scenario_metrics.reindex(columns=desired_order)
         fisher_metrics_path = config.OUTPUT_DIR / f"evaluation_metrics_fisher{suffix}.xlsx"
-        partial_metrics.to_excel(fisher_metrics_path, index=False)
-        logging.info("Wrote Partial Match metrics with Fisher p-values to %s", fisher_metrics_path)
+        scenario_metrics.to_excel(fisher_metrics_path, index=False)
+        logging.info("Wrote metrics with Fisher p-values to %s", fisher_metrics_path)
     dataset_label = _dataset_label_from_suffix(args.output_suffix)
     for display_title, scenario_title, subset, scenario_qid_df in figures:
-        sig = overall_stats if scenario_title == "Partial Match" else exact_stats if scenario_title == "Exact Match" else None
-        base_name = slugify(scenario_title)
+        sig = overall_stats
         if suffix:
-            base_name = f"{base_name}{suffix}"
-        full_title = f"{scenario_title} ({dataset_label})"
+            base_name = suffix.strip("_") or "figure"
+        else:
+            base_name = slugify(dataset_label)
+        full_title = dataset_label or scenario_title
         generate_figures(
             subset,
             scenario_title,

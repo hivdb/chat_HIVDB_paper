@@ -38,17 +38,20 @@ METRIC_PALETTE = {
 FAMILY_COMPARISONS = {
     "GPT-4o": {
         "base": "GPT-4o base",
-        "targets": ["GPT-4o FT", "GPT-4o QSP"],
+        "targets": ["GPT-4o FT", "GPT-4o FT+QSP", "GPT-4o QSP"],
     },
     "Llama3.1-70B": {
         "base": "Llama3.1-70B base",
-        "targets": ["Llama3.1-70B FT", "Llama3.1-70B QSP"],
+        "targets": ["Llama3.1-70B FT", "Llama3.1-70B FT+QSP", "Llama3.1-70B QSP"],
     },
     "Llama3.1-8B": {
         "base": "Llama3.1-8B base",
-        "targets": ["Llama3.1-8B FT", "Llama3.1-8B QSP"],
+        "targets": ["Llama3.1-8B FT", "Llama3.1-8B FT+QSP", "Llama3.1-8B QSP"],
     },
 }
+
+# Preferred ordering within each family: base, FT, QSP, FT+QSP, then any others.
+VARIANT_ORDER = ["base", "FT", "QSP", "FT+QSP"]
 
 
 def _variant_from_label(label: str) -> str:
@@ -112,10 +115,37 @@ def _variant_label(label: str) -> str:
     return label
 
 
+def _ordered_models(models: list[str]) -> list[str]:
+    """Order models within each family as base, FT, QSP, FT+QSP, then others (stable by input order)."""
+    families_in_order: list[str] = []
+    for model in models:
+        fam = _family_from_label(model)
+        if fam and fam not in families_in_order:
+            families_in_order.append(fam)
+    index_map = {m: i for i, m in enumerate(models)}
+    ordered: list[str] = []
+    for fam in families_in_order:
+        fam_models = [m for m in models if _family_from_label(m) == fam]
+        def _rank(model: str) -> tuple[int, int]:
+            var = _variant_label(model).lower()
+            try:
+                v_idx = [v.lower() for v in VARIANT_ORDER].index(var)
+            except ValueError:
+                v_idx = len(VARIANT_ORDER)
+            return (v_idx, index_map.get(model, 0))
+        fam_sorted = sorted(fam_models, key=_rank)
+        ordered.extend(fam_sorted)
+    # Append any models with no family match
+    for m in models:
+        if m not in ordered:
+            ordered.append(m)
+    return ordered
+
+
 def _group_positions(models: list[str]) -> tuple[list[float], dict[str, tuple[float, float]]]:
     positions: list[float] = []
     family_ranges: dict[str, list[float]] = {}
-    gap = 1.5
+    gap = 2.0  # extra breathing room between families and labels
     x = 0.0
     previous_family = None
     for model in models:
@@ -137,7 +167,7 @@ def _annotate_families(ax, family_bounds: dict[str, tuple[float, float]]) -> Non
         center = (start + end) / 2
         ax.text(
             center,
-            -0.24,
+            -0.3,
             family,
             ha="center",
             va="top",
@@ -243,10 +273,18 @@ def plot_metric_panels(
     if df.empty:
         return
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    models = df["model"].tolist()
+    if "display_order" in df.columns:
+        df = df.sort_values("display_order").reset_index(drop=True)
+        models = df["model"].tolist()
+    else:
+        models = _ordered_models(df["model"].tolist())
+        df = df.set_index("model").loc[models].reset_index()
     positions, family_bounds = _group_positions(models)
     pos_lookup = _position_lookup(models)
-    colors = [_color_for_model(model) for model in models]
+    if "color_override" in df.columns:
+        colors = df["color_override"].tolist()
+    else:
+        colors = [_color_for_model(model) for model in models]
     variant_labels = [_variant_label(model) for model in models]
     if layout == "combined":
         width = max(18, 0.7 * len(models) * len(METRIC_COLUMNS))
@@ -300,7 +338,16 @@ def plot_metric_panels(
             axes = [axes]
         for ax, (metric, label) in zip(axes, METRIC_COLUMNS):
             values = df[metric].tolist()
-            bar_colors = colors
+            # Shade base/FT/QSP/FT+QSP groups differently when style_group present
+            if "style_group" in df.columns:
+                shade_map = {"base": 0.35, "ft": 0.0, "ft_qsp": -0.08, "qsp": 0.18}
+                base_colors = [_color_for_model(model) for model in models]
+                bar_colors = []
+                for base_color, group in zip(base_colors, df["style_group"].tolist()):
+                    tint = shade_map.get(group, 0.0)
+                    bar_colors.append(_tint_color(mcolors.to_hex(base_color), tint))
+            else:
+                bar_colors = colors
             bars = ax.bar(positions, values, color=bar_colors, width=bar_width)
             ax.set_ylim(0, Y_LIM)
             ax.set_ylabel(label, fontsize=AXIS_LABEL_SIZE)

@@ -128,7 +128,6 @@ def evaluate_group(
     df: pd.DataFrame,
     models: Iterable[str],
     ref_col: str,
-    scenario: str,
     norm_lookup: dict[str, str],
     allow_partial_list: bool = False,
 ) -> pd.DataFrame:
@@ -141,7 +140,7 @@ def evaluate_group(
         if not pred_norm:
             continue
         metrics = evaluate_model(df, model, ref_col, pred_norm, ref_norm, allow_partial_list)
-        metrics.update({"model": model, "scenario": scenario})
+        metrics.update({"model": model})
         rows.append(metrics)
     return pd.DataFrame(rows)
 
@@ -150,14 +149,11 @@ def build_detail_rows(
     df: pd.DataFrame,
     scenario: dict,
     norm_lookup: dict[str, str],
-    match_label: str,
     detail_types: Set[str] | None = None,
 ) -> List[dict]:
     records = []
     ref_col = config.REF_COL
     ref_norm = norm_lookup[ref_col]
-    include_scenario = scenario.get("include_scenario_label", False)
-    scenario_label = scenario.get("title") or match_label
     allowed_types = {value.lower() for value in detail_types} if detail_types else None
     for _, row in df.iterrows():
         question_type = str(row.get("Type", ""))
@@ -171,9 +167,6 @@ def build_detail_rows(
             "Human Answer": row.get("Human Answer", ""),
             "sort_key": row.get("sort_key", 0),
         }
-        base["Scenario"] = scenario_label
-        if include_scenario:
-            base["Scenario Title"] = scenario["title"]
         for model in scenario["models"]:
             answer = row.get(model, "")
             base[f"{model} Answer"] = answer

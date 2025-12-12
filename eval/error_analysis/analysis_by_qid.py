@@ -39,26 +39,31 @@ COLUMN_RENAMES = {col: col for col in COLUMN_ORDER}
 EXPECTED_ROWS = 120
 
 SHEET_CONFIG = {
-    "Q1": {"qid": 1, "source": "exact", "scenario": "Exact Match"},
-    "Q9": {"qid": 9, "source": "partial", "scenario": "Partial Match"},
-    "Q16": {"qid": 16, "source": "partial", "scenario": "Partial Match"},
+    "Q1": {"qid": 1},
+    "Q9": {"qid": 9},
+    "Q16": {"qid": 16},
 }
 
 
 def _load_frames(details_path: Path) -> Dict[str, pd.DataFrame]:
     frames = {}
-    # Expect a single workbook with two sheets: "Exact Match" and "Partial Match"
+    # Single-sheet workbook produced by the unified evaluator
     book = pd.read_excel(details_path, sheet_name=None)
-    partial = book.get("Partial Match", pd.DataFrame())
-    exact = book.get("Exact Match", pd.DataFrame())
-    frames["partial"] = partial.assign(Scenario="Partial Match")
-    frames["exact"] = exact.assign(Scenario="Exact Match")
+    if not book:
+        return {"all": pd.DataFrame()}
+    # Use the first sheet (or the one named 'All' if present)
+    if "All" in book:
+        frames["all"] = book["All"]
+    else:
+        first_name = next(iter(book))
+        frames["all"] = book[first_name]
     return frames
 
 
-def _prepare_sheet(df: pd.DataFrame, qid: int, scenario: str) -> pd.DataFrame:
-    scenario_mask = df["Scenario"].str.lower() == scenario.lower()
-    subset = df[(df["QID"] == qid) & scenario_mask].copy()
+def _prepare_sheet(df: pd.DataFrame, qid: int) -> pd.DataFrame:
+    if "QID" not in df.columns:
+        return pd.DataFrame()
+    subset = df[df["QID"] == qid].copy()
     if subset.empty:
         return subset
     missing_cols = [col for col in COLUMN_ORDER if col not in subset.columns]
@@ -74,10 +79,10 @@ def build_workbook(details_path: Path, output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with pd.ExcelWriter(output_path, engine="openpyxl") as writer:
         for sheet_name, config in SHEET_CONFIG.items():
-            source_df = frames[config["source"]]
-            sheet_df = _prepare_sheet(source_df, config["qid"], config["scenario"])
+            source_df = frames.get("all", pd.DataFrame())
+            sheet_df = _prepare_sheet(source_df, config["qid"])
             if sheet_df.empty:
-                logging.warning("Skipping sheet %s (no rows for QID %s %s)", sheet_name, config["qid"], config["scenario"])
+                logging.warning("Skipping sheet %s (no rows for QID %s)", sheet_name, config["qid"])
                 continue
             sheet_df.to_excel(writer, sheet_name=sheet_name, index=False)
             logging.info("Wrote sheet %s with %d rows", sheet_name, len(sheet_df))

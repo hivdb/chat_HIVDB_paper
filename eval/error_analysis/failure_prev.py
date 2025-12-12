@@ -61,7 +61,6 @@ def load_data(path: Path) -> pd.DataFrame:
     if not path.exists():
         raise FileNotFoundError(f"Per-QID metrics file missing: {path}")
     df = pd.read_csv(path)
-    df = df[df["scenario"] == SCENARIO_NAME].copy()
     if df.empty:
         return df
     df["QID"] = df["QID"].astype(int)

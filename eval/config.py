@@ -13,9 +13,7 @@ OUTPUT_METRICS = OUTPUT_DIR / "evaluation_metrics.csv"
 OUTPUT_METRICS_BY_QID = OUTPUT_DIR / "evaluation_metrics_by_qid.csv"
 STAT_RESULTS = OUTPUT_DIR / "statistical_tests.xlsx"
 DETAIL_METRICS_HUMAN = OUTPUT_DIR / "detailed_evaluation.csv"
-DETAIL_METRICS_PARTIAL = OUTPUT_DIR / "detailed_evaluation_partial_list_matches.csv"
 OUTPUT_TABLE_DIR = EVAL_DIR / "figures"
-EXACT_VS_PARTIAL_DETAILS = OUTPUT_DIR / "exact_vs_partial_evaluation.csv"
 LEARNING_CURVE_RESPONSES = {
     "GPT-4o FT-100": EVAL_DIR / "learning-curve/responses/size100_responses.csv",
 }
@@ -25,16 +23,19 @@ MODEL_GROUPS = {
     "gpt_family": [
         "GPT-4o base",
         "GPT-4o FT",
+        "GPT-4o FT+QSP",
         "GPT-4o QSP",
     ],
     "llama_70b": [
         "Llama3.1-70B base",
         "Llama3.1-70B FT",
+        "Llama3.1-70B FT+QSP",
         "Llama3.1-70B QSP",
     ],
     "llama_8b": [
         "Llama3.1-8B base",
         "Llama3.1-8B FT",
+        "Llama3.1-8B FT+QSP",
         "Llama3.1-8B QSP",
     ],
 }
@@ -51,9 +52,13 @@ COLUMN_RENAMES = {
     "gpt-4o-mini-FT 150": "GPT-4o FT-150",
     "gpt-4o-mini-FT 200": "GPT-4o FT-200",
     "gpt-4o-mini PV1": "GPT-4o QSP",
+    "gpt-4o-mini FT PV1": "GPT-4o FT+QSP",
+    "GPT-4o FT PV1": "GPT-4o FT+QSP",
     "llama-3.1-8B base": "Llama3.1-8B base",
     "llama-3.1-8B-FT": "Llama3.1-8B FT",
     "llama-3.1-8B PV1": "Llama3.1-8B QSP",
+    "llama-3.1-8B-FT PV1": "Llama3.1-8B FT+QSP",
+    "Llama3.1-8B FT PV1": "Llama3.1-8B FT+QSP",
     "llama-3.1-70B base": "Llama3.1-70B base",
     "llama-3.1-70B-FT 50": "Llama3.1-70B FT-50",
     "llama-3.1-70B-FT 100": "Llama3.1-70B FT-100",
@@ -61,6 +66,8 @@ COLUMN_RENAMES = {
     "llama-3.1-70B-FT 200": "Llama3.1-70B FT-200",
     "llama-3.1-70B-FT": "Llama3.1-70B FT",
     "llama-3.1-70B PV1": "Llama3.1-70B QSP",
+    "llama-3.1-70B-FT PV1": "Llama3.1-70B FT+QSP",
+    "Llama3.1-70B FT PV1": "Llama3.1-70B FT+QSP",
     # Legacy
     "GPT-4o FT (100)": "GPT-4o FT-100",
     "GPT-4o Question-specific Prompt": "GPT-4o QSP",
@@ -83,11 +90,7 @@ COLUMN_RENAMES = {
 
 SCENARIOS = [
     {
-        "title": "Exact Match",
-        "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
-    },
-    {
-        "title": "Partial Match",
+        "title": "All Questions",
         "models": MODEL_GROUPS["gpt_family"] + MODEL_GROUPS["llama_70b"] + MODEL_GROUPS["llama_8b"],
         "allow_partial_list": True,
     },

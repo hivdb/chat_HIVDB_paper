@@ -35,6 +35,15 @@ DISPLAY_SLOTS = [
     ("GPT-4o FT", 250, ["GPT-4o FT", "GPT-4o FT (250)"]),
 ]
 
+DISPLAY_SLOTS_QSP = [
+    ("GPT-4o base", 0, ["GPT-4o base"]),
+    ("GPT-4o FT-50+QSP", 50, ["GPT-4o FT-50+QSP"]),
+    ("GPT-4o FT-100+QSP", 100, ["GPT-4o FT-100+QSP"]),
+    ("GPT-4o FT-150+QSP", 150, ["GPT-4o FT-150+QSP"]),
+    ("GPT-4o FT-200+QSP", 200, ["GPT-4o FT-200+QSP"]),
+    ("GPT-4o FT+QSP", 250, ["GPT-4o FT+QSP"]),
+]
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -51,14 +60,14 @@ def load_metrics(path: Path, scenarios: List[str] | None = None) -> pd.DataFrame
     if not path.exists():
         raise FileNotFoundError(f"Metrics file missing: {path}")
     df = pd.read_csv(path)
-    scenarios = scenarios or ["Partial Match"]
-    df = df[df["scenario"].isin(scenarios)].copy()
+    if scenarios and "scenario" in df.columns:
+        df = df[df["scenario"].isin(scenarios)].copy()
     return df
 
 
-def select_models(df: pd.DataFrame) -> pd.DataFrame:
+def select_models(df: pd.DataFrame, slots: List[tuple[str, int, List[str]]]) -> pd.DataFrame:
     rows: List[pd.Series] = []
-    for display_label, size, candidates in DISPLAY_SLOTS:
+    for display_label, size, candidates in slots:
         selected: pd.Series | None = None
         for candidate in candidates:
             match = df[df["model"] == candidate]
@@ -75,12 +84,44 @@ def select_models(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def build_combined(lc_path: Path, base_path: Path, scenarios: List[str] | None = None) -> pd.DataFrame:
-    target_scenarios = scenarios or ["Partial Match"]
-    lc_df = load_metrics(lc_path, target_scenarios)
-    base_df = load_metrics(base_path, target_scenarios)
+def build_combined(lc_path: Path, base_path: Path, slots: List[tuple[str, int, List[str]]], scenarios: List[str] | None = None) -> pd.DataFrame:
+    lc_df = load_metrics(lc_path, scenarios)
+    base_df = load_metrics(base_path, scenarios)
     all_df = pd.concat([lc_df, base_df], ignore_index=True)
-    combined = select_models(all_df)
+    combined = select_models(all_df, slots)
+    if combined.empty:
+        return combined
+    # Preserve display order for plotting
+    display_order = {label: idx for idx, (label, _, _) in enumerate(slots)}
+    combined["display_order"] = combined["display_label"].map(display_order).fillna(len(DISPLAY_SLOTS) + 1)
+    # Add a style hint for shading groups (base vs size-QSP progression vs final FT)
+    def _style(row: pd.Series) -> str:
+        label = row["model"].lower()
+        if "ft+qsp" in label or "+qsp" in label:
+            return "ft_qsp"
+        if "ft" in label:
+            return "ft"
+        return "base"
+    combined["style_group"] = combined.apply(_style, axis=1)
+    # Force ordering by training size (base first, size QSP progression, FT, FT+QSP)
+    if "training_size" in combined.columns:
+        combined.sort_values(["family" if "family" in combined.columns else "model", "training_size"], inplace=True)
+    # Color overrides to keep the learning-curve cluster visually coherent
+    base_color = "#f8c291"   # light orange
+    size_qsp_color = "#f5a623"  # mid orange for FT-XX+QSP
+    ft_color = "#d35400"     # darker orange for final FT
+    ftqsp_color = "#f39c12"  # slightly darker for FT+QSP
+    colors = []
+    for _, row in combined.iterrows():
+        style = row["style_group"]
+        if style == "base":
+            colors.append(base_color)
+        elif style == "ft_qsp":
+            # Use a distinct color for the size-QSP progression and FT+QSP
+            colors.append(size_qsp_color if "FT-" in row["model"] else ftqsp_color)
+        else:
+            colors.append(ft_color)
+    combined["color_override"] = colors
     return combined
 
 
@@ -110,20 +151,32 @@ def main() -> int:
     output_dir = args.output_dir or OUTPUT_DIR
     significance_json = args.significance or SIGNIFICANCE_JSON.with_name(f"{SIGNIFICANCE_JSON.stem}{suffix}{SIGNIFICANCE_JSON.suffix}")
 
-    combined = build_combined(lc_results, base_results)
-    if combined.empty:
+    combined_ft = build_combined(lc_results, base_results, DISPLAY_SLOTS)
+    combined_qsp = build_combined(lc_results, base_results, DISPLAY_SLOTS_QSP)
+    if combined_ft.empty and combined_qsp.empty:
         print("No learning-curve metrics available.")
         return 1
     significance, comparisons = load_significance(significance_json)
-    base_name = f"learning-curve{suffix}" if suffix else "learning-curve"
-    generate_figures(
-        combined,
-        args.title,
-        output_dir,
-        significance=significance,
-        comparisons=comparisons,
-        base_name=base_name,
-    )
+    # FT-only chart
+    if not combined_ft.empty:
+        generate_figures(
+            combined_ft,
+            f"{args.title}",
+            output_dir,
+            significance=significance,
+            comparisons=comparisons,
+            base_name=f"learning-curve_ft{suffix}" if suffix else "learning-curve_ft",
+        )
+    # FT+QSP chart
+    if not combined_qsp.empty:
+        generate_figures(
+            combined_qsp,
+            f"{args.title}",
+            output_dir,
+            significance=significance,
+            comparisons=comparisons,
+            base_name=f"learning-curve_ftqsp{suffix}" if suffix else "learning-curve_ftqsp",
+        )
     print(f"Figures saved to {output_dir}")
     return 0
 

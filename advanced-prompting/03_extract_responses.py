@@ -16,11 +16,17 @@ import pandas as pd
 RESPONSES_DIR = Path("advanced-prompting/jsonl")
 OUTPUT_DIR = Path("advanced-prompting/csv")
 TEMPLATE_PATHS = {
+    "full150": Path("advanced-prompting/csv/gpt-4o-mini-2024-07-18_PV1.xlsx"),
     "original120": Path("advanced-prompting/csv/gpt-4o-mini-2024-07-18_PV1.xlsx"),
     "new30": Path("advanced-prompting/csv/gpt-4o-mini-2024-07-18_PV1_new30.xlsx"),
 }
 COLUMN_NAME = "GPT-4o FT+PV1"
 SUFFIXES = ["FT", "FT-50", "FT-100", "FT-150", "FT-200"]
+
+
+def normalize_question(text: str) -> str:
+    """Lowercase/whitespace-normalize for matching question text across files."""
+    return " ".join(str(text or "").strip().lower().split())
 
 
 @dataclass(frozen=True)
@@ -67,6 +73,9 @@ def parse_args() -> argparse.Namespace:
 
 
 def extract_answers(text: str) -> list[str]:
+    """
+    Extract answers in order; falls back to positional matching when question text is unavailable.
+    """
     answers: list[str] = []
     pattern = re.compile(r"Answer:\s*(.+)")
     for block in re.split(r'\"\"\"', text):
@@ -76,6 +85,25 @@ def extract_answers(text: str) -> list[str]:
         for match in pattern.finditer(text):
             answers.append(match.group(1).strip())
     return answers
+
+
+def extract_qa_pairs(text: str) -> list[tuple[str, str]]:
+    """
+    Extract (question, answer) pairs from a response block.
+
+    Expected format:
+    Question: ...
+    ...
+    Answer: ...
+    """
+    pattern = re.compile(r"Question:\s*(.+?)\n.*?Answer:\s*(.+?)(?=\nQuestion:|\Z)", re.DOTALL | re.IGNORECASE)
+    pairs: list[tuple[str, str]] = []
+    for q_raw, a_raw in pattern.findall(text):
+        q_norm = normalize_question(q_raw)
+        a_val = a_raw.strip()
+        if q_norm or a_val:
+            pairs.append((q_norm, a_val))
+    return pairs
 
 
 def load_template(template_path: Path, column_name: str) -> pd.DataFrame:
@@ -98,7 +126,11 @@ def load_template(template_path: Path, column_name: str) -> pd.DataFrame:
 
 def process_dataset(responses_jsonl: Path, template_path: Path, output_excel: Path, column_name: str) -> None:
     df = load_template(template_path, column_name)
-    responses: dict[str, list[str]] = {}
+    responses_positional: dict[str, list[str]] = {}
+    responses_by_question: dict[str, dict[str, list[str]]] = {}
+
+    # Precompute normalized questions from template for faster lookup
+    df["__question_norm"] = df["Question"].apply(normalize_question)
 
     with responses_jsonl.open("r", encoding="utf-8") as infile:
         for line in infile:
@@ -107,18 +139,36 @@ def process_dataset(responses_jsonl: Path, template_path: Path, output_excel: Pa
                 continue
             record = json.loads(line)
             pmid = str(record["pmid"])
-            responses[pmid] = extract_answers(record.get("response", ""))
+            text = record.get("response", "")
+            responses_positional[pmid] = extract_answers(text)
+            qa_pairs = extract_qa_pairs(text)
+            if qa_pairs:
+                qmap: dict[str, list[str]] = {}
+                for q_norm, ans in qa_pairs:
+                    qmap.setdefault(q_norm, []).append(ans)
+                responses_by_question[pmid] = qmap
 
     for pmid, group in df.groupby("PMID", sort=False):
-        answers = responses.get(str(pmid), [])
-        if not answers:
+        pmid_str = str(pmid)
+        answers = responses_positional.get(pmid_str, [])
+        qmap = responses_by_question.get(pmid_str, {})
+        if not answers and not qmap:
             continue
         ordered = group.sort_values("QID")
-        for idx, row_index in enumerate(ordered.index):
+        # First, try to fill by question text if available
+        for row_index, row in ordered.iterrows():
+            q_norm = row["__question_norm"]
+            candidates = qmap.get(q_norm, [])
+            if candidates:
+                df.at[row_index, column_name] = candidates.pop(0)
+        # Then fill any remaining blanks positionally
+        remaining = ordered[df.loc[ordered.index, column_name] == ""]
+        for idx, row_index in enumerate(remaining.index):
             if idx < len(answers):
                 df.at[row_index, column_name] = answers[idx]
 
     df[column_name] = df[column_name].apply(lambda x: "" if pd.isna(x) else str(x))
+    df.drop(columns="__question_norm", inplace=True, errors="ignore")
     output_excel.parent.mkdir(parents=True, exist_ok=True)
     df.to_excel(output_excel, index=False)
 
@@ -130,10 +180,10 @@ def build_jobs(args: argparse.Namespace) -> list[ResponseJob]:
 
     for dataset in datasets:
         template = TEMPLATE_PATHS[dataset]
-        if dataset == "original120":
-            pattern = "pmid_responses_Nov17_Version1_{suffix}.jsonl"
-        else:
+        if dataset == "new30":
             pattern = "pmid_responses_Nov17_Version1_2025_30_{suffix}.jsonl"
+        else:
+            pattern = "pmid_responses_Nov17_Version1_{suffix}.jsonl"
         for suffix in suffixes:
             responses_path = args.responses_dir / pattern.format(suffix=suffix)
             if not responses_path.exists():

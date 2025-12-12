@@ -2,9 +2,9 @@
 """Sanity checks for evaluation outputs.
 
 Checks:
-1) Exact vs Partial scenarios must differ for at least one model per suffix.
-2) Questions/Types in merged answer sheets must align with S4Table by QID.
-3) For original120, FT accuracy must be >= base accuracy for each family (Partial Match).
+1) Metrics are present for each suffix.
+2) Questions/Types in merged answer sheets align with S4Table by QID.
+3) For original120, FT accuracy must be >= base accuracy for each family.
 """
 
 from __future__ import annotations
@@ -54,23 +54,9 @@ def _load_merged(suffix: str) -> pd.DataFrame:
     return pd.read_excel(path)
 
 
-def check_exact_vs_partial(metrics: pd.DataFrame, suffix: str) -> None:
-    exact = metrics[metrics["scenario"] == "Exact Match"].copy()
-    partial = metrics[metrics["scenario"] == "Partial Match"].copy()
-    merged = exact.merge(partial, on="model", suffixes=("_exact", "_partial"))
-    if merged.empty:
-        raise TestFailure(f"No exact/partial rows to compare for suffix '{suffix}'.")
-    identical = True
-    for col in METRIC_COLS:
-        col_exact = f"{col}_exact"
-        col_partial = f"{col}_partial"
-        if col_exact not in merged or col_partial not in merged:
-            continue
-        if not (merged[col_exact].fillna(0) == merged[col_partial].fillna(0)).all():
-            identical = False
-            break
-    if identical:
-        raise TestFailure(f"Exact and Partial metrics are identical for all models (suffix '{suffix}').")
+def check_metrics_present(metrics: pd.DataFrame, suffix: str) -> None:
+    if metrics.empty:
+        raise TestFailure(f"No metrics rows found for suffix '{suffix}'.")
 
 
 def check_question_alignment(merged_df: pd.DataFrame, suffix: str) -> None:
@@ -101,9 +87,9 @@ def check_question_alignment(merged_df: pd.DataFrame, suffix: str) -> None:
 
 
 def check_ft_vs_base(metrics: pd.DataFrame) -> None:
-    partial = metrics[metrics["scenario"] == "Partial Match"].copy()
+    partial = metrics.copy()
     if partial.empty:
-        raise TestFailure("No Partial Match rows found in original120 metrics.")
+        raise TestFailure("No metrics rows found in original120 metrics.")
     issues = []
     for family, (base, ft) in FAMILIES.items():
         base_row = partial[partial["model"] == base]
@@ -125,7 +111,7 @@ def main() -> int:
     try:
         for suffix in SUFFIXES:
             metrics = _load_metrics(suffix)
-            check_exact_vs_partial(metrics, suffix)
+            check_metrics_present(metrics, suffix)
             merged_df = _load_merged(suffix)
             check_question_alignment(merged_df, suffix)
         # original120 FT vs base check

@@ -37,7 +37,7 @@ All of these recompute metrics, figures, and the stats workbooks for their suffi
 - `eval/results/evaluation_metrics_full150.csv`
 - `eval/results/detailed_evaluation_full150.csv`
 - `eval/results/statistical_tests_full150.xlsx`
-- `eval/figures/exact-match_full150-bar-chart.png`, `partial-match_full150-table.png`
+- `eval/figures/full150-bar-chart.png`, `full150-table.png`
 - `eval/learning-curve/results/learning_curve_metrics_full150.csv`
 - `eval/learning-curve/results/statistical_tests_full150.xlsx`
 - `eval/learning-curve/figures/learning-curve_full150-bar-chart.png`

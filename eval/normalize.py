@@ -155,6 +155,7 @@ def _expand_token(token: str, for_match: bool = False) -> List[str]:
     elif space_range:
         range_tokens.extend([space_range.group(1), space_range.group(2)])
     tokens: list[str] = []
+    add_base = True
     lowered = token.lower()
     if " from " in lowered:
         tail = lowered.split(" from ", 1)[1]
@@ -169,13 +170,16 @@ def _expand_token(token: str, for_match: bool = False) -> List[str]:
         if " " in key or len(key) > 3:
             if re.search(rf"\b{re.escape(key)}\b", lowered):
                 tokens.append(value)
+                add_base = False
         else:
             # For short keys (<=3 chars), require exact match to avoid noisy hits.
             if lowered == key:
                 tokens.append(value)
+                add_base = False
     arv = ARV_SYNONYMS.get(token)
     if arv:
         tokens.extend(part.strip() for part in arv.split("|") if part.strip())
+        add_base = False  # prefer canonical drug names without keeping the raw alias
     gene = GENE_SYNONYMS.get(token)
     if gene:
         expansions = GENE_GROUP_EXPANSIONS.get(gene)
@@ -185,7 +189,7 @@ def _expand_token(token: str, for_match: bool = False) -> List[str]:
             tokens.append(gene)
     if for_match:
         tokens.extend(ADDITIONAL_LIST_SYNONYMS.get(token, set()))
-    if base and base not in tokens:
+    if add_base and base and base not in tokens:
         tokens.append(base)
     tokens.extend(range_tokens)
     normalized_tokens = []
@@ -418,7 +422,8 @@ def compare_lists(pred_norm: str, ref_norm: str) -> bool:
         return True
     # Allow Sanger+NGS combos to match when both sets include one of each family
     ngs_tokens = {"ngs", "next generation sequencing", "nanopore sequencing", "illumina sequencing"}
-    if {"sanger"} <= pred_set and pred_set & ngs_tokens and {"sanger"} <= ref_set and ref_set & ngs_tokens:
+    sanger_tokens = {"sanger", "sanger sequencing"}
+    if (sanger_tokens & pred_set) and (pred_set & ngs_tokens) and (sanger_tokens & ref_set) and (ref_set & ngs_tokens):
         return True
 
     # Allow treating "pol" as either {pr, rt, in} or {pr, rt}

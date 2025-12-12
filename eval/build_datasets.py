@@ -31,6 +31,8 @@ S4TABLE = ADV_CSV / "S4Table.xlsx"
 
 PAPERS_DIR = ADV_CSV.parent / "papers"
 NEW30_PAPERS_DIR = ADV_CSV.parent / "papers_2025_30"
+LLAMA8B_FTQSP_PARSED = ADV_CSV / "llama-3.1-8B-FT-PV1_parsed.csv"
+LLAMA70B_FTQSP_PARSED = ADV_CSV / "llama-3.1-70B-PV1_parsed.csv"
 
 # Map collaborator column names to the canonical evaluation names.
 COLUMN_RENAMES: Dict[str, str] = {
@@ -42,14 +44,19 @@ COLUMN_RENAMES: Dict[str, str] = {
     "gpt-4o-mini-FT 150": "GPT-4o FT-150",
     "gpt-4o-mini-FT 200": "GPT-4o FT-200",
     "gpt-4o-mini PV1": "GPT-4o QSP",
+    "gpt-4o-mini FT PV1": "GPT-4o FT+QSP",
     "llama-3.1-8B base": "Llama3.1-8B base",
     "llama-3.1-8B-FT": "Llama3.1-8B FT",
     "llama-3.1-8B PV1": "Llama3.1-8B QSP",
+    "llama-3.1-8B-FT PV1": "Llama3.1-8B FT+QSP",
     "llama-3.1-70B base": "Llama3.1-70B base",
     "llama-3.1-70B-FT 50": "Llama3.1-70B FT-50",
     "llama-3.1-70B-FT 100": "Llama3.1-70B FT-100",
     "llama-3.1-70B-FT 150": "Llama3.1-70B FT-150",
     "llama-3.1-70B-FT 200": "Llama3.1-70B FT-200",
+    "llama-3.1-70B-FT": "Llama3.1-70B FT",
+    "llama-3.1-70B PV1": "Llama3.1-70B QSP",
+    "llama-3.1-70B-FT PV1": "Llama3.1-70B FT+QSP",
 }
 
 # Excel forbids certain control characters; strip them before writing workbooks
@@ -81,7 +88,10 @@ def load_model(path: Path, column: str, value_column: str | None = None, remap_b
         logging.warning("Model source missing for %s: %s", column, path)
         return None
     loader = pd.read_excel if path.suffix.lower() in {".xlsx", ".xls"} else pd.read_csv
-    df = loader(path)
+    try:
+        df = loader(path)
+    except UnicodeDecodeError:
+        df = loader(path, encoding="latin1")
     candidates: List[str] = []
     if value_column:
         candidates.append(value_column)
@@ -107,7 +117,18 @@ def load_model(path: Path, column: str, value_column: str | None = None, remap_b
 
     df = normalize_ids(df)
     df = df.rename(columns={found: column})
-    return df[MERGE_KEYS + [column]]
+    if "QID" in df.columns:
+        with pd.option_context("mode.chained_assignment", None):
+            df["QID"] = pd.to_numeric(df["QID"], errors="coerce").astype("Int64")
+    df = df[MERGE_KEYS + [column]]
+    # Deduplicate on PMID/QID, preferring the first non-empty answer
+    if df.duplicated(MERGE_KEYS).any():
+        df = df.sort_values(MERGE_KEYS)
+        df = (
+            df.groupby(MERGE_KEYS, as_index=False)
+            .agg({column: lambda s: next((v for v in s if str(v).strip() != ""), s.iloc[0] if len(s) else "")})
+        )
+    return df
 
 
 def merge_column(df: pd.DataFrame, model_df: pd.DataFrame, column: str) -> pd.DataFrame:
@@ -138,6 +159,48 @@ def inject_models(df: pd.DataFrame, model_sources: Dict[str, tuple[Path, str | N
     return df
 
 
+def collapse_duplicate_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """If multiple columns share the same name, combine them (first non-empty wins) into one."""
+    df = df.copy()
+    seen = {}
+    for col in df.columns:
+        if col in seen:
+            continue
+        dup_cols = [c for c in df.columns if c == col]
+        if len(dup_cols) == 1:
+            seen[col] = df[col]
+            continue
+        combined = df[dup_cols[0]]
+        for other in dup_cols[1:]:
+            combined = combined.where(combined != "", df[other])
+        seen[col] = combined
+    new_df = pd.DataFrame(seen)
+    # Preserve original column order as much as possible
+    ordered = []
+    for col in df.columns:
+        if col not in ordered:
+            ordered.append(col)
+    new_df = new_df[ordered]
+    return new_df
+
+
+def shift_column_within_pmid(df: pd.DataFrame, column: str, start_qid: int = 4, offset: int = -1) -> pd.DataFrame:
+    """
+    Shift a column within each PMID, optionally starting at a specific QID.
+    Negative offset moves values up (to earlier QIDs), positive moves down.
+    """
+    if column not in df.columns:
+        return df
+    df = df.sort_values(["PMID", "QID"]).copy()
+    adjusted_groups: list[pd.DataFrame] = []
+    for _, group in df.groupby("PMID", sort=False):
+        shifted = group[column].shift(offset)
+        mask = group["QID"] >= start_qid
+        group.loc[mask, column] = shifted[mask].fillna("")
+        adjusted_groups.append(group)
+    return pd.concat(adjusted_groups, ignore_index=False)
+
+
 def normalize_question(text: str) -> str:
     return " ".join(str(text or "").strip().lower().split())
 
@@ -160,11 +223,19 @@ def order_columns(df: pd.DataFrame) -> pd.DataFrame:
 def build_outputs(base_merged: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     # Clean column names and identifiers
     base_merged = base_merged.rename(columns=COLUMN_RENAMES)
+    base_merged = collapse_duplicate_columns(base_merged)
     base_merged = normalize_ids(base_merged)
     base_merged["QID"] = base_merged["QID"].astype(int)
     for col in ["Type", "Category", "Human Answer"]:
         if col in base_merged.columns:
             base_merged[col] = base_merged[col].fillna("").astype(str)
+
+    model_sources = {
+        "Llama3.1-70B FT+QSP": (LLAMA70B_FTQSP_PARSED, "Answer", True),
+    }
+    base_merged = inject_models(base_merged, model_sources)
+    # Remove any duplicated columns that can arise from injected sources vs. existing sheet columns
+    base_merged = base_merged.loc[:, ~base_merged.columns.duplicated()]
 
     # Normalize question text/type/category to canonical S4Table definitions by QID
     s4_df = pd.read_excel(S4TABLE)
@@ -183,6 +254,11 @@ def build_outputs(base_merged: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame
     new30_df = base_merged[base_merged["PMID"].isin(new30_pmids)].copy()
     original120_df = base_merged[~base_merged["PMID"].isin(new30_pmids)].copy()
     combined = base_merged.copy()
+
+    # Final de-duplication pass before output
+    new30_df = new30_df.loc[:, ~new30_df.columns.duplicated()]
+    original120_df = original120_df.loc[:, ~original120_df.columns.duplicated()]
+    combined = combined.loc[:, ~combined.columns.duplicated()]
 
     new30_df = order_columns(new30_df)
     original120_df = order_columns(original120_df)

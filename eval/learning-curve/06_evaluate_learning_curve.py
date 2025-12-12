@@ -29,7 +29,6 @@ from eval.scoring import (  # type: ignore
     format_identifier,
     load_dataset,
 )
-from eval.normalize import match_scenario_label  # type: ignore
 from eval import statistics as stat_utils  # type: ignore
 from eval.build_datasets import get_canonical_qid_mapping, normalize_question  # type: ignore
 
@@ -44,11 +43,13 @@ class RunSpec:
 
 LABEL_TO_MODEL = {
     "base": "base",
-    "ft50": "FT-50",
-    "ft100": "FT-100",
-    "ft150": "FT-150",
-    "ft200": "FT-200",
+    # QSP (PV1) runs for each size; keep size-only labels for non-QSP below.
+    "ft50": "FT-50+QSP",
+    "ft100": "FT-100+QSP",
+    "ft150": "FT-150+QSP",
+    "ft200": "FT-200+QSP",
     "ft": "FT",
+    "ftqsp": "FT+QSP",
     # Backward compatibility with older sizeXXX tags
     "size050": "FT-50",
     "size100": "FT-100",
@@ -93,7 +94,7 @@ def parse_args() -> argparse.Namespace:
         type=parse_run,
         action="append",
         metavar="LABEL=PATH",
-        help="Map a label (e.g., size050) to its response CSV.",
+        help="Map a label (e.g., size050) to its response CSV. Parsed per-question CSVs are supported.",
     )
     parser.add_argument(
         "--column-prefix",
@@ -160,18 +161,25 @@ def _select_answer_column(columns: Iterable[str]) -> str | None:
     for col in columns:
         if col.lower().endswith(" answer"):
             return col
+    base_cols = {"pmid", "qid", "question", "type", "category"}
+    remaining = [col for col in columns if col.lower() not in base_cols]
+    if len(remaining) == 1:
+        return remaining[0]
+    for col in columns:
+        lower = col.lower()
+        if "qsp" in lower or "pv1" in lower or "ft+qsp" in lower or "ft pv1" in lower:
+            return col
     return None
 
 
 def integrate_responses(df: pd.DataFrame, path: Path) -> pd.Series:
     if not path.exists():
         raise FileNotFoundError(f"Response CSV missing: {path}")
-    df_resp = pd.read_csv(
-        path,
-        dtype={"PMID": str},
-        keep_default_na=False,
-        na_filter=False,
-    )
+    read_kwargs = dict(dtype={"PMID": str}, keep_default_na=False, na_filter=False)
+    if path.suffix.lower() in {".xlsx", ".xls"}:
+        df_resp = pd.read_excel(path, **read_kwargs)
+    else:
+        df_resp = pd.read_csv(path, **read_kwargs)
     required = {"PMID", "QID"}
     if missing := required - set(df_resp.columns):
         raise ValueError(f"{path} missing required columns: {', '.join(sorted(missing))}")
@@ -276,21 +284,19 @@ def evaluate(df: pd.DataFrame, scenarios: Iterable[dict]) -> Tuple[pd.DataFrame,
             if col in df.columns
         }
         allow_partial = scenario.get("allow_partial_list", False)
-        match_label = match_scenario_label(allow_partial)
         detail_type_filter = scenario.get("detail_types")
         detail_types = set(detail_type_filter) if detail_type_filter else None
         subset = evaluate_group(
             scenario_df,
             scenario["models"],
             config.REF_COL,
-            scenario["title"],
             norm_lookup,
             allow_partial_list=allow_partial,
         )
         if subset.empty:
             continue
         if scenario.get("include_details", True):
-            details.extend(build_detail_rows(scenario_df, scenario, norm_lookup, match_label, detail_types))
+            details.extend(build_detail_rows(scenario_df, scenario, norm_lookup, detail_types))
         scenario_frames.append(subset)
         scenario_qid = build_qid_metrics(
             scenario_df,
@@ -307,7 +313,18 @@ def build_learning_curve_comparisons(model_columns: Dict[str, str]) -> Dict[str,
     if not base_label:
         return {}
     family = base_label.rsplit(" ", 1)[0] if " " in base_label else base_label
-    ordered_labels = ["FT-50", "FT-100", "FT-150", "FT-200", "FT"]
+    ordered_labels = [
+        "FT-50",
+        "FT-50+QSP",
+        "FT-100",
+        "FT-100+QSP",
+        "FT-150",
+        "FT-150+QSP",
+        "FT-200",
+        "FT-200+QSP",
+        "FT",
+        "FT+QSP",
+    ]
     targets = [model_columns[label] for label in ordered_labels if label in model_columns]
     if not targets:
         return {}
@@ -337,7 +354,9 @@ def main() -> int:
     args = parse_args()
     if args.merged_path:
         config.MERGED_PATH = args.merged_path
-    canonical_path = ROOT / "advanced-prompting/csv/merged_answers.xlsx"
+    # Use the same merged answers file we're evaluating as the canonical source
+    # so QID/question/type/human answers stay aligned with the evaluation dataset.
+    canonical_path = args.merged_path or config.MERGED_PATH
     suffix = args.output_suffix.strip()
     suffix = f"_{suffix}" if suffix else ""
     baseline_path = args.pairwise_baseline
@@ -375,7 +394,12 @@ def main() -> int:
 
         for label, path in resolved_labels:
             column = f"{family_prefix} {label}".strip()
-            df[column] = integrate_responses(df, path)
+            # If the column already exists (e.g., merged sheet already includes FT/FT+QSP),
+            # keep the merged values to stay consistent with the main evaluation.
+            if column in df.columns and df[column].notna().any():
+                logging.info("Keeping existing values for %s; skipping integration from %s", column, path.name)
+            else:
+                df[column] = integrate_responses(df, path)
             runs.append(RunSpec(family=family_prefix, label=label, path=path, column=column))
             family_model_to_column.setdefault(family_prefix, {})[label] = column
             if column not in model_sequence:
@@ -410,24 +434,32 @@ def main() -> int:
     # Export FT-200 incorrect rows for partial scenario to an Excel file
     details_df = pd.DataFrame(detail_rows)
     for family, mapping in family_model_to_column.items():
+        # Base FT-200 export
         ft200_column = mapping.get("FT-200") or mapping.get("FT")
-        if not ft200_column:
-            continue
-        ft200_export_path = args.output_dir / f"learning_curve_{family.replace(' ', '_').lower()}_ft200_incorrect.xlsx"
-        answer_col = f"{ft200_column} Answer"
-        correct_col = f"{ft200_column} Correct"
-        cols_needed = {"PMID", "Question", "Human Answer", answer_col, correct_col, "Scenario"}
-        missing_cols = cols_needed - set(details_df.columns)
-        if not missing_cols:
-            subset = details_df[
-                (details_df["Scenario"].str.contains("partial", case=False, na=False))
-                & (details_df[correct_col] == 0)
-            ][["PMID", "Question", "Human Answer", answer_col, correct_col]]
-            if not subset.empty:
-                subset.to_excel(ft200_export_path, index=False)
-                logging.info("Wrote %s FT-200 incorrect partial rows to %s", family, ft200_export_path)
+        if ft200_column:
+            ft200_export_path = args.output_dir / f"learning_curve_{family.replace(' ', '_').lower()}_ft200_incorrect.xlsx"
+            answer_col = f"{ft200_column} Answer"
+            correct_col = f"{ft200_column} Correct"
+            cols_needed = {"PMID", "Question", "Human Answer", answer_col, correct_col}
+            if not (cols_needed - set(details_df.columns)):
+                subset = details_df[details_df[correct_col] == 0][["PMID", "Question", "Human Answer", answer_col, correct_col]]
+                if not subset.empty:
+                    subset.to_excel(ft200_export_path, index=False)
+                    logging.info("Wrote %s FT-200 incorrect rows to %s", family, ft200_export_path)
+        # FT-200+QSP export
+        ft200_qsp_column = mapping.get("FT-200+QSP")
+        if ft200_qsp_column:
+            ft200_qsp_export_path = args.output_dir / f"learning_curve_{family.replace(' ', '_').lower()}_ft200qsp_incorrect.xlsx"
+            answer_col = f"{ft200_qsp_column} Answer"
+            correct_col = f"{ft200_qsp_column} Correct"
+            cols_needed = {"PMID", "Question", "Human Answer", answer_col, correct_col}
+            if not (cols_needed - set(details_df.columns)):
+                subset = details_df[details_df[correct_col] == 0][["PMID", "Question", "Human Answer", answer_col, correct_col]]
+                if not subset.empty:
+                    subset.to_excel(ft200_qsp_export_path, index=False)
+                    logging.info("Wrote %s FT-200+QSP incorrect rows to %s", family, ft200_qsp_export_path)
     summary = []
-    overall = metrics[metrics["scenario"] == "Partial Match"]
+    overall = metrics
     for run in runs:
         row = overall[overall["model"] == run.column]
         summary.append(
@@ -453,7 +485,7 @@ def main() -> int:
     for family, mapping in family_model_to_column.items():
         comparisons.update(build_learning_curve_comparisons(mapping))
     if comparisons:
-        overall_qid = qid_frames.get("Partial Match")
+        overall_qid = next(iter(qid_frames.values()), pd.DataFrame())
         if overall_qid is not None and not overall_qid.empty:
             metrics_to_test = ["accuracy", "precision", "recall", "f1"]
             stats_df, wilcoxon_map, ttest_map = stat_utils.compute_pairwise_tests(
