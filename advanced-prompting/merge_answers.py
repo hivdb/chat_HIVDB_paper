@@ -66,14 +66,16 @@ def _load_unique(path: str, usecols: list[str] | None) -> pd.DataFrame:
     """Load the given file and drop duplicate PMID/QID combinations."""
 
     loader = pd.read_excel if path.endswith(".xlsx") else pd.read_csv
+    load_kwargs = {"usecols": usecols, "dtype": str, "keep_default_na": False}
 
     if loader is pd.read_csv:
         try:
-            df = loader(path, usecols=usecols)
+            df = loader(path, **load_kwargs)
         except UnicodeDecodeError:
-            df = loader(path, usecols=usecols, encoding="latin-1")
+            df = loader(path, encoding="latin-1", **load_kwargs)
     else:
-        df = loader(path, usecols=usecols)
+        df = loader(path, **load_kwargs)
+    df = df.astype(str)
     # Keeping the last occurrence keeps the most recent revision if duplicates exist.
     return df.drop_duplicates(subset=MERGE_KEYS, keep="last")
 
