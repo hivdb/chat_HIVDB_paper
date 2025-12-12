@@ -25,10 +25,10 @@
       "label": "FT-150",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/eval/learning-curve/responses/size150_new30_responses.csv",
       "column": "GPT-4o FT-150",
-      "accuracy": 0.775,
-      "precision": 0.8681818181818182,
-      "recall": 0.7074074074074074,
-      "f1": 0.7795918367346939
+      "accuracy": 0.7729166666666667,
+      "precision": 0.867579908675799,
+      "recall": 0.7037037037037037,
+      "f1": 0.7770961145194273
     },
     {
       "family": "GPT-4o",
@@ -125,30 +125,30 @@
       "label": "FT-100+QSP",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 100_parsed.csv",
       "column": "Llama3.1-70B FT-100+QSP",
-      "accuracy": 0.7854166666666667,
-      "precision": 0.8127340823970037,
-      "recall": 0.8037037037037037,
-      "f1": 0.808193668528864
+      "accuracy": 0.7833333333333333,
+      "precision": 0.8120300751879699,
+      "recall": 0.8,
+      "f1": 0.8059701492537314
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-150+QSP",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 150_parsed.csv",
       "column": "Llama3.1-70B FT-150+QSP",
-      "accuracy": 0.7770833333333333,
-      "precision": 0.8196078431372549,
-      "recall": 0.774074074074074,
-      "f1": 0.7961904761904761
+      "accuracy": 0.775,
+      "precision": 0.8188976377952756,
+      "recall": 0.7703703703703704,
+      "f1": 0.7938931297709922
     },
     {
       "family": "Llama3.1-70B",
       "label": "FT-200+QSP",
       "responses": "/Users/rohitpro/Career/00_Github/chat_HIVDB_paper/advanced-prompting/csv/llama-3.1-70B-FT 200_parsed.csv",
       "column": "Llama3.1-70B FT-200+QSP",
-      "accuracy": 0.775,
-      "precision": 0.8091603053435115,
-      "recall": 0.7851851851851852,
-      "f1": 0.7969924812030075
+      "accuracy": 0.7729166666666667,
+      "precision": 0.8084291187739464,
+      "recall": 0.7814814814814814,
+      "f1": 0.7947269303201506
     }
   ]
 }

@@ -129,6 +129,7 @@ TEXT_SYNONYMS = _dedup(
     [
         ("ngs", "next generation sequencing"),
         ("illumina sequencing", "next generation sequencing"),
+        ("illumina sequencing", "ngs"),
         ("illumina", "next generation sequencing"),
         ("deep sequencing", "next generation sequencing"),
         ("next-generation sequencing", "next generation sequencing"),
@@ -211,6 +212,7 @@ TEXT_SYNONYMS = _dedup(
 
 ADDITIONAL_LIST_SYNONYMS = {
     "next generation sequencing": _unique(["illumina sequencing", "illumina", "miseq", "nextera", "ngs", "deep sequencing", "nanopore sequencing", "nanopore", "oxford nanopore sequencing", "sanger sequencing"]),
+    "illumina sequencing": _unique(["ngs", "next generation sequencing", "illumina", "miseq"]),
     "ngs": _unique(["next generation sequencing", "nanopore sequencing", "sanger sequencing"]),
     "nanopore sequencing": _unique(["nanopore", "oxford nanopore sequencing", "next generation sequencing", "ngs", "sanger sequencing"]),
     "sanger sequencing": _unique(["sanger", "sanger ngs", "sanger sequencing ngs", "ngs", "next generation sequencing", "ss"]),
@@ -322,6 +324,7 @@ EMBEDDED_MAP = {
     "next-generation sequencing": "next generation sequencing",
     "ngs": "next generation sequencing",
     "illumina": "next generation sequencing",
+    "illumina sequencing": "next generation sequencing",
     "miseq": "next generation sequencing",
     "nanopore sequencing": "nanopore sequencing",
     "oxford nanopore sequencing": "nanopore sequencing",
