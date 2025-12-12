@@ -6,7 +6,7 @@ import scipy.stats as stats
 
 
 METRICS = ["Accuracy", "Precision", "Recall", "F1"]
-NAME2_VARIANTS = ("base", "FT")
+NAME2_VARIANTS = ("base", "FT", "QSP", "FT+QSP")
 SOURCE = "metrics_by_model_and_metric.csv"
 
 
@@ -68,16 +68,17 @@ def get_row(df, name1, name2, metric):
     return subset.iloc[0]
 
 
-def compare_base_vs_ft(df, q_columns):
+def compare_within_models(df, q_columns):
     results = []
     for name1 in sorted(df["name1"].unique()):
         for metric in METRICS:
-            base_row = get_row(df, name1, "base", metric)
-            ft_row = get_row(df, name1, "FT", metric)
-            if base_row is None or ft_row is None:
-                continue
-            label = f"{name1}: base vs FT ({metric})"
-            add_result(label, base_row, ft_row, q_columns, results)
+            for name2_a, name2_b in combinations(NAME2_VARIANTS, 2):
+                row_a = get_row(df, name1, name2_a, metric)
+                row_b = get_row(df, name1, name2_b, metric)
+                if row_a is None or row_b is None:
+                    continue
+                label = f"{name1}: {name2_a} vs {name2_b} ({metric})"
+                add_result(label, row_a, row_b, q_columns, results)
     return results
 
 
@@ -98,7 +99,7 @@ def compare_between_models(df, q_columns):
 def main():
     df, q_columns = load_table(SOURCE)
     results = []
-    results.extend(compare_base_vs_ft(df, q_columns))
+    results.extend(compare_within_models(df, q_columns))
     results.extend(compare_between_models(df, q_columns))
 
     output_path = "Inter_model_Stat_results.xlsx"
