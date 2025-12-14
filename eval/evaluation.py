@@ -332,6 +332,9 @@ def _build_table3(
         family = row.get("family")
         comparison = row.get("comparison")
         metric = row.get("metric")
+        # Only consider the metrics that are displayed (precision/recall)
+        if metric not in {"precision", "recall"}:
+            continue
         qid = row.get("QID")
         try:
             p_val = float(row.get("p_value"))
@@ -364,11 +367,19 @@ def _build_table3(
 
     def _target_model(family: str, label: str) -> str | None:
         mapping = FAMILY_COMPARISONS.get(family, {})
-        for target in mapping.get("targets", []):
-            if label == "FT" and "FT" in target and "QSP" not in target:
-                return target
-            if label == "QSP" and "QSP" in target:
-                return target
+        targets = mapping.get("targets", [])
+        if label == "QSP":
+            # Only use the pure QSP variant; do not fall back to FT+QSP.
+            for target in targets:
+                if target.endswith(" QSP") and "FT+QSP" not in target:
+                    return target
+            return None
+        if label == "FT":
+            # Only use FT (exclude FT+QSP combined variants).
+            for target in targets:
+                if "FT" in target and "FT+QSP" not in target and "QSP" not in target.split():
+                    return target
+            return None
         return None
 
     records: list[dict] = []
@@ -385,6 +396,16 @@ def _build_table3(
             continue
         for qid in ordered_qids:
             if (family, qid) not in sig_any:
+                continue
+            # Skip rows that hinge on exactly one weakly significant finding (single star, 0.01<=p<0.05).
+            sig_entries = []
+            for target_label, model_label in [("FT", ft_model), ("QSP", qsp_model)]:
+                metrics = sig_map.get((family, target_label, qid), set())
+                for metric in metrics:
+                    p_val, _ = sig_info.get((family, target_label, metric, qid), (None, None))
+                    if p_val is not None:
+                        sig_entries.append((metric, float(p_val), target_label))
+            if len(sig_entries) == 1 and 0.01 <= sig_entries[0][1] < 0.05:
                 continue
             row = {
                 "Model": family,

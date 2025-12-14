@@ -11,7 +11,7 @@ sys.path.insert(0, str(ROOT))
 # File paths
 S4TABLE = ROOT / "advanced-prompting/csv/S4Table.xlsx"
 NEW30_HUMAN = ROOT / "advanced-prompting/test/2025_new30.xlsx"
-PV1_QUESTIONS = ROOT / "advanced-prompting/csv/gpt-4o-mini-2024-07-18_PV1_new30.xlsx"
+PV1_QUESTIONS = ROOT / "advanced-prompting/csv/gpt-4o/gpt-4o-mini-2024-07-18_PV1_new30.xlsx"
 BASE_NEW30 = ROOT / "eval/learning-curve/responses/base_new30_responses.csv"
 FT_NEW30 = ROOT / "eval/learning-curve/responses/ft_new30_responses.csv"
 LLAMA_70B_QSP = ROOT / "advanced-prompting/csv/llama-3.1-70B-PV1_new30_parsed.csv"

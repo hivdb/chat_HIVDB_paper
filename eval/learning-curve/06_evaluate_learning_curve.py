@@ -142,7 +142,7 @@ def discover_default_responses() -> List[Tuple[str, Path]]:
 
 def discover_llama70_responses() -> List[Tuple[str, Path]]:
     """Locate parsed Llama3.1-70B learning-curve responses."""
-    base_dir = ROOT / "advanced-prompting" / "csv"
+    base_dir = ROOT / "advanced-prompting" / "csv" / "llama-70b"
     sizes = ["50", "100", "150", "200"]
     responses: List[Tuple[str, Path]] = []
     for size in sizes:

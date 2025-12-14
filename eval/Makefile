@@ -14,14 +14,14 @@ LC_RESP_SIZE_ARGS_NEW30 = $(foreach s,050 100 150 200,--responses size$(s)=$(REP
 LC_RESP_FT_NEW30 = $(REPO_ROOT)/eval/learning-curve/responses/ft_new30_responses.csv
 LC_RESP_BASE_NEW30 = $(REPO_ROOT)/eval/learning-curve/responses/base_new30_responses.csv
 FT_SIZES := 50 100 150 200
-LC_RESP_FTQSP_NEW30 = $(REPO_ROOT)/advanced-prompting/csv/gpt-4o-mini-2024-07-18_FT_PV1_new30.xlsx
-LC_RESP_FTQSP_ARGS_NEW30 = --responses ftqsp=$(LC_RESP_FTQSP_NEW30) $(foreach s,$(FT_SIZES),--responses ft$(s)=$(REPO_ROOT)/advanced-prompting/csv/gpt-4o-mini-2024-07-18_FT-$(s)_PV1_new30.xlsx)
+LC_RESP_FTQSP_NEW30 = $(REPO_ROOT)/advanced-prompting/csv/gpt-4o/gpt-4o-mini-2024-07-18_FT_PV1_new30.xlsx
+LC_RESP_FTQSP_ARGS_NEW30 = --responses ftqsp=$(LC_RESP_FTQSP_NEW30) $(foreach s,$(FT_SIZES),--responses ft$(s)=$(REPO_ROOT)/advanced-prompting/csv/gpt-4o/gpt-4o-mini-2024-07-18_FT-$(s)_PV1_new30.xlsx)
 
 LC_RESP_SIZE_ARGS_FULL150 = $(foreach s,050 100 150 200,--responses size$(s)=$(REPO_ROOT)/eval/learning-curve/responses/size$(s)_full150_responses.csv)
-LC_RESP_FTQSP_FULL150 = $(REPO_ROOT)/advanced-prompting/csv/gpt-4o-mini-2024-07-18_FT_PV1_full150.xlsx
-LC_RESP_FTQSP_ORIGINAL120 = $(REPO_ROOT)/advanced-prompting/csv/gpt-4o-mini-2024-07-18_FT_PV1_original120.xlsx
-LC_RESP_FTQSP_ARGS_FULL150 = --responses ftqsp=$(LC_RESP_FTQSP_FULL150) $(foreach s,$(FT_SIZES),--responses ft$(s)=$(REPO_ROOT)/advanced-prompting/csv/gpt-4o-mini-2024-07-18_FT-$(s)_PV1_full150.xlsx)
-LC_RESP_FTQSP_ARGS_ORIGINAL120 = --responses ftqsp=$(LC_RESP_FTQSP_ORIGINAL120) $(foreach s,$(FT_SIZES),--responses ft$(s)=$(REPO_ROOT)/advanced-prompting/csv/gpt-4o-mini-2024-07-18_FT-$(s)_PV1_original120.xlsx)
+LC_RESP_FTQSP_FULL150 = $(REPO_ROOT)/advanced-prompting/csv/gpt-4o/gpt-4o-mini-2024-07-18_FT_PV1_full150.xlsx
+LC_RESP_FTQSP_ORIGINAL120 = $(REPO_ROOT)/advanced-prompting/csv/gpt-4o/gpt-4o-mini-2024-07-18_FT_PV1_original120.xlsx
+LC_RESP_FTQSP_ARGS_FULL150 = --responses ftqsp=$(LC_RESP_FTQSP_FULL150) $(foreach s,$(FT_SIZES),--responses ft$(s)=$(REPO_ROOT)/advanced-prompting/csv/gpt-4o/gpt-4o-mini-2024-07-18_FT-$(s)_PV1_full150.xlsx)
+LC_RESP_FTQSP_ARGS_ORIGINAL120 = --responses ftqsp=$(LC_RESP_FTQSP_ORIGINAL120) $(foreach s,$(FT_SIZES),--responses ft$(s)=$(REPO_ROOT)/advanced-prompting/csv/gpt-4o/gpt-4o-mini-2024-07-18_FT-$(s)_PV1_original120.xlsx)
 LC_RESP_SIZE_ARGS_ORIGINAL120 = $(foreach s,050 100 150 200,--responses size$(s)=$(REPO_ROOT)/eval/learning-curve/archive/responses/size$(s)_responses.csv)
 
 all: datasets evaluation_full150 evaluation_new30 evaluation_original120 learning_curve_full150 learning_curve_new30 learning_curve_original120 plot_learning_curve_full150 plot_learning_curve_new30 plot_learning_curve_original120 failure_prev analysis_by_qid error_types tests

@@ -31,8 +31,8 @@ S4TABLE = ADV_CSV / "S4Table.xlsx"
 
 PAPERS_DIR = ADV_CSV.parent / "papers"
 NEW30_PAPERS_DIR = ADV_CSV.parent / "papers_2025_30"
-LLAMA8B_FTQSP_PARSED = ADV_CSV / "llama-3.1-8B-FT-PV1_parsed.csv"
-LLAMA70B_FTQSP_PARSED = ADV_CSV / "llama-3.1-70B-PV1_parsed.csv"
+LLAMA8B_FTQSP_PARSED = ADV_CSV / "llama-8b" / "llama-3.1-8B-FT-PV1_parsed.csv"
+LLAMA70B_FTQSP_PARSED = ADV_CSV / "llama-70b" / "llama-3.1-70B-PV1_parsed.csv"
 
 # Map collaborator column names to the canonical evaluation names.
 COLUMN_RENAMES: Dict[str, str] = {

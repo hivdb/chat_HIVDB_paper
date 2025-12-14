@@ -240,9 +240,18 @@ def _annotate_significance(
         offset = family_offsets.get(family, y_max - base_margin - offset_shift)
         for _, target, target_x, target_suffix in target_rows:
             p_value = metric_map.get((family, target_suffix))
-            if p_value is None or p_value > 0.05:
+            if p_value is None:
                 continue
-            label = "p<0.001" if p_value < 0.001 else f"p={p_value:.3f}"
+            # Only show when rounded to 2 decimals p <= 0.01
+            if round(float(p_value), 2) > 0.01:
+                continue
+            if p_value < 0.001:
+                label = "p<0.001"
+            elif p_value > 0.009:
+                # For larger p-values, display only two decimal places (e.g., 0.01 instead of 0.011)
+                label = f"p={p_value:.2f}"
+            else:
+                label = f"p={p_value:.3f}"
             ax.plot(
                 [base_x, base_x, target_x, target_x],
                 [offset, offset + bracket_height, offset + bracket_height, offset],

@@ -25,7 +25,7 @@ from pydantic import BaseModel, Field, create_model
 
 DEFAULT_OUTPUT_DIR = Path("eval/learning-curve/responses")
 DEFAULT_OUTPUT_SUFFIX = "new30"
-QUESTIONS_PATH_DEFAULT = Path("advanced-prompting/csv/gpt-4o-mini-2024-07-18_PV1_new30.xlsx")
+QUESTIONS_PATH_DEFAULT = Path("advanced-prompting/csv/gpt-4o/gpt-4o-mini-2024-07-18_PV1_new30.xlsx")
 PAPERS_DIR_DEFAULT = Path("advanced-prompting/papers_2025_30")
 TRAIN_FILE_DEFAULT = Path("advanced-prompting/train_val/train_set.jsonl")
 JOBS_FILE_DEFAULT = Path("eval/learning-curve/finetune_jobs.jsonl")
