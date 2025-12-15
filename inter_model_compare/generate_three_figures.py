@@ -161,26 +161,36 @@ def annotate_significance(
     sig_entries = [(pair, p_corr) for (pair, _), p_corr in zip(pairs, corrected) if p_corr < alpha]
     if not sig_entries:
         return
+
     # Plot tighter (shorter-span) comparisons closer to the bars; break ties by p-value.
-    sig_entries.sort(
-        key=lambda t: (abs(positions[t[0][0]] - positions[t[0][1]]), t[1])
-    )
+    sig_entries.sort(key=lambda t: (abs(positions[t[0][0]] - positions[t[0][1]]), t[1]))
+
+    # Group by span so pairs of the same distance share a horizontal line.
+    span_groups: Dict[float, List[Tuple[Tuple[str, str], float]]] = {}
+    for entry in sig_entries:
+        span = abs(positions[entry[0][0]] - positions[entry[0][1]])
+        span_groups.setdefault(span, []).append(entry)
 
     max_height = max(heights.values())
     step = max_height * 0.05 + 1
-    next_y = max_height + step
+    current_y = max_height + step
 
-    for pair, p_corr in sig_entries:
-        a, b = pair
-        x1, x2 = positions[a], positions[b]
-        # Ensure the annotation clears the taller bar of the pair
-        y = max(next_y, max(heights[a], heights[b]) + step)
-        ax.plot([x1, x1, x2, x2], [y, y + step * 0.3, y + step * 0.3, y], color="k", linewidth=0.8)
-        label = "p < 0.001" if p_corr < 0.001 else f"p={format(p_corr, '.1g')}"
-        ax.text((x1 + x2) / 2, y + step * 0.4, label, ha="center", va="bottom", fontsize=8)
-        next_y = y + step
+    for span in sorted(span_groups.keys()):
+        entries = span_groups[span]
+        # Ensure this band clears the tallest bar in the span.
+        tallest_in_span = max(max(heights[a], heights[b]) for (a, b), _ in entries)
+        y = max(current_y, tallest_in_span + step)
 
-    ylim_upper = next_y + step
+        for pair, p_corr in entries:
+            a, b = pair
+            x1, x2 = positions[a], positions[b]
+            ax.plot([x1, x1, x2, x2], [y, y + step * 0.3, y + step * 0.3, y], color="k", linewidth=0.8)
+            label = "p < 0.001" if p_corr < 0.001 else f"p={format(p_corr, '.1g')}"
+            ax.text((x1 + x2) / 2, y + step * 0.4, label, ha="center", va="bottom", fontsize=8)
+
+        current_y = y + step
+
+    ylim_upper = current_y + step
     ax.set_ylim(y_min, max(ylim_upper, y_min + 1))
 
 
