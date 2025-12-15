@@ -136,7 +136,8 @@ def merge_column(df: pd.DataFrame, model_df: pd.DataFrame, column: str) -> pd.Da
     new_col = f"{column}__new"
     if column not in merged.columns:
         merged[column] = ""
-    merged[column] = merged[new_col].combine_first(merged[column]).fillna("")
+    # Prefer existing non-empty values; only fill blanks with the new data.
+    merged[column] = merged[column].mask(merged[column].str.strip() == "", merged[new_col]).fillna("")
     merged = merged.drop(columns=[new_col])
     return merged
 
