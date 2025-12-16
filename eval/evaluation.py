@@ -345,12 +345,16 @@ def _build_table3(
             target_val = float(row.get("target"))
         except (TypeError, ValueError):
             continue
-        if p_val < 0.05 and target_val > base_val:
+        try:
+            adj_val = float(row.get("adj_p"))
+        except (TypeError, ValueError):
+            continue
+        if adj_val < 0.05 and target_val > base_val:
             sig_map.setdefault((str(family), str(comparison), int(qid)), set()).add(str(metric))
             sig_any.add((str(family), int(qid)))
             sig_info[(str(family), str(comparison), str(metric), int(qid))] = (
                 p_val,
-                float(row.get("adj_p")) if row.get("adj_p") is not None else float("nan"),
+                adj_val,
             )
 
     def _metric_value(qid: int, model: str, metric: str) -> float | None:
@@ -397,15 +401,8 @@ def _build_table3(
         for qid in ordered_qids:
             if (family, qid) not in sig_any:
                 continue
-            # Skip rows that hinge on exactly one weakly significant finding (single star, 0.01<=p<0.05).
-            sig_entries = []
-            for target_label, model_label in [("FT", ft_model), ("QSP", qsp_model)]:
-                metrics = sig_map.get((family, target_label, qid), set())
-                for metric in metrics:
-                    p_val, _ = sig_info.get((family, target_label, metric, qid), (None, None))
-                    if p_val is not None:
-                        sig_entries.append((metric, float(p_val), target_label))
-            if len(sig_entries) == 1 and 0.01 <= sig_entries[0][1] < 0.05:
+            # Skip rows with no significant (adj_p<0.05) entries
+            if (family, qid) not in sig_any:
                 continue
             row = {
                 "Model": family,
@@ -425,8 +422,6 @@ def _build_table3(
                 tgt_prec = _metric_value(qid, model_label, "precision")
                 tgt_rec = _metric_value(qid, model_label, "recall")
                 sig_metrics = sig_map.get((family, target_label, qid), set())
-                if not sig_metrics and (family, qid) not in sig_any:
-                    continue
                 for metric, tgt_val, field in [
                     ("precision", tgt_prec, f"{target_label}_prec"),
                     ("recall", tgt_rec, f"{target_label}_rec"),
@@ -435,16 +430,12 @@ def _build_table3(
                         continue
                     suffix = ""
                     if metric in sig_metrics:
-                        p_val, adj_val = sig_info.get((family, target_label, metric, qid), (None, None))
-                        if p_val is not None:
-                            if p_val < 0.001:
-                                suffix = "***"
-                            elif p_val < 0.01:
+                        _, adj_val = sig_info.get((family, target_label, metric, qid), (None, None))
+                        if adj_val is not None and not np.isnan(adj_val):
+                            if adj_val < 0.01:
                                 suffix = "**"
-                            elif p_val < 0.05:
+                            elif adj_val < 0.05:
                                 suffix = "*"
-                        if adj_val is not None and not np.isnan(adj_val) and adj_val > 0.05:
-                            suffix = f"{suffix}\u2020" if suffix else "\u2020"
                     row[field] = f"{tgt_val * 100:.1f}{suffix}"
             # Format base values as percentages
             if row["base_prec"] is not None:

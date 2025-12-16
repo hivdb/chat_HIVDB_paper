@@ -498,6 +498,28 @@ def main() -> int:
                 comparisons,
                 ["accuracy", "precision", "recall", "f1"],
             )
+            # Recompute adj_p for paired tests with BH within family/group (FT vs FT+QSP) per metric.
+            if not stats_df.empty:
+                def _group_label(comp: str) -> str:
+                    return "ftqsp" if "qsp" in (comp or "").lower() else "ft"
+                stats_df["__group"] = stats_df["comparison"].apply(_group_label)
+                stats_df["adj_p"] = 1.0
+                for test_name in stats_df["test"].unique():
+                    for metric in stats_df["metric"].unique():
+                        for family in stats_df["family"].unique():
+                            for group in ["ft", "ftqsp"]:
+                                mask = (
+                                    (stats_df["test"] == test_name)
+                                    & (stats_df["metric"] == metric)
+                                    & (stats_df["family"] == family)
+                                    & (stats_df["__group"] == group)
+                                )
+                                pvals = stats_df.loc[mask, "p_value"]
+                                if pvals.empty:
+                                    continue
+                                adjusted = stat_utils.benjamini_hochberg(pvals.tolist())
+                                stats_df.loc[mask, "adj_p"] = adjusted
+                stats_df.drop(columns="__group", inplace=True, errors="ignore")
             baseline_map = load_baseline_wilcoxon(baseline_path) if baseline_path else {}
             if baseline_map:
                 for metric, entries in baseline_map.items():
@@ -563,35 +585,25 @@ def main() -> int:
                         if not qid_sheet.empty:
                             qid_sheet.to_excel(writer, sheet_name="Fisher Exact Test", index=False)
                 logging.info("Wrote combined statistical tests to %s", stat_xlsx_path)
-            if wilcoxon_map:
-                # Remove FT-50 vs base for Precision metric
-                if "precision" in wilcoxon_map:
-                    wilcoxon_map["precision"] = {
-                        k: v for k, v in wilcoxon_map["precision"].items()
-                        if k[1] != "FT-50"
-                    }
-                # Hide comparisons where the target metric is lower than base
-                if "precision" in wilcoxon_map:
-                    filtered_precision: Dict[tuple, float] = {}
-                    for (family, comparison), pval in wilcoxon_map["precision"].items():
-                        model_map = family_model_to_column.get(family, {})
-                        base_col = model_map.get("base")
-                        if not base_col:
-                            continue
-                        base_row = overall_qid[overall_qid["model"] == base_col]
-                        base_val = base_row["precision"].mean() if not base_row.empty else None
-                        comp_val = _lookup_model_metric(overall_qid, comparison, model_map)
-                        if base_val is None or comp_val is None or comp_val < base_val:
-                            continue
-                        filtered_precision[(family, comparison)] = pval
-                    wilcoxon_map["precision"] = filtered_precision
-                serialized: Dict[str, Dict[str, Dict[str, float]]] = {}
-                for metric, mapping in wilcoxon_map.items():
-                    fam_map: Dict[str, Dict[str, float]] = {}
-                    for (family, comparison), value in mapping.items():
-                        fam_map.setdefault(family, {})[comparison] = value
-                    serialized[metric] = fam_map
-                payload = {"comparisons": comparisons, "wilcoxon": serialized}
+            if not stats_df.empty:
+                # Build significance map from adjusted Wilcoxon p-values (<0.05)
+                sig_map: Dict[str, Dict[str, Dict[str, float]]] = {}
+                w = stats_df[stats_df["test"] == "wilcoxon"]
+                for _, row in w.iterrows():
+                    metric = row.get("metric")
+                    family = row.get("family")
+                    comparison = row.get("comparison")
+                    adj_p = row.get("adj_p")
+                    if any(v is None for v in (metric, family, comparison, adj_p)):
+                        continue
+                    try:
+                        val = float(adj_p)
+                    except Exception:
+                        continue
+                    if val >= 0.05:
+                        continue
+                    sig_map.setdefault(metric, {}).setdefault(family, {})[comparison] = val
+                payload = {"comparisons": comparisons, "wilcoxon": sig_map}
                 with significance_path.open("w", encoding="utf-8") as handle:
                     json.dump(payload, handle, indent=2)
                 logging.info("Saved learning-curve significance map to %s", significance_path)
