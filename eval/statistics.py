@@ -249,13 +249,13 @@ def compute_pairwise_tests(
         return stats_df, wilcoxon_map, ttest_map
 
     stats_df["adj_p"] = 1.0
-    for metric in metrics:
-        for test_name in ["t-test", "wilcoxon"]:
-            mask = (stats_df["metric"] == metric) & (stats_df["test"] == test_name)
-            if not mask.any():
-                continue
-            adjusted = benjamini_hochberg(stats_df.loc[mask, "p_value"].tolist())
-            stats_df.loc[mask, "adj_p"] = [ _round_sig(val) for val in adjusted ]
+    # Adjust across all metrics within each test (e.g., all 36 comparisons at once per test)
+    for test_name in ["t-test", "wilcoxon"]:
+        mask = stats_df["test"] == test_name
+        if not mask.any():
+            continue
+        adjusted = benjamini_hochberg(stats_df.loc[mask, "p_value"].tolist())
+        stats_df.loc[mask, "adj_p"] = [_round_sig(val) for val in adjusted]
 
     # Round numeric columns to 3 significant digits for readability
     for col in stats_df.columns:

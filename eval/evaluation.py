@@ -529,6 +529,7 @@ def main() -> int:
     pair_df = pd.DataFrame()
     overall_qid_df = next(iter(scenario_qid_frames.values()), pd.DataFrame())
     fisher_metrics = ["accuracy", "precision", "recall", "f1"]
+    sig_map: dict[str, dict[tuple[str, str], float]] = {}
     if overall_qid_df is not None and not overall_qid_df.empty:
         paired_metrics = ["accuracy", "precision", "recall", "f1"]
         fisher_df = stat_utils.compute_fisher_tests(
@@ -536,11 +537,28 @@ def main() -> int:
             FAMILY_COMPARISONS,
             fisher_metrics,
         )
-        pair_df, overall_stats, _ = stat_utils.compute_pairwise_tests(
+        pair_df, overall_stats_raw, _ = stat_utils.compute_pairwise_tests(
             overall_qid_df,
             FAMILY_COMPARISONS,
             paired_metrics,
         )
+        # Build significance map from adjusted Wilcoxon p-values (<0.05) for plotting
+        if not pair_df.empty:
+            w = pair_df[pair_df["test"] == "wilcoxon"]
+            for _, row in w.iterrows():
+                metric = row.get("metric")
+                family = row.get("family")
+                comparison = row.get("comparison")
+                adj_p = row.get("adj_p")
+                if metric is None or family is None or comparison is None or adj_p is None:
+                    continue
+                try:
+                    val = float(adj_p)
+                except Exception:
+                    continue
+                if val < 0.05:
+                    sig_map.setdefault(str(metric), {})[(str(family), str(comparison))] = val
+        overall_stats = sig_map
     logging.info("Wrote metrics to %s", config.OUTPUT_METRICS)
     logging.info("Wrote detail rows to %s", config.DETAIL_METRICS_HUMAN)
     if not pair_df.empty or not fisher_df.empty:

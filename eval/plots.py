@@ -8,6 +8,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from matplotlib.patches import Patch
+from decimal import Decimal, ROUND_HALF_UP
 
 from .constants import MODEL_BASE_COLORS, VARIANT_TINTS
 from .normalize import slugify
@@ -52,6 +53,11 @@ FAMILY_COMPARISONS = {
 
 # Preferred ordering within each family: base, FT, QSP, FT+QSP, then any others.
 VARIANT_ORDER = ["base", "FT", "QSP", "FT+QSP"]
+
+def _round_half_up(value: float, places: int) -> str:
+    # Use string conversion to avoid binary float artifacts (e.g., 0.835 -> 0.84).
+    quant = Decimal(str(value)).quantize(Decimal(10) ** -places, rounding=ROUND_HALF_UP)
+    return f"{quant:.{places}f}"
 
 
 def _variant_from_label(label: str) -> str:
@@ -242,8 +248,8 @@ def _annotate_significance(
             p_value = metric_map.get((family, target_suffix))
             if p_value is None:
                 continue
-            # Only show when rounded to 2 decimals p <= 0.01
-            if round(float(p_value), 2) > 0.01:
+            # Only show adjusted p-values < 0.05
+            if float(p_value) >= 0.05:
                 continue
             if p_value < 0.001:
                 label = "p<0.001"
@@ -311,7 +317,7 @@ def plot_metric_panels(
                 ax.text(
                     bar.get_x() + bar.get_width() / 2,
                     value + 0.01,
-                    f"{value:.2f}",
+                    _round_half_up(value, 2),
                     ha="center",
                     va="bottom",
                     fontsize=BAR_LABEL_SIZE,
@@ -368,7 +374,7 @@ def plot_metric_panels(
                 ax.text(
                     bar.get_x() + bar.get_width() / 2,
                     value + 0.01,
-                    f"{value:.2f}",
+                    _round_half_up(value, 2),
                     ha="center",
                     va="bottom",
                     fontsize=BAR_LABEL_SIZE,
