@@ -44,6 +44,15 @@ DISPLAY_SLOTS_QSP = [
     ("GPT-4o FT+QSP", 250, ["GPT-4o FT+QSP"]),
 ]
 
+DISPLAY_SLOTS_LLAMA = [
+    ("Llama3.1-70B base", 0, ["Llama3.1-70B base"]),
+    ("Llama3.1-70B FT-50+QSP", 50, ["Llama3.1-70B FT-50+QSP"]),
+    ("Llama3.1-70B FT-100+QSP", 100, ["Llama3.1-70B FT-100+QSP"]),
+    ("Llama3.1-70B FT-150+QSP", 150, ["Llama3.1-70B FT-150+QSP"]),
+    ("Llama3.1-70B FT-200+QSP", 200, ["Llama3.1-70B FT-200+QSP"]),
+    ("Llama3.1-70B FT", 250, ["Llama3.1-70B FT"]),
+]
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -149,14 +158,17 @@ def main() -> int:
     lc_results = args.metrics or LC_RESULTS
     base_results = args.base_results or BASE_RESULTS
     output_dir = args.output_dir or OUTPUT_DIR
+    # P-value annotations are intentionally disabled for learning-curve plots.
+    # Keep the significance path wiring in case we want to re-enable later, but do not load/use it here.
     significance_json = args.significance or SIGNIFICANCE_JSON.with_name(f"{SIGNIFICANCE_JSON.stem}{suffix}{SIGNIFICANCE_JSON.suffix}")
 
     combined_ft = build_combined(lc_results, base_results, DISPLAY_SLOTS)
     combined_qsp = build_combined(lc_results, base_results, DISPLAY_SLOTS_QSP)
-    if combined_ft.empty and combined_qsp.empty:
+    combined_llama_ft = build_combined(lc_results, base_results, DISPLAY_SLOTS_LLAMA)
+    if combined_ft.empty and combined_qsp.empty and combined_llama_ft.empty:
         print("No learning-curve metrics available.")
         return 1
-    significance, comparisons = load_significance(significance_json)
+    significance, comparisons = None, None
     # FT-only chart
     if not combined_ft.empty:
         generate_figures(
@@ -176,6 +188,16 @@ def main() -> int:
             significance=significance,
             comparisons=comparisons,
             base_name=f"learning-curve_ftqsp{suffix}" if suffix else "learning-curve_ftqsp",
+        )
+    # Llama3.1-70B FT chart
+    if not combined_llama_ft.empty:
+        generate_figures(
+            combined_llama_ft,
+            f"Llama3.1-70B Learning Curve",
+            output_dir,
+            significance=significance,
+            comparisons=comparisons,
+            base_name=f"learning-curve_llama{suffix}" if suffix else "learning-curve_llama",
         )
     print(f"Figures saved to {output_dir}")
     return 0
