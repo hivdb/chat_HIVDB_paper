@@ -27,21 +27,21 @@ OUTPUT_DIR = LC_DIR / "figures"
 SIGNIFICANCE_JSON = LC_DIR / "results/learning_curve_significance_full150.json"
 
 DISPLAY_SLOTS = [
-    ("GPT-4o base", 0, ["GPT-4o base"]),
-    ("GPT-4o FT-50", 50, ["GPT-4o FT-50", "GPT-4o LC size050"]),
-    ("GPT-4o FT-100", 100, ["GPT-4o FT-100", "GPT-4o LC size100", "GPT-4o LC (100)"]),
-    ("GPT-4o FT-150", 150, ["GPT-4o FT-150", "GPT-4o LC size150"]),
-    ("GPT-4o FT-200", 200, ["GPT-4o FT-200", "GPT-4o FT (200)"]),
-    ("GPT-4o FT", 250, ["GPT-4o FT", "GPT-4o FT (250)"]),
+    ("base", 0, ["GPT-4o base"]),
+    ("FT-50", 50, ["GPT-4o FT-50", "GPT-4o LC size050"]),
+    ("FT-100", 100, ["GPT-4o FT-100", "GPT-4o LC size100", "GPT-4o LC (100)"]),
+    ("FT-150", 150, ["GPT-4o FT-150", "GPT-4o LC size150"]),
+    ("FT-200", 200, ["GPT-4o FT-200", "GPT-4o FT (200)"]),
+    ("FT-250", 250, ["GPT-4o FT", "GPT-4o FT (250)"]),
 ]
 
 DISPLAY_SLOTS_QSP = [
-    ("GPT-4o base", 0, ["GPT-4o base"]),
-    ("GPT-4o FT-50+QSP", 50, ["GPT-4o FT-50+QSP"]),
-    ("GPT-4o FT-100+QSP", 100, ["GPT-4o FT-100+QSP"]),
-    ("GPT-4o FT-150+QSP", 150, ["GPT-4o FT-150+QSP"]),
-    ("GPT-4o FT-200+QSP", 200, ["GPT-4o FT-200+QSP"]),
-    ("GPT-4o FT+QSP", 250, ["GPT-4o FT+QSP"]),
+    ("base", 0, ["GPT-4o base"]),
+    ("FT-50+QSP", 50, ["GPT-4o FT-50+QSP"]),
+    ("FT-100+QSP", 100, ["GPT-4o FT-100+QSP"]),
+    ("FT-150+QSP", 150, ["GPT-4o FT-150+QSP"]),
+    ("FT-200+QSP", 200, ["GPT-4o FT-200+QSP"]),
+    ("FT-250+QSP", 250, ["GPT-4o FT+QSP"]),
 ]
 
 DISPLAY_SLOTS_LLAMA = [
@@ -50,7 +50,7 @@ DISPLAY_SLOTS_LLAMA = [
     ("FT-100", 100, ["Llama3.1-70B FT-100"]),
     ("FT-150", 150, ["Llama3.1-70B FT-150"]),
     ("FT-200", 200, ["Llama3.1-70B FT-200"]),
-    ("FT", 250, ["Llama3.1-70B FT"]),
+    ("FT-250", 250, ["Llama3.1-70B FT"]),
 ]
 
 
