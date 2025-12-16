@@ -118,11 +118,6 @@ def compute_fisher_tests(
                     p_values[qid] = float(p_value)
                 if not p_values:
                     continue
-                # Adjust p-values across QIDs for this metric/comparison
-                adj_map = {}
-                adjusted = benjamini_hochberg(list(p_values.values()))
-                for qid, adj in zip(p_values.keys(), adjusted):
-                    adj_map[qid] = _round_sig(adj)
                 record = {
                     "family": family,
                     "comparison": target.split()[-1],
@@ -133,12 +128,29 @@ def compute_fisher_tests(
                     record[f"base_qid_{qid}"] = _round_sig(base_values.get(qid, math.nan))
                     record[f"target_qid_{qid}"] = _round_sig(target_values.get(qid, math.nan))
                     record[f"p_value_qid_{qid}"] = _round_sig(p_values.get(qid, math.nan))
-                    record[f"adj_p_qid_{qid}"] = _round_sig(adj_map.get(qid, math.nan))
+                    # adj_p_qid will be filled after per-QID BH across comparisons
+                    record[f"adj_p_qid_{qid}"] = math.nan
                 records.append(record)
 
     df = pd.DataFrame(records)
     if df.empty:
         return df
+    # Apply BH per QID across comparisons (within each metric)
+    for metric in metrics:
+        metric_mask = df["metric"] == metric
+        for qid in all_qids:
+            pcol = f"p_value_qid_{qid}"
+            acol = f"adj_p_qid_{qid}"
+            if pcol not in df.columns:
+                continue
+            vals = df.loc[metric_mask, pcol]
+            valid_mask = metric_mask & vals.notna()
+            pvals = df.loc[valid_mask, pcol].astype(float).tolist()
+            if not pvals:
+                continue
+            adjusted = benjamini_hochberg(pvals)
+            df.loc[valid_mask, acol] = [_round_sig(val) for val in adjusted]
+
     # Round numeric columns for readability
     for col in df.columns:
         if df[col].dtype.kind in {"f", "i"}:
