@@ -4,13 +4,9 @@
       "base": "GPT-4o base",
       "targets": [
         "GPT-4o FT-50",
-        "GPT-4o FT-50+QSP",
         "GPT-4o FT-100",
-        "GPT-4o FT-100+QSP",
         "GPT-4o FT-150",
-        "GPT-4o FT-150+QSP",
         "GPT-4o FT-200",
-        "GPT-4o FT-200+QSP",
         "GPT-4o FT",
         "GPT-4o FT+QSP"
       ]
@@ -18,19 +14,22 @@
     "Llama3.1-70B": {
       "base": "Llama3.1-70B base",
       "targets": [
-        "Llama3.1-70B FT-50+QSP",
-        "Llama3.1-70B FT-100+QSP",
-        "Llama3.1-70B FT-150+QSP",
-        "Llama3.1-70B FT-200+QSP",
+        "Llama3.1-70B FT-50",
+        "Llama3.1-70B FT-100",
+        "Llama3.1-70B FT-150",
+        "Llama3.1-70B FT-200",
         "Llama3.1-70B FT"
       ]
     }
   },
   "wilcoxon": {
     "accuracy": {
+      "GPT-4o": {
+        "FT+QSP": 0.0322
+      },
       "Llama3.1-70B": {
-        "FT-150+QSP": 0.0352,
-        "FT-200+QSP": 0.0352
+        "FT-150": 0.044000000000000004,
+        "FT-200": 0.044000000000000004
       }
     },
     "precision": {
@@ -40,17 +39,12 @@
         "FT-150": 0.031999999999999994,
         "FT-200": 0.031999999999999994,
         "FT": 0.035500000000000004,
-        "FT+QSP": 0.02925
+        "FT+QSP": 0.00585
       }
     },
     "recall": {
       "Llama3.1-70B": {
-        "FT": 0.00222
-      }
-    },
-    "f1": {
-      "Llama3.1-70B": {
-        "FT": 0.0268
+        "FT": 0.0111
       }
     }
   }

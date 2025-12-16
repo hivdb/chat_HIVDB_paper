@@ -45,12 +45,12 @@ DISPLAY_SLOTS_QSP = [
 ]
 
 DISPLAY_SLOTS_LLAMA = [
-    ("Llama3.1-70B base", 0, ["Llama3.1-70B base"]),
-    ("Llama3.1-70B FT-50+QSP", 50, ["Llama3.1-70B FT-50+QSP"]),
-    ("Llama3.1-70B FT-100+QSP", 100, ["Llama3.1-70B FT-100+QSP"]),
-    ("Llama3.1-70B FT-150+QSP", 150, ["Llama3.1-70B FT-150+QSP"]),
-    ("Llama3.1-70B FT-200+QSP", 200, ["Llama3.1-70B FT-200+QSP"]),
-    ("Llama3.1-70B FT", 250, ["Llama3.1-70B FT"]),
+    ("base", 0, ["Llama3.1-70B base"]),
+    ("FT-50", 50, ["Llama3.1-70B FT-50"]),
+    ("FT-100", 100, ["Llama3.1-70B FT-100"]),
+    ("FT-150", 150, ["Llama3.1-70B FT-150"]),
+    ("FT-200", 200, ["Llama3.1-70B FT-200"]),
+    ("FT", 250, ["Llama3.1-70B FT"]),
 ]
 
 
@@ -193,7 +193,7 @@ def main() -> int:
     if not combined_llama_ft.empty:
         generate_figures(
             combined_llama_ft,
-            f"Llama3.1-70B Learning Curve",
+            f"Llama3.1-70B: Learning Curve Analysis",
             output_dir,
             significance=significance,
             comparisons=comparisons,

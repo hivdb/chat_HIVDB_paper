@@ -300,7 +300,10 @@ def plot_metric_panels(
         colors = df["color_override"].tolist()
     else:
         colors = [_color_for_model(model) for model in models]
-    variant_labels = [_variant_label(model) for model in models]
+    if "display_label" in df.columns:
+        variant_labels = df["display_label"].tolist()
+    else:
+        variant_labels = [_variant_label(model) for model in models]
     if layout == "combined":
         width = max(18, 0.7 * len(models) * len(METRIC_COLUMNS))
         height = 10

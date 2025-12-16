@@ -43,11 +43,11 @@ class RunSpec:
 
 LABEL_TO_MODEL = {
     "base": "base",
-    # QSP (PV1) runs for each size; keep size-only labels for non-QSP below.
-    "ft50": "FT-50+QSP",
-    "ft100": "FT-100+QSP",
-    "ft150": "FT-150+QSP",
-    "ft200": "FT-200+QSP",
+    # Size-tagged FT runs (non-QSP). Keep size-only labels for compatibility.
+    "ft50": "FT-50",
+    "ft100": "FT-100",
+    "ft150": "FT-150",
+    "ft200": "FT-200",
     "ft": "FT",
     "ftqsp": "FT+QSP",
     # Backward compatibility with older sizeXXX tags
