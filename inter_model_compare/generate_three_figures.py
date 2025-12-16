@@ -205,7 +205,7 @@ def plot_figure(
     fig, ax = plt.subplots(figsize=(10, 5))
     fig.suptitle(title)
 
-    colors = ["#4575b4", "#74add1", "#abd9e9"]
+    colors = ["#ff7f0e", "#2ca02c", "#d62728"]
     group_width = len(models) + 1  # spacing between metric groups
 
     x_ticks = []
