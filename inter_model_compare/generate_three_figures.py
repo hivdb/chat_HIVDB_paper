@@ -172,7 +172,7 @@ def annotate_significance(
         span_groups.setdefault(span, []).append(entry)
 
     max_height = max(heights.values())
-    step = max_height * 0.05 + 1
+    step = max_height * 0.1 + 1
     current_y = max_height + step
 
     for span in sorted(span_groups.keys()):
@@ -210,6 +210,8 @@ def plot_figure(
 
     x_ticks = []
     x_tick_labels = []
+    bar_ticks = []
+    bar_tick_labels = []
     bar_entries = []
 
     for m_idx, metric in enumerate(METRICS):
@@ -219,22 +221,26 @@ def plot_figure(
         bars = ax.bar(list(x_positions.values()), list(heights.values()), color=colors, width=0.6)
 
         pairwise = get_pairwise_pvalues(models, variant, metric, pvalue_lookup)
-        annotate_significance(ax, x_positions, heights, pairwise, y_min=50)
+        annotate_significance(ax, x_positions, heights, pairwise, y_min=0)
 
         center = base_x + (len(models) - 1) / 2
         x_ticks.append(center)
         x_tick_labels.append(metric)
+        bar_ticks.extend([x_positions[model["label"]] for model in models])
+        bar_tick_labels.extend([model["label"] for model in models])
 
         bar_entries.extend((bar, model, heights) for bar, model in zip(bars, models))
 
-    ax.set_yticks(np.arange(50, 101, 10))
+    ax.set_yticks(np.arange(0, 101, 10))
     current_top = ax.get_ylim()[1]
-    ax.set_ylim(bottom=50, top=max(current_top, 110))
-    ax.set_xticks(x_ticks)
-    ax.set_xticklabels(x_tick_labels)
-    # Keep metric labels at the top but tuck them just inside the axes instead of above the top spine.
-    # Hide top tick marks while keeping labels just inside the axis.
-    ax.tick_params(axis="x", bottom=False, labelbottom=False, top=True, labeltop=True, pad=-16, length=0)
+    ax.set_ylim(bottom=0, top=max(current_top, 120))
+    ax.set_xticks(bar_ticks)
+    ax.set_xticklabels(bar_tick_labels, rotation=45, ha="right")
+    top_ax = ax.secondary_xaxis("top")
+    top_ax.set_xticks(x_ticks)
+    top_ax.set_xticklabels(x_tick_labels)
+    top_ax.tick_params(axis="x", pad=2)
+    ax.set_xlabel("Model")
     ax.set_ylabel("Percentage")
 
     for bar, model, heights in bar_entries:
