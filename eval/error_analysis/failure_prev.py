@@ -82,11 +82,8 @@ def build_rates(df: pd.DataFrame, metric: str) -> dict[str, dict[int, float]]:
 
 
 def _topic_label(qid: int, question_map: dict[int, str]) -> str:
-    if qid in QID_TOPICS:
-        return QID_TOPICS[qid]
-    question = question_map.get(qid, "")
-    tokens = question.split()
-    return " ".join(tokens[:4]).title()
+    # Always use abbreviated topic labels from QID_TOPICS
+    return QID_TOPICS.get(qid, question_map.get(qid, ""))
 
 
 def _shade(color: str, target: str, amount: float) -> tuple[float, float, float]:
