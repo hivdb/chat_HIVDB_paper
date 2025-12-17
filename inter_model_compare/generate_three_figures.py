@@ -85,6 +85,43 @@ def benjamini_hochberg(pvalues: Sequence[float]) -> List[float]:
     return corrected.tolist()
 
 
+def build_bh_corrected_lookup(
+    configs: Sequence[Dict[str, object]],
+    pvalue_lookup: Dict[Tuple[Tuple[str, str], str, str], float],
+) -> Dict[Tuple[Tuple[str, str], str, str], float]:
+    """
+    Precompute BH-corrected p-values per variant across all metrics.
+
+    For each figure/variant we correct 12 p-values:
+      3 model-pair comparisons × 4 metrics.
+    """
+    corrected_lookup: Dict[Tuple[Tuple[str, str], str, str], float] = {}
+
+    for config in configs:
+        variant = str(config["variant"])
+        models = config["models"]
+
+        keys: List[Tuple[Tuple[str, str], str, str]] = []
+        raw_pvals: List[float] = []
+
+        for metric in METRICS:
+            for model_a, model_b in itertools.combinations(models, 2):
+                key = (tuple(sorted([model_a["pvalue_name"], model_b["pvalue_name"]])), variant, metric)
+                if key not in pvalue_lookup:
+                    raise KeyError(
+                        f"P-value missing for {model_a['pvalue_name']} vs {model_b['pvalue_name']} ({variant}, {metric})"
+                    )
+                keys.append(key)
+                raw_pvals.append(float(pvalue_lookup[key]))
+
+        # print(len(raw_pvals))
+        corrected = benjamini_hochberg(raw_pvals)
+        for key, adj in zip(keys, corrected):
+            corrected_lookup[key] = float(adj)
+
+    return corrected_lookup
+
+
 def load_metric_means() -> Dict[Tuple[str, str], float]:
     """
     Return metric values for each (model, metric) using precomputed summary metrics.
@@ -149,14 +186,19 @@ def annotate_significance(
     pairs: Iterable[Tuple[Tuple[str, str], float]],
     y_min: float = 0.0,
     alpha: float = 0.05,
+    *,
+    pvalues_already_corrected: bool = False,
 ):
-    """Annotate every comparison whose BH-corrected p-value is below the threshold."""
+    """Annotate every comparison whose (optionally BH-corrected) p-value is below the threshold."""
     pairs = list(pairs)
     if not pairs:
         return
 
-    raw_pvalues = [p for _, p in pairs]
-    corrected = benjamini_hochberg(raw_pvalues)
+    if pvalues_already_corrected:
+        corrected = [p for _, p in pairs]
+    else:
+        raw_pvalues = [p for _, p in pairs]
+        corrected = benjamini_hochberg(raw_pvalues)
 
     sig_entries = [(pair, p_corr) for (pair, _), p_corr in zip(pairs, corrected) if p_corr < alpha]
     if not sig_entries:
@@ -200,6 +242,7 @@ def plot_figure(
     variant: str,
     metric_values: Dict[Tuple[str, str], float],
     pvalue_lookup: Dict[Tuple[Tuple[str, str], str, str], float],
+    bh_corrected_lookup: Dict[Tuple[Tuple[str, str], str, str], float],
     output_path: Path,
 ) -> None:
     fig, ax = plt.subplots(figsize=(10, 5))
@@ -220,8 +263,13 @@ def plot_figure(
         x_positions = {model["label"]: base_x + i for i, model in enumerate(models)}
         bars = ax.bar(list(x_positions.values()), list(heights.values()), color=colors, width=0.6)
 
-        pairwise = get_pairwise_pvalues(models, variant, metric, pvalue_lookup)
-        annotate_significance(ax, x_positions, heights, pairwise, y_min=0)
+        # Use BH correction across all metrics within the same variant (12 tests total).
+        adjusted_pairs = []
+        for model_a, model_b in itertools.combinations(models, 2):
+            key = (tuple(sorted([model_a["pvalue_name"], model_b["pvalue_name"]])), variant, metric)
+            pair_labels = (model_a["label"], model_b["label"])
+            adjusted_pairs.append((pair_labels, bh_corrected_lookup[key]))
+        annotate_significance(ax, x_positions, heights, adjusted_pairs, y_min=0, pvalues_already_corrected=True)
 
         center = base_x + (len(models) - 1) / 2
         x_ticks.append(center)
@@ -262,24 +310,25 @@ def plot_figure(
 
 def dump_bh_table(
     pvalue_lookup: Dict[Tuple[Tuple[str, str], str, str], float],
+    bh_corrected_lookup: Dict[Tuple[Tuple[str, str], str, str], float],
     output_path: Path,
 ) -> None:
     """Write a CSV of raw and BH-corrected p-values for all plotted comparisons."""
     rows = []
     for config in FIGURE_CONFIGS:
+        variant = str(config["variant"])
+        models = config["models"]
         for metric in METRICS:
-            pairs = get_pairwise_pvalues(config["models"], config["variant"], metric, pvalue_lookup)
-            raw_pvals = [p for _, p in pairs]
-            corrected = benjamini_hochberg(raw_pvals)
-            for (pair, raw), adj in zip(pairs, corrected):
+            for model_a, model_b in itertools.combinations(models, 2):
+                key = (tuple(sorted([model_a["pvalue_name"], model_b["pvalue_name"]])), variant, metric)
                 rows.append(
                     {
-                        "variant": config["variant"],
+                        "variant": variant,
                         "metric": metric,
-                        "model_a": pair[0],
-                        "model_b": pair[1],
-                        "raw_pvalue": raw,
-                        "bh_corrected_pvalue": adj,
+                        "model_a": model_a["label"],
+                        "model_b": model_b["label"],
+                        "raw_pvalue": pvalue_lookup[key],
+                        "bh_corrected_pvalue": bh_corrected_lookup[key],
                     }
                 )
     pd.DataFrame(rows).to_csv(output_path, index=False)
@@ -290,6 +339,10 @@ def main() -> None:
     stats_df = pd.read_excel(STATS_FILE)
     pvalue_lookup = build_pvalue_lookup(stats_df)
 
+    # print(pvalue_lookup.keys())
+    bh_corrected_lookup = build_bh_corrected_lookup(FIGURE_CONFIGS, pvalue_lookup)
+    # print(bh_corrected_lookup)
+
     for config in FIGURE_CONFIGS:
         plot_figure(
             title=config["title"],
@@ -297,11 +350,12 @@ def main() -> None:
             variant=config["variant"],
             metric_values=metric_values,
             pvalue_lookup=pvalue_lookup,
+            bh_corrected_lookup=bh_corrected_lookup,
             output_path=config["output"],
         )
         print(f"Wrote {config['output']}")
 
-    dump_bh_table(pvalue_lookup=pvalue_lookup, output_path=BH_TABLE_OUT)
+    dump_bh_table(pvalue_lookup=pvalue_lookup, bh_corrected_lookup=bh_corrected_lookup, output_path=BH_TABLE_OUT)
     print(f"Wrote {BH_TABLE_OUT}")
 
 
