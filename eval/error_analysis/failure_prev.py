@@ -163,6 +163,125 @@ def plot_rate_grid(
     plt.close(fig)
 
 
+def plot_overall_histogram(df: pd.DataFrame, qids: list[int], type_map: pd.Series, question_map: dict[int, str], output_name: str) -> None:
+    """Plot horizontal stacked bar chart showing FN/FP counts across all base and FT models per QID."""
+    # Aggregate FN and FP counts across all base and FT models
+    base_ft_models = [model for family in MODEL_FAMILIES for model in family[1:]]
+
+    fn_counts = {}
+    fp_counts = {}
+
+    for qid in qids:
+        qid_df = df[df["QID"] == qid]
+        total_fn = 0
+        total_fp = 0
+        for model in base_ft_models:
+            model_rows = qid_df[qid_df["model"] == model]
+            if not model_rows.empty:
+                total_fn += model_rows["fn"].sum()
+                total_fp += model_rows["fp"].sum()
+        fn_counts[qid] = total_fn
+        fp_counts[qid] = total_fp
+
+    # Sort QIDs by total incorrect answers (descending)
+    qids_sorted = sorted(qids, key=lambda q: fn_counts[q] + fp_counts[q], reverse=True)
+
+    # Prepare data for plotting - use abbreviated topic labels instead of full question text
+    labels = [f"QID {qid}: {QID_TOPICS.get(qid, question_map.get(qid, ''))}" for qid in qids_sorted]
+    fn_vals = [fn_counts[qid] for qid in qids_sorted]
+    fp_vals = [fp_counts[qid] for qid in qids_sorted]
+
+    # Color bars by question type
+    colors = [TYPE_COLORS.get(type_map.get(qid, ""), "#999999") for qid in qids_sorted]
+
+    fig, ax = plt.subplots(figsize=(12, 10))
+    y_positions = np.arange(len(qids_sorted))
+
+    # Create stacked horizontal bars
+    ax.barh(y_positions, fn_vals, color=[mcolors.to_rgba(c, alpha=0.5) for c in colors], label="False Negatives")
+    ax.barh(y_positions, fp_vals, left=fn_vals, color=[mcolors.to_rgba(c, alpha=0.8) for c in colors], label="False Positives")
+
+    ax.set_yticks(y_positions)
+    ax.set_yticklabels(labels, fontsize=9)
+    ax.set_xlabel("Incorrect Answers (count)", fontsize=12)
+    ax.set_title("Incorrect Answer Frequency across all base and FT models", fontsize=14)
+    ax.grid(axis="x", linestyle="--", alpha=0.3)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+
+    # Create legends
+    error_handles = [
+        Patch(facecolor="gray", alpha=0.5, label="False Negatives"),
+        Patch(facecolor="gray", alpha=0.8, label="False Positives"),
+    ]
+    type_handles = [Patch(facecolor=TYPE_COLORS[t], label=t.title()) for t in sorted(TYPE_COLORS.keys())]
+
+    legend1 = ax.legend(handles=error_handles, loc="upper right", title="")
+    ax.add_artist(legend1)
+    ax.legend(handles=type_handles, loc="lower right", title="Question Type")
+
+    fig.tight_layout()
+    output_path = OUTPUT_DIR / output_name
+    fig.savefig(output_path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot_models_histogram(df: pd.DataFrame, qids: list[int], type_map: pd.Series, output_name: str) -> None:
+    """Plot stacked bar charts showing FN/FP counts per QID for each base and FT model."""
+    base_ft_models = [model for family in MODEL_FAMILIES for model in family[1:]]
+
+    fig, axes = plt.subplots(len(base_ft_models), 1, figsize=(14, 12), sharex=True)
+    if len(base_ft_models) == 1:
+        axes = [axes]
+
+    for idx, model in enumerate(base_ft_models):
+        ax = axes[idx]
+        model_df = df[df["model"] == model]
+
+        fn_vals = []
+        fp_vals = []
+        colors = []
+
+        for qid in qids:
+            qid_df = model_df[model_df["QID"] == qid]
+            if not qid_df.empty:
+                fn_vals.append(qid_df["fn"].sum())
+                fp_vals.append(qid_df["fp"].sum())
+            else:
+                fn_vals.append(0)
+                fp_vals.append(0)
+            colors.append(TYPE_COLORS.get(type_map.get(qid, ""), "#999999"))
+
+        x_positions = np.arange(len(qids))
+        ax.bar(x_positions, fn_vals, color=[mcolors.to_rgba(c, alpha=0.5) for c in colors], label="False Negatives")
+        ax.bar(x_positions, fp_vals, bottom=fn_vals, color=[mcolors.to_rgba(c, alpha=0.8) for c in colors], label="False Positives")
+
+        ax.set_ylabel("Incorrect Answers", fontsize=10)
+        ax.set_title(model, fontsize=11, fontweight="bold")
+        ax.set_xticks(x_positions)
+        ax.grid(axis="y", linestyle="--", alpha=0.3)
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+
+        if idx == 0:
+            error_handles = [
+                Patch(facecolor="gray", alpha=0.5, label="False Negatives"),
+                Patch(facecolor="gray", alpha=0.8, label="False Positives"),
+            ]
+            type_handles = [Patch(facecolor=TYPE_COLORS[t], label=t.title()) for t in sorted(TYPE_COLORS.keys())]
+            legend1 = ax.legend(handles=error_handles, loc="upper left", ncol=2, fontsize=9)
+            ax.add_artist(legend1)
+            ax.legend(handles=type_handles, loc="upper right", ncol=3, fontsize=9, title="Question Type")
+
+    axes[-1].set_xlabel("QID", fontsize=12)
+    axes[-1].set_xticklabels([str(qid) for qid in qids])
+
+    fig.tight_layout()
+    output_path = OUTPUT_DIR / output_name
+    fig.savefig(output_path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+
+
 def main() -> int:
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else DATA_PATH
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -181,6 +300,13 @@ def main() -> int:
     for metric, title, filename in metric_specs:
         rates = build_rates(df, metric)
         plot_rate_grid(qids, type_map, question_map, rates, title, filename)
+
+    # Generate overall histogram
+    plot_overall_histogram(df, qids, type_map, question_map, "overall_hist.png")
+
+    # Generate per-model histogram
+    plot_models_histogram(df, qids, type_map, "models_hist.png")
+
     return 0
 
 
