@@ -27,7 +27,7 @@ BAR_LABEL_SIZE = 20
 ANNOTATION_FONT_SIZE = 12
 FAMILY_LABEL_SIZE = 18
 
-Y_LIM = 1.8
+MAX_Y_LIM = 100  # cap at 100% since metrics are proportions
 
 METRIC_PALETTE = {
     "accuracy": "#2a9d8f",
@@ -173,7 +173,7 @@ def _annotate_families(ax, family_bounds: dict[str, tuple[float, float]]) -> Non
         center = (start + end) / 2
         ax.text(
             center,
-            -0.3,
+            -0.45,
             family,
             ha="center",
             va="top",
@@ -212,18 +212,35 @@ def _annotate_significance(
     if not metric_map:
         return
     y_max = ax.get_ylim()[1]
-    base_margin = 0.6
-    bracket_height = 0.05
-    text_padding = 0.014
-    offset_step = 0.15
+    # Use fixed spacing constants for consistent, non-overlapping annotations
+    base_margin = 35.0
+    bracket_height = 5.0
+    text_padding = 3.0
+    base_offset_step = 35.0  # Increased spacing between stacked annotations
+    lift = 15.0
+    max_offset = max(0.0, y_max - bracket_height - text_padding - 0.5)
     family_offsets: dict[str, float] = {}
     comparison_map = comparisons or FAMILY_COMPARISONS
     for family, mapping in comparison_map.items():
+        step = base_offset_step
         base_label = mapping["base"]
         base_x = pos_lookup.get(base_label)
         base_val = None if metric_values is None else metric_values.get(base_label)
         if base_x is None:
             continue
+        # Keep brackets well above value labels on bars.
+        value_label_padding = max(10.0, y_max * 0.1)
+        margin_up = max(10.0, y_max * 0.12)
+        family_max_height = 0.0
+        highest_label_y = None
+        if metric_values is not None:
+            for candidate in [mapping["base"], *mapping["targets"]]:
+                val = metric_values.get(candidate)
+                if val is not None:
+                    family_max_height = max(family_max_height, val)
+            if family_max_height > 0.0:
+                # Match the value label placement used above to guarantee clearance.
+                highest_label_y = min(y_max - 1.0, family_max_height + value_label_padding)
         target_rows: list[tuple[float, str, float, str]] = []
         for target in mapping["targets"]:
             target_x = pos_lookup.get(target)
@@ -243,7 +260,24 @@ def _annotate_significance(
         if not target_rows:
             continue
         target_rows.sort(key=lambda item: item[0])
-        offset = family_offsets.get(family, y_max - base_margin - offset_shift)
+        start_offset = family_offsets.get(family)
+        if start_offset is None:
+            comparisons_needed = len(target_rows) - 1
+            top = max_offset
+            if comparisons_needed <= 0:
+                step = base_offset_step
+                start_offset = min(top, max(base_margin, top - 6.0))
+            else:
+                span = max(0.0, top - base_margin)
+                step = min(base_offset_step, max(10.0, span / max(1, comparisons_needed)))
+                start_offset = max(base_margin, top - step * comparisons_needed)
+        start_offset += lift
+        if highest_label_y is not None:
+            # Push the starting bracket high enough to avoid colliding with bar value labels.
+            clearance = max(1.0, y_max * 0.01)
+            min_offset = highest_label_y + clearance - (bracket_height + text_padding)
+            start_offset = max(start_offset, min_offset)
+        offset = max(base_margin, min(max_offset, start_offset))
         for _, target, target_x, target_suffix in target_rows:
             p_value = metric_map.get((family, target_suffix))
             if p_value is None:
@@ -258,21 +292,23 @@ def _annotate_significance(
                 label = f"p={p_value:.2f}"
             else:
                 label = f"p={p_value:.3f}"
+            # Use fixed vertical spacing - no collision detection needed
             ax.plot(
                 [base_x, base_x, target_x, target_x],
                 [offset, offset + bracket_height, offset + bracket_height, offset],
                 color="black",
                 linewidth=1,
             )
+            text_y = offset + bracket_height + text_padding
             ax.text(
                 (base_x + target_x) / 2,
-                offset + bracket_height + text_padding,
+                text_y,
                 label,
                 ha="center",
                 va="bottom",
                 fontsize=ANNOTATION_FONT_SIZE,
             )
-            offset += offset_step
+            offset = min(offset + step, max_offset)
         family_offsets[family] = offset
 
 
@@ -287,6 +323,11 @@ def plot_metric_panels(
 ) -> None:
     if df.empty:
         return
+    df = df.copy()
+    for metric_col, _ in METRIC_COLUMNS:
+        if metric_col in df.columns:
+            df[metric_col] = df[metric_col] * 100.0
+    y_limit = MAX_Y_LIM
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if "display_order" in df.columns:
         df = df.sort_values("display_order").reset_index(drop=True)
@@ -311,16 +352,18 @@ def plot_metric_panels(
         total_width = 0.8
         bar_width = total_width / len(METRIC_COLUMNS)
         handles: list[Patch] = []
+        ax.set_ylim(0, y_limit)
         for idx, (metric, label) in enumerate(METRIC_COLUMNS):
             metric_color = METRIC_PALETTE.get(metric, "#4c72b0")
             offsets = [pos - total_width / 2 + bar_width * (idx + 0.5) for pos in positions]
             values = df[metric].tolist()
             bars = ax.bar(offsets, values, color=metric_color, width=bar_width * 0.9)
             for bar, value in zip(bars, values):
+                label_y = min(y_limit - 1.0, value + 4.0)
                 ax.text(
                     bar.get_x() + bar.get_width() / 2,
-                    value + 0.01,
-                    _round_half_up(value, 2),
+                    label_y,
+                    _round_half_up(value, 0),
                     ha="center",
                     va="bottom",
                     fontsize=BAR_LABEL_SIZE,
@@ -337,9 +380,10 @@ def plot_metric_panels(
                 offset_shift=idx * 0.35,
                 metric_values=value_map,
             )
-        ax.set_ylim(0, Y_LIM)
-        ax.set_ylabel("Value", fontsize=AXIS_LABEL_SIZE)
+        ax.set_ylim(0, y_limit)
+        ax.set_ylabel("Percentage", fontsize=AXIS_LABEL_SIZE)
         ax.tick_params(axis="both", labelsize=AXIS_TICK_SIZE)
+        ax.tick_params(axis="x", pad=12)
         ax.set_xticks(positions)
         ax.set_xticklabels(variant_labels, rotation=25, ha="right", fontsize=AXIS_TICK_SIZE)
         ax.grid(axis="y", linestyle="--", alpha=0.3)
@@ -349,13 +393,25 @@ def plot_metric_panels(
         axes = [ax]
     else:
         width = max(14, 0.7 * len(models))
-        height = 13
-        fig, axes = plt.subplots(len(METRIC_COLUMNS), 1, figsize=(width, height), sharex=True)
+        height = 16
+        # hspace is a fraction of the average axis height; 0.4 ~= 40% gap between stacked plots.
+        fig, axes = plt.subplots(
+            len(METRIC_COLUMNS),
+            1,
+            figsize=(width, height),
+            sharex=True,
+            gridspec_kw={"hspace": 0.4},
+        )
+        for ax in axes:
+            ax.tick_params(axis="x", pad=12)
         bar_width = 0.8
         if len(METRIC_COLUMNS) == 1:
             axes = [axes]
         for ax, (metric, label) in zip(axes, METRIC_COLUMNS):
             values = df[metric].tolist()
+            metric_map = significance.get(metric) if significance else None
+            metric_headroom = 50.0 if metric_map else 0.0
+            y_limit_for_metric = max(y_limit, max(values, default=0) + metric_headroom)
             # Shade base/FT/QSP/FT+QSP groups differently when style_group present
             if "style_group" in df.columns:
                 shade_map = {"base": 0.35, "ft": 0.0, "ft_qsp": -0.08, "qsp": 0.18}
@@ -367,17 +423,18 @@ def plot_metric_panels(
             else:
                 bar_colors = colors
             bars = ax.bar(positions, values, color=bar_colors, width=bar_width)
-            ax.set_ylim(0, Y_LIM)
-            ax.set_ylabel(label, fontsize=AXIS_LABEL_SIZE)
+            ax.set_ylim(0, y_limit_for_metric)
+            ax.set_ylabel(f"{label} (%)", fontsize=AXIS_LABEL_SIZE)
             ax.tick_params(axis="both", labelsize=AXIS_TICK_SIZE)
             ax.grid(axis="y", linestyle="--", alpha=0.3)
             ax.spines["top"].set_visible(False)
             ax.spines["right"].set_visible(False)
             for bar, value in zip(bars, values):
+                label_y = min(y_limit - 1.0, value + 4.0)
                 ax.text(
                     bar.get_x() + bar.get_width() / 2,
-                    value + 0.01,
-                    _round_half_up(value, 2),
+                    label_y,
+                    _round_half_up(value, 0),
                     ha="center",
                     va="bottom",
                     fontsize=BAR_LABEL_SIZE,
@@ -388,7 +445,8 @@ def plot_metric_panels(
         axes[-1].set_xticklabels(variant_labels, rotation=25, ha="right", fontsize=AXIS_TICK_SIZE)
     _annotate_families(axes[-1], family_bounds)
     fig.suptitle(title, fontsize=TITLE_FONT_SIZE)
-    fig.tight_layout()
+    if layout == "combined":
+        fig.tight_layout()
     fig.savefig(output_path, dpi=300)
     plt.close(fig)
 
@@ -396,12 +454,19 @@ def plot_metric_panels(
 def save_table(df, title: str, path: Path) -> None:
     if df.empty:
         return
+    df = df.copy()
+    metric_cols = ["accuracy", "precision", "recall", "f1"]
+    for metric_col in metric_cols:
+        if metric_col in df.columns:
+            df[metric_col] = df[metric_col] * 100.0
     path.parent.mkdir(parents=True, exist_ok=True)
     fig_height = 1.0 + 0.6 * len(df)
     fig, ax = plt.subplots(figsize=(14, fig_height))
     ax.axis("off")
-    data = df[["model", "accuracy", "precision", "recall", "f1"]].round(3).values
-    data[:, 0] = df["model"].str.replace("Llama3.1", "L3.1", regex=False)
+    rounded_metrics = df[metric_cols].round(0).astype(int)
+    data = rounded_metrics.copy()
+    data.insert(0, "model", df["model"].str.replace("Llama3.1", "L3.1", regex=False))
+    data = data.values
     table = ax.table(
         cellText=data,
         colLabels=["Model", "Accuracy", "Precision", "Recall", "F1"],

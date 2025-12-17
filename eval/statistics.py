@@ -261,13 +261,25 @@ def compute_pairwise_tests(
         return stats_df, wilcoxon_map, ttest_map
 
     stats_df["adj_p"] = 1.0
-    # Adjust across all metrics within each test (e.g., all 36 comparisons at once per test)
+    # Apply BH correction across ALL comparisons (all families, all metrics) for each test type
+    # This is more conservative than correcting per family
     for test_name in ["t-test", "wilcoxon"]:
         mask = stats_df["test"] == test_name
         if not mask.any():
             continue
         adjusted = benjamini_hochberg(stats_df.loc[mask, "p_value"].tolist())
         stats_df.loc[mask, "adj_p"] = [_round_sig(val) for val in adjusted]
+
+        # Update the maps with adjusted p-values for wilcoxon
+        if test_name == "wilcoxon":
+            wilcoxon_map_adj: Dict[str, Dict[Tuple[str, str], float]] = {metric: {} for metric in metrics}
+            for _, row in stats_df[mask].iterrows():
+                metric = row["metric"]
+                family = row["family"]
+                comparison = row["comparison"]
+                adj_p = float(row["adj_p"])
+                wilcoxon_map_adj.setdefault(metric, {})[(family, comparison)] = adj_p
+            wilcoxon_map = wilcoxon_map_adj
 
     # Round numeric columns to 3 significant digits for readability
     for col in stats_df.columns:
