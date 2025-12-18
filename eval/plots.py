@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import numpy as np
 
 import matplotlib
 
@@ -164,6 +165,15 @@ def _group_positions(models: list[str]) -> tuple[list[float], dict[str, tuple[fl
         previous_family = family
     family_bounds = {fam: (min(pos_list), max(pos_list)) for fam, pos_list in family_ranges.items()}
     return positions, family_bounds
+
+
+def _short_question_label(qid: int, question: str, max_len: int = 28) -> str:
+    if qid in QID_TOPICS:
+        return f"Q{qid}: {QID_TOPICS[qid]}"
+    clean = question.strip().replace("\n", " ")
+    if len(clean) > max_len:
+        clean = clean[: max_len - 1].rstrip() + "…"
+    return f"Q{qid}: {clean}"
 
 
 def _annotate_families(ax, family_bounds: dict[str, tuple[float, float]]) -> None:
@@ -482,6 +492,83 @@ def save_table(df, title: str, path: Path) -> None:
     plt.close(fig)
 
 
+def plot_metric_by_qid(
+    qid_df,
+    metric: str,
+    output_path: Path,
+    family_models: dict[str, list[str]] | None = None,
+) -> None:
+    """Plot per-question metric (precision/recall) for each model family."""
+    if qid_df is None or qid_df.empty or metric not in qid_df.columns:
+        return
+    family_models = family_models or {
+        "GPT-4o": [
+            "GPT-4o base",
+            "GPT-4o FT",
+            "GPT-4o QSP",
+        ],
+        "Llama3.1-70B": [
+            "Llama3.1-70B base",
+            "Llama3.1-70B FT",
+            "Llama3.1-70B QSP",
+        ],
+        "Llama3.1-8B": [
+            "Llama3.1-8B base",
+            "Llama3.1-8B FT",
+            "Llama3.1-8B QSP",
+        ],
+    }
+    questions = (
+        qid_df[["QID", "Question"]]
+        .drop_duplicates()
+        .sort_values("QID")
+    )
+    qids = questions["QID"].tolist()
+    labels = [_short_question_label(qid, question) for qid, question in questions.itertuples(index=False)]
+
+    fig, axes = plt.subplots(len(family_models), 1, figsize=(22, 18), sharey=True)
+    if len(family_models) == 1:
+        axes = [axes]
+
+    bar_width = 0.22
+    x_base = np.arange(len(qids))
+    legend_handles: list = []
+    legend_labels: list[str] = []
+
+    for ax, (family, models) in zip(axes, family_models.items()):
+        fam_df = qid_df[qid_df["model"].isin(models)].copy()
+        if fam_df.empty:
+            ax.set_visible(False)
+            continue
+        for idx, model in enumerate(models):
+            series = fam_df[fam_df["model"] == model].set_index("QID")[metric] * 100
+            heights = [series.get(qid, np.nan) for qid in qids]
+            offsets = (idx - (len(models) - 1) / 2) * bar_width
+            positions = x_base + offsets
+            color = _color_for_model(model)
+            label = _variant_label(model)
+            bars = ax.bar(positions, heights, width=bar_width, label=label, color=color, edgecolor="black")
+            if label not in legend_labels and len(bars) > 0:
+                legend_handles.append(bars[0])
+                legend_labels.append(label)
+            ax.set_title(family, fontsize=TITLE_FONT_SIZE - 6, pad=12, fontweight="bold")
+            ax.set_ylim(0, 105)
+            ax.grid(axis="y", linestyle="--", alpha=0.4)
+
+    axes[-1].set_xticks(x_base)
+    axes[-1].set_xticklabels(labels, rotation=50, ha="right", fontsize=AXIS_TICK_SIZE)
+    for ax in axes[:-1]:
+        ax.set_xticks([])
+    for ax in axes:
+        ax.set_ylabel(f"{metric.title()} (%)", fontsize=AXIS_LABEL_SIZE)
+
+    fig.legend(legend_handles, legend_labels, loc="upper center", ncol=len(legend_labels), fontsize=AXIS_TICK_SIZE)
+    fig.tight_layout(rect=(0, 0, 1, 0.92))
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, dpi=300)
+    plt.close(fig)
+
+
 def generate_figures(
     subset: pd.DataFrame,
     scenario: str,
@@ -507,3 +594,21 @@ def generate_figures(
         layout="vertical",
     )
     save_table(subset, f"{title} Metrics", output_dir / f"{slug}-table.png")
+QID_TOPICS = {
+    1: "Patient Sequences?",
+    2: "In vitro Drug Susceptibility?",
+    3: "Open Access?",
+    4: "GenBank IDs",
+    5: "# Patients Sequenced",
+    6: "Countries",
+    7: "Sampling Years",
+    8: "Were Samples Cloned?",
+    9: "HIV Genes",
+    10: "Sequencing Methods",
+    11: "Sample Types",
+    12: "VF on Therapy?",
+    13: "Clinical Study?",
+    14: "Prior ARV Use?",
+    15: "Drug Classes",
+    16: "Drugs",
+}

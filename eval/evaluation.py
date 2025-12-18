@@ -17,7 +17,7 @@ if str(ROOT.parent) not in sys.path:
 
 from eval import config  # type: ignore
 from eval import statistics as stat_utils  # type: ignore
-from eval.plots import generate_figures  # type: ignore
+from eval.plots import generate_figures, plot_metric_by_qid  # type: ignore
 from eval.scoring import build_detail_rows, ensure_norm, evaluate_group, evaluate_model, load_dataset  # type: ignore
 # Statistical helpers
 from scipy.stats import fisher_exact
@@ -515,6 +515,27 @@ def main() -> int:
         logging.error("No scenarios produced metrics.")
         return 1
     write_outputs(metrics, details, scenario_qid_frames)
+
+    qid_df = pd.DataFrame(qid_rows)
+    if not qid_df.empty:
+        family_models = {
+            "GPT-4o": ["GPT-4o base", "GPT-4o FT", "GPT-4o QSP"],
+            "Llama3.1-70B": ["Llama3.1-70B base", "Llama3.1-70B FT", "Llama3.1-70B QSP"],
+            "Llama3.1-8B": ["Llama3.1-8B base", "Llama3.1-8B FT", "Llama3.1-8B QSP"],
+        }
+        plot_metric_by_qid(
+            qid_df,
+            metric="precision",
+            output_path=config.OUTPUT_TABLE_DIR / "precision_by_qid.png",
+            family_models=family_models,
+        )
+        plot_metric_by_qid(
+            qid_df,
+            metric="recall",
+            output_path=config.OUTPUT_TABLE_DIR / "recall_by_qid.png",
+            family_models=family_models,
+        )
+
     overall_stats = {}
     fisher_df = pd.DataFrame()
     pair_df = pd.DataFrame()
