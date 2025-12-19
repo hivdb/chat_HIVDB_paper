@@ -4,7 +4,7 @@ export PYTHONPATH
 
 REPO_ROOT := $(abspath ..)
 
-.PHONY: all datasets evaluation evaluation_new30 evaluation_full150 evaluation_original120 learning_curve learning_curve_new30 learning_curve_full150 plot_learning_curve plot_learning_curve_new30 plot_learning_curve_full150 failure_prev analysis_by_qid error_types tests
+.PHONY: all datasets evaluation evaluation_new30 evaluation_full150 evaluation_original120 learning_curve learning_curve_new30 learning_curve_full150 plot_learning_curve plot_learning_curve_new30 plot_learning_curve_full150 failure_prev analysis_by_qid error_types tests exact_vs_partial
 
 MERGED_NEW30 = $(REPO_ROOT)/advanced-prompting/csv/merged_answers_new30.xlsx
 MERGED_FULL150 = $(REPO_ROOT)/advanced-prompting/csv/merged_answers_full_150.xlsx
@@ -24,7 +24,7 @@ LC_RESP_FTQSP_ARGS_FULL150 = --responses ftqsp=$(LC_RESP_FTQSP_FULL150) $(foreac
 LC_RESP_FTQSP_ARGS_ORIGINAL120 = --responses ftqsp=$(LC_RESP_FTQSP_ORIGINAL120) $(foreach s,$(FT_SIZES),--responses ft$(s)=$(REPO_ROOT)/advanced-prompting/csv/gpt-4o/gpt-4o-mini-2024-07-18_FT-$(s)_PV1_original120.xlsx)
 LC_RESP_SIZE_ARGS_ORIGINAL120 = $(foreach s,050 100 150 200,--responses size$(s)=$(REPO_ROOT)/eval/learning-curve/archive/responses/size$(s)_responses.csv)
 
-all: datasets evaluation_full150 evaluation_new30 evaluation_original120 learning_curve_full150 learning_curve_new30 learning_curve_original120 plot_learning_curve_full150 plot_learning_curve_new30 plot_learning_curve_original120 failure_prev analysis_by_qid error_types tests
+all: datasets evaluation_full150 evaluation_new30 evaluation_original120 learning_curve_full150 learning_curve_new30 learning_curve_original120 plot_learning_curve_full150 plot_learning_curve_new30 plot_learning_curve_original120 failure_prev analysis_by_qid error_types exact_vs_partial tests
 
 datasets:
 	$(PYTHON) build_datasets.py
@@ -54,7 +54,7 @@ learning_curve_new30: datasets
 learning_curve_full150: datasets
 	$(PYTHON) learning-curve/06_evaluate_learning_curve.py --merged-path $(MERGED_FULL150) --output-suffix full150 \
 		$(LC_RESP_SIZE_ARGS_FULL150) \
-		$(LC_RESP_FTQSP_ARGS_FULL150)
+        $(LC_RESP_FTQSP_ARGS_FULL150)
 
 learning_curve_original120: datasets
 	$(PYTHON) learning-curve/06_evaluate_learning_curve.py --merged-path $(MERGED_ORIGINAL120) --output-suffix original120 \
@@ -96,3 +96,6 @@ error_types: analysis_by_qid
 
 tests: evaluation_full150 evaluation_new30 evaluation_original120
 	$(PYTHON) -m eval.tests
+
+exact_vs_partial: datasets
+	$(PYTHON) exact_vs_partial/list_metrics_by_scenario.py --merged-path $(MERGED_FULL150) --output-suffix full150
