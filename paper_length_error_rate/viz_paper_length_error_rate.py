@@ -6,7 +6,9 @@ import pandas as pd
 from scipy import stats
 
 
-def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
+def plot_correct_figures(
+    df: pd.DataFrame, output_dir: str, include_combined: bool = True
+) -> None:
     correct_cols = [col for col in df.columns if "Correct" in col]
     if not correct_cols:
         raise ValueError("No columns containing 'Correct' found.")
@@ -14,6 +16,12 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
     df["content_length"] = pd.to_numeric(df["content_length"], errors="coerce")
 
     rng = np.random.default_rng(0)
+    combined_lines = {"base": [], "FT": [], "QSP": []}
+
+    def trim_correct_label(label: str) -> str:
+        if label.endswith("Correct"):
+            return label[: -len("Correct")].rstrip()
+        return label
 
     for idx, col in enumerate(correct_cols, start=1):
         y = pd.to_numeric(df[col], errors="coerce")
@@ -55,6 +63,22 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
                 bbox_to_anchor=(0.5, -0.18),
                 frameon=False,
             )
+            if col != "All Correct":
+                label = f" {col.lower()} "
+                if " ft+qsp " in label:
+                    group = None
+                elif " base " in label:
+                    group = "base"
+                elif " qsp " in label:
+                    group = "QSP"
+                elif " ft " in label:
+                    group = "FT"
+                else:
+                    group = None
+                if group:
+                    combined_lines[group].append(
+                        (trim_correct_label(col), x_line, y_line, stats_label)
+                    )
         if col != "All Correct":
             ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
             ax.set_yticklabels(["0", "25%", "50%", "75%", "100%"])
@@ -68,6 +92,38 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
         plt.close()
 
         print(f"Wrote {filename}")
+
+    if include_combined:
+        safe_output = output_dir.replace(os.sep, "_").replace(" ", "_")
+        for group, lines in combined_lines.items():
+            if not lines:
+                continue
+            fig, ax = plt.subplots(figsize=(7, 5))
+            colors = plt.get_cmap("tab10")
+            for idx, (col, x_line, y_line, stats_label) in enumerate(lines):
+                ax.plot(
+                    x_line,
+                    y_line,
+                    linewidth=2,
+                    color=colors(idx % 10),
+                    label=f"{col} ({stats_label})",
+                )
+            ax.set_xlabel("Paper length")
+            ax.set_ylabel("Percent correct")
+            ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+            ax.set_yticklabels(["0", "25%", "50%", "75%", "100%"])
+            ax.legend(
+                loc="upper center",
+                bbox_to_anchor=(0.5, -0.18),
+                frameon=False,
+                ncol=1,
+            )
+            fig.tight_layout(rect=(0, 0.12, 1, 1))
+            combined_name = f"combined_regression_lines_{safe_output}_{group}.png"
+            combined_path = os.path.join(os.getcwd(), combined_name)
+            plt.savefig(combined_path, dpi=300)
+            plt.close()
+            print(f"Wrote {combined_path}")
 
 
 def main() -> None:
@@ -88,7 +144,8 @@ def main() -> None:
 
     for output_dir, subset in output_dirs.items():
         os.makedirs(output_dir, exist_ok=True)
-        plot_correct_figures(subset.copy(), output_dir)
+        include_combined = output_dir not in {"2025", "before 2025"}
+        plot_correct_figures(subset.copy(), output_dir, include_combined=include_combined)
 
 
 if __name__ == "__main__":
