@@ -15,6 +15,8 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
 
     rng = np.random.default_rng(0)
     for idx, col in enumerate(correct_cols, start=1):
+        if "FT+QSP" in col:
+            continue
         y = pd.to_numeric(df[col], errors="coerce")
         if col != "All Correct":
             y = y / 16
@@ -40,6 +42,25 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
             stats_label = (
                 f"slope={reg.slope:.3g}, R^2={r_squared:.3f}, p={reg.pvalue:.3g}"
             )
+            if len(x_valid) >= 3:
+                x_mean = x_valid.mean()
+                sxx = ((x_valid - x_mean) ** 2).sum()
+                if sxx > 0:
+                    residuals = y_valid - (reg.slope * x_valid + reg.intercept)
+                    s_err = np.sqrt((residuals**2).sum() / (len(x_valid) - 2))
+                    se_fit = np.sqrt(
+                        (1 / len(x_valid)) + ((x_line - x_mean) ** 2) / sxx
+                    )
+                    t_crit = stats.t.ppf(0.975, df=len(x_valid) - 2)
+                    ci = t_crit * s_err * se_fit
+                    ax.fill_between(
+                        x_line,
+                        y_line - ci,
+                        y_line + ci,
+                        color="#7f7f7f",
+                        alpha=0.22,
+                        linewidth=0,
+                    )
             ax.plot(x_line, y_line, color="#2ca02c", linewidth=2, label=stats_label)
             ax.legend(
                 loc="upper center",
