@@ -54,6 +54,8 @@ FAMILY_COMPARISONS = {
 
 # Preferred ordering within each family: base, FT, QSP, FT+QSP, then any others.
 VARIANT_ORDER = ["base", "FT", "QSP", "FT+QSP"]
+VARIANT_LEGEND_TINTS = {"base": 0.0, "FT": 0.35, "QSP": 0.6}
+TYPE_BASE_COLORS = {"Boolean": "#4c78a8", "List": "#72b7b2", "Number": "#f58518"}
 
 def _round_half_up(value: float, places: int) -> str:
     # Use string conversion to avoid binary float artifacts (e.g., 0.835 -> 0.84).
@@ -104,9 +106,9 @@ def _color_for_model(label: str) -> tuple[float, float, float]:
 def _variant_handles() -> list[Patch]:
     handles: list[Patch] = []
     base_gray = "#888888"
-    for variant, tint in VARIANT_TINTS.items():
+    for variant, tint in VARIANT_LEGEND_TINTS.items():
         color = _tint_color(base_gray, tint)
-        handles.append(Patch(facecolor=color, label=f"{variant} scenario".title()))
+        handles.append(Patch(facecolor=color, edgecolor="black", label=variant.title()))
     return handles
 
 
@@ -519,12 +521,13 @@ def plot_metric_by_qid(
         ],
     }
     questions = (
-        qid_df[["QID", "Question"]]
+        qid_df[["QID", "Question", "Type"]]
         .drop_duplicates()
         .sort_values("QID")
     )
     qids = questions["QID"].tolist()
-    labels = [_short_question_label(qid, question) for qid, question in questions.itertuples(index=False)]
+    qid_type = questions.set_index("QID")["Type"].to_dict()
+    labels = [_short_question_label(qid, question) for qid, question, _ in questions.itertuples(index=False)]
 
     fig, axes = plt.subplots(len(family_models), 1, figsize=(22, 18), sharey=True)
     if len(family_models) == 1:
@@ -532,9 +535,6 @@ def plot_metric_by_qid(
 
     bar_width = 0.22
     x_base = np.arange(len(qids))
-    legend_handles: list = []
-    legend_labels: list[str] = []
-
     for ax, (family, models) in zip(axes, family_models.items()):
         fam_df = qid_df[qid_df["model"].isin(models)].copy()
         if fam_df.empty:
@@ -545,12 +545,13 @@ def plot_metric_by_qid(
             heights = [series.get(qid, np.nan) for qid in qids]
             offsets = (idx - (len(models) - 1) / 2) * bar_width
             positions = x_base + offsets
-            color = _color_for_model(model)
-            label = _variant_label(model)
-            bars = ax.bar(positions, heights, width=bar_width, label=label, color=color, edgecolor="black")
-            if label not in legend_labels and len(bars) > 0:
-                legend_handles.append(bars[0])
-                legend_labels.append(label)
+            variant = _variant_label(model)
+            tint = VARIANT_LEGEND_TINTS.get(variant, 0.0)
+            colors = []
+            for qid in qids:
+                base_color = TYPE_BASE_COLORS.get(qid_type.get(qid, ""), "#cccccc")
+                colors.append(_tint_color(base_color, tint))
+            bars = ax.bar(positions, heights, width=bar_width, label=variant, color=colors, edgecolor="black")
             ax.set_title(family, fontsize=TITLE_FONT_SIZE - 6, pad=12, fontweight="bold")
             ax.set_ylim(0, 105)
             ax.grid(axis="y", linestyle="--", alpha=0.4)
@@ -562,7 +563,11 @@ def plot_metric_by_qid(
     for ax in axes:
         ax.set_ylabel(f"{metric.title()} (%)", fontsize=AXIS_LABEL_SIZE)
 
-    fig.legend(legend_handles, legend_labels, loc="upper center", ncol=len(legend_labels), fontsize=AXIS_TICK_SIZE)
+    type_handles = [Patch(facecolor=clr, edgecolor="black", label=typ) for typ, clr in TYPE_BASE_COLORS.items()]
+    variant_handles = _variant_handles()
+    handles = type_handles + variant_handles
+    labels_for_handles = [h.get_label() for h in handles]
+    fig.legend(handles, labels_for_handles, loc="upper center", ncol=len(handles), fontsize=AXIS_TICK_SIZE)
     fig.tight_layout(rect=(0, 0, 1, 0.92))
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output_path, dpi=300)
