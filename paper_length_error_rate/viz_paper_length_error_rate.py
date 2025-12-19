@@ -15,7 +15,7 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
 
     rng = np.random.default_rng(0)
     for idx, col in enumerate(correct_cols, start=1):
-        if "FT+QSP" in col:
+        if "FT+QSP" in col or col == "All Correct":
             continue
         y = pd.to_numeric(df[col], errors="coerce")
         if col != "All Correct":
