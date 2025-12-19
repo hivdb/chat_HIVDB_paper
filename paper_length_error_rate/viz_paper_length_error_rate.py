@@ -1,6 +1,7 @@
 import os
 
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 import numpy as np
 import pandas as pd
 from scipy import stats
@@ -34,7 +35,7 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
         colors = np.where(low_mask, "#d62728", "#1f77b4")
         ax.set_title(trim_correct_label(col))
         ax.set_xlabel("Paper length")
-        ax.set_ylabel("Percent correct")
+        ax.set_ylabel("Percent correctness")
 
         valid_mask = x.notna() & y.notna()
         if valid_mask.sum() >= 2:
@@ -66,12 +67,8 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
                         alpha=0.22,
                         linewidth=0,
                     )
-            ax.plot(x_line, y_line, color="#2ca02c", linewidth=2, label=stats_label)
-            ax.legend(
-                loc="upper center",
-                bbox_to_anchor=(0.5, -0.18),
-                frameon=False,
-            )
+            ax.plot(x_line, y_line, color="#2ca02c", linewidth=2)
+            ax.set_title(f"{trim_correct_label(col)} ({stats_label})")
         if col != "All Correct":
             ax.set_ylim(bottom=0.5)
             ax.set_yticks([0.5, 0.75, 1.0])
@@ -102,6 +99,29 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
 
         print(f"Wrote {filename}")
 
+
+def save_montage(grid_dir: str, output_path: str, nrows: int = 3, ncols: int = 3) -> None:
+    image_paths = sorted(
+        path
+        for path in (os.path.join(grid_dir, name) for name in os.listdir(grid_dir))
+        if path.lower().endswith(".png")
+    )
+    if not image_paths:
+        raise ValueError(f"No PNG files found in {grid_dir}")
+
+    fig, axes = plt.subplots(nrows, ncols, figsize=(ncols * 4, nrows * 3))
+    axes = np.atleast_2d(axes)
+    for idx, ax in enumerate(axes.flat):
+        if idx < len(image_paths):
+            img = mpimg.imread(image_paths[idx])
+            ax.imshow(img)
+        ax.axis("off")
+    fig.tight_layout(pad=0.2)
+    plt.savefig(output_path, dpi=300)
+    plt.close()
+    print(f"Wrote {output_path}")
+
+
 def main() -> None:
     df = pd.read_excel("paper_length_error_rate.xlsx")
 
@@ -121,6 +141,8 @@ def main() -> None:
     for output_dir, subset in output_dirs.items():
         os.makedirs(output_dir, exist_ok=True)
         plot_correct_figures(subset.copy(), output_dir)
+        if output_dir == "All":
+            save_montage(output_dir, "All.png")
 
 
 if __name__ == "__main__":
