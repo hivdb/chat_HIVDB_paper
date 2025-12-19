@@ -14,6 +14,11 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
     df["content_length"] = pd.to_numeric(df["content_length"], errors="coerce")
 
     rng = np.random.default_rng(0)
+
+    def trim_correct_label(label: str) -> str:
+        if label.endswith("Correct"):
+            return label[: -len("Correct")].rstrip()
+        return label
     for idx, col in enumerate(correct_cols, start=1):
         if "FT+QSP" in col or col == "All Correct":
             continue
@@ -27,7 +32,7 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
         fig, ax = plt.subplots(figsize=(7, 5))
         low_mask = y <= (10 / 16) if col != "All Correct" else y <= 10
         colors = np.where(low_mask, "#d62728", "#1f77b4")
-        ax.set_title(f"{idx}. {col}")
+        ax.set_title(trim_correct_label(col))
         ax.set_xlabel("Paper length")
         ax.set_ylabel("Percent correct")
 
