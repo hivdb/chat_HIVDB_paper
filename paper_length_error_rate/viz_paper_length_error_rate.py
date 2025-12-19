@@ -25,14 +25,6 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
         fig, ax = plt.subplots(figsize=(7, 5))
         low_mask = y <= (10 / 16) if col != "All Correct" else y <= 10
         colors = np.where(low_mask, "#d62728", "#1f77b4")
-        ax.scatter(
-            x + x_jitter,
-            y,
-            s=12,
-            alpha=0.6,
-            edgecolors="none",
-            c=colors,
-        )
         ax.set_title(f"{idx}. {col}")
         ax.set_xlabel("Paper length")
         ax.set_ylabel("Percent correct")
@@ -55,10 +47,26 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
                 frameon=False,
             )
         if col != "All Correct":
-            ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
-            ax.set_yticklabels(["0", "25%", "50%", "75%", "100%"])
+            ax.set_ylim(bottom=0.5)
+            ax.set_yticks([0.5, 0.75, 1.0])
+            ax.set_yticklabels(["50%", "75%", "100%"])
         else:
-            ax.set_yticks([100, 120, 140, 160, 180, 200])
+            ax.set_ylim(bottom=100)
+            ax.set_yticks([100, 150, 200])
+        valid_x = x[x.notna()]
+        if not valid_x.empty:
+            y_min, y_max = ax.get_ylim()
+            span = y_max - y_min
+            rug_offset = 0.01 * span if span > 0 else 0.0
+            rug_height = 0.12 * span if span > 0 else 0.0
+            ax.vlines(
+                valid_x,
+                y_min + rug_offset,
+                y_min + rug_offset + rug_height,
+                color="black",
+                alpha=0.35,
+                linewidth=0.6,
+            )
         fig.tight_layout(rect=(0, 0.08, 1, 1))
 
         safe_name = f"{idx:02d}_{col}".replace(os.sep, "_")
