@@ -20,6 +20,10 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
         if label.endswith("Correct"):
             return label[: -len("Correct")].rstrip()
         return label
+
+    def set_plot_title(ax: plt.Axes, title: str) -> None:
+        ax.set_title(title, y=0.92, fontweight="bold")
+
     for idx, col in enumerate(correct_cols, start=1):
         if "FT+QSP" in col or col == "All Correct":
             continue
@@ -33,9 +37,9 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
         fig, ax = plt.subplots(figsize=(7, 5))
         low_mask = y <= (10 / 16) if col != "All Correct" else y <= 10
         colors = np.where(low_mask, "#d62728", "#1f77b4")
-        ax.set_title(trim_correct_label(col))
-        ax.set_xlabel("Paper length")
-        ax.set_ylabel("Percent correctness")
+        set_plot_title(ax, trim_correct_label(col))
+        ax.set_xlabel("# Characters", fontweight="bold")
+        ax.set_ylabel("Accuracy", fontweight="bold")
 
         valid_mask = x.notna() & y.notna()
         if valid_mask.sum() >= 2:
@@ -45,9 +49,7 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
             x_line = np.linspace(x_valid.min(), x_valid.max(), 200)
             y_line = reg.slope * x_line + reg.intercept
             r_squared = reg.rvalue**2
-            stats_label = (
-                f"slope={reg.slope:.3g}, R^2={r_squared:.3f}, p={reg.pvalue:.3g}"
-            )
+            stats_label = f"$\\mathbf{{R}}^2$={r_squared:.1g}, p={reg.pvalue:.1g}"
             if len(x_valid) >= 3:
                 x_mean = x_valid.mean()
                 sxx = ((x_valid - x_mean) ** 2).sum()
@@ -68,11 +70,11 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
                         linewidth=0,
                     )
             ax.plot(x_line, y_line, color="#2ca02c", linewidth=2)
-            ax.set_title(f"{trim_correct_label(col)} ({stats_label})")
+            set_plot_title(ax, f"{trim_correct_label(col)} ({stats_label})")
         if col != "All Correct":
-            ax.set_ylim(bottom=0.5)
-            ax.set_yticks([0.5, 0.75, 1.0])
-            ax.set_yticklabels(["50%", "75%", "100%"])
+            ax.set_ylim(bottom=0.51)
+            ax.set_yticks([0.51, 0.75, 1.0])
+            ax.set_yticklabels(["51%", "75%", "100%"])
         else:
             ax.set_ylim(bottom=100)
             ax.set_yticks([100, 150, 200])
