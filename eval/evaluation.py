@@ -349,6 +349,8 @@ def _build_table3(
             adj_val = float(row.get("adj_p"))
         except (TypeError, ValueError):
             continue
+        if comparison == "FT+QSP":
+            continue
         if adj_val < 0.05 and target_val > base_val:
             sig_map.setdefault((str(family), str(comparison), int(qid)), set()).add(str(metric))
             sig_any.add((str(family), int(qid)))
