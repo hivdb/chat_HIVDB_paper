@@ -7,7 +7,7 @@ import argparse
 import logging
 import sys
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Tuple, Iterable
 
 import pandas as pd
 
@@ -24,6 +24,8 @@ from scipy.stats import fisher_exact
 import numpy as np
 
 from eval.normalize import slugify
+from openpyxl import load_workbook
+from openpyxl.styles import PatternFill
 
 FAMILY_COMPARISONS = {
     "GPT-4o": {
@@ -459,6 +461,416 @@ def _build_table3(
     return df
 
 
+def _model_for_comparison(family: str, comparison: str) -> str | None:
+    mapping = FAMILY_COMPARISONS.get(family, {})
+    targets = mapping.get("targets", [])
+    if comparison == "FT":
+        for target in targets:
+            if "FT+QSP" in target or target.endswith(" QSP"):
+                continue
+            if target.endswith(" FT"):
+                return target
+    if comparison == "QSP":
+        for target in targets:
+            if target.endswith(" QSP") and "FT+QSP" not in target:
+                return target
+    if comparison == "FT+QSP":
+        for target in targets:
+            if "FT+QSP" in target:
+                return target
+    return None
+
+
+def _build_suppfile2_individquest(
+    qid_df: pd.DataFrame,
+    fisher_qid_df: pd.DataFrame,
+    comparisons: Iterable[str],
+) -> pd.DataFrame:
+    header = [
+        "Question",
+        "PcntTrue",
+        "Model",
+        "State",
+        "TP",
+        "FN",
+        "FP",
+        "TN",
+        "Accuracy",
+        "Precision",
+        "Recall",
+        "F1",
+        "",
+        "State",
+        "TP",
+        "FN",
+        "FP",
+        "TN",
+        "Accuracy",
+        "Precision",
+        "Recall",
+        "F1",
+        "",
+        "Accuracy P",
+        "Rank",
+        "Adjusted P",
+        "BH sig",
+        "",
+        "Precision P",
+        "Rank",
+        "Adjusted P",
+        "BH sig",
+        "",
+        "Recall P",
+        "Rank",
+        "Adjusted P",
+        "BH sig",
+        "",
+        "Base (base model)",
+    ]
+    if qid_df is None or qid_df.empty:
+        return pd.DataFrame(columns=header)
+
+    qid_counts = qid_df.groupby("QID").first()
+    pcnt_true = (qid_counts["tp"] + qid_counts["fn"]) / qid_counts["samples"]
+
+    def _metrics(qid: int, model: str) -> dict[str, float]:
+        row = qid_df[(qid_df["QID"] == qid) & (qid_df["model"] == model)]
+        if row.empty:
+            return {k: float("nan") for k in ["tp", "fn", "fp", "tn", "accuracy", "precision", "recall", "f1"]}
+        row = row.iloc[0]
+        return {
+            "tp": float(row.get("tp", 0)),
+            "fn": float(row.get("fn", 0)),
+            "fp": float(row.get("fp", 0)),
+            "tn": float(row.get("tn", 0)),
+            "accuracy": float(row.get("accuracy", 0)),
+            "precision": float(row.get("precision", 0)),
+            "recall": float(row.get("recall", 0)),
+            "f1": float(row.get("f1", 0)),
+        }
+
+    rows: list[list] = []
+    qids = sorted(qid_df["QID"].unique())
+    for family in ["GPT-4o", "Llama3.1-70B", "Llama3.1-8B"]:
+        base_model = FAMILY_COMPARISONS.get(family, {}).get("base")
+        if not base_model:
+            continue
+        for comparison in comparisons:
+            target_model = _model_for_comparison(family, comparison)
+            if not target_model:
+                continue
+            comp_df = fisher_qid_df[
+                (fisher_qid_df["family"] == family)
+                & (fisher_qid_df["comparison"] == comparison)
+                & (fisher_qid_df["metric"].isin(["accuracy", "precision", "recall"]))
+            ].copy()
+            if comp_df.empty:
+                continue
+            comp_df["rank"] = comp_df.groupby("metric")["p_value"].rank(method="min")
+            comp_df["bh_sig"] = comp_df["adj_p"].apply(lambda v: "yes" if pd.notna(v) and float(v) < 0.05 else "no")
+            for qid in qids:
+                base = _metrics(qid, base_model)
+                target = _metrics(qid, target_model)
+                row_vals = [None] * len(header)
+                row_vals[0] = qid
+                row_vals[1] = round(float(pcnt_true.get(qid, float("nan"))), 4)
+                row_vals[2] = family
+                row_vals[3] = "Base"
+                row_vals[4:12] = [
+                    base["tp"],
+                    base["fn"],
+                    base["fp"],
+                    base["tn"],
+                    round(base["accuracy"], 4),
+                    round(base["precision"], 4),
+                    round(base["recall"], 4),
+                    round(base["f1"], 4),
+                ]
+                row_vals[13] = comparison
+                row_vals[14:22] = [
+                    target["tp"],
+                    target["fn"],
+                    target["fp"],
+                    target["tn"],
+                    round(target["accuracy"], 4),
+                    round(target["precision"], 4),
+                    round(target["recall"], 4),
+                    round(target["f1"], 4),
+                ]
+                for metric, offset in [("accuracy", 23), ("precision", 28), ("recall", 33)]:
+                    metric_row = comp_df[(comp_df["QID"] == qid) & (comp_df["metric"] == metric)]
+                    if metric_row.empty:
+                        continue
+                    metric_row = metric_row.iloc[0]
+                    row_vals[offset] = metric_row.get("p_value")
+                    row_vals[offset + 1] = metric_row.get("rank")
+                    row_vals[offset + 2] = metric_row.get("adj_p")
+                    row_vals[offset + 3] = metric_row.get("bh_sig")
+                rows.append(row_vals)
+            rows.append([None] * len(header))
+        rows.append([None] * len(header))
+
+    legend = {
+        0: "Base (base model)",
+        1: "FT (fine-tuned model)",
+        3: "P (p value)",
+        4: "BH sig (Benjamini Hochberg): Is adjusted p value <0.05?",
+        5: "Cyan: unadjusted p value <0.01; Light blue: unadjusted p value <0.05",
+        8: "TP (true positive)",
+        9: "TN (true negative)",
+        10: "FP (false positive)",
+        11: "FN (false negative)",
+    }
+    for idx, text in legend.items():
+        if idx < len(rows):
+            rows[idx][-1] = text
+    return pd.DataFrame(rows, columns=header)
+
+
+def _build_suppfile2_signedrank(qid_df: pd.DataFrame, paired_df: pd.DataFrame) -> pd.DataFrame:
+    if qid_df is None or qid_df.empty:
+        return pd.DataFrame()
+    comparisons = ["Baseline", "FT", "QSP", "FT+QSP"]
+    families = ["GPT-4o", "Llama3.1-70B", "Llama3.1-8B"]
+    metrics = [("accuracy", "Accuracy"), ("precision", "Precision"), ("recall", "Recall"), ("f1", "F1")]
+    block_starts = [1, 6, 11, 16]
+    rows: list[list] = []
+
+    def _row() -> list:
+        return [None] * 20
+
+    def _set_block(row, block_idx, label, values):
+        start = block_starts[block_idx]
+        row[start] = label
+        for i, val in enumerate(values):
+            row[start + 1 + i] = val
+
+    def _model_value(qid, model, metric):
+        row = qid_df[(qid_df["QID"] == qid) & (qid_df["model"] == model)]
+        if row.empty:
+            return float("nan")
+        return float(row.iloc[0].get(metric, float("nan")))
+
+    # Baseline header
+    header = _row()
+    header[0] = "Baseline"
+    for idx, (_, metric_title) in enumerate(metrics):
+        header[block_starts[idx]] = metric_title
+    rows.append(header)
+    header2 = _row()
+    for idx, _ in enumerate(metrics):
+        _set_block(header2, idx, "Question", families)
+    rows.append(header2)
+
+    qids = sorted(qid_df["QID"].unique())
+    for qid in qids:
+        row = _row()
+        for idx, (metric, _) in enumerate(metrics):
+            values = []
+            for family in families:
+                base_model = FAMILY_COMPARISONS.get(family, {}).get("base")
+                val = _model_value(qid, base_model, metric)
+                values.append(round(val, 4))
+            _set_block(row, idx, qid, values)
+        rows.append(row)
+    rows.extend([_row(), _row()])
+
+    for comparison in comparisons[1:]:
+        header = _row()
+        header[0] = comparison
+        rows.append(header)
+        header2 = _row()
+        for idx, _ in enumerate(metrics):
+            _set_block(header2, idx, "Question", families)
+        rows.append(header2)
+        for qid in qids:
+            row = _row()
+            for idx, (metric, _) in enumerate(metrics):
+                values = []
+                for family in families:
+                    model = _model_for_comparison(family, comparison)
+                    val = _model_value(qid, model, metric)
+                    values.append(round(val, 4))
+                _set_block(row, idx, qid, values)
+            rows.append(row)
+        for test_name, label in [("t-test", "P (T-Test)"), ("wilcoxon", "P (SignedRank)")]:
+            row = _row()
+            for idx, (metric, _) in enumerate(metrics):
+                values = []
+                for family in families:
+                    match = paired_df[
+                        (paired_df["family"] == family)
+                        & (paired_df["comparison"] == comparison)
+                        & (paired_df["metric"] == metric)
+                        & (paired_df["test"] == test_name)
+                    ]
+                    values.append(float(match.iloc[0]["p_value"]) if not match.empty else float("nan"))
+                _set_block(row, idx, label, values)
+            rows.append(row)
+        rows.extend([_row(), _row()])
+
+    return pd.DataFrame(rows)
+
+
+def _build_suppfile2_modelcomp_bh(paired_df: pd.DataFrame) -> pd.DataFrame:
+    columns = [
+        "Model 1",
+        "Model 2",
+        "Original Order",
+        "Statistical test",
+        "FDR rate",
+        "",
+        "Accuracy",
+        "Rank",
+        "adjust P",
+        "BH sig",
+        "",
+        "Precision",
+        "Rank",
+        "adjust P",
+        "BH sig",
+        "",
+        "Recall",
+        "Rank",
+        "adjust P",
+        "BH sig",
+        "",
+        "F1",
+        "Rank",
+        "adjust P",
+        "BH sig",
+    ]
+    if paired_df is None or paired_df.empty:
+        return pd.DataFrame([columns])
+
+    comparisons = ["FT", "QSP", "FT+QSP"]
+    metrics = ["accuracy", "precision", "recall", "f1"]
+    filtered = paired_df[paired_df["comparison"].isin(comparisons)].copy()
+    if filtered.empty:
+        return pd.DataFrame([columns])
+
+    rank_map: dict[tuple[str, str], pd.Series] = {}
+    for test in filtered["test"].unique():
+        for metric in metrics:
+            mask = (filtered["test"] == test) & (filtered["metric"] == metric)
+            ranked = filtered.loc[mask, "p_value"].rank(method="min")
+            rank_map[(test, metric)] = ranked
+
+    rows = [columns]
+    for test_name in ["t-test", "wilcoxon"]:
+        test_rows = []
+        for family in ["GPT-4o", "Llama3.1-70B", "Llama3.1-8B"]:
+            base_model = FAMILY_COMPARISONS.get(family, {}).get("base")
+            for comparison in comparisons:
+                target_model = _model_for_comparison(family, comparison)
+                if not base_model or not target_model:
+                    continue
+                row = [None] * len(columns)
+                row[0] = base_model
+                row[1] = target_model
+                row[3] = "T-test" if test_name == "t-test" else "Signed Rank"
+                row[4] = 0.05
+                for metric, start in zip(metrics, [6, 11, 16, 21]):
+                    metric_row = filtered[
+                        (filtered["family"] == family)
+                        & (filtered["comparison"] == comparison)
+                        & (filtered["metric"] == metric)
+                        & (filtered["test"] == test_name)
+                    ]
+                    if metric_row.empty:
+                        continue
+                    metric_row = metric_row.iloc[0]
+                    row[start] = metric_row.get("p_value")
+                    rank_series = rank_map.get((test_name, metric), pd.Series(dtype=float))
+                    row[start + 1] = rank_series.get(metric_row.name, float("nan"))
+                    adj_val = metric_row.get("adj_p")
+                    row[start + 2] = adj_val
+                    row[start + 3] = "yes" if pd.notna(adj_val) and float(adj_val) < 0.05 else "no"
+                test_rows.append(row)
+        # Order rows by accuracy p-value rank (Original Order) within test
+        def _rank_val(row):
+            vals = []
+            for idx in [6, 11, 16, 21]:
+                try:
+                    vals.append(float(row[idx]))
+                except Exception:
+                    continue
+            return min(vals) if vals else float("inf")
+        test_rows.sort(key=_rank_val)
+        for idx, row in enumerate(test_rows, start=1):
+            row[2] = idx
+        rows.extend(test_rows)
+        rows.append([None] * len(columns))
+
+    return pd.DataFrame(rows)
+
+
+def _highlight_individquest_pvalues(path: Path) -> None:
+    wb = load_workbook(path)
+    if "IndividQuest_FisherExact(Tab3)" not in wb.sheetnames:
+        return
+    ws = wb["IndividQuest_FisherExact(Tab3)"]
+    header = [cell.value for cell in ws[1]]
+    p_cols = [idx + 1 for idx, val in enumerate(header) if val in {"Accuracy P", "Precision P", "Recall P"}]
+    if not p_cols:
+        wb.save(path)
+        return
+    fill_005 = PatternFill(start_color="CFE8FF", end_color="CFE8FF", fill_type="solid")
+    fill_001 = PatternFill(start_color="7FC3FF", end_color="7FC3FF", fill_type="solid")
+    for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
+        for p_idx in p_cols:
+            rank_idx = p_idx + 1
+            adj_idx = p_idx + 2
+            sig_idx = p_idx + 3
+            adj_cell = row[adj_idx - 1]
+            try:
+                adj_val = float(adj_cell.value)
+            except (TypeError, ValueError):
+                adj_val = None
+            if adj_val is None:
+                continue
+            if adj_val < 0.01:
+                fill = fill_001
+            elif adj_val < 0.05:
+                fill = fill_005
+            else:
+                fill = None
+            if fill:
+                row[rank_idx - 1].fill = fill
+                adj_cell.fill = fill
+                row[sig_idx - 1].fill = fill
+    # Apply percent formatting for percent-based columns
+    percent_cols = [idx + 1 for idx, val in enumerate(header) if val in {"PcntTrue", "Accuracy", "Precision", "Recall", "F1"}]
+    for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
+        for col_idx in percent_cols:
+            cell = row[col_idx - 1]
+            if isinstance(cell.value, (int, float)):
+                cell.number_format = "0.00%"
+    if "ModelComp_SignedRankFig4" in wb.sheetnames:
+        ws2 = wb["ModelComp_SignedRankFig4"]
+        from openpyxl.styles import Font
+        metric_titles = ["Accuracy", "Precision", "Recall", "F1"]
+        title_row = 1
+        title_starts = [2, 7, 12, 17]
+        title_ends = [5, 10, 15, 20]
+        for title, start, end in zip(metric_titles, title_starts, title_ends):
+            ws2.merge_cells(start_row=title_row, start_column=start, end_row=title_row, end_column=end)
+            cell = ws2.cell(row=title_row, column=start)
+            cell.value = title
+            cell.font = Font(size=18, bold=True)
+        percent_cols_signed = [3, 4, 5, 8, 9, 10, 13, 14, 15, 18, 19, 20]
+        skip_labels = {"P (T-Test)", "P (SignedRank)"}
+        for row in ws2.iter_rows(min_row=1, max_row=ws2.max_row):
+            labels = {row[idx - 1].value for idx in [2, 7, 12, 17]}
+            if labels & skip_labels:
+                continue
+            for col_idx in percent_cols_signed:
+                cell = row[col_idx - 1]
+                if isinstance(cell.value, (int, float)):
+                    cell.number_format = "0.0%"
+    wb.save(path)
+
+
 def write_outputs(
     metrics: pd.DataFrame,
     details: List[dict],
@@ -576,6 +988,21 @@ def main() -> int:
             if table3_df is not None and not table3_df.empty:
                 table3_df.to_excel(writer, sheet_name="Table3", index=False)
         logging.info("Wrote combined statistical tests to %s", config.STAT_RESULTS)
+        if overall_qid_df is not None and not overall_qid_df.empty:
+            supp_path = config.OUTPUT_DIR / "SuppFile2_Stats_generated.xlsx"
+            individ_df = _build_suppfile2_individquest(
+                overall_qid_df,
+                fisher_qid_sheet,
+                comparisons=["FT", "QSP"],
+            )
+            signedrank_df = _build_suppfile2_signedrank(overall_qid_df, pair_df)
+            bh_df = _build_suppfile2_modelcomp_bh(pair_df)
+            with pd.ExcelWriter(supp_path, engine="openpyxl") as writer:
+                individ_df.to_excel(writer, sheet_name="IndividQuest_FisherExact(Tab3)", index=False)
+                signedrank_df.to_excel(writer, sheet_name="ModelComp_SignedRankFig4", index=False, header=False)
+                bh_df.to_excel(writer, sheet_name="ModelComp_BH_AdjustFig4", index=False, header=False)
+            _highlight_individquest_pvalues(supp_path)
+            logging.info("Wrote SuppFile2 stats to %s", supp_path)
     # Export aggregated Fisher results alongside metrics
     fisher_summary = _aggregate_fisher_summary(
         overall_qid_df if overall_qid_df is not None else pd.DataFrame(),

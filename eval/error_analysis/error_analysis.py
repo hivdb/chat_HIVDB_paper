@@ -205,7 +205,10 @@ def plot_rate_grid(
     title: str,
     output_name: str,
     as_percent: bool = False,
+    model_families: list[tuple[str, ...]] | None = None,
+    include_base: bool = True,
 ) -> None:
+    families = model_families or MODEL_FAMILIES
     labels = [f"Q{qid}\n{_topic_label(qid, question_map)}" for qid in qids]
     base_colors = [TYPE_COLORS.get(type_map.get(qid, ""), "#999999") for qid in qids]
     max_value = max(
@@ -214,16 +217,20 @@ def plot_rate_grid(
     )
     scale = 100 if as_percent else 1
     y_limit = min(1.0, max_value * 1.15 if max_value else 0.1) * scale
-    bar_width = 3.0
+    bar_width = 6.0
     bar_spacing = bar_width * 1.05
     cluster_gap = 3.0
-    step = (len(MODEL_FAMILIES[0]) - 1) * bar_spacing + cluster_gap
+    step = (len(families[0]) - 1) * bar_spacing + cluster_gap
     x_positions = np.arange(len(qids)) * step
 
-    fig, axes = plt.subplots(len(MODEL_FAMILIES), 1, figsize=(18, 12), sharex=True)
-    for idx, family_info in enumerate(MODEL_FAMILIES):
+    fig, axes = plt.subplots(len(families), 1, figsize=(18, 12), sharex=True)
+    if len(families) == 1:
+        axes = [axes]
+    for idx, family_info in enumerate(families):
         family = family_info[0]
         models = list(family_info[1:])
+        if not include_base:
+            models = [model for model in models if "base" not in model]
         ax = axes[idx]
         num_models = len(models)
         offsets = (np.arange(num_models) - (num_models - 1) / 2) * bar_spacing
@@ -258,12 +265,14 @@ def plot_rate_grid(
         ax.set_ylabel(f"{family} (%)")
         ax.set_ylim(0, y_limit)
         ax.grid(axis="y", linestyle="--", alpha=0.3)
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
         if idx == len(MODEL_FAMILIES) - 1:
             ax.set_xticks(x_positions)
             ax.set_xticklabels(labels, rotation=25, ha="right")
         else:
             ax.set_xticks(x_positions)
-            ax.set_xticklabels([])
+            ax.set_xticklabels(labels, rotation=25, ha="right")
 
     type_handles = [Patch(facecolor=TYPE_COLORS[label], label=label.title()) for label in TYPE_COLORS]
     style_handles = [
@@ -279,7 +288,11 @@ def plot_rate_grid(
         title="Question Type",
     )
     axes[0].add_artist(legend1)
-    axes[0].legend(handles=style_handles, loc="upper right", bbox_to_anchor=(1, 1.25), ncol=3, title="Model")
+    if include_base:
+        model_handles = style_handles
+    else:
+        model_handles = [h for h in style_handles if h.get_label() != "Base"]
+    axes[0].legend(handles=model_handles, loc="upper right", bbox_to_anchor=(1, 1.25), ncol=len(model_handles), title="Model")
 
     fig.suptitle(title, fontsize=16, y=0.9)
     fig.tight_layout(rect=[0, 0, 0.98, 0.94])
@@ -421,14 +434,24 @@ def run_failure_prev(data_path: Path | None) -> int:
     question_map = df.groupby("QID")["Question"].first().to_dict()
     qids = sorted(type_map.index.tolist())
     metric_specs = [
-        ("precision", "Precision = TP / (TP + FP)", "precision.png"),
-        ("recall", "Recall = TP / (TP + FN)", "recall.png"),
-        ("accuracy", "Accuracy = (TP + TN) / (TP + TN + FP + FN)", "accuracy.png"),
-        ("f1", "F1 = 2 * Precision * Recall / (Precision + Recall)", "f1.png"),
+        ("precision", "Precision = TP / (TP + FP)", "precision.png", None, True, False),
+        ("recall", "Recall = TP / (TP + FN)", "recall.png", None, True, False),
+        ("accuracy", "Accuracy = (TP + TN) / (TP + TN + FP + FN)", "accuracy.png", None, True, False),
+        ("f1", "F1 = 2 * Precision * Recall / (Precision + Recall)", "f1.png", MODEL_FAMILIES[:2], False, True),
     ]
-    for metric, title, filename in metric_specs:
+    for metric, title, filename, families, include_base, as_percent in metric_specs:
         rates = build_rates(df, metric)
-        plot_rate_grid(qids, type_map, question_map, rates, title, filename)
+        plot_rate_grid(
+            qids,
+            type_map,
+            question_map,
+            rates,
+            title,
+            filename,
+            model_families=families,
+            include_base=include_base,
+            as_percent=as_percent,
+        )
 
     share_specs = [
         ("fn", "Proportion of False Negatives per QID = FNq / Σq(FN)", "fn_by_qid.png", "fn_by_qid.csv"),
