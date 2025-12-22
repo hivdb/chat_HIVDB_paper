@@ -518,23 +518,11 @@ def main() -> int:
 
     qid_df = pd.DataFrame(qid_rows)
     if not qid_df.empty:
-        family_models = {
-            "GPT-4o": ["GPT-4o base", "GPT-4o FT", "GPT-4o QSP"],
-            "Llama3.1-70B": ["Llama3.1-70B base", "Llama3.1-70B FT", "Llama3.1-70B QSP"],
-            "Llama3.1-8B": ["Llama3.1-8B base", "Llama3.1-8B FT", "Llama3.1-8B QSP"],
-        }
-        plot_metric_by_qid(
-            qid_df,
-            metric="precision",
-            output_path=config.OUTPUT_TABLE_DIR / "precision_by_qid.png",
-            family_models=family_models,
-        )
-        plot_metric_by_qid(
-            qid_df,
-            metric="recall",
-            output_path=config.OUTPUT_TABLE_DIR / "recall_by_qid.png",
-            family_models=family_models,
-        )
+        # Persist the exact per-QID precision/recall data used for plotting
+        precision_recall_csv = config.OUTPUT_DIR / f"precision_recall_by_qid{suffix}.csv"
+        qid_df.to_csv(precision_recall_csv, index=False, encoding="utf-8-sig")
+        # Re-read from disk so plots are guaranteed to use the saved artifact
+        qid_df = pd.read_csv(precision_recall_csv)
 
     overall_stats = {}
     fisher_df = pd.DataFrame()

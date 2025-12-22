@@ -217,19 +217,20 @@ def _annotate_significance(
     comparisons: dict | None = None,
     offset_shift: float = 0.0,
     metric_values: dict[str, float] | None = None,
+    y_max_override: float | None = None,
 ) -> None:
     if not significance:
         return
     metric_map = significance.get(metric)
     if not metric_map:
         return
-    y_max = ax.get_ylim()[1]
+    y_max = y_max_override if y_max_override is not None else ax.get_ylim()[1]
     # Use fixed spacing constants for consistent, non-overlapping annotations
-    base_margin = 35.0
+    base_margin = 18.0
     bracket_height = 5.0
     text_padding = 3.0
-    base_offset_step = 35.0  # Increased spacing between stacked annotations
-    lift = 15.0
+    base_offset_step = 18.0  # Tighter stacking between multiple p-value brackets
+    lift = 0.0
     max_offset = max(0.0, y_max - bracket_height - text_padding - 0.5)
     family_offsets: dict[str, float] = {}
     comparison_map = comparisons or FAMILY_COMPARISONS
@@ -241,8 +242,8 @@ def _annotate_significance(
         if base_x is None:
             continue
         # Keep brackets well above value labels on bars.
-        value_label_padding = max(10.0, y_max * 0.1)
-        margin_up = max(10.0, y_max * 0.12)
+        value_label_padding = max(6.0, y_max * 0.06)
+        margin_up = max(8.0, y_max * 0.10)
         family_max_height = 0.0
         highest_label_y = None
         if metric_values is not None:
@@ -310,6 +311,7 @@ def _annotate_significance(
                 [offset, offset + bracket_height, offset + bracket_height, offset],
                 color="black",
                 linewidth=1,
+                clip_on=False,
             )
             text_y = offset + bracket_height + text_padding
             ax.text(
@@ -319,6 +321,7 @@ def _annotate_significance(
                 ha="center",
                 va="bottom",
                 fontsize=ANNOTATION_FONT_SIZE,
+                clip_on=False,
             )
             offset = min(offset + step, max_offset)
         family_offsets[family] = offset
@@ -412,7 +415,7 @@ def plot_metric_panels(
             1,
             figsize=(width, height),
             sharex=True,
-            gridspec_kw={"hspace": 0.4},
+            gridspec_kw={"hspace": 0.6},
         )
         for ax in axes:
             ax.tick_params(axis="x", pad=12)
@@ -435,7 +438,7 @@ def plot_metric_panels(
             else:
                 bar_colors = colors
             bars = ax.bar(positions, values, color=bar_colors, width=bar_width)
-            ax.set_ylim(0, y_limit_for_metric)
+            ax.set_ylim(0, y_limit)
             ax.set_ylabel(f"{label} (%)", fontsize=AXIS_LABEL_SIZE)
             ax.tick_params(axis="both", labelsize=AXIS_TICK_SIZE)
             ax.grid(axis="y", linestyle="--", alpha=0.3)
@@ -452,7 +455,16 @@ def plot_metric_panels(
                     fontsize=BAR_LABEL_SIZE,
                 )
             value_map = dict(zip(models, values))
-            _annotate_significance(ax, models, pos_lookup, significance, metric, comparisons, metric_values=value_map)
+            _annotate_significance(
+                ax,
+                models,
+                pos_lookup,
+                significance,
+                metric,
+                comparisons,
+                metric_values=value_map,
+                y_max_override=y_limit_for_metric,
+            )
         axes[-1].set_xticks(positions)
         axes[-1].set_xticklabels(variant_labels, rotation=25, ha="right", fontsize=AXIS_TICK_SIZE)
     _annotate_families(axes[-1], family_bounds)
