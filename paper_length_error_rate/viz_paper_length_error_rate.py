@@ -12,6 +12,9 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
     if not correct_cols:
         raise ValueError("No columns containing 'Correct' found.")
 
+    title_fontsize = 16
+    axis_label_fontsize = 14
+
     df["content_length"] = pd.to_numeric(df["content_length"], errors="coerce")
 
     rng = np.random.default_rng(0)
@@ -22,7 +25,7 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
         return label
 
     def set_plot_title(ax: plt.Axes, title: str) -> None:
-        ax.set_title(title, y=0.92, fontweight="bold")
+        ax.set_title(title, y=0.92, fontweight="bold", fontsize=title_fontsize)
 
     for idx, col in enumerate(correct_cols, start=1):
         if "FT+QSP" in col or col == "All Correct":
@@ -38,8 +41,8 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
         low_mask = y <= (10 / 16) if col != "All Correct" else y <= 10
         colors = np.where(low_mask, "#d62728", "#1f77b4")
         set_plot_title(ax, trim_correct_label(col))
-        ax.set_xlabel("# Characters", fontweight="bold")
-        ax.set_ylabel("Accuracy", fontweight="bold")
+        ax.set_xlabel("# Characters", fontweight="bold", fontsize=axis_label_fontsize)
+        ax.set_ylabel("Accuracy", fontweight="bold", fontsize=axis_label_fontsize)
 
         valid_mask = x.notna() & y.notna()
         if valid_mask.sum() >= 2:
@@ -92,7 +95,7 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
                 alpha=0.35,
                 linewidth=0.6,
             )
-        fig.tight_layout(rect=(0, 0.08, 1, 1))
+        fig.tight_layout(rect=(0, 0, 1, 1))
 
         safe_name = f"{idx:02d}_{col}".replace(os.sep, "_")
         filename = os.path.join(output_dir, f"{safe_name}.png")
@@ -118,7 +121,7 @@ def save_montage(grid_dir: str, output_path: str, nrows: int = 3, ncols: int = 3
             img = mpimg.imread(image_paths[idx])
             ax.imshow(img)
         ax.axis("off")
-    fig.tight_layout(pad=0.2)
+    fig.tight_layout(pad=0)
     plt.savefig(output_path, dpi=300)
     plt.close()
     print(f"Wrote {output_path}")
