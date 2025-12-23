@@ -4,7 +4,7 @@ Usage:
     python summarize_human_answers.py [input.xlsx] [output.xlsx]
 
 Defaults:
-    input.xlsx  -> Ground-Truth-150 Dec 4.xlsx
+    input.xlsx  -> Ground-Truth-150 Dec 18.xlsx
     output.xlsx -> <input-stem>_summary.xlsx
 """
 
@@ -101,7 +101,7 @@ def summarize(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main() -> None:
-    input_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("Ground-Truth-150 Dec 5.xlsx")
+    input_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("Ground-Truth-150 Dec 18.xlsx")
     output_path = Path(sys.argv[2]) if len(sys.argv) > 2 else input_path.with_name(f"{input_path.stem}_summary.xlsx")
 
     df = pd.read_excel(input_path, dtype=str, keep_default_na=False)
