@@ -288,7 +288,7 @@ def plot_figure(
     top_ax.set_xticks(x_ticks)
     top_ax.set_xticklabels(x_tick_labels)
     top_ax.tick_params(axis="x", pad=2)
-    ax.set_xlabel("Model")
+    ax.set_xlabel("")
     ax.set_ylabel("Percentage")
 
     for bar, model, heights in bar_entries:
