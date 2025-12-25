@@ -33,6 +33,8 @@ httplib2==0.22.0
 httpx==0.27.0
 idna==3.7
 joblib==1.4.2
+langchain==0.2.5
+langchain-community==0.2.5
 llama-index==0.10.39
 llama-index-agent-openai==0.2.5
 llama-index-cli==0.1.12
@@ -73,12 +75,14 @@ python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 pytz==2024.1
 PyYAML==6.0.1
+rank-bm25==0.2.2
 regex==2024.5.15
 requests==2.32.2
 rsa==4.9
 six==1.16.0
 sniffio==1.3.1
 soupsieve==2.5
+scikit-learn==1.5.1
 SQLAlchemy==2.0.30
 striprtf==0.0.26
 tenacity==8.3.0
