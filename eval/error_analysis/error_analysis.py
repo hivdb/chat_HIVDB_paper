@@ -208,6 +208,11 @@ def plot_rate_grid(
     model_families: list[tuple[str, ...]] | None = None,
     include_base: bool = True,
 ) -> None:
+    is_f1 = output_name == "f1.png"
+    f1_label_map = {
+        "GPT-4o": "GPT-4o F1-score",
+        "Llama3.1-70B": "Llama-3.1-70B F1-score",
+    }
     families = model_families or MODEL_FAMILIES
     labels = [f"Q{qid}\n{_topic_label(qid, question_map)}" for qid in qids]
     base_colors = [TYPE_COLORS.get(type_map.get(qid, ""), "#999999") for qid in qids]
@@ -262,7 +267,20 @@ def plot_rate_grid(
                     va="bottom",
                     fontsize=8,
                 )
-        ax.set_ylabel(f"{family} (%)")
+        if is_f1:
+            ax.set_ylabel("")
+            ax.text(
+                0.0,
+                1.02,
+                f1_label_map.get(family, f"{family} F1-score"),
+                transform=ax.transAxes,
+                ha="left",
+                va="bottom",
+                fontsize=11,
+                fontweight="bold",
+            )
+        else:
+            ax.set_ylabel(f"{family} (%)")
         ax.set_ylim(0, y_limit)
         ax.grid(axis="y", linestyle="--", alpha=0.3)
         ax.spines["top"].set_visible(False)
@@ -274,30 +292,32 @@ def plot_rate_grid(
             ax.set_xticks(x_positions)
             ax.set_xticklabels(labels, rotation=25, ha="right")
 
-    type_handles = [Patch(facecolor=TYPE_COLORS[label], label=label.title()) for label in TYPE_COLORS]
-    style_handles = [
-        Patch(facecolor=mcolors.to_rgba("#4C4C4C", alpha=0.35), edgecolor="black", label="Base"),
-        Patch(facecolor=mcolors.to_rgba("#4C4C4C", alpha=0.6), edgecolor="black", label="FT"),
-        Patch(facecolor=mcolors.to_rgba("#4C4C4C", alpha=0.85), edgecolor="black", label="QSP"),
-    ]
-    legend1 = axes[0].legend(
-        handles=type_handles,
-        loc="upper left",
-        bbox_to_anchor=(0, 1.25),
-        ncol=len(TYPE_COLORS),
-        title="Question Type",
-    )
-    axes[0].add_artist(legend1)
-    if include_base:
-        model_handles = style_handles
+    if not is_f1:
+        type_handles = [Patch(facecolor=TYPE_COLORS[label], label=label.title()) for label in TYPE_COLORS]
+        style_handles = [
+            Patch(facecolor=mcolors.to_rgba("#4C4C4C", alpha=0.35), edgecolor="black", label="Base"),
+            Patch(facecolor=mcolors.to_rgba("#4C4C4C", alpha=0.6), edgecolor="black", label="FT"),
+            Patch(facecolor=mcolors.to_rgba("#4C4C4C", alpha=0.85), edgecolor="black", label="QSP"),
+        ]
+        legend1 = axes[0].legend(
+            handles=type_handles,
+            loc="upper left",
+            bbox_to_anchor=(0, 1.25),
+            ncol=len(TYPE_COLORS),
+            title="Question Type",
+        )
+        axes[0].add_artist(legend1)
+        if include_base:
+            model_handles = style_handles
+        else:
+            model_handles = [h for h in style_handles if h.get_label() != "Base"]
+        axes[0].legend(handles=model_handles, loc="upper right", bbox_to_anchor=(1, 1.25), ncol=len(model_handles), title="Model")
+        fig.suptitle(title, fontsize=16, y=0.9)
+        fig.tight_layout(rect=[0, 0, 0.98, 0.94])
     else:
-        model_handles = [h for h in style_handles if h.get_label() != "Base"]
-    axes[0].legend(handles=model_handles, loc="upper right", bbox_to_anchor=(1, 1.25), ncol=len(model_handles), title="Model")
-
-    fig.suptitle(title, fontsize=16, y=0.9)
-    fig.tight_layout(rect=[0, 0, 0.98, 0.94])
+        fig.tight_layout(pad=0.4)
     output_path = OUTPUT_DIR / output_name
-    fig.savefig(output_path, dpi=300, bbox_inches="tight", pad_inches=0.15)
+    fig.savefig(output_path, dpi=300, bbox_inches="tight", pad_inches=0.1 if is_f1 else 0.15)
     plt.close(fig)
 
 
