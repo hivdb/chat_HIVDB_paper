@@ -12,6 +12,7 @@ import pandas as pd
 def collect_lengths(root: Path) -> List[Dict[str, Any]]:
     records: List[Dict[str, Any]] = []
     for file_path in root.rglob("*checked.md"):
+        print(file_path)
         if not file_path.is_file():
             continue
         try:
