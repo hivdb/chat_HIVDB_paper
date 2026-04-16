@@ -15,10 +15,14 @@ from typing import List, Set
 import pandas as pd
 
 
+def load_csv_strings(path: pathlib.Path) -> pd.DataFrame:
+    return pd.read_csv(path, dtype=str, keep_default_na=False)
+
+
 def append_pair(base_path: pathlib.Path, new30_path: pathlib.Path) -> None:
     print(base_path, new30_path)
-    base_df = pd.read_csv(base_path, dtype=str)
-    new_df = pd.read_csv(new30_path, dtype=str)
+    base_df = load_csv_strings(base_path)
+    new_df = load_csv_strings(new30_path)
 
     # Remove any rows in the base file that share a (PMID, QID) with the new rows
     # so that new_df values replace existing ones for those keys.

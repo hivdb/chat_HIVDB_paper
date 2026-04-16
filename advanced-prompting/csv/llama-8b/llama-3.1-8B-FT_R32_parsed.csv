@@ -1919,3 +1919,678 @@ PMID,QID,Question,Answer
 38072961,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No
 38072961,15,Which drug classes were received by individuals in the study before sample sequencing?,Not reported
 38072961,16,Which drugs were received by individuals in the study before sample sequencing?,Not reported
+40391923,1,Does the paper report HIV sequences from patient samples?,Yes
+40391923,2,Does the paper report in vitro drug susceptibility data?,No
+40391923,3,Were sequences from the paper made publicly available?,Yes
+40391923,4,What were the GenBank accession numbers for sequenced HIV isolates?,"PV008448-PV008641, PV407014-PV407203, PV419497-PV419583"
+40391923,5,How many individuals had samples obtained for HIV sequencing?,227
+40391923,6,From which countries were the sequenced samples obtained?,
+40391923,7,From what years were the sequenced samples obtained?,
+40391923,8,Were samples cloned prior to sequencing?,
+40391923,9,Which HIV genes were reported to have been sequenced?,
+40391923,10,What method was used for sequencing?,
+40391923,11,What type of samples were sequenced?,
+40391923,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
+40391923,13,Were the patients in the study in a clinical trial?,
+40391923,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
+40391923,15,Which drug classes were received by individuals in the study before sample sequencing?,
+40391923,16,Which drugs were received by individuals in the study before sample sequencing?,
+40400229,1,Does the paper report HIV sequences from patient samples?,"Yes
+
+```
+
+```"
+40400229,2,Does the paper report in vitro drug susceptibility data?,"No
+
+```
+
+```"
+40400229,3,Were sequences from the paper made publicly available?,"Yes
+
+```
+
+```"
+40400229,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+40400229,5,How many individuals had samples obtained for HIV sequencing?,
+40400229,6,From which countries were the sequenced samples obtained?,"Not reported
+
+```
+
+```"
+40400229,7,From what years were the sequenced samples obtained?,"Not reported
+
+```
+
+```"
+40400229,8,Were samples cloned prior to sequencing?,"Not reported
+
+```
+
+```"
+40400229,9,Which HIV genes were reported to have been sequenced?,"Not reported
+
+```
+
+```"
+40400229,10,What method was used for sequencing?,"Not reported
+
+```
+
+```"
+40400229,11,What type of samples were sequenced?,"Plasma, serum, PBMCs, proviral DNA, dried blood spots
+
+```
+
+```"
+40400229,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,"No
+
+```
+
+```"
+40400229,13,Were the patients in the study in a clinical trial?,"Yes
+
+```
+
+```"
+40400229,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,"Yes
+
+```
+
+```"
+40400229,15,Which drug classes were received by individuals in the study before sample sequencing?,"Not reported
+
+```
+
+```"
+40400229,16,Which drugs were received by individuals in the study before sample sequencing?,"Not reported
+
+```
+
+```"
+40431710,1,Does the paper report HIV sequences from patient samples?,Yes
+40431710,2,Does the paper report in vitro drug susceptibility data?,No
+40431710,3,Were sequences from the paper made publicly available?,
+40431710,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+40431710,5,How many individuals had samples obtained for HIV sequencing?,
+40431710,6,From which countries were the sequenced samples obtained?,
+40431710,7,From what years were the sequenced samples obtained?,
+40431710,8,Were samples cloned prior to sequencing?,
+40431710,9,Which HIV genes were reported to have been sequenced?,
+40431710,10,What method was used for sequencing?,
+40431710,11,What type of samples were sequenced?,
+40431710,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
+40431710,13,Were the patients in the study in a clinical trial?,
+40431710,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
+40431710,15,Which drug classes were received by individuals in the study before sample sequencing?,
+40431710,16,Which drugs were received by individuals in the study before sample sequencing?,
+40431742,1,Does the paper report HIV sequences from patient samples?,Yes
+40431742,2,Does the paper report in vitro drug susceptibility data?,No
+40431742,3,Were sequences from the paper made publicly available?,No
+40431742,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+40431742,5,How many individuals had samples obtained for HIV sequencing?,1667
+40431742,6,From which countries were the sequenced samples obtained?,Argentina
+40431742,7,From what years were the sequenced samples obtained?,2017-2021
+40431742,8,Were samples cloned prior to sequencing?,No
+40431742,9,Which HIV genes were reported to have been sequenced?,Pol
+40431742,10,What method was used for sequencing?,Not reported
+40431742,11,What type of samples were sequenced?,Plasma
+40431742,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No
+40431742,13,Were the patients in the study in a clinical trial?,No
+40431742,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No
+40431742,15,Which drug classes were received by individuals in the study before sample sequencing?,None
+40431742,16,Which drugs were received by individuals in the study before sample sequencing?,"None
+```"
+40490983,1,Does the paper report HIV sequences from patient samples?,Yes
+40490983,2,Does the paper report in vitro drug susceptibility data?,No
+40490983,3,Were sequences from the paper made publicly available?,No
+40490983,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+40490983,5,How many individuals had samples obtained for HIV sequencing?,187
+40490983,6,From which countries were the sequenced samples obtained?,Kenya
+40490983,7,From what years were the sequenced samples obtained?,2011-2021
+40490983,8,Were samples cloned prior to sequencing?,No
+40490983,9,Which HIV genes were reported to have been sequenced?,"PR, RT"
+40490983,10,What method was used for sequencing?,Not reported
+40490983,11,What type of samples were sequenced?,Plasma
+40490983,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+40490983,13,Were the patients in the study in a clinical trial?,No
+40490983,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+40490983,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI"
+40490983,16,Which drugs were received by individuals in the study before sample sequencing?,"Atazanavir/ritonavir, Lopinavir/ritonavir, Efavirenz, Nevirapine, Abacavir, Lamivudine, Tenofovir disoproxil fumarate, Zidovudine, Emtricitabine, Raltegravir, Dolutegravir, Darunavir/ritonavir, Etravirine, Rilpivirine
+```"
+40573423,1,Does the paper report HIV sequences from patient samples?,Yes
+40573423,2,Does the paper report in vitro drug susceptibility data?,Yes
+40573423,3,Were sequences from the paper made publicly available?,No
+40573423,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+40573423,5,How many individuals had samples obtained for HIV sequencing?,487
+40573423,6,From which countries were the sequenced samples obtained?,"South Korea, Asia, Americas"
+40573423,7,From what years were the sequenced samples obtained?,2021-2024
+40573423,8,Were samples cloned prior to sequencing?,No
+40573423,9,Which HIV genes were reported to have been sequenced?,"PR, RT, IN, Pol, Env"
+40573423,10,What method was used for sequencing?,Sanger sequencing
+40573423,11,What type of samples were sequenced?,"Plasma, Serum"
+40573423,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No
+40573423,13,Were the patients in the study in a clinical trial?,No
+40573423,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+40573423,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI, INSTI"
+40573423,16,Which drugs were received by individuals in the study before sample sequencing?,"Not reported
+
+```"
+40596906,1,Does the paper report HIV sequences from patient samples?,
+40596906,2,Does the paper report in vitro drug susceptibility data?,
+40596906,3,Were sequences from the paper made publicly available?,
+40596906,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+40596906,5,How many individuals had samples obtained for HIV sequencing?,
+40596906,6,From which countries were the sequenced samples obtained?,
+40596906,7,From what years were the sequenced samples obtained?,
+40596906,8,Were samples cloned prior to sequencing?,
+40596906,9,Which HIV genes were reported to have been sequenced?,
+40596906,10,What method was used for sequencing?,
+40596906,11,What type of samples were sequenced?,
+40596906,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
+40596906,13,Were the patients in the study in a clinical trial?,
+40596906,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
+40596906,15,Which drug classes were received by individuals in the study before sample sequencing?,
+40596906,16,Which drugs were received by individuals in the study before sample sequencing?,
+40713598,1,Does the paper report HIV sequences from patient samples?,Yes
+40713598,2,Does the paper report in vitro drug susceptibility data?,No
+40713598,3,Were sequences from the paper made publicly available?,Yes
+40713598,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+40713598,5,How many individuals had samples obtained for HIV sequencing?,20
+40713598,6,From which countries were the sequenced samples obtained?,Not reported
+40713598,7,From what years were the sequenced samples obtained?,Not reported
+40713598,8,Were samples cloned prior to sequencing?,Not reported
+40713598,9,Which HIV genes were reported to have been sequenced?,"PR, RT"
+40713598,10,What method was used for sequencing?,NGS
+40713598,11,What type of samples were sequenced?,Plasma
+40713598,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+40713598,13,Were the patients in the study in a clinical trial?,
+40713598,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+40713598,15,Which drug classes were received by individuals in the study before sample sequencing?,NNRTIs
+40713598,16,Which drugs were received by individuals in the study before sample sequencing?,Not reported
+40763144,1,Does the paper report HIV sequences from patient samples?,Yes
+40763144,2,Does the paper report in vitro drug susceptibility data?,No
+40763144,3,Were sequences from the paper made publicly available?,No
+40763144,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+40763144,5,How many individuals had samples obtained for HIV sequencing?,295
+40763144,6,From which countries were the sequenced samples obtained?,Uganda
+40763144,7,From what years were the sequenced samples obtained?,2021-2023
+40763144,8,Were samples cloned prior to sequencing?,No
+40763144,9,Which HIV genes were reported to have been sequenced?,Not reported
+40763144,10,What method was used for sequencing?,Not reported
+40763144,11,What type of samples were sequenced?,Not reported
+40763144,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+40763144,13,Were the patients in the study in a clinical trial?,No
+40763144,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+40763144,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI, INSTI"
+40763144,16,Which drugs were received by individuals in the study before sample sequencing?,"TDF, 3TC, ABC, AZT, DTG, ATVr, LPVr, EFV, NVP, RAL, EVG, BIC, CAB, MVC, LEN, FTV, DOR, RPV, ETR, NFV, IDV, SQV, TPV, FPV"
+40779404,1,Does the paper report HIV sequences from patient samples?,Yes
+40779404,2,Does the paper report in vitro drug susceptibility data?,Yes
+40779404,3,Were sequences from the paper made publicly available?,No
+40779404,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+40779404,5,How many individuals had samples obtained for HIV sequencing?,20
+40779404,6,From which countries were the sequenced samples obtained?,Not reported
+40779404,7,From what years were the sequenced samples obtained?,Not reported
+40779404,8,Were samples cloned prior to sequencing?,Yes
+40779404,9,Which HIV genes were reported to have been sequenced?,"PR, RT, IN"
+40779404,10,What method was used for sequencing?,NGS
+40779404,11,What type of samples were sequenced?,Whole blood
+40779404,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No
+40779404,13,Were the patients in the study in a clinical trial?,Yes
+40779404,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+40779404,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, INSTI"
+40779404,16,Which drugs were received by individuals in the study before sample sequencing?,"Bictegravir, Emtricitabine, Tenofovir alafenamide
+```"
+40839365,1,Does the paper report HIV sequences from patient samples?,Yes
+40839365,2,Does the paper report in vitro drug susceptibility data?,No
+40839365,3,Were sequences from the paper made publicly available?,No
+40839365,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+40839365,5,How many individuals had samples obtained for HIV sequencing?,213
+40839365,6,From which countries were the sequenced samples obtained?,Malawi
+40839365,7,From what years were the sequenced samples obtained?,Not reported
+40839365,8,Were samples cloned prior to sequencing?,No
+40839365,9,Which HIV genes were reported to have been sequenced?,"PR, RT, IN"
+40839365,10,What method was used for sequencing?,Sanger sequencing
+40839365,11,What type of samples were sequenced?,Plasma
+40839365,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+40839365,13,Were the patients in the study in a clinical trial?,No
+40839365,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+40839365,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, INSTI"
+40839365,16,Which drugs were received by individuals in the study before sample sequencing?,"DTG, 3TC, FTC, TDF, ABC, D4T, DDI, EFV, NVP, RAL, EVG, BIC, CAB, ATV, LPV/r, SQV, IDV, NFV, TPV, FPV"
+40857111,1,Does the paper report HIV sequences from patient samples?,Yes
+40857111,2,Does the paper report in vitro drug susceptibility data?,Yes
+40857111,3,Were sequences from the paper made publicly available?,Yes
+40857111,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+40857111,5,How many individuals had samples obtained for HIV sequencing?,208
+40857111,6,From which countries were the sequenced samples obtained?,Not reported
+40857111,7,From what years were the sequenced samples obtained?,Not reported
+40857111,8,Were samples cloned prior to sequencing?,Not reported
+40857111,9,Which HIV genes were reported to have been sequenced?,Not reported
+40857111,10,What method was used for sequencing?,Not reported
+40857111,11,What type of samples were sequenced?,Not reported
+40857111,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Not reported
+40857111,13,Were the patients in the study in a clinical trial?,Not reported
+40857111,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Not reported
+40857111,15,Which drug classes were received by individuals in the study before sample sequencing?,Not reported
+40857111,16,Which drugs were received by individuals in the study before sample sequencing?,Not reported
+40872801,1,Does the paper report HIV sequences from patient samples?,Yes
+40872801,2,Does the paper report in vitro drug susceptibility data?,Yes
+40872801,3,Were sequences from the paper made publicly available?,Yes
+40872801,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+40872801,5,How many individuals had samples obtained for HIV sequencing?,9685
+40872801,6,From which countries were the sequenced samples obtained?,Tanzania
+40872801,7,From what years were the sequenced samples obtained?,2004-2024
+40872801,8,Were samples cloned prior to sequencing?,No
+40872801,9,Which HIV genes were reported to have been sequenced?,"PR, RT, IN, CA, Env"
+40872801,10,What method was used for sequencing?,"Sanger sequencing, NGS"
+40872801,11,What type of samples were sequenced?,"Plasma, PBMC, Whole blood, DBS"
+40872801,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+40872801,13,Were the patients in the study in a clinical trial?,Yes
+40872801,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+40872801,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs, PIs, INSTIs"
+40872801,16,Which drugs were received by individuals in the study before sample sequencing?,"AZT, 3TC, FTC, TDF, EFV, NVP, LPV/r, ATV, DRV, RAL, EVG, DTG, BIC, CAB, LEN, MVC, FTV, GS-6207, GS-CA1, GS-CA1r, GS-CA1s, GS-CA1t, GS-CA1v, GS-CA1w, GS-CA1x, GS-CA1y, GS-CA1z, GS-CA2, GS-CA2r, GS-CA2s, GS-CA2t, GS-CA2v, GS-CA2w, GS-CA2x, GS-CA2y, GS-CA2z, GS-CA3, GS-CA3r, GS-CA3s, GS-CA3t, GS-CA3v, GS-CA3w, GS-CA3x, GS-CA3y, GS-CA3z, GS-CA4, GS-CA4r, GS-CA4s, GS-CA4t, GS-CA4v, GS-CA4w, GS-CA4x, GS-CA4y, GS-CA4z, GS-CA5, GS-CA5r, GS-CA5s, GS-CA5t, GS-CA5v, GS-CA5w, GS-CA5x, GS-CA5y, GS-CA5z, GS-CA6, GS-CA6r, GS-CA6s, GS-CA6t, GS-CA6v, GS-CA6w, GS-CA6x, GS-CA6y, GS-CA6z, GS-CA7, GS-CA7r, GS-CA7s, GS-CA7t, GS-CA7v, GS-CA7w, GS-CA7x, GS-CA7y, GS-CA7z, GS-CA8, GS-CA8r, GS-CA8s, GS-CA8t, GS-CA8v, GS-CA8w, GS-CA8x, GS-CA8y, GS-CA8z, GS-CA9, GS-CA9r, GS-CA9s, GS-CA9t, GS-CA9v, GS-CA9w, GS-CA9x, GS-CA9y, GS-CA9z, GS-CA10, GS-CA10r, GS-CA10s, GS-CA10t, GS-CA10v, GS-CA10w, GS-CA10x, GS-CA10y, GS-CA10z, GS-CA11, GS-CA11r, GS-CA11s, GS-CA11t, GS-CA11v, GS-CA11w, GS-CA11x, GS-CA11y, GS-CA11z, GS-CA12, GS-CA12r, GS-CA12s, GS-CA12t, GS-CA12v, GS-CA12w, GS-CA12x, GS-CA12y, GS-CA12z, GS-CA13, GS-CA13r, GS-CA13s, GS-CA13t, GS-CA13v, GS-CA13w, GS-CA13x, GS-CA13y, GS-CA13z, GS-CA14, GS-CA14r, GS-CA14s, GS-CA14t, GS-CA14v, GS-CA14w, GS-CA14x, GS-CA14y, GS-CA14z, GS-CA15, GS-CA15r, GS-CA15s, GS-CA15t, GS-CA15v, GS-CA15w, GS-CA15x, GS-CA15y, GS-CA15z, GS-CA16, GS-CA16r, GS-CA16s, GS-CA16t, GS-CA16v, GS-CA16w, GS-CA16x, GS-CA16y, GS-CA16z, GS-CA17, GS-CA17r, GS-CA17s, GS-CA17t, GS-CA17v, GS-CA17w, GS-CA17x, GS-CA17y, GS-CA17z, GS-CA18, GS-CA18r, GS-CA18s, GS-CA18t, GS-CA18v, GS-CA18w, GS-CA18x, GS-CA18y, GS-CA18z, GS-CA19, GS-CA19r, GS-CA19s, GS-CA19t, GS-CA19v, GS-CA19w, GS-CA19x, GS-CA19y, GS-CA19z, GS-CA20, GS-CA20r, GS-CA20s, GS-CA20t, GS-CA20v, GS-CA20w, GS-CA20x, GS-CA20y, GS-CA20z, GS-CA21, GS-CA21r, GS-CA21s, GS-CA21t, GS-CA21v, GS-CA21w, GS-CA21x, GS-CA21y, GS-CA21z, GS-CA22, GS-CA22r, GS-CA22s, GS-CA22t, GS-CA22v, GS-CA22w, GS-CA22x, GS-CA22y, GS-CA22z, GS-CA23, GS-CA23r, GS-CA23s, GS-CA23t, GS-CA23v, GS-CA23w, GS-CA23x, GS-CA23y, GS-CA23z, GS-CA24, GS-CA24r, GS-CA24s, GS-CA24t, GS-CA24v, GS-CA24w, GS-CA24x, GS-CA24y, GS-CA24z, GS-CA25, GS-CA25r, GS-CA25s, GS-CA25t, GS-CA25v, GS-CA25w, GS-CA25x, GS-CA25y, GS-CA25z, GS-CA26, GS-CA26r, GS-CA26s, GS-CA26t, GS-CA26v, GS-CA26w, GS-CA26x, GS-CA26y, GS-CA26z, GS-CA27, GS-CA27r, GS-CA27s, GS-CA27t, GS-CA27v, GS-CA27w, GS-CA27x, GS-CA27y, GS-CA27z, GS-CA28, GS-CA28r, GS-CA28s, GS-CA28t, GS-CA28v, GS-CA28w, GS-CA28x, GS-CA28y, GS-CA28z, GS-CA29, GS-CA29r, GS-CA29s, GS-CA29t, GS-CA29v, GS-CA29w, GS-CA29x, GS-CA29y, GS-CA29z, GS-CA30, GS-CA30r, GS-CA30s, GS-CA30t, GS-CA30v, GS-CA30w, GS-CA30x, GS-CA30y, GS-CA30z, GS-CA31, GS-CA31r, GS-CA31s, GS-CA31t, GS-CA31v, GS-CA31w, GS-CA31x, GS-CA31y, GS-CA31z, GS-CA32, GS-CA32r, GS-CA32s, GS-CA32t, GS-CA32v, GS-CA32w, GS-CA32x, GS-CA32y, GS-CA32z, GS-CA33, GS-CA33r, GS-CA33s, GS-CA33t, GS-CA33v, GS-CA33w, GS-CA33x, GS-CA33y, GS-CA33z, GS-CA34, GS-CA34r, GS-CA34s, GS-CA34t, GS-CA34v, GS-CA34w, GS-CA34x, GS-CA34y, GS-CA34z, GS-CA35, GS-CA35r, GS-CA35s, GS-CA35t, GS-CA35v, GS-CA35w, GS-CA35x, GS-CA35y, GS-CA35z, GS-CA36, GS-CA36r, GS-CA36s, GS-CA36t, GS-CA36v, GS-CA36w, GS-CA36x, GS-CA36y, GS-CA36z, GS-CA37, GS-CA37r, GS-CA37s, GS-CA37t, GS-CA37v, GS-CA37w, GS-CA37x, GS-CA37y, GS-CA37z, GS-CA38, GS-CA38r, GS-CA38s, GS-CA38t, GS-CA38v, GS-CA38w, GS-CA38x, GS-CA38y, GS-CA38z, GS-CA39, GS-CA39r, GS-CA39s, GS-CA39t, GS-CA39v, GS-CA39w, GS-CA39x, GS-CA39y, GS-CA39z, GS-CA40, GS-CA40r, GS-CA40s, GS-CA40t, GS-CA40v, GS-CA40w, GS-CA40x, GS-CA40y, GS-CA40z, GS-CA41, GS-CA41r, GS-CA41s, GS-CA41t, GS-CA41v, GS-CA41w, GS-CA41x, GS-CA41y, GS-CA41z, GS-CA42, GS-CA42r, GS-CA42s, GS-CA42t, GS-CA42v, GS-CA42w, GS-CA42x, GS-CA42y, GS-CA42z, GS-CA43, GS-CA43r, GS-CA43s, GS-CA43t, GS-CA43v, GS-CA43w, GS-CA43x, GS-CA43y, GS-CA43z, GS-CA44, GS-CA44r, GS-CA44s, GS-CA44t, GS-CA44v, GS-CA44w, GS-CA44x, GS-CA44y, GS-CA44z, GS-CA45, GS-CA45r, GS-CA45s, GS-CA45t, GS-CA45v, GS-CA45w, GS-CA45x, GS-CA45y, GS-CA45z, GS-CA46, GS-CA46r, GS-CA46s, GS-CA46t, GS-CA46v, GS-CA46w, GS-CA46x, GS-CA46y, GS-CA46z, GS-CA47, GS-CA47r, GS-CA47s, GS-CA47t, GS-CA47v, GS-CA47w, GS-CA47x, GS-CA47y, GS-CA47z, GS-CA48, GS-CA48r, GS-CA48s, GS-CA48t, GS-CA48v, GS-CA48w, GS-CA48x, GS-CA48y, GS-CA48z, GS-CA49, GS-CA49r, GS-CA49s, GS-CA49t, GS-CA49v, GS-CA49w, GS-CA49x, GS-CA49y, GS-CA49z, GS-CA50, GS-CA50r, GS-CA50s, GS-CA50t, GS-CA50v, GS-CA50w, GS-CA50x, GS-CA50y, GS-CA50z, GS-CA51, GS-CA51r, GS-CA51s, GS-CA51t, GS-CA51v, GS-CA51w, GS-CA51x, GS-CA51y, GS-CA51z, GS-CA52, GS-CA52r, GS-CA52s, GS-CA52t, GS-CA52v, GS-CA52w, GS-CA52x, GS-CA52y, GS-CA52z, GS-CA53, GS-CA53r, GS-CA53s, GS-CA53t, GS-CA53v, GS-CA53w, GS-CA53x, GS-CA53y, GS-CA53z, GS-CA54, GS-CA54r, GS-CA54s, GS-CA54t, GS-CA54v, GS-CA54w, GS-CA54x, GS-CA54y, GS-CA54z, GS-CA55, GS-CA55r, GS-CA55s, GS-CA55t, GS-CA55v, GS-CA55w, GS-CA55x, GS-CA55y, GS-CA55z, GS-CA56, GS-CA56r, GS-CA56s, GS-CA56t, GS-CA56v, GS-CA56w, GS-CA56x, GS-CA56y, GS-CA56z, GS-CA57, GS-CA57r, GS-CA57s, GS-CA57t, GS-CA57v, GS-CA57w, GS-CA57x, GS-CA57y, GS-CA57z, GS-CA58, GS-CA58r, GS-CA58s, GS-CA58t, GS-CA58v, GS-CA58w, GS-CA58x, GS-CA58y, GS-CA58z, GS-CA59, GS-CA59r, GS-CA59s, GS-CA59t, GS-CA59v, GS-CA59w, GS-CA59x, GS-CA59y, GS-CA59z, GS-CA60, GS-CA60r, GS-CA60s, GS-CA60t, GS-CA60v, GS-CA60w, GS-CA60x, GS-CA60y, GS-CA60z, GS-CA61, GS-CA61r, GS-CA61s, GS-CA61t, GS-CA61v, GS-CA61w, GS-CA61x, GS-CA61y, GS-CA61z, GS-CA62, GS-CA62r, GS-CA62s, GS-CA62t, GS-CA62v, GS-CA62w, GS-CA62x, GS-CA62y, GS-CA62z, GS-CA63, GS-CA63r, GS-CA63s, GS-CA63t, GS-CA63v, GS-CA63w, GS-CA63x, GS-CA63y, GS-CA63z, GS-CA64, GS-CA64r, GS-CA64s, GS-CA64t, GS-CA64v, GS-CA64w, GS-CA64x, GS-CA64y, GS-CA64z, GS-CA65, GS-CA65r, GS-CA65s, GS-CA65t, GS-CA65v, GS-CA65w, GS-CA65x, GS-CA65y, GS-CA65z, GS-CA66, GS-CA66r, GS-CA66s, GS-CA66t, GS-CA66v, GS-CA66w, GS-CA66x, GS-CA66y, GS-CA66z, GS-CA67, GS-CA67r, GS-CA67s, GS-CA67t, GS-CA67v, GS-CA67w, GS-CA67x, GS-CA67y, GS-CA67z, GS-CA68, GS-CA68r, GS-CA68s, GS-CA68t, GS-CA68v, GS-CA68w, GS-CA68x, GS-CA68y, GS-CA68z, GS-CA69, GS-CA69r, GS-CA69s, GS-CA69t, GS-CA69v, GS-CA69w, GS-CA69x, GS-CA69y, GS-CA69z, GS-CA70, GS-CA70r, GS-CA70s, GS-CA70t, GS-CA70v, GS-CA70w, GS-CA70x, GS-CA70y, GS-CA70z, GS-CA71, GS-CA71r, GS-CA71s, GS-CA71t, GS-CA71v, GS-CA71w, GS-CA71x, GS-CA71y, GS-CA71z, GS-CA72, GS-CA72r, GS-CA72s, GS-CA72t, GS-CA72v, GS-CA72w, GS-CA72x, GS-CA72y, GS-CA72z, GS-CA73, GS-CA73r, GS-CA73s, GS-CA73t, GS-CA73v, GS-CA73w, GS-CA73x, GS-CA73y, GS-CA73z, GS-CA74, GS-CA74r, GS-CA74s, GS-CA74t, GS-CA74v, GS-CA74w, GS-CA74x, GS-CA74y, GS-CA74z, GS-CA75, GS-CA75r, GS-CA75s, GS-CA75t, GS-CA75v, GS-CA75w, GS-CA75x, GS-CA75y, GS-CA75z, GS-CA76, GS-CA76r, GS-CA76s, GS-CA76t, GS-CA76v, GS-CA76w, GS-CA76x, GS-CA76y, GS-CA76z, GS-CA77, GS-CA77r, GS-CA77s, GS-CA77t, GS-CA77v, GS-CA77w, GS-CA77x, GS-CA77y, GS-CA77z, GS-CA78, GS-CA78r, GS-CA78s, GS-CA78t, GS-CA78v, GS-CA78w, GS-CA78x, GS-CA78y, GS-CA78z, GS-CA79, GS-CA79r, GS-CA79s, GS-CA79t, GS-CA79v, GS-CA79w, GS-CA79x, GS-CA79y, GS-CA79z, GS-CA80, GS-CA80r, GS-CA80s, GS-CA80t, GS-CA80v, GS-CA80w, GS-CA80x, GS-CA80y, GS-CA80z, GS-CA81, GS-CA81r, GS-CA81s, GS-CA81t, GS-CA81v, GS-CA81w, GS-CA81x, GS-CA81y, GS-CA81z, GS-CA82, GS-CA82r, GS-CA82s, GS-CA82t, GS-CA82v, GS-CA82w, GS-CA82x, GS-CA82y, GS-CA82z, GS-CA83, GS-CA83r, GS-CA83s, GS-CA83t, GS-CA83v, GS-CA83w, GS-CA83x, GS-CA83y, GS-CA83z, GS-CA84, GS-CA84r, GS-CA84s, GS-CA84t, GS-CA84v, GS-CA84w, GS-CA84x, GS-CA84y, GS-CA84z, GS-CA85, GS-CA85r, GS-CA85s, GS-CA85t, GS-CA85v, GS-CA85w, GS-CA85x, GS-CA85y, GS-CA85z, GS-CA86, GS-CA86r, GS-CA86s, GS-CA86t, GS-CA86v, GS-CA86w, GS-CA86x, GS-CA86y, GS-CA86z, GS-CA87, GS-CA87r, GS-CA87s, GS-CA87t, GS-CA87v, GS-CA87w, GS-CA87x, GS-CA87y, GS-CA87z, GS-CA88, GS-CA88r, GS-CA88s, GS-CA88t, GS-CA88v, GS-CA88w, GS-CA88x, GS-CA88y, GS-CA88z, GS-CA89, GS-CA89r, GS-CA89s, GS-CA89t, GS-CA89v, GS-CA89w, GS-CA89x, GS-CA89y, GS-CA89z, GS-CA90, GS-CA90r, GS-CA90s, GS-CA90t, GS-CA90v, GS-CA90w, GS-CA90x, GS-CA90y, GS-CA90z, GS-CA91, GS-CA91r, GS-CA91s, GS-CA91t, GS-CA91v, GS-CA91w, GS-CA91x, GS-CA91y, GS-CA91z, GS-CA92, GS-CA92r, GS-CA92s, GS-CA92t, GS-CA92v, GS-CA92w, GS-CA92x, GS-CA92y, GS-CA92z, GS-CA93, GS-CA93r, GS-CA93s, GS-CA93t, GS-CA93v, GS-CA93w, GS-CA93x, GS-CA93y, GS-CA93z, GS-CA94, GS-CA94r, GS-CA94s, GS-CA94t, GS-CA94v, GS-CA94w, GS-CA94x, GS-CA94y, GS-CA94z, GS-CA95, GS-CA95r, GS-CA95s, GS-CA95t, GS-CA95v, GS-CA95w, GS-CA95x, GS-CA95y, GS-CA95z, GS-CA96, GS-CA96r, GS-CA96s, GS-CA96t, GS-CA96v, GS-CA96w, GS-CA96x, GS-CA96y, GS-CA96z, GS-CA97, GS-CA97r, GS-CA97s, GS-CA97t, GS-CA97v, GS-CA97w, GS-CA97x, GS-CA97y, GS-CA97z, GS-CA98, GS-CA98r, GS-CA98s, GS-CA98t, GS-CA98v, GS-CA98w, GS-CA98x, GS-CA98y, GS-CA98z, GS-CA99, GS-CA99r, GS-CA99s, GS-CA99t, GS-CA99v, GS-CA99w, GS-CA99x, GS-CA99y, GS-CA99z, GS-CA100, GS-CA100r, GS-CA100s, GS-CA100t, GS-CA100v, GS-CA100w, GS-CA100x, GS-CA100y, GS-CA100z, GS-CA101, GS-CA101r, GS-CA101s, GS-CA101t, GS-CA101v, GS-CA101w, GS-CA101x, GS-CA101y, GS-CA101z, GS-CA102, GS-CA102r, GS-CA102s, GS-CA102t, GS-CA102v, GS-CA102w, GS-CA102x, GS-CA102y, GS-CA102z, GS-CA103, GS-CA103r, GS-CA103s, GS-CA103t, GS-CA103v, GS-CA103w, GS-CA103x, GS-CA103y, GS-CA103z, GS-CA104, GS-CA104r, GS-CA104s, GS-CA104t, GS-CA104v, GS-CA104w, GS-CA104x, GS-CA104y, GS-CA104z, GS-CA105, GS-CA105r, GS-CA105s, GS-CA105t, GS-CA105v, GS-CA105w, GS-CA105x, GS-CA105y, GS-CA105z, GS-CA106, GS-CA106r, GS-CA106s, GS-CA106t, GS-CA106v, GS-CA106w, GS-CA106x, GS-CA106y, GS-CA106z, GS-CA107, GS-CA107r, GS-CA107s, GS-CA107t, GS-CA107v, GS-CA107w, GS-CA107x, GS-CA107y, GS-CA107z, GS-CA108, GS-CA108r, GS-CA108s, GS-CA108t, GS-CA108v, GS-CA108w, GS-CA108x, GS-CA108y, GS-CA108z, GS-CA109, GS-CA109r, GS-CA109s, GS-CA109t, GS-CA109v, GS-CA109w, GS-CA109x, GS-CA109y, GS-CA109z, GS-CA110, GS-CA110r, GS-CA110s, GS-CA110t, GS-CA110v, GS-CA110w, GS-CA110x, GS-CA110y, GS-CA110z, GS-CA111, GS-CA111r, GS-CA111s, GS-CA111t, GS-CA111v, GS-CA111w, GS-CA111x, GS-CA111y, GS-CA111z, GS-CA112, GS-CA112r, GS-CA112s, GS-CA112t, GS-CA112v, GS-CA112w, GS-CA112x, GS-CA112y, GS-CA112z, GS-CA113, GS-CA113r, GS-CA113s, GS-CA113t, GS-CA113v, GS-CA113w, GS-CA113x, GS-CA113y, GS-CA113z, GS-CA114, GS-CA114r, GS-CA114s, GS-CA114t, GS-CA114v, GS-CA114w, GS-CA114x, GS-CA114y, GS-CA114z, GS-CA115, GS-CA115r, GS-CA115s, GS-CA115t, GS-CA115v, GS-CA115w, GS-CA115x, GS-CA115y, GS-CA115z, GS-CA116, GS-CA116r, GS-CA116s, GS-CA116t, GS-CA116v, GS-CA116w, GS-CA116x, GS-CA116y, GS-CA116z, GS-CA117, GS-CA117r, GS-CA117s, GS-CA117t, GS-CA117v, GS-CA117w, GS-CA117x, GS-CA117y, GS-CA117z, GS-CA118, GS-CA118r, GS-CA118s, GS-CA118t, GS-CA118v, GS-CA118w, GS-CA118x, GS-CA118y, GS-CA118z, GS-CA119, GS-CA119r, GS-CA119s, GS-CA119t, GS-CA119v, GS-CA119w, GS-CA119x, GS-CA119y, GS-CA119z, GS-CA120, GS-CA120r, GS-CA120s, GS-CA120t, GS-CA120v, GS-CA120w, GS-CA120x, GS-CA120y, GS-CA120z, GS-CA121, GS-CA121r, GS-CA121s, GS-CA121t, GS-CA121v, GS-CA121w, GS-CA121x, GS-CA121y, GS-CA121z, GS-CA122, GS-CA122r, GS-CA122s, GS-CA122t, GS-CA122v, GS-CA122w, GS-CA122x, GS-CA122y, GS-CA122z, GS-CA123, GS-CA123r, GS-CA123s, GS-CA123t, GS-CA123v, GS-CA123w, GS-CA123x, GS-CA123y, GS-CA123z, GS-CA124, GS-CA124r, GS-CA124s, GS-CA124t, GS-CA124v, GS-CA124w, GS-CA124x, GS-CA124y, GS-CA124z, GS-CA125, GS-CA125r, GS-CA125s, GS-CA125t, GS-CA125v, GS-CA125w, GS-CA125x, GS-CA125y, GS-CA125z, GS-CA126, GS-CA126r, GS-CA126s, GS-CA126t, GS-CA126v, GS-CA126w, GS-CA126x, GS-CA126y, GS-CA126z, GS-CA127, GS-CA127r, GS-CA127s, GS-CA127t, GS-CA127v, GS-CA127w, GS-CA127x, GS-CA127y, GS-CA127z, GS-CA128, GS-CA128r, GS-CA128s, GS-CA128t, GS-CA128v, GS-CA128w, GS-CA128x, GS-CA128y, GS-CA128z, GS-CA129, GS-CA129r, GS-CA129s, GS-CA129t, GS-CA129v, GS-CA129w, GS-CA129x, GS-CA129y, GS-CA129z, GS-CA130, GS-CA130r, GS-CA130s, GS-CA130t, GS-CA130v, GS-CA130w, GS-CA130x, GS-CA130y, GS-CA130z, GS-CA131, GS-CA131r, GS-CA131s, GS-CA131t, GS-CA131v, GS-CA131w, GS-CA131x, GS-CA131y, GS-CA131z, GS-CA132, GS-CA132r, GS-CA132s, GS-CA132t, GS-CA132v, GS-CA132w, GS-CA132x, GS-CA132y, GS-CA132z, GS-CA133, GS-CA133r, GS-CA133s, GS-CA133t, GS-CA133v, GS-CA133w, GS-CA133x, GS-CA133y, GS-CA133z, GS-CA134, GS-CA134r, GS-CA134s, GS-CA134t, GS-CA134v, GS-CA134w, GS-CA134x, GS-CA134y, GS-CA134z, GS-CA135, GS-CA135r, GS-CA135s, GS-CA135t, GS-CA135v, GS-CA135w, GS-CA135x, GS-CA135y, GS-CA135z, GS-CA136, GS-CA136r, GS-CA136s, GS-CA136t, GS-CA136v, GS-CA136w, GS-CA136x, GS-CA136y, GS-CA136z, GS-CA137, GS-CA137r, GS-CA137s, GS-CA137t, GS-CA137v, GS-CA137w, GS-CA137x, GS-CA137y, GS-CA137z, GS-CA138, GS-CA138r, GS-CA138s, GS-CA138t, GS-CA138v, GS-CA138w, GS-CA138x, GS-CA138y, GS-CA138z, GS-CA139, GS-CA139r, GS-CA139s, GS-CA139t, GS-CA139v, GS-CA139w, GS-CA139x, GS-CA139y, GS-CA139z, GS-CA140, GS-CA140r, GS-"
+40938120,1,Does the paper report HIV sequences from patient samples?,
+40938120,2,Does the paper report in vitro drug susceptibility data?,
+40938120,3,Were sequences from the paper made publicly available?,
+40938120,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+40938120,5,How many individuals had samples obtained for HIV sequencing?,
+40938120,6,From which countries were the sequenced samples obtained?,
+40938120,7,From what years were the sequenced samples obtained?,
+40938120,8,Were samples cloned prior to sequencing?,
+40938120,9,Which HIV genes were reported to have been sequenced?,
+40938120,10,What method was used for sequencing?,
+40938120,11,What type of samples were sequenced?,
+40938120,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
+40938120,13,Were the patients in the study in a clinical trial?,
+40938120,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
+40938120,15,Which drug classes were received by individuals in the study before sample sequencing?,
+40938120,16,Which drugs were received by individuals in the study before sample sequencing?,
+40938996,1,Does the paper report HIV sequences from patient samples?,Yes
+40938996,2,Does the paper report in vitro drug susceptibility data?,Yes
+40938996,3,Were sequences from the paper made publicly available?,No
+40938996,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+40938996,5,How many individuals had samples obtained for HIV sequencing?,
+40938996,6,From which countries were the sequenced samples obtained?,Not reported
+40938996,7,From what years were the sequenced samples obtained?,Not reported
+40938996,8,Were samples cloned prior to sequencing?,Not reported
+40938996,9,Which HIV genes were reported to have been sequenced?,"Pol, Env"
+40938996,10,What method was used for sequencing?,Sanger sequencing
+40938996,11,What type of samples were sequenced?,"Plasma, PBMC"
+40938996,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+40938996,13,Were the patients in the study in a clinical trial?,No
+40938996,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+40938996,15,Which drug classes were received by individuals in the study before sample sequencing?,INSTIs
+40938996,16,Which drugs were received by individuals in the study before sample sequencing?,"DTG, CAB, RAL
+
+```
+
+```"
+40965168,1,Does the paper report HIV sequences from patient samples?,Yes
+40965168,2,Does the paper report in vitro drug susceptibility data?,
+40965168,3,Were sequences from the paper made publicly available?,
+40965168,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+40965168,5,How many individuals had samples obtained for HIV sequencing?,
+40965168,6,From which countries were the sequenced samples obtained?,
+40965168,7,From what years were the sequenced samples obtained?,
+40965168,8,Were samples cloned prior to sequencing?,
+40965168,9,Which HIV genes were reported to have been sequenced?,
+40965168,10,What method was used for sequencing?,
+40965168,11,What type of samples were sequenced?,
+40965168,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
+40965168,13,Were the patients in the study in a clinical trial?,
+40965168,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
+40965168,15,Which drug classes were received by individuals in the study before sample sequencing?,
+40965168,16,Which drugs were received by individuals in the study before sample sequencing?,
+40974886,1,Does the paper report HIV sequences from patient samples?,Yes
+40974886,2,Does the paper report in vitro drug susceptibility data?,No
+40974886,3,Were sequences from the paper made publicly available?,No
+40974886,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+40974886,5,How many individuals had samples obtained for HIV sequencing?,223
+40974886,6,From which countries were the sequenced samples obtained?,Not reported
+40974886,7,From what years were the sequenced samples obtained?,Not reported
+40974886,8,Were samples cloned prior to sequencing?,No
+40974886,9,Which HIV genes were reported to have been sequenced?,"PR, RT, IN"
+40974886,10,What method was used for sequencing?,Not reported
+40974886,11,What type of samples were sequenced?,"Whole blood, Plasma, PBMC"
+40974886,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+40974886,13,Were the patients in the study in a clinical trial?,Yes
+40974886,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+40974886,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, INSTI, PI"
+40974886,16,Which drugs were received by individuals in the study before sample sequencing?,
+41004608,1,Does the paper report HIV sequences from patient samples?,Yes
+41004608,2,Does the paper report in vitro drug susceptibility data?,No
+41004608,3,Were sequences from the paper made publicly available?,No
+41004608,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+41004608,5,How many individuals had samples obtained for HIV sequencing?,1106
+41004608,6,From which countries were the sequenced samples obtained?,United Kingdom
+41004608,7,From what years were the sequenced samples obtained?,2015-2021
+41004608,8,Were samples cloned prior to sequencing?,No
+41004608,9,Which HIV genes were reported to have been sequenced?,"PR, RT, IN, Pol, CA, Env"
+41004608,10,What method was used for sequencing?,NGS
+41004608,11,What type of samples were sequenced?,Not reported
+41004608,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No
+41004608,13,Were the patients in the study in a clinical trial?,No
+41004608,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+41004608,15,Which drug classes were received by individuals in the study before sample sequencing?,INSTI
+41004608,16,Which drugs were received by individuals in the study before sample sequencing?,INSTI
+41012586,1,Does the paper report HIV sequences from patient samples?,"Yes
+
+```
+
+```"
+41012586,2,Does the paper report in vitro drug susceptibility data?,"Yes
+
+```
+
+```"
+41012586,3,Were sequences from the paper made publicly available?,"No
+
+```
+
+```"
+41012586,4,What were the GenBank accession numbers for sequenced HIV isolates?,"Not reported
+
+```
+
+```"
+41012586,5,How many individuals had samples obtained for HIV sequencing?,"249
+
+```
+
+```"
+41012586,6,From which countries were the sequenced samples obtained?,"Not reported
+
+```
+
+```"
+41012586,7,From what years were the sequenced samples obtained?,"Not reported
+
+```
+
+```"
+41012586,8,Were samples cloned prior to sequencing?,"Not reported
+
+```
+
+```"
+41012586,9,Which HIV genes were reported to have been sequenced?,"Not reported
+
+```
+
+```"
+41012586,10,What method was used for sequencing?,"Not reported
+
+```
+
+```"
+41012586,11,What type of samples were sequenced?,"Not reported
+
+```
+
+```"
+41012586,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,"Yes
+
+```
+
+```"
+41012586,13,Were the patients in the study in a clinical trial?,"No
+
+```
+
+```"
+41012586,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,"Yes
+
+```
+
+```"
+41012586,15,Which drug classes were received by individuals in the study before sample sequencing?,"Not reported
+
+```
+
+```"
+41012586,16,Which drugs were received by individuals in the study before sample sequencing?,"Not reported
+
+```"
+41023944,1,Does the paper report HIV sequences from patient samples?,Yes
+41023944,2,Does the paper report in vitro drug susceptibility data?,No
+41023944,3,Were sequences from the paper made publicly available?,No
+41023944,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+41023944,5,How many individuals had samples obtained for HIV sequencing?,28
+41023944,6,From which countries were the sequenced samples obtained?,Mozambique
+41023944,7,From what years were the sequenced samples obtained?,2022-2024
+41023944,8,Were samples cloned prior to sequencing?,No
+41023944,9,Which HIV genes were reported to have been sequenced?,IN
+41023944,10,What method was used for sequencing?,Sanger sequencing
+41023944,11,What type of samples were sequenced?,Plasma
+41023944,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+41023944,13,Were the patients in the study in a clinical trial?,No
+41023944,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+41023944,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, INSTI"
+41023944,16,Which drugs were received by individuals in the study before sample sequencing?,"DTG, TDF, 3TC, EFV, LPV/r, ATV, ABC, FTC, D4T, DOR, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, BIC, CAB, MVC, FTV, NFV, SQV, IDV, TPV, FPV, RAL, EVG, B"
+41029850,1,Does the paper report HIV sequences from patient samples?,Yes
+41029850,2,Does the paper report in vitro drug susceptibility data?,No
+41029850,3,Were sequences from the paper made publicly available?,Yes
+41029850,4,What were the GenBank accession numbers for sequenced HIV isolates?,"PQ893197, PQ893192, OQ985810, OR259747, PQ893191"
+41029850,5,How many individuals had samples obtained for HIV sequencing?,203
+41029850,6,From which countries were the sequenced samples obtained?,Cameroon
+41029850,7,From what years were the sequenced samples obtained?,Not reported
+41029850,8,Were samples cloned prior to sequencing?,No
+41029850,9,Which HIV genes were reported to have been sequenced?,"PR, RT"
+41029850,10,What method was used for sequencing?,Sanger sequencing
+41029850,11,What type of samples were sequenced?,Not reported
+41029850,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+41029850,13,Were the patients in the study in a clinical trial?,No
+41029850,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+41029850,15,Which drug classes were received by individuals in the study before sample sequencing?,"Not reported
+```"
+41029850,16,Which drugs were received by individuals in the study before sample sequencing?,
+41056006,1,Does the paper report HIV sequences from patient samples?,Yes
+41056006,2,Does the paper report in vitro drug susceptibility data?,Yes
+41056006,3,Were sequences from the paper made publicly available?,Yes
+41056006,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+41056006,5,How many individuals had samples obtained for HIV sequencing?,182
+41056006,6,From which countries were the sequenced samples obtained?,Not reported
+41056006,7,From what years were the sequenced samples obtained?,2019-2020
+41056006,8,Were samples cloned prior to sequencing?,No
+41056006,9,Which HIV genes were reported to have been sequenced?,Capsid
+41056006,10,What method was used for sequencing?,Next-generation sequencing
+41056006,11,What type of samples were sequenced?,Not reported
+41056006,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+41056006,13,Were the patients in the study in a clinical trial?,Yes
+41056006,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No
+41056006,15,Which drug classes were received by individuals in the study before sample sequencing?,None
+41056006,16,Which drugs were received by individuals in the study before sample sequencing?,None
+41057785,1,Does the paper report HIV sequences from patient samples?,"Yes
+
+```
+
+```"
+41057785,2,Does the paper report in vitro drug susceptibility data?,"No
+
+```
+
+```"
+41057785,3,Were sequences from the paper made publicly available?,"No
+
+```
+
+```"
+41057785,4,What were the GenBank accession numbers for sequenced HIV isolates?,"Not reported
+
+```
+
+```"
+41057785,5,How many individuals had samples obtained for HIV sequencing?,"235
+
+```
+
+```"
+41057785,6,From which countries were the sequenced samples obtained?,"Uganda
+
+```
+
+```"
+41057785,7,From what years were the sequenced samples obtained?,"2018-2023
+
+```
+
+```"
+41057785,8,Were samples cloned prior to sequencing?,"No
+
+```
+
+```"
+41057785,9,Which HIV genes were reported to have been sequenced?,"Not reported
+
+```
+
+```"
+41057785,10,What method was used for sequencing?,"Not reported
+
+```
+
+```"
+41057785,11,What type of samples were sequenced?,"Not reported
+
+```
+
+```"
+41057785,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,"Yes
+
+```
+
+```"
+41057785,13,Were the patients in the study in a clinical trial?,"No
+
+```
+
+```"
+41057785,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,"Yes
+
+```
+
+```"
+41057785,15,Which drug classes were received by individuals in the study before sample sequencing?,"Not reported
+
+```
+
+```"
+41057785,16,Which drugs were received by individuals in the study before sample sequencing?,"Not reported
+
+```"
+41088231,1,Does the paper report HIV sequences from patient samples?,Yes
+41088231,2,Does the paper report in vitro drug susceptibility data?,No
+41088231,3,Were sequences from the paper made publicly available?,Yes
+41088231,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+41088231,5,How many individuals had samples obtained for HIV sequencing?,1
+41088231,6,From which countries were the sequenced samples obtained?,China
+41088231,7,From what years were the sequenced samples obtained?,2023
+41088231,8,Were samples cloned prior to sequencing?,No
+41088231,9,Which HIV genes were reported to have been sequenced?,"PR, RT, IN, CA, Env"
+41088231,10,What method was used for sequencing?,Sanger sequencing
+41088231,11,What type of samples were sequenced?,Plasma
+41088231,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No
+41088231,13,Were the patients in the study in a clinical trial?,No
+41088231,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No
+41088231,15,Which drug classes were received by individuals in the study before sample sequencing?,None
+41088231,16,Which drugs were received by individuals in the study before sample sequencing?,"None
+
+```"
+41091504,1,Does the paper report HIV sequences from patient samples?,Yes
+41091504,2,Does the paper report in vitro drug susceptibility data?,Yes
+41091504,3,Were sequences from the paper made publicly available?,Not reported
+41091504,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+41091504,5,How many individuals had samples obtained for HIV sequencing?,Not reported
+41091504,6,From which countries were the sequenced samples obtained?,Not reported
+41091504,7,From what years were the sequenced samples obtained?,Not reported
+41091504,8,Were samples cloned prior to sequencing?,Not reported
+41091504,9,Which HIV genes were reported to have been sequenced?,"PR, RT, IN, Pol, CA, Env"
+41091504,10,What method was used for sequencing?,NGS
+41091504,11,What type of samples were sequenced?,"Plasma, PBMC"
+41091504,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+41091504,13,Were the patients in the study in a clinical trial?,Not reported
+41091504,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+41091504,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs, PIs, INSTIs"
+41091504,16,Which drugs were received by individuals in the study before sample sequencing?,"Not reported
+```"
+41093949,1,Does the paper report HIV sequences from patient samples?,Yes
+41093949,2,Does the paper report in vitro drug susceptibility data?,Yes
+41093949,3,Were sequences from the paper made publicly available?,Yes
+41093949,4,What were the GenBank accession numbers for sequenced HIV isolates?,
+41093949,5,How many individuals had samples obtained for HIV sequencing?,Not reported
+41093949,6,From which countries were the sequenced samples obtained?,Not reported
+41093949,7,From what years were the sequenced samples obtained?,Not reported
+41093949,8,Were samples cloned prior to sequencing?,Yes
+41093949,9,Which HIV genes were reported to have been sequenced?,Pol
+41093949,10,What method was used for sequencing?,Not reported
+41093949,11,What type of samples were sequenced?,Not reported
+41093949,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No
+41093949,13,Were the patients in the study in a clinical trial?,No
+41093949,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No
+41093949,15,Which drug classes were received by individuals in the study before sample sequencing?,None
+41093949,16,Which drugs were received by individuals in the study before sample sequencing?,
+41112839,1,Does the paper report HIV sequences from patient samples?,Yes
+41112839,2,Does the paper report in vitro drug susceptibility data?,No
+41112839,3,Were sequences from the paper made publicly available?,Yes
+41112839,4,What were the GenBank accession numbers for sequenced HIV isolates?,PP280627-PP280757
+41112839,5,How many individuals had samples obtained for HIV sequencing?,237
+41112839,6,From which countries were the sequenced samples obtained?,Senegal
+41112839,7,From what years were the sequenced samples obtained?,2017-2018
+41112839,8,Were samples cloned prior to sequencing?,No
+41112839,9,Which HIV genes were reported to have been sequenced?,RT
+41112839,10,What method was used for sequencing?,Not reported
+41112839,11,What type of samples were sequenced?,"DBS, Whole blood"
+41112839,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No
+41112839,13,Were the patients in the study in a clinical trial?,No
+41112839,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No
+41112839,15,Which drug classes were received by individuals in the study before sample sequencing?,None
+41112839,16,Which drugs were received by individuals in the study before sample sequencing?,"None
+```"
+41129268,1,Does the paper report HIV sequences from patient samples?,Yes
+41129268,2,Does the paper report in vitro drug susceptibility data?,Yes
+41129268,3,Were sequences from the paper made publicly available?,No
+41129268,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+41129268,5,How many individuals had samples obtained for HIV sequencing?,333
+41129268,6,From which countries were the sequenced samples obtained?,Uganda
+41129268,7,From what years were the sequenced samples obtained?,2021
+41129268,8,Were samples cloned prior to sequencing?,No
+41129268,9,Which HIV genes were reported to have been sequenced?,Pol
+41129268,10,What method was used for sequencing?,Sanger sequencing
+41129268,11,What type of samples were sequenced?,Plasma
+41129268,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+41129268,13,Were the patients in the study in a clinical trial?,No
+41129268,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+41129268,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTIs, NNRTIs, PIs"
+41129268,16,Which drugs were received by individuals in the study before sample sequencing?,"EFV, NVP, LPV/r, DTG"
+41130593,1,Does the paper report HIV sequences from patient samples?,Yes
+41130593,2,Does the paper report in vitro drug susceptibility data?,No
+41130593,3,Were sequences from the paper made publicly available?,No
+41130593,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+41130593,5,How many individuals had samples obtained for HIV sequencing?,Not reported
+41130593,6,From which countries were the sequenced samples obtained?,Not reported
+41130593,7,From what years were the sequenced samples obtained?,Not reported
+41130593,8,Were samples cloned prior to sequencing?,No
+41130593,9,Which HIV genes were reported to have been sequenced?,"CA, PR, RT, IN"
+41130593,10,What method was used for sequencing?,NGS
+41130593,11,What type of samples were sequenced?,Plasma
+41130593,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes
+41130593,13,Were the patients in the study in a clinical trial?,Yes
+41130593,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes
+41130593,15,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, INSTI"
+41130593,16,Which drugs were received by individuals in the study before sample sequencing?,"F/TAF, F/TDF, DTG, 3TC, TDF"
+41140464,1,Does the paper report HIV sequences from patient samples?,Yes
+41140464,2,Does the paper report in vitro drug susceptibility data?,No
+41140464,3,Were sequences from the paper made publicly available?,Yes
+41140464,4,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported
+41140464,5,How many individuals had samples obtained for HIV sequencing?,Not reported
+41140464,6,From which countries were the sequenced samples obtained?,"Kenya, Uganda, Tanzania, and Ethiopia"
+41140464,7,From what years were the sequenced samples obtained?,2015-2025
+41140464,8,Were samples cloned prior to sequencing?,No
+41140464,9,Which HIV genes were reported to have been sequenced?,"PR, RT, IN"
+41140464,10,What method was used for sequencing?,Not reported
+41140464,11,What type of samples were sequenced?,Not reported
+41140464,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No
+41140464,13,Were the patients in the study in a clinical trial?,No
+41140464,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No
+41140464,15,Which drug classes were received by individuals in the study before sample sequencing?,"Not reported
+```"
+41140464,16,Which drugs were received by individuals in the study before sample sequencing?,
