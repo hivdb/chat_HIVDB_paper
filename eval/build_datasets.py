@@ -49,6 +49,9 @@ COLUMN_RENAMES: Dict[str, str] = {
     "llama-3.1-8B-FT": "Llama3.1-8B FT",
     "llama-3.1-8B PV1": "Llama3.1-8B QSP",
     "llama-3.1-8B-FT PV1": "Llama3.1-8B FT+QSP",
+    "llama_8B_R16": "llama3.1-8B R16",
+    "llama_8B_R32": "llama3.1-8B R32",
+
     "llama-3.1-70B base": "Llama3.1-70B base",
     "llama-3.1-70B-FT 50": "Llama3.1-70B FT-50",
     "llama-3.1-70B-FT 100": "Llama3.1-70B FT-100",
@@ -57,6 +60,8 @@ COLUMN_RENAMES: Dict[str, str] = {
     "llama-3.1-70B-FT": "Llama3.1-70B FT",
     "llama-3.1-70B PV1": "Llama3.1-70B QSP",
     "llama-3.1-70B-FT PV1": "Llama3.1-70B FT+QSP",
+    "llama_70B_R16": "llama3.1-70B R16",
+    "llama_70B_R32": "llama3.1-70B R32",
 }
 
 # Excel forbids certain control characters; strip them before writing workbooks

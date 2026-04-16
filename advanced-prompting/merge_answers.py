@@ -22,32 +22,36 @@ SOURCE_BASE = "./csv/ground_truth.xlsx"
 # SOURCE_LLAMA_8B_after = "./csv/llama-3.1-8B_after_parsed.csv"
 # SOURCE_LLAMA_8B_RAG = "./csv/llama-3.1-8B RAG_parsed.csv"
 
-SOURCE_GPT4O_BASE = "./csv/gpt-4o-mini-base_parsed.csv"
-SOURCE_GPT4O_FT = "./csv/gpt-4o-mini-FT_parsed.csv"
-SOURCE_GPT4O_FT_50 = "./csv/gpt-4o-mini-FT 50_parsed.csv"
-SOURCE_GPT4O_FT_100 = "./csv/gpt-4o-mini-FT 100_parsed.csv"
-SOURCE_GPT4O_FT_150 = "./csv/gpt-4o-mini-FT 150_parsed.csv"
-SOURCE_GPT4O_FT_200 = "./csv/gpt-4o-mini-FT 200_parsed.csv"
-SOURCE_GPT4O_PV1 = "./csv/gpt-4o-mini-PV1_parsed.csv"
-SOURCE_GPT4O_FT_PV1 = "./csv/gpt-4o-mini-2024-07-18_FT_PV1.csv"
+SOURCE_GPT4O_BASE = "./csv/gpt-4o/gpt-4o-mini-base_parsed.csv"
+SOURCE_GPT4O_FT = "./csv/gpt-4o/gpt-4o-mini-FT_parsed.csv"
+SOURCE_GPT4O_FT_50 = "./csv/gpt-4o/gpt-4o-mini-FT 50_parsed.csv"
+SOURCE_GPT4O_FT_100 = "./csv/gpt-4o/gpt-4o-mini-FT 100_parsed.csv"
+SOURCE_GPT4O_FT_150 = "./csv/gpt-4o/gpt-4o-mini-FT 150_parsed.csv"
+SOURCE_GPT4O_FT_200 = "./csv/gpt-4o/gpt-4o-mini-FT 200_parsed.csv"
+SOURCE_GPT4O_PV1 = "./csv/gpt-4o/gpt-4o-mini-PV1_parsed.csv"
+SOURCE_GPT4O_FT_PV1 = "./csv/gpt-4o/gpt-4o-mini-2024-07-18_FT_PV1.csv"
 
-SOURCE_LLAMA_70B = "./csv/llama-3.1-70B-base_parsed.csv"
-SOURCE_LLAMA_70B_FT_50 = "./csv/llama-3.1-70B-FT 50_parsed.csv"
-SOURCE_LLAMA_70B_FT_100 = "./csv/llama-3.1-70B-FT 100_parsed.csv"
-SOURCE_LLAMA_70B_FT_150 = "./csv/llama-3.1-70B-FT 150_parsed.csv"
-SOURCE_LLAMA_70B_FT_200 = "./csv/llama-3.1-70B-FT 200_parsed.csv"
-SOURCE_LLAMA_70B_FT = "./csv/llama-3.1-70B-FT_parsed.csv"
-SOURCE_LLAMA_70B_FT_PV1 = "./csv/llama-3.1-70B-FT-PV1_parsed.csv"
+SOURCE_LLAMA_70B = "./csv/llama-70b/llama-3.1-70B-base_parsed.csv"
+SOURCE_LLAMA_70B_FT_50 = "./csv/llama-70b/llama-3.1-70B-FT 50_parsed.csv"
+SOURCE_LLAMA_70B_FT_100 = "./csv/llama-70b/llama-3.1-70B-FT 100_parsed.csv"
+SOURCE_LLAMA_70B_FT_150 = "./csv/llama-70b/llama-3.1-70B-FT 150_parsed.csv"
+SOURCE_LLAMA_70B_FT_200 = "./csv/llama-70b/llama-3.1-70B-FT 200_parsed.csv"
+SOURCE_LLAMA_70B_FT = "./csv/llama-70b/llama-3.1-70B-FT_parsed.csv"
+SOURCE_LLAMA_70B_FT_PV1 = "./csv/llama-70b/llama-3.1-70B-FT-PV1_parsed.csv"
+SOURCE_LLAMA_70B_R16 = "./csv/llama-70b/llama-3.1-70B-FT_R16_parsed.csv"
+SOURCE_LLAMA_70B_R32 = "./csv/llama-70b/llama-3.1-70B-FT_R32_parsed.csv"
 
 # SOURCE_LLAMA_70B_before = "./csv/llama-3.1-70B_before_parsed.csv"
 # SOURCE_LLAMA_70B_after = "./csv/llama-3.1-70B_after_parsed.csv"
 # SOURCE_LLAMA_70B_RAG = "./csv/llama-3.1-70B RAG_parsed.csv"
-SOURCE_LLAMA_70B_PV1 = "./csv/llama-3.1-70B-PV1_parsed.csv"
+SOURCE_LLAMA_70B_PV1 = "./csv/llama-70b/llama-3.1-70B-PV1_parsed.csv"
 
-SOURCE_LLAMA_8B = "./csv/llama-3.1-8B-base_parsed.csv"
-SOURCE_LLAMA_8B_FT = "./csv/llama-3.1-8B-FT_parsed.csv"
-SOURCE_LLAMA_8B_PV1 = "./csv/llama-3.1-8B-PV1_parsed.csv"
-SOURCE_LLAMA_8B_FT_PV1 = "./csv/llama-3.1-8B-FT-PV1_parsed.csv"
+SOURCE_LLAMA_8B = "./csv/llama-8b/llama-3.1-8B-base_parsed.csv"
+SOURCE_LLAMA_8B_FT = "./csv/llama-8b/llama-3.1-8B-FT_parsed.csv"
+SOURCE_LLAMA_8B_PV1 = "./csv/llama-8b/llama-3.1-8B-PV1_parsed.csv"
+SOURCE_LLAMA_8B_FT_PV1 = "./csv/llama-8b/llama-3.1-8B-FT-PV1_parsed.csv"
+SOURCE_LLAMA_8B_R16 = "./csv/llama-8b/llama-3.1-8B-FT_R16_parsed.csv"
+SOURCE_LLAMA_8B_R32 = "./csv/llama-8b/llama-3.1-8B-FT_R32_parsed.csv"
 
 # SOURCE_LLAMA_8B_5shot = "./csv/llama-3.1-8B_bm25_5-shot_parsed.csv"
 # SOURCE_LLAMA_8B_10shot = "./csv/llama-3.1-8B_bm25_10-shot_parsed.csv"
@@ -57,6 +61,7 @@ SOURCE_LLAMA_8B_FT_PV1 = "./csv/llama-3.1-8B-FT-PV1_parsed.csv"
 
 
 OUTPUT_PATH = "./csv/merged_answers.xlsx"
+OUTPUT_CSV_PATH = "./csv/merged_answers.csv"
 
 
 MERGE_KEYS = ["PMID", "QID"]
@@ -145,6 +150,12 @@ def main() -> None:
     llama_8b_ft_pv1 = _load_unique(
         SOURCE_LLAMA_8B_FT_PV1, usecols=MERGE_KEYS + ["Answer"]
     ).rename(columns={"Answer": "llama-3.1-8B-FT PV1"})
+    llama_8b_r16 = _load_unique(
+        SOURCE_LLAMA_8B_R16, usecols=MERGE_KEYS + ["Answer"]
+    ).rename(columns={"Answer": "llama_8B_R16"})
+    llama_8b_r32 = _load_unique(
+        SOURCE_LLAMA_8B_R32, usecols=MERGE_KEYS + ["Answer"]
+    ).rename(columns={"Answer": "llama_8B_R32"})
 
     llama_70b = _load_unique(SOURCE_LLAMA_70B, usecols=MERGE_KEYS + ["Answer"]).rename(
         columns={"Answer": "llama-3.1-70B base"}
@@ -167,6 +178,12 @@ def main() -> None:
     llama_70b_ft_pv1 = _load_unique(
         SOURCE_LLAMA_70B_FT_PV1, usecols=MERGE_KEYS + ["Answer"]
     ).rename(columns={"Answer": "llama-3.1-70B-FT PV1"})
+    llama_70b_r16 = _load_unique(
+        SOURCE_LLAMA_70B_R16, usecols=MERGE_KEYS + ["Answer"]
+    ).rename(columns={"Answer": "llama_70B_R16"})
+    llama_70b_r32 = _load_unique(
+        SOURCE_LLAMA_70B_R32, usecols=MERGE_KEYS + ["Answer"]
+    ).rename(columns={"Answer": "llama_70B_R32"})
 
     llama_70b_ft_50 = _load_unique(
         SOURCE_LLAMA_70B_FT_50, usecols=MERGE_KEYS + ["Answer"]
@@ -207,6 +224,8 @@ def main() -> None:
     merged = merged.merge(llama_8b_ft_source, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b_pv1, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b_ft_pv1, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_8b_r16, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_8b_r32, on=MERGE_KEYS, how="left")
 
     merged = merged.merge(llama_70b, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_ft_50, on=MERGE_KEYS, how="left")
@@ -216,6 +235,8 @@ def main() -> None:
     merged = merged.merge(llama_70b_ft_source, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_pv1, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_ft_pv1, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_70b_r16, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_70b_r32, on=MERGE_KEYS, how="left")
 
     # merged = base.merge(adv, on=MERGE_KEYS, how="left")
     # merged = merged.merge(adv_before, on=MERGE_KEYS, how="left")
@@ -240,6 +261,7 @@ def main() -> None:
 
     merged = merged.sort_values(MERGE_KEYS)
     merged.to_excel(OUTPUT_PATH, index=False)
+    merged.to_csv(OUTPUT_CSV_PATH, index=False)
 
 
 if __name__ == "__main__":

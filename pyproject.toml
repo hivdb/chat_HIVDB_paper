@@ -58,6 +58,7 @@ dependencies = [
     "llama-parse==0.4.3",
     "llamaindex-py-client==0.1.19",
     "marshmallow==3.21.2",
+    "matplotlib>=3.10.8",
     "multidict==6.0.5",
     "mypy-extensions==1.0.0",
     "mysql-connector-python==8.4.0",
