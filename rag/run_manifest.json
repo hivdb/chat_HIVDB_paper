@@ -11,6 +11,7 @@
         "output_jsonl": "rag/jsonl/pmid_prompts_bm25_rag_new30.jsonl",
         "paper_count": 30,
         "papers_dir": "advanced-prompting/papers_2025_30",
+        "pool_log_csv": "rag/log/bm25_rag_pool_new30.csv",
         "questions_per_paper": 16,
         "retrieval_log_csv": "rag/log/bm25_rag_retrieval_new30.csv"
       },
@@ -24,6 +25,7 @@
         "output_jsonl": "rag/jsonl/pmid_prompts_bm25_rag_original120.jsonl",
         "paper_count": 120,
         "papers_dir": "advanced-prompting/papers",
+        "pool_log_csv": "rag/log/bm25_rag_pool_original120.csv",
         "questions_per_paper": 16,
         "retrieval_log_csv": "rag/log/bm25_rag_retrieval_original120.csv"
       }
@@ -35,15 +37,18 @@
       "chunk_overlap_paragraphs": 1,
       "manifest_path": "rag/run_manifest.json",
       "metadata_xlsx": "advanced-prompting/csv/ground_truth.xlsx",
+      "pool_prompt_shorter_than_base": true,
+      "pool_ranking": "hit_count_then_rrf",
       "prompt_template": "eval/gpt-5/gpt-5-mini-prompt.md",
       "reference_heading_regex": "^(references|bibliography)\\b",
       "section_aware_chunking": true,
+      "shared_evidence_pool": true,
       "stop_at_reference_headings": true,
       "tokenizer_regex": "[A-Za-z0-9]+(?:[-_/][A-Za-z0-9]+)*",
       "top_k": 5
     },
     "retriever": "bm25",
-    "updated_at_utc": "2026-04-17T07:13:04.911609+00:00"
+    "updated_at_utc": "2026-04-17T07:55:11.000035+00:00"
   },
   "semantic": {
     "datasets": {
@@ -57,6 +62,7 @@
         "output_jsonl": "rag/jsonl/pmid_prompts_semantic_rag_new30.jsonl",
         "paper_count": 30,
         "papers_dir": "advanced-prompting/papers_2025_30",
+        "pool_log_csv": "rag/log/semantic_rag_pool_new30.csv",
         "questions_per_paper": 16,
         "retrieval_log_csv": "rag/log/semantic_rag_retrieval_new30.csv"
       },
@@ -70,6 +76,7 @@
         "output_jsonl": "rag/jsonl/pmid_prompts_semantic_rag_original120.jsonl",
         "paper_count": 120,
         "papers_dir": "advanced-prompting/papers",
+        "pool_log_csv": "rag/log/semantic_rag_pool_original120.csv",
         "questions_per_paper": 16,
         "retrieval_log_csv": "rag/log/semantic_rag_retrieval_original120.csv"
       }
@@ -81,14 +88,17 @@
       "embedding_model": "text-embedding-3-small",
       "manifest_path": "rag/run_manifest.json",
       "metadata_xlsx": "advanced-prompting/csv/ground_truth.xlsx",
+      "pool_prompt_shorter_than_base": true,
+      "pool_ranking": "hit_count_then_rrf",
       "prompt_template": "eval/gpt-5/gpt-5-mini-prompt.md",
       "reference_heading_regex": "^(references|bibliography)\\b",
       "section_aware_chunking": true,
+      "shared_evidence_pool": true,
       "similarity": "cosine",
       "stop_at_reference_headings": true,
       "top_k": 5
     },
     "retriever": "semantic",
-    "updated_at_utc": "2026-04-17T07:13:30.667191+00:00"
+    "updated_at_utc": "2026-04-17T07:57:07.186626+00:00"
   }
 }

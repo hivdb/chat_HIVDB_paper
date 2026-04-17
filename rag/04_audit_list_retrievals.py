@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import sys
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -13,15 +14,20 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parent
+if str(ROOT.parent) not in sys.path:
+    sys.path.append(str(ROOT.parent))
+
+from eval.normalize import canonicalize_answer, list_match_stats  # type: ignore
+
 ADVANCED_PROMPTING_DIR = ROOT.parent / "advanced-prompting"
 DEFAULT_TRUTH = ADVANCED_PROMPTING_DIR / "csv" / "ground_truth.xlsx"
-DEFAULT_BM25_LOGS = [
-    ROOT / "log" / "bm25_rag_retrieval_original120.csv",
-    ROOT / "log" / "bm25_rag_retrieval_new30.csv",
+DEFAULT_BM25_POOL_LOGS = [
+    ROOT / "log" / "bm25_rag_pool_original120.csv",
+    ROOT / "log" / "bm25_rag_pool_new30.csv",
 ]
-DEFAULT_SEMANTIC_LOGS = [
-    ROOT / "log" / "semantic_rag_retrieval_original120.csv",
-    ROOT / "log" / "semantic_rag_retrieval_new30.csv",
+DEFAULT_SEMANTIC_POOL_LOGS = [
+    ROOT / "log" / "semantic_rag_pool_original120.csv",
+    ROOT / "log" / "semantic_rag_pool_new30.csv",
 ]
 PAPER_ROOTS = [
     ADVANCED_PROMPTING_DIR / "papers",
@@ -68,13 +74,15 @@ def load_logs(paths: list[Path], prefix: str) -> pd.DataFrame:
     if not frames:
         raise FileNotFoundError(f"No log files found for {prefix}: {paths}")
     df = pd.concat(frames, ignore_index=True)
-    df["qid"] = df["qid"].astype(int)
     rename_map = {
-        "chunk_ids": f"{prefix}_chunk_ids",
-        "sections": f"{prefix}_sections",
-        "scores": f"{prefix}_scores",
+        "chunk_ids": f"{prefix}_pool_chunk_ids",
+        "sections": f"{prefix}_pool_sections",
+        "matched_qids": f"{prefix}_pool_matched_qids",
+        "pool_chunk_count": f"{prefix}_pool_chunk_count",
+        "prompt_chars": f"{prefix}_prompt_chars",
+        "base_prompt_chars": f"{prefix}_base_prompt_chars",
     }
-    keep = ["pmid", "qid", *rename_map.keys()]
+    keep = ["pmid", *rename_map.keys()]
     return df[keep].rename(columns=rename_map)
 
 
@@ -179,18 +187,14 @@ def parse_chunk_ids(value: str) -> list[int]:
     return [int(part) for part in str(value).split("|") if part.strip()]
 
 
-def canonical_tokens(text: str) -> list[str]:
-    base = str(text or "").replace("–", "-").replace("—", "-")
-    return [token.strip().lower() for token in re.split(r"[;,/&]| and |\+", base) if token.strip()]
-
-
 def token_coverage(answer: str, text_blob: str) -> float:
-    tokens = canonical_tokens(answer)
-    if not tokens:
+    ref_norm = canonicalize_answer(answer)
+    if not ref_norm:
         return 0.0
-    haystack = str(text_blob or "").lower()
-    hits = sum(1 for token in tokens if token in haystack)
-    return hits / len(tokens)
+    matches, total = list_match_stats(ref_norm, "", str(text_blob or ""))
+    if not total:
+        return 0.0
+    return matches / total
 
 
 def normalize_excerpt(text: str, max_chars: int = 480) -> str:
@@ -216,29 +220,29 @@ def retrieved_blob(pmid: str, chunk_ids: str, chunk_chars: int, overlap_paragrap
 def main() -> int:
     args = parse_args()
     truth = load_truth(args.truth_xlsx)
-    bm25 = load_logs(DEFAULT_BM25_LOGS, "bm25")
-    semantic = load_logs(DEFAULT_SEMANTIC_LOGS, "semantic")
+    bm25 = load_logs(DEFAULT_BM25_POOL_LOGS, "bm25")
+    semantic = load_logs(DEFAULT_SEMANTIC_POOL_LOGS, "semantic")
 
-    merged = truth.merge(bm25, left_on=["PMID", "QID"], right_on=["pmid", "qid"], how="left")
-    merged = merged.merge(semantic, left_on=["PMID", "QID"], right_on=["pmid", "qid"], how="left")
-    merged.drop(columns=["pmid_x", "qid_x", "pmid_y", "qid_y"], inplace=True, errors="ignore")
+    merged = truth.merge(bm25, left_on="PMID", right_on="pmid", how="left")
+    merged = merged.merge(semantic, left_on="PMID", right_on="pmid", how="left", suffixes=("_bm25", "_semantic"))
+    merged.drop(columns=["pmid_bm25", "pmid_semantic"], inplace=True, errors="ignore")
 
-    merged[["bm25_text", "bm25_reconstructed_sections"]] = merged.apply(
+    merged[["bm25_pool_text", "bm25_pool_reconstructed_sections"]] = merged.apply(
         lambda row: pd.Series(
             retrieved_blob(
                 row["PMID"],
-                row.get("bm25_chunk_ids", ""),
+                row.get("bm25_pool_chunk_ids", ""),
                 chunk_chars=args.chunk_chars,
                 overlap_paragraphs=args.chunk_overlap_paragraphs,
             )
         ),
         axis=1,
     )
-    merged[["semantic_text", "semantic_reconstructed_sections"]] = merged.apply(
+    merged[["semantic_pool_text", "semantic_pool_reconstructed_sections"]] = merged.apply(
         lambda row: pd.Series(
             retrieved_blob(
                 row["PMID"],
-                row.get("semantic_chunk_ids", ""),
+                row.get("semantic_pool_chunk_ids", ""),
                 chunk_chars=args.chunk_chars,
                 overlap_paragraphs=args.chunk_overlap_paragraphs,
             )
@@ -246,22 +250,26 @@ def main() -> int:
         axis=1,
     )
 
-    merged["bm25_text_coverage"] = merged.apply(
-        lambda row: token_coverage(row["Human-Answer"], row.get("bm25_text", "")),
+    merged["bm25_pool_text_coverage"] = merged.apply(
+        lambda row: token_coverage(row["Human-Answer"], row.get("bm25_pool_text", "")),
         axis=1,
     )
-    merged["semantic_text_coverage"] = merged.apply(
-        lambda row: token_coverage(row["Human-Answer"], row.get("semantic_text", "")),
+    merged["semantic_pool_text_coverage"] = merged.apply(
+        lambda row: token_coverage(row["Human-Answer"], row.get("semantic_pool_text", "")),
         axis=1,
     )
-    merged["coverage_delta"] = merged["semantic_text_coverage"] - merged["bm25_text_coverage"]
-    merged["bm25_excerpt"] = merged["bm25_text"].apply(normalize_excerpt)
-    merged["semantic_excerpt"] = merged["semantic_text"].apply(normalize_excerpt)
+    merged["coverage_delta"] = (
+        merged["semantic_pool_text_coverage"] - merged["bm25_pool_text_coverage"]
+    )
+    merged["bm25_pool_excerpt"] = merged["bm25_pool_text"].apply(normalize_excerpt)
+    merged["semantic_pool_excerpt"] = merged["semantic_pool_text"].apply(normalize_excerpt)
 
     rows: list[pd.DataFrame] = []
     for qid in sorted(LIST_QIDS):
         subset = merged[merged["QID"] == qid].copy()
-        subset["best_coverage"] = subset[["bm25_text_coverage", "semantic_text_coverage"]].max(axis=1)
+        subset["best_coverage"] = subset[
+            ["bm25_pool_text_coverage", "semantic_pool_text_coverage"]
+        ].max(axis=1)
         subset = subset.sort_values(
             by=["best_coverage", "coverage_delta", "PMID"],
             ascending=[True, False, True],
@@ -274,15 +282,21 @@ def main() -> int:
         "QID",
         "Question",
         "Human-Answer",
-        "bm25_text_coverage",
-        "semantic_text_coverage",
+        "bm25_pool_text_coverage",
+        "semantic_pool_text_coverage",
         "coverage_delta",
-        "bm25_chunk_ids",
-        "semantic_chunk_ids",
-        "bm25_reconstructed_sections",
-        "semantic_reconstructed_sections",
-        "bm25_excerpt",
-        "semantic_excerpt",
+        "bm25_pool_chunk_ids",
+        "semantic_pool_chunk_ids",
+        "bm25_pool_reconstructed_sections",
+        "semantic_pool_reconstructed_sections",
+        "bm25_pool_chunk_count",
+        "semantic_pool_chunk_count",
+        "bm25_prompt_chars",
+        "bm25_base_prompt_chars",
+        "semantic_prompt_chars",
+        "semantic_base_prompt_chars",
+        "bm25_pool_excerpt",
+        "semantic_pool_excerpt",
     ]
     audit = audit[ordered_cols]
     args.output_csv.parent.mkdir(parents=True, exist_ok=True)

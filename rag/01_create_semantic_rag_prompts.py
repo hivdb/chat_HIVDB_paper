@@ -55,6 +55,16 @@ class Chunk:
     text: str
 
 
+@dataclass(frozen=True)
+class EvidencePoolEntry:
+    chunk: Chunk
+    matched_qids: tuple[int, ...]
+    hit_count: int
+    best_rank: int
+    aggregate_rank_score: float
+    max_score: float
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -274,35 +284,100 @@ def build_chunks(markdown_text: str, chunk_chars: int, overlap_paragraphs: int) 
     return chunks
 
 
+def build_base_prompt(prompt_text: str, article_text: str) -> str:
+    article_body = article_text.strip()
+    return (
+        f"{prompt_text.strip()}\n\n"
+        f"PAPER FULL TEXT\n\n"
+        f"{article_body}\n\n"
+        f"PAPER ENDED\n\n"
+        f"{prompt_text.strip()}"
+    )
+
+
+def aggregate_evidence_pool(
+    retrievals: dict[int, list[tuple[Chunk, float]]],
+    rrf_k: int = 60,
+) -> list[EvidencePoolEntry]:
+    pooled: dict[int, dict[str, object]] = {}
+    for qid, retrieved in retrievals.items():
+        for rank, (chunk, score) in enumerate(retrieved, start=1):
+            entry = pooled.setdefault(
+                chunk.chunk_id,
+                {
+                    "chunk": chunk,
+                    "matched_qids": [],
+                    "hit_count": 0,
+                    "best_rank": rank,
+                    "aggregate_rank_score": 0.0,
+                    "max_score": score,
+                },
+            )
+            entry["matched_qids"].append(qid)
+            entry["hit_count"] = int(entry["hit_count"]) + 1
+            entry["best_rank"] = min(int(entry["best_rank"]), rank)
+            entry["aggregate_rank_score"] = float(entry["aggregate_rank_score"]) + (1.0 / (rrf_k + rank))
+            entry["max_score"] = max(float(entry["max_score"]), score)
+
+    return sorted(
+        (
+            EvidencePoolEntry(
+                chunk=data["chunk"],
+                matched_qids=tuple(sorted(set(data["matched_qids"]))),
+                hit_count=int(data["hit_count"]),
+                best_rank=int(data["best_rank"]),
+                aggregate_rank_score=float(data["aggregate_rank_score"]),
+                max_score=float(data["max_score"]),
+            )
+            for data in pooled.values()
+        ),
+        key=lambda entry: (
+            entry.hit_count,
+            entry.aggregate_rank_score,
+            -entry.best_rank,
+            -entry.chunk.chunk_id,
+        ),
+        reverse=True,
+    )
+
+
 def format_prompt(
     template: str,
-    questions: list[Question],
-    retrievals: dict[int, list[tuple[Chunk, float]]],
-) -> str:
-    sections = [
-        template.strip(),
-        "",
-        "## Retrieved Evidence By Question",
-        "Use the retrieved passages below instead of the full paper text. Each question should be answered using only the passages listed under that question.",
-        "",
-    ]
-    for question in questions:
-        sections.append(f"### Question {question.qid}")
-        sections.append(f"Question: {question.question}")
-        sections.append("")
-        sections.append("Retrieved Evidence:")
-        retrieved = retrievals.get(question.qid, [])
-        if not retrieved:
+    markdown_text: str,
+    evidence_pool: list[EvidencePoolEntry],
+) -> tuple[str, list[EvidencePoolEntry], int]:
+    base_prompt_chars = len(build_base_prompt(template, markdown_text))
+
+    def render(entries: list[EvidencePoolEntry]) -> str:
+        sections = [
+            template.strip(),
+            "",
+            "## Retrieved Evidence Pool",
+            "Use only the deduplicated evidence pool below instead of the full paper text.",
+            "The pool was assembled by retrieving passages separately for each question, deduplicating by chunk_id, and ranking passages by how often they were retrieved across questions.",
+            "",
+        ]
+        if not entries:
             sections.append("[No passages retrieved]")
             sections.append("")
-            continue
-        for rank, (chunk, score) in enumerate(retrieved, start=1):
+        for rank, entry in enumerate(entries, start=1):
+            matched = ",".join(f"Q{qid}" for qid in entry.matched_qids)
             sections.append(
-                f"[Passage {rank} | chunk_id={chunk.chunk_id} | score={score:.4f} | section={chunk.section_path}]"
+                "[Passage "
+                f"{rank} | chunk_id={entry.chunk.chunk_id} | matched_questions={matched} "
+                f"| hit_count={entry.hit_count} | aggregate_rank_score={entry.aggregate_rank_score:.4f} "
+                f"| max_question_score={entry.max_score:.4f} | section={entry.chunk.section_path}]"
             )
-            sections.append(chunk.text)
+            sections.append(entry.chunk.text)
             sections.append("")
-    return "\n".join(sections).strip() + "\n"
+        return "\n".join(sections).strip() + "\n"
+
+    trimmed_pool = list(evidence_pool)
+    prompt = render(trimmed_pool)
+    while len(trimmed_pool) > 1 and len(prompt) >= base_prompt_chars:
+        trimmed_pool.pop()
+        prompt = render(trimmed_pool)
+    return prompt, trimmed_pool, base_prompt_chars
 
 
 def write_jsonl(records: Iterable[dict[str, str]], output_path: Path) -> None:
@@ -325,6 +400,29 @@ def write_retrieval_audit(rows: list[dict[str, str]], output_path: Path) -> None
                 "chunk_ids",
                 "sections",
                 "scores",
+                "embedding_model",
+            ],
+        )
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def write_pool_audit(rows: list[dict[str, str]], output_path: Path) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", newline="", encoding="utf-8") as csvfile:
+        writer = csv.DictWriter(
+            csvfile,
+            fieldnames=[
+                "pmid",
+                "chunk_ids",
+                "sections",
+                "matched_qids",
+                "hit_counts",
+                "aggregate_rank_scores",
+                "max_scores",
+                "pool_chunk_count",
+                "prompt_chars",
+                "base_prompt_chars",
                 "embedding_model",
             ],
         )
@@ -379,6 +477,7 @@ def main() -> int:
         papers = collect_papers(papers_dir)
         records: list[dict[str, str]] = []
         retrieval_rows: list[dict[str, str]] = []
+        pool_rows: list[dict[str, str]] = []
         chunk_counts: list[int] = []
 
         for pmid, markdown_path in papers:
@@ -415,18 +514,45 @@ def main() -> int:
                     }
                 )
 
-            prompt = format_prompt(template, questions, retrievals)
+            evidence_pool = aggregate_evidence_pool(retrievals)
+            prompt, trimmed_pool, base_prompt_chars = format_prompt(
+                template,
+                markdown_text,
+                evidence_pool,
+            )
             records.append({"pmid": pmid, "prompt": prompt})
+            pool_rows.append(
+                {
+                    "pmid": pmid,
+                    "chunk_ids": "|".join(str(entry.chunk.chunk_id) for entry in trimmed_pool),
+                    "sections": "|".join(entry.chunk.section_path for entry in trimmed_pool),
+                    "matched_qids": "|".join(
+                        ",".join(str(qid) for qid in entry.matched_qids) for entry in trimmed_pool
+                    ),
+                    "hit_counts": "|".join(str(entry.hit_count) for entry in trimmed_pool),
+                    "aggregate_rank_scores": "|".join(
+                        f"{entry.aggregate_rank_score:.4f}" for entry in trimmed_pool
+                    ),
+                    "max_scores": "|".join(f"{entry.max_score:.4f}" for entry in trimmed_pool),
+                    "pool_chunk_count": str(len(trimmed_pool)),
+                    "prompt_chars": str(len(prompt)),
+                    "base_prompt_chars": str(base_prompt_chars),
+                    "embedding_model": args.embedding_model,
+                }
+            )
 
         write_jsonl(records, output_path)
         audit_path = args.log_dir / f"semantic_rag_retrieval_{dataset}.csv"
         write_retrieval_audit(retrieval_rows, audit_path)
+        pool_audit_path = args.log_dir / f"semantic_rag_pool_{dataset}.csv"
+        write_pool_audit(pool_rows, pool_audit_path)
         manifest_datasets[dataset] = {
             "papers_dir": repo_relative(papers_dir),
             "paper_count": len(papers),
             "questions_per_paper": len(questions),
             "output_jsonl": repo_relative(output_path),
             "retrieval_log_csv": repo_relative(audit_path),
+            "pool_log_csv": repo_relative(pool_audit_path),
             "chunk_counts": {
                 "total": sum(chunk_counts),
                 "min_per_paper": min(chunk_counts),
@@ -436,6 +562,7 @@ def main() -> int:
         }
         print(f"Wrote {len(records)} prompts to {output_path}")
         print(f"Wrote retrieval audit to {audit_path}")
+        print(f"Wrote pool audit to {pool_audit_path}")
 
     update_run_manifest(
         args.manifest_path,
@@ -450,6 +577,9 @@ def main() -> int:
                 "section_aware_chunking": True,
                 "stop_at_reference_headings": True,
                 "reference_heading_regex": REFERENCE_HEADING_RE.pattern,
+                "shared_evidence_pool": True,
+                "pool_ranking": "hit_count_then_rrf",
+                "pool_prompt_shorter_than_base": True,
                 "embedding_model": args.embedding_model,
                 "embedding_batch_size": args.batch_size,
                 "similarity": "cosine",

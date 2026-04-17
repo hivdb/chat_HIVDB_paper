@@ -11,7 +11,7 @@ This pipeline keeps those source files in place, but stores RAG-specific prompts
 The instruction scaffold is intentionally the same base prompt used by the main runs:
 - `eval/gpt-5/gpt-5-mini-prompt.md`
 
-The only change for RAG is the context: instead of supplying the full paper, the prompt appends question-specific retrieved passages from that same paper.
+The only change for RAG is the context: instead of supplying the full paper, the prompt appends a shared, deduplicated evidence pool built from question-specific retrieval over that same paper.
 
 The retrieval settings are recorded in:
 - `rag/run_manifest.json`
@@ -25,6 +25,10 @@ Current defaults:
 - chunking is section-aware
 - chunking stops at `References` / `Bibliography`
 - retrieval is per paper only
+- prompt assembly uses a shared evidence pool per paper
+- the evidence pool is deduplicated by `chunk_id`
+- evidence pool ranking is `hit_count` then reciprocal-rank fusion
+- prompt assembly trims the lowest-ranked pooled passages until the RAG prompt is shorter than the corresponding base full-paper prompt
 
 BM25-specific defaults:
 - tokenizer regex: `[A-Za-z0-9]+(?:[-_/][A-Za-z0-9]+)*`
@@ -53,6 +57,8 @@ Outputs:
 - `rag/jsonl/pmid_prompts_bm25_rag_new30.jsonl`
 - `rag/log/bm25_rag_retrieval_original120.csv`
 - `rag/log/bm25_rag_retrieval_new30.csv`
+- `rag/log/bm25_rag_pool_original120.csv`
+- `rag/log/bm25_rag_pool_new30.csv`
 - `rag/run_manifest.json`
 
 ## 1b. Generate semantic-retrieval prompts
@@ -68,6 +74,8 @@ Outputs:
 - `rag/jsonl/pmid_prompts_semantic_rag_new30.jsonl`
 - `rag/log/semantic_rag_retrieval_original120.csv`
 - `rag/log/semantic_rag_retrieval_new30.csv`
+- `rag/log/semantic_rag_pool_original120.csv`
+- `rag/log/semantic_rag_pool_new30.csv`
 - `rag/run_manifest.json`
 
 ## 2. Run a model on the prompts
@@ -118,4 +126,6 @@ If you want full 150-paper columns, first combine original120 and new30 parsed o
 python rag/04_audit_list_retrievals.py
 ```
 
-This writes `rag/list_retrieval_audit.csv`, comparing BM25 and semantic retrieval on hard list questions (`Q9`, `Q15`, `Q16`).
+This writes `rag/list_retrieval_audit.csv`, comparing BM25 and semantic pooled evidence on hard list questions (`Q9`, `Q15`, `Q16`).
+
+The audit reuses the normalization and list-matching logic from `eval/normalize.py`, so ARV aliases and gene synonyms are scored consistently with the downstream evaluation code.
