@@ -177,3 +177,10 @@ database
 HIVDB_tblReferences_answers.csv
 Questions_Jun_21.xlsx
 index
+
+# RAG generated artifacts
+rag/__pycache__/
+rag/jsonl/
+rag/log/
+rag/list_retrieval_audit.csv
+rag/list_retrieval_audit_all.csv
