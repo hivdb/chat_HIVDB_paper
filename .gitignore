@@ -180,7 +180,3 @@ index
 
 # RAG generated artifacts
 rag/__pycache__/
-rag/jsonl/pmid_responses*.jsonl
-rag/log/
-rag/list_retrieval_audit.csv
-rag/list_retrieval_audit_all.csv
