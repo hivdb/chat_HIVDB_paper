@@ -54,6 +54,18 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_MERGED_PATH,
         help="Merged answers file to evaluate.",
     )
+    parser.add_argument(
+        "--wilcoxon-only",
+        action="store_true",
+        default=True,
+        help="Only keep Wilcoxon rows in the statistical tests workbook.",
+    )
+    parser.add_argument(
+        "--include-t-test",
+        dest="wilcoxon_only",
+        action="store_false",
+        help="Include both t-test and Wilcoxon rows in the statistical tests workbook.",
+    )
     return parser.parse_args()
 
 
@@ -191,7 +203,7 @@ def evaluate_models_by_qid(df: pd.DataFrame) -> pd.DataFrame:
     return qid_df.sort_values(["QID", "display_order"]).drop(columns="display_order").reset_index(drop=True)
 
 
-def build_statistical_tests(qid_df: pd.DataFrame) -> pd.DataFrame:
+def build_statistical_tests(qid_df: pd.DataFrame, wilcoxon_only: bool = False) -> pd.DataFrame:
     comparisons = {
         "Llama3.1-70B": {
             "base": "Llama3.1-70B FT",
@@ -209,6 +221,10 @@ def build_statistical_tests(qid_df: pd.DataFrame) -> pd.DataFrame:
     )
     if stats_df.empty:
         raise SystemExit("No statistical tests were produced.")
+    if wilcoxon_only:
+        stats_df = stats_df[stats_df["test"] == "wilcoxon"].copy()
+        if stats_df.empty:
+            raise SystemExit("No Wilcoxon statistical tests were produced.")
 
     keep_columns = [
         column
@@ -228,7 +244,7 @@ def main() -> int:
     df = load_dataset(args.merged_path)
     metrics_df = evaluate_models(df)
     qid_df = evaluate_models_by_qid(df)
-    stats_df = build_statistical_tests(qid_df)
+    stats_df = build_statistical_tests(qid_df, wilcoxon_only=args.wilcoxon_only)
     correct_df = add_correct_columns(df)
     metrics_df.to_csv(OUTPUT_CSV, index=False, encoding="utf-8-sig")
     metrics_df.to_excel(OUTPUT_XLSX, index=False)
