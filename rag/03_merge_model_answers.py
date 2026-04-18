@@ -63,10 +63,8 @@ def main() -> int:
 
     updated = merged.merge(source, on=MERGE_KEYS, how="left", suffixes=("", "__new"))
     new_col = f"{args.column_name}__new"
-    updated[args.column_name] = updated[new_col].where(
-        updated[new_col].astype(str).str.strip() != "",
-        updated[args.column_name],
-    )
+    has_new_value = updated[new_col].notna() & (updated[new_col].astype(str).str.strip() != "")
+    updated[args.column_name] = updated[new_col].where(has_new_value, updated[args.column_name])
     updated.drop(columns=[new_col], inplace=True)
 
     args.target.parent.mkdir(parents=True, exist_ok=True)

@@ -13,8 +13,17 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parent
 ADVANCED_PROMPTING_DIR = ROOT.parent / "advanced-prompting"
-QA_PATTERN = re.compile(
-    r"Question:\s*(.+?)\n.*?Answer:\s*(.+?)(?=\nQuestion:|\Z)",
+DEFAULT_METADATA = ADVANCED_PROMPTING_DIR / "csv" / "S4Table.xlsx"
+DEFAULT_PROMPT_TEMPLATE = ROOT.parent / "eval" / "gpt-5" / "gpt-5-mini-prompt.md"
+PROMPT_QUESTION_PATTERN = re.compile(r"Question\s+(\d+):\s*(.+)")
+QUESTION_HEADER_PATTERN = re.compile(
+    r'^\s*(?:["`>\-]+\s*)?(?:#+\s*)?(?:\*\*)?Question(?:\s+(\d+))?\s*:?\s*(.*?)(?:\*\*)?\s*$',
+    re.IGNORECASE | re.MULTILINE,
+)
+INLINE_QUESTION_PATTERN = re.compile(r"^\s*(?:\*\*)?Question:\s*(.+?)(?:\*\*)?\s*$", re.IGNORECASE | re.MULTILINE)
+ANSWER_IN_BLOCK_PATTERN = re.compile(r"(?is)\bAnswer:\s*(.+)")
+ANSWER_ONLY_PATTERN = re.compile(
+    r"Answer:\s*(.+?)(?=\n(?:---\s*\n)?\s*(?:[#>*`\"\-]+\s*)?(?:\*\*)?Question(?:\s+\d+)?\s*:?\s*|\Z)",
     re.DOTALL | re.IGNORECASE,
 )
 
@@ -25,8 +34,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--metadata-xlsx",
         type=Path,
-        default=ADVANCED_PROMPTING_DIR / "csv" / "ground_truth.xlsx",
-        help="Workbook containing PMID/QID/Question/Type/Category metadata.",
+        default=DEFAULT_METADATA,
+        help="Workbook containing canonical QID/Question/Type/Category metadata.",
+    )
+    parser.add_argument(
+        "--prompt-template",
+        type=Path,
+        default=DEFAULT_PROMPT_TEMPLATE,
+        help="Prompt template used to derive canonical question ordering.",
     )
     parser.add_argument("--output-csv", type=Path, required=True, help="Output parsed CSV path.")
     return parser.parse_args()
@@ -47,29 +62,71 @@ def clean_answer(text: str) -> str:
     return " ".join(cleaned.split())
 
 
-def extract_pairs(response_text: str) -> list[tuple[str, str]]:
+def extract_pairs(response_text: str, ordered_questions: list[tuple[int, str]]) -> list[tuple[str, str]]:
+    cleaned = str(response_text or "")
+    cleaned = cleaned.replace('"""', " ")
+    cleaned = re.sub(r"\*\*(Question:\s*.+?)\*\*", r"\1", cleaned)
+    cleaned = re.sub(r"^\s*---\s*$", "", cleaned, flags=re.MULTILINE)
+    answers = [clean_answer(answer) for answer in ANSWER_ONLY_PATTERN.findall(cleaned)]
+    if len(answers) == len(ordered_questions):
+        return [(normalize_question(question_text), answer) for (_, question_text), answer in zip(ordered_questions, answers)]
     pairs: list[tuple[str, str]] = []
-    for question, answer in QA_PATTERN.findall(response_text or ""):
-        pairs.append((normalize_question(question), clean_answer(answer)))
+    matches = list(QUESTION_HEADER_PATTERN.finditer(cleaned))
+    for index, match in enumerate(matches):
+        block_start = match.start()
+        block_end = matches[index + 1].start() if index + 1 < len(matches) else len(cleaned)
+        block = cleaned[block_start:block_end]
+        header_question = match.group(2).strip().strip('"').strip("'")
+        if not header_question:
+            inline = INLINE_QUESTION_PATTERN.search(block[match.end() - block_start :])
+            if inline:
+                header_question = inline.group(1).strip().strip('"').strip("'")
+        answer_match = ANSWER_IN_BLOCK_PATTERN.search(block)
+        if not header_question or not answer_match:
+            continue
+        pairs.append((normalize_question(header_question), clean_answer(answer_match.group(1))))
     return pairs
 
 
 def load_metadata(path: Path) -> pd.DataFrame:
     df = pd.read_excel(path, dtype=str, keep_default_na=False)
-    required = ["PMID", "QID", "Question", "Type", "Category"]
+    required = ["QID", "Question", "Type", "Category"]
     missing = [column for column in required if column not in df.columns]
     if missing:
         raise ValueError(f"Metadata workbook missing columns: {missing}")
     df = df[required].copy()
-    df["PMID"] = df["PMID"].apply(normalize_identifier)
     df["QID"] = df["QID"].astype(int)
     df["__question_norm"] = df["Question"].apply(normalize_question)
+    df = df.drop_duplicates(subset=["QID", "__question_norm"], keep="first").sort_values("QID")
     return df
+
+
+def load_prompt_questions(path: Path) -> dict[str, tuple[int, str]]:
+    question_map: dict[str, tuple[int, str]] = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        match = PROMPT_QUESTION_PATTERN.match(line.strip())
+        if not match:
+            continue
+        qid = int(match.group(1))
+        question = match.group(2).strip()
+        question_map[normalize_question(question)] = (qid, question)
+    if not question_map:
+        raise ValueError(f"No canonical questions found in prompt template: {path}")
+    return question_map
 
 
 def main() -> int:
     args = parse_args()
     metadata = load_metadata(args.metadata_xlsx)
+    prompt_questions = load_prompt_questions(args.prompt_template)
+    ordered_prompt_questions = sorted(prompt_questions.values(), key=lambda item: item[0])
+    metadata_by_qid = {
+        int(row["QID"]): {
+            "Type": row["Type"],
+            "Category": row["Category"],
+        }
+        for _, row in metadata.drop_duplicates(subset=["QID"], keep="first").iterrows()
+    }
     parsed_rows: list[dict[str, str | int]] = []
 
     with args.responses_jsonl.open("r", encoding="utf-8") as infile:
@@ -79,27 +136,23 @@ def main() -> int:
                 continue
             record = json.loads(line)
             pmid = normalize_identifier(record.get("pmid", ""))
-            qmap = {}
-            for q_norm, answer in extract_pairs(record.get("response", "")):
-                qmap.setdefault(q_norm, []).append(answer)
-
-            if not qmap:
+            pairs = extract_pairs(record.get("response", ""), ordered_prompt_questions)
+            if not pairs:
                 continue
-
-            pmid_rows = metadata[metadata["PMID"] == pmid].sort_values("QID")
-            for _, row in pmid_rows.iterrows():
-                q_norm = row["__question_norm"]
-                answers = qmap.get(q_norm, [])
-                if not answers:
+            for q_norm, answer in pairs:
+                prompt_match = prompt_questions.get(q_norm)
+                if not prompt_match:
                     continue
+                qid, question_text = prompt_match
+                meta = metadata_by_qid.get(qid, {})
                 parsed_rows.append(
                     {
                         "PMID": pmid,
-                        "QID": int(row["QID"]),
-                        "Question": row["Question"],
-                        "Type": row["Type"],
-                        "Category": row["Category"],
-                        "Answer": answers.pop(0),
+                        "QID": qid,
+                        "Question": question_text,
+                        "Type": meta.get("Type", ""),
+                        "Category": meta.get("Category", ""),
+                        "Answer": answer,
                     }
                 )
 

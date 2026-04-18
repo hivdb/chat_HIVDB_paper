@@ -18,6 +18,17 @@ The retrieval settings are recorded in:
 
 The manifest stores repo-relative paths so it can be committed without exposing local machine paths.
 
+Evaluation outputs now live under:
+- `rag/eval/results_new30`
+- `rag/eval/results_original120`
+- `rag/eval/results_full150`
+- `rag/eval/figures_new30`
+- `rag/eval/figures_original120`
+- `rag/eval/figures_full150`
+
+Verification-only artifacts live under:
+- `rag/verification`
+
 Current defaults:
 - retrieved passages per question: `top_k = 5`
 - chunk target size: `chunk_chars = 1800`
@@ -126,6 +137,44 @@ If you want full 150-paper columns, first combine original120 and new30 parsed o
 python rag/04_audit_list_retrievals.py
 ```
 
-This writes `rag/list_retrieval_audit.csv`, comparing BM25 and semantic pooled evidence on hard list questions (`Q9`, `Q15`, `Q16`).
+This writes retrieval-audit files under `rag/verification/`, including:
+- `rag/verification/retrieval_audit_focus_q9_q15_q16.csv`
+- `rag/verification/retrieval_audit_all.csv`
 
 The audit reuses the normalization and list-matching logic from `eval/normalize.py`, so ARV aliases and gene synonyms are scored consistently with the downstream evaluation code.
+
+## 6. Validate response completeness
+
+Response-validation summaries are also kept under `rag/verification/`:
+- `rag/verification/response_validation_bm25_new30.csv`
+- `rag/verification/response_validation_bm25_original120.csv`
+- `rag/verification/response_validation_semantic_new30.csv`
+- `rag/verification/response_validation_semantic_original120.csv`
+
+These are verification artifacts only. They are useful for checking that each response JSONL contains one complete 16-answer response per PMID, but they are not part of the main prompt / response / eval workflow.
+
+## 7. Why The Current `full150` Bar Chart Differs From The Manuscript Figure
+
+The current RAG-era `full150` chart:
+- `rag/eval/figures_full150/full150-bar-chart.png`
+
+is not expected to be numerically identical to the manuscript-era chart:
+- `eval/figures/full150-bar-chart.png`
+
+There are three concrete reasons.
+
+1. A small number of legacy model rows now score differently because list normalization was improved.
+   The scoring rule itself did not become more lenient. Instead, sentence-form list answers such as `Participants received integrase inhibitors (INSTIs) and nucleos(t)ide reverse transcriptase inhibitors (NRTIs)` now normalize to compact list forms like `INSTI, NRTI`, which lets them be treated consistently with terse list answers that were already receiving partial-match credit. This caused a small number of baseline rows to flip from incorrect to correct.
+
+2. The bar-chart significance labels come from paired Wilcoxon tests over per-QID metrics, not from the aggregated Fisher table.
+   In `eval/evaluation.py`, the figure significance map is built from the adjusted Wilcoxon p-values in the `Paired Tests` sheet of `statistical_tests_*.xlsx`. So the p-value labels shown above the bars are driven by the per-question paired tests, not by `evaluation_metrics_fisher_*.xlsx`.
+
+3. In the current evaluation run, Benjamini-Hochberg adjustment is performed over a larger comparison set because RAG targets are present.
+   `eval/evaluation.py` now builds `FAMILY_COMPARISONS` using `config.FAMILY_OPTIONAL_TARGETS`, which adds `BM25 RAG` and `Semantic RAG` targets for each family when present. The plotting code still draws brackets only for the original `FT`, `QSP`, and `FT+QSP` comparisons, but the adjusted p-values being plotted were computed in the expanded comparison universe. As a result, even when a raw Wilcoxon p-value stayed the same or moved only slightly, its adjusted p-value could change more noticeably.
+
+So the current `rag/eval/figures_full150/full150-bar-chart.png` differs from the manuscript-era figure because it reflects:
+- the updated normalization fixes,
+- recomputed per-QID paired tests,
+- and multiple-testing correction in the presence of the extra RAG comparisons.
+
+If manuscript-exact p-values are needed for the non-RAG models, the figure should be regenerated with BH adjustment restricted to the original three targets per family (`FT`, `QSP`, `FT+QSP`) and without the RAG rows participating in the correction set.

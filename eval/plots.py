@@ -27,6 +27,10 @@ AXIS_TICK_SIZE = 18
 BAR_LABEL_SIZE = 20
 ANNOTATION_FONT_SIZE = 12
 FAMILY_LABEL_SIZE = 18
+X_TICK_PAD = 12
+FAMILY_LABEL_Y = -0.62
+BOTTOM_MARGIN_VERTICAL = 0.12
+BOTTOM_MARGIN_COMBINED = 0.14
 
 MAX_Y_LIM = 100  # cap at 100% since metrics are proportions
 
@@ -185,7 +189,7 @@ def _annotate_families(ax, family_bounds: dict[str, tuple[float, float]]) -> Non
         center = (start + end) / 2
         ax.text(
             center,
-            -0.45,
+            FAMILY_LABEL_Y,
             family,
             ha="center",
             va="top",
@@ -398,7 +402,7 @@ def plot_metric_panels(
         ax.set_ylim(0, y_limit)
         ax.set_ylabel("Percentage", fontsize=AXIS_LABEL_SIZE)
         ax.tick_params(axis="both", labelsize=AXIS_TICK_SIZE)
-        ax.tick_params(axis="x", pad=12)
+        ax.tick_params(axis="x", pad=X_TICK_PAD)
         ax.set_xticks(positions)
         ax.set_xticklabels(variant_labels, rotation=25, ha="right", fontsize=AXIS_TICK_SIZE)
         ax.grid(axis="y", linestyle="--", alpha=0.3)
@@ -418,7 +422,7 @@ def plot_metric_panels(
             gridspec_kw={"hspace": 0.6},
         )
         for ax in axes:
-            ax.tick_params(axis="x", pad=12)
+            ax.tick_params(axis="x", pad=X_TICK_PAD)
         bar_width = 0.8
         if len(METRIC_COLUMNS) == 1:
             axes = [axes]
@@ -470,7 +474,9 @@ def plot_metric_panels(
     _annotate_families(axes[-1], family_bounds)
     fig.suptitle(title, fontsize=TITLE_FONT_SIZE)
     if layout == "combined":
-        fig.tight_layout()
+        fig.tight_layout(rect=(0, BOTTOM_MARGIN_COMBINED, 1, 0.97))
+    else:
+        fig.subplots_adjust(bottom=BOTTOM_MARGIN_VERTICAL)
     fig.savefig(output_path, dpi=300)
     plt.close(fig)
 
