@@ -38,6 +38,7 @@ SOURCE_LLAMA_70B_FT_150 = "./csv/llama-70b/llama-3.1-70B-FT 150_parsed.csv"
 SOURCE_LLAMA_70B_FT_200 = "./csv/llama-70b/llama-3.1-70B-FT 200_parsed.csv"
 SOURCE_LLAMA_70B_FT = "./csv/llama-70b/llama-3.1-70B-FT_parsed.csv"
 SOURCE_LLAMA_70B_FT_PV1 = "./csv/llama-70b/llama-3.1-70B-FT-PV1_parsed.csv"
+SOURCE_LLAMA_70B_R8 = "./csv/llama-70b/llama-3.1-70B-FT_R8_parsed.csv"
 SOURCE_LLAMA_70B_R16 = "./csv/llama-70b/llama-3.1-70B-FT_R16_parsed.csv"
 SOURCE_LLAMA_70B_R32 = "./csv/llama-70b/llama-3.1-70B-FT_R32_parsed.csv"
 
@@ -50,6 +51,7 @@ SOURCE_LLAMA_8B = "./csv/llama-8b/llama-3.1-8B-base_parsed.csv"
 SOURCE_LLAMA_8B_FT = "./csv/llama-8b/llama-3.1-8B-FT_parsed.csv"
 SOURCE_LLAMA_8B_PV1 = "./csv/llama-8b/llama-3.1-8B-PV1_parsed.csv"
 SOURCE_LLAMA_8B_FT_PV1 = "./csv/llama-8b/llama-3.1-8B-FT-PV1_parsed.csv"
+SOURCE_LLAMA_8B_R8 = "./csv/llama-8b/llama-3.1-8B-FT_R8_parsed.csv"
 SOURCE_LLAMA_8B_R16 = "./csv/llama-8b/llama-3.1-8B-FT_R16_parsed.csv"
 SOURCE_LLAMA_8B_R32 = "./csv/llama-8b/llama-3.1-8B-FT_R32_parsed.csv"
 
@@ -150,6 +152,9 @@ def main() -> None:
     llama_8b_ft_pv1 = _load_unique(
         SOURCE_LLAMA_8B_FT_PV1, usecols=MERGE_KEYS + ["Answer"]
     ).rename(columns={"Answer": "llama-3.1-8B-FT PV1"})
+    llama_8b_r8 = _load_unique(
+        SOURCE_LLAMA_8B_R8, usecols=MERGE_KEYS + ["Answer"]
+    ).rename(columns={"Answer": "llama_8B_R8"})
     llama_8b_r16 = _load_unique(
         SOURCE_LLAMA_8B_R16, usecols=MERGE_KEYS + ["Answer"]
     ).rename(columns={"Answer": "llama_8B_R16"})
@@ -178,6 +183,9 @@ def main() -> None:
     llama_70b_ft_pv1 = _load_unique(
         SOURCE_LLAMA_70B_FT_PV1, usecols=MERGE_KEYS + ["Answer"]
     ).rename(columns={"Answer": "llama-3.1-70B-FT PV1"})
+    llama_70b_r8 = _load_unique(
+        SOURCE_LLAMA_70B_R8, usecols=MERGE_KEYS + ["Answer"]
+    ).rename(columns={"Answer": "llama_70B_R8"})
     llama_70b_r16 = _load_unique(
         SOURCE_LLAMA_70B_R16, usecols=MERGE_KEYS + ["Answer"]
     ).rename(columns={"Answer": "llama_70B_R16"})
@@ -224,6 +232,7 @@ def main() -> None:
     merged = merged.merge(llama_8b_ft_source, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b_pv1, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b_ft_pv1, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_8b_r8, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b_r16, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_8b_r32, on=MERGE_KEYS, how="left")
 
@@ -235,6 +244,7 @@ def main() -> None:
     merged = merged.merge(llama_70b_ft_source, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_pv1, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_ft_pv1, on=MERGE_KEYS, how="left")
+    merged = merged.merge(llama_70b_r8, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_r16, on=MERGE_KEYS, how="left")
     merged = merged.merge(llama_70b_r32, on=MERGE_KEYS, how="left")
 
