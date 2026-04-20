@@ -14,9 +14,11 @@ ROOT = QLORA_DIR.parents[1]
 DEFAULT_MERGED_PATH = ROOT / "advanced-prompting/csv/merged_answers_full_150.xlsx"
 TARGET_MODELS = [
     "Llama3.1-70B FT",
+    "Llama3.1-70B R8",
     "Llama3.1-70B R16",
     "Llama3.1-70B R32",
     "Llama3.1-8B FT",
+    "Llama3.1-8B R8",
     "Llama3.1-8B R16",
     "Llama3.1-8B R32",
 ]
@@ -28,9 +30,27 @@ STATS_XLSX = QLORA_DIR / "statistical_tests_full150.xlsx"
 CORRECT_CSV = QLORA_DIR / "merged_answers_with_correct.csv"
 CORRECT_XLSX = QLORA_DIR / "merged_answers_with_correct.xlsx"
 BAR_CHART = QLORA_DIR / "full150-bar-chart.png"
+BAR_CHART_MODELS = [
+    "Llama3.1-70B R8",
+    "Llama3.1-70B R16",
+    "Llama3.1-70B FT",
+    "Llama3.1-70B R32",
+    "Llama3.1-8B R8",
+    "Llama3.1-8B R16",
+    "Llama3.1-8B FT",
+    "Llama3.1-8B R32",
+]
+BAR_CHART_LABELS = {
+    "Llama3.1-70B FT": "FT(R25)",
+    "Llama3.1-8B FT": "FT(R25)",
+}
 LOCAL_COLUMN_RENAMES = {
+    "llama_70B_R8": "Llama3.1-70B R8",
+    "llama3.1-70B R8": "Llama3.1-70B R8",
     "llama3.1-70B R16": "Llama3.1-70B R16",
     "llama3.1-70B R32": "Llama3.1-70B R32",
+    "llama_8B_R8": "Llama3.1-8B R8",
+    "llama3.1-8B R8": "Llama3.1-8B R8",
     "llama3.1-8B R16": "Llama3.1-8B R16",
     "llama3.1-8B R32": "Llama3.1-8B R32",
 }
@@ -207,11 +227,11 @@ def build_statistical_tests(qid_df: pd.DataFrame, wilcoxon_only: bool = False) -
     comparisons = {
         "Llama3.1-70B": {
             "base": "Llama3.1-70B FT",
-            "targets": ["Llama3.1-70B R16", "Llama3.1-70B R32"],
+            "targets": ["Llama3.1-70B R8", "Llama3.1-70B R16", "Llama3.1-70B R32"],
         },
         "Llama3.1-8B": {
             "base": "Llama3.1-8B FT",
-            "targets": ["Llama3.1-8B R16", "Llama3.1-8B R32"],
+            "targets": ["Llama3.1-8B R8", "Llama3.1-8B R16", "Llama3.1-8B R32"],
         },
     }
     stats_df, _, _ = stat_utils.compute_pairwise_tests(
@@ -253,8 +273,15 @@ def main() -> int:
     stats_df.to_excel(STATS_XLSX, index=False)
     correct_df.to_csv(CORRECT_CSV, index=False, encoding="utf-8-sig")
     correct_df.to_excel(CORRECT_XLSX, index=False)
+    bar_chart_df = metrics_df[metrics_df["model"].isin(BAR_CHART_MODELS)].copy()
+    bar_chart_df["display_order"] = bar_chart_df["model"].map(
+        {model: idx for idx, model in enumerate(BAR_CHART_MODELS)}
+    )
+    bar_chart_df["display_label"] = bar_chart_df["model"].map(
+        lambda model: BAR_CHART_LABELS.get(model, model.rsplit(" ", 1)[-1])
+    )
     plot_metric_panels(
-        metrics_df,
+        bar_chart_df,
         qid_df=None,
         title="Full 150",
         output_path=BAR_CHART,
