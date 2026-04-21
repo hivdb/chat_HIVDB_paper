@@ -104,10 +104,27 @@ def _canonical_numeric(lowered: str, raw: str) -> str | None:
 
 
 def _canonical_list(lowered: str, raw: str) -> str:
-    tokens = _list_tokens(lowered)
-    raw_lower = raw.lower()
+    raw_lower = _strip_list_scaffolding(raw.lower())
+    lowered = _strip_list_scaffolding(lowered)
+    tokens = _list_tokens(raw_lower or lowered)
     embedded_tokens: list[str] = []
+    inhibitor_context = "inhibitor" in raw_lower or "inhibitors" in raw_lower
     for phrase, replacement in EMBEDDED_MAP.items():
+        if inhibitor_context and phrase in {
+            "protease",
+            "protease gene",
+            "protease region",
+            "reverse transcriptase",
+            "reverse transcriptase gene",
+            "reverse transcriptase region",
+            "rt gene",
+            "rt region",
+            "integrase",
+            "integrase gene",
+            "integrase genes",
+            "integrase region",
+        }:
+            continue
         if _contains_phrase(raw_lower, phrase) and replacement:
             for part in replacement.split("|"):
                 embedded_tokens.extend(_list_tokens(part))
@@ -136,6 +153,35 @@ def _canonical_list(lowered: str, raw: str) -> str:
 
 _expansion_cache: dict[tuple[str, bool], list[str]] = {}
 _OPTIONAL_BOOSTERS = {"ritonavir", "rtv", "cobicistat", "cobi", "c"}
+_LIST_SCAFFOLD_PREFIXES = (
+    r"^(?:the\s+)?drug classes received included\s+",
+    r"^(?:the\s+)?drugs received included\s+",
+    r"^(?:the\s+)?drugs received were\s+",
+    r"^(?:the\s+)?individuals received\s+",
+    r"^(?:the\s+)?participants received\s+",
+    r"^(?:the\s+)?types? of samples sequenced were\s+",
+    r"^(?:the\s+)?sequenced hiv genes were\s+",
+    r"^(?:the\s+)?sequenced samples were obtained from\s+",
+)
+_LIST_SCAFFOLD_SUFFIXES = (
+    r"\s*[\.\,]?\s*feel free to ask.*$",
+    r"\s*[\.\,]?\s*this set of structured responses.*$",
+    r"\s*\(?often referred to as [^\)]*\)?",
+    r"\s*\(?implied\)?",
+)
+
+
+def _strip_list_scaffolding(text: str) -> str:
+    normalized = text
+    normalized = normalized.replace("nucleos(t)ide", "nucleoside")
+    normalized = normalized.replace("nucleos(t)ides", "nucleosides")
+    normalized = normalized.replace("non-nucleoside", "non nucleoside")
+    normalized = normalized.replace("nonnucleoside", "non nucleoside")
+    for pattern in _LIST_SCAFFOLD_PREFIXES:
+        normalized = re.sub(pattern, "", normalized, flags=re.IGNORECASE)
+    for pattern in _LIST_SCAFFOLD_SUFFIXES:
+        normalized = re.sub(pattern, "", normalized, flags=re.IGNORECASE)
+    return normalized.strip()
 
 
 def _expand_token(token: str, for_match: bool = False) -> List[str]:
@@ -145,7 +191,8 @@ def _expand_token(token: str, for_match: bool = False) -> List[str]:
     cached = _expansion_cache.get(cache_key)
     if cached is not None:
         return cached
-    base = " ".join(NON_ALPHANUM.sub(" ", token).split())
+    base = _strip_list_scaffolding(token)
+    base = " ".join(NON_ALPHANUM.sub(" ", base).split())
     base = re.sub(r"^primarily\s+", "", base).replace("primarily ", "")
     range_tokens: list[str] = []
     range_match = re.fullmatch(r"([a-z0-9]+)\s+to\s+([a-z0-9]+)", base)
@@ -199,6 +246,31 @@ def _expand_token(token: str, for_match: bool = False) -> List[str]:
         if not stripped or stripped in _OPTIONAL_BOOSTERS:
             continue
         normalized_tokens.append(stripped)
+    if "insti" in normalized_tokens:
+        normalized_tokens = [
+            token for token in normalized_tokens
+            if token not in {"in", "integrase", "inhibitor", "inhibitors"}
+        ]
+    if "pi" in normalized_tokens:
+        normalized_tokens = [
+            token for token in normalized_tokens
+            if token not in {"pr", "protease", "inhibitor", "inhibitors"}
+        ]
+    if "nrti" in normalized_tokens or "nnrti" in normalized_tokens:
+        normalized_tokens = [
+            token for token in normalized_tokens
+            if token not in {"reverse", "rt", "transcriptase", "inhibitor", "inhibitors"}
+        ]
+    if "pr" in normalized_tokens:
+        normalized_tokens = [
+            token for token in normalized_tokens
+            if token not in {"protease"}
+        ]
+    if "rt" in normalized_tokens:
+        normalized_tokens = [
+            token for token in normalized_tokens
+            if token not in {"reverse", "transcriptase"}
+        ]
     result = [t for t in normalized_tokens if t]
     _expansion_cache[cache_key] = result
     return result

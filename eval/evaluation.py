@@ -30,17 +30,35 @@ from openpyxl.styles import PatternFill
 FAMILY_COMPARISONS = {
     "GPT-4o": {
         "base": "GPT-4o base",
-        "targets": ["GPT-4o FT", "GPT-4o FT+QSP", "GPT-4o QSP"],
+        "targets": ["GPT-4o FT", "GPT-4o FT+QSP", "GPT-4o QSP", *config.FAMILY_OPTIONAL_TARGETS.get("GPT-4o", [])],
     },
     "Llama3.1-70B": {
         "base": "Llama3.1-70B base",
-        "targets": ["Llama3.1-70B FT", "Llama3.1-70B FT+QSP", "Llama3.1-70B QSP"],
+        "targets": ["Llama3.1-70B FT", "Llama3.1-70B FT+QSP", "Llama3.1-70B QSP", *config.FAMILY_OPTIONAL_TARGETS.get("Llama3.1-70B", [])],
     },
     "Llama3.1-8B": {
         "base": "Llama3.1-8B base",
-        "targets": ["Llama3.1-8B FT", "Llama3.1-8B FT+QSP", "Llama3.1-8B QSP"],
+        "targets": ["Llama3.1-8B FT", "Llama3.1-8B FT+QSP", "Llama3.1-8B QSP", *config.FAMILY_OPTIONAL_TARGETS.get("Llama3.1-8B", [])],
     },
 }
+
+
+def _model_has_values(df: pd.DataFrame, column: str) -> bool:
+    return column in df.columns and df[column].astype(str).str.strip().ne("").any()
+
+
+def _scenario_models(df: pd.DataFrame, scenario: dict) -> list[str]:
+    models: list[str] = []
+    for model in scenario["models"]:
+        if _model_has_values(df, model) and model not in models:
+            models.append(model)
+    for family, optional_models in getattr(config, "FAMILY_OPTIONAL_TARGETS", {}).items():
+        if not any(model.startswith(family) for model in scenario["models"]):
+            continue
+        for model in optional_models:
+            if _model_has_values(df, model) and model not in models:
+                models.append(model)
+    return models
 
 
 def build_qid_metrics(
@@ -103,32 +121,37 @@ def run(limit: int | None) -> Tuple[
     scenario_results: dict[str, pd.DataFrame] = {}
     scenario_qid_frames: dict[str, pd.DataFrame] = {}
     for scenario in config.SCENARIOS:
+        active_models = _scenario_models(df, scenario)
+        if not active_models:
+            continue
+        active_scenario = dict(scenario)
+        active_scenario["models"] = active_models
         scenario_df = df
         if filter_type := scenario.get("filter_type"):
             scenario_df = df[df["Type"] == filter_type].copy()
         if scenario_df.empty:
             continue
 
-        missing_models = [model for model in scenario["models"] if model not in df.columns]
+        missing_models = [model for model in active_scenario["models"] if model not in df.columns]
         if missing_models:
             logging.warning("Scenario '%s' missing models: %s", scenario["title"], ", ".join(missing_models))
 
-        allow_partial = scenario.get("allow_partial_list", False)
-        detail_type_filter = scenario.get("detail_types")
+        allow_partial = active_scenario.get("allow_partial_list", False)
+        detail_type_filter = active_scenario.get("detail_types")
         detail_types = set(detail_type_filter) if detail_type_filter else None
-        norm_lookup = {col: ensure_norm(df, col, cache) for col in [config.REF_COL, *scenario["models"]] if col in df.columns}
+        norm_lookup = {col: ensure_norm(df, col, cache) for col in [config.REF_COL, *active_scenario["models"]] if col in df.columns}
         subset = evaluate_group(
             scenario_df,
-            scenario["models"],
+            active_scenario["models"],
             config.REF_COL,
             norm_lookup,
             allow_partial_list=allow_partial,
         )
         if subset.empty:
             continue
-        scenario_id = scenario.get("scenario_id")
-        if scenario.get("compare_to"):
-            base_id = scenario.get("compare_to")
+        scenario_id = active_scenario.get("scenario_id")
+        if active_scenario.get("compare_to"):
+            base_id = active_scenario.get("compare_to")
             base_subset = scenario_results.get(base_id)
             if base_subset is None:
                 logging.warning("Scenario '%s' requires compare_to '%s', which is missing.", scenario["title"], base_id)
@@ -145,18 +168,18 @@ def run(limit: int | None) -> Tuple[
             subset = merged
         if scenario_id:
             scenario_results[scenario_id] = subset.copy()
-        if scenario.get("include_details", True):
+        if active_scenario.get("include_details", True):
             detail_rows.extend(
                 build_detail_rows(
                     scenario_df,
-                    scenario,
+                    active_scenario,
                     norm_lookup,
                     detail_types,
                 )
             )
         scenario_qid = build_qid_metrics(
             scenario_df,
-            scenario,
+            active_scenario,
             norm_lookup,
         )
         qid_metrics_rows.extend(scenario_qid)
@@ -899,6 +922,12 @@ def main() -> int:
     parser.add_argument("--gpt5-path", type=Path, default=None, help="Override GPT-5 responses path.")
     parser.add_argument("--output-dir", type=Path, default=None, help="Directory for metrics/results outputs.")
     parser.add_argument("--figures-dir", type=Path, default=None, help="Directory for figure outputs.")
+    parser.add_argument(
+        "--per-metric-figures-dir",
+        type=Path,
+        default=None,
+        help="Optional directory for separate one-metric summary figures.",
+    )
     parser.add_argument("--output-suffix", type=str, default="", help="Suffix appended to output filenames (e.g., new30).")
     args = parser.parse_args()
 
@@ -1077,6 +1106,7 @@ def main() -> int:
             comparisons=FAMILY_COMPARISONS,
             base_name=base_name,
             display_title=full_title,
+            metric_output_dir=args.per_metric_figures_dir,
         )
     return 0
 

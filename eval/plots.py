@@ -27,6 +27,14 @@ AXIS_TICK_SIZE = 18
 BAR_LABEL_SIZE = 20
 ANNOTATION_FONT_SIZE = 12
 FAMILY_LABEL_SIZE = 18
+X_TICK_PAD = 12
+FAMILY_LABEL_Y = -0.62
+BOTTOM_MARGIN_VERTICAL = 0.16
+BOTTOM_MARGIN_COMBINED = 0.16
+MODEL_SPACING = 1.15
+FAMILY_GAP = 2.6
+LABEL_ROTATION = 30
+WIDTH_PER_X_UNIT = 0.78
 
 MAX_Y_LIM = 100  # cap at 100% since metrics are proportions
 
@@ -154,16 +162,15 @@ def _ordered_models(models: list[str]) -> list[str]:
 def _group_positions(models: list[str]) -> tuple[list[float], dict[str, tuple[float, float]]]:
     positions: list[float] = []
     family_ranges: dict[str, list[float]] = {}
-    gap = 2.0  # extra breathing room between families and labels
     x = 0.0
     previous_family = None
     for model in models:
         family = _family_from_label(model)
         if previous_family is not None and family != previous_family:
-            x += gap
+            x += FAMILY_GAP
         positions.append(x)
         family_ranges.setdefault(family, []).append(x)
-        x += 1.0
+        x += MODEL_SPACING
         previous_family = family
     family_bounds = {fam: (min(pos_list), max(pos_list)) for fam, pos_list in family_ranges.items()}
     return positions, family_bounds
@@ -185,7 +192,7 @@ def _annotate_families(ax, family_bounds: dict[str, tuple[float, float]]) -> Non
         center = (start + end) / 2
         ax.text(
             center,
-            -0.45,
+            FAMILY_LABEL_Y,
             family,
             ha="center",
             va="top",
@@ -218,12 +225,79 @@ def _annotate_significance(
     offset_shift: float = 0.0,
     metric_values: dict[str, float] | None = None,
     y_max_override: float | None = None,
+    annotation_above_axes: bool = False,
 ) -> None:
     if not significance:
         return
     metric_map = significance.get(metric)
     if not metric_map:
         return
+    if annotation_above_axes:
+        base_offset = 1.01
+        bracket_height = 0.025
+        text_padding = 0.008
+        offset_step = 0.075
+        family_offsets: dict[str, float] = {}
+        comparison_map = comparisons or FAMILY_COMPARISONS
+        transform = ax.get_xaxis_transform()
+        for family, mapping in comparison_map.items():
+            base_label = mapping["base"]
+            base_x = pos_lookup.get(base_label)
+            base_val = None if metric_values is None else metric_values.get(base_label)
+            if base_x is None:
+                continue
+            target_rows: list[tuple[float, str, float, str]] = []
+            for target in mapping["targets"]:
+                target_x = pos_lookup.get(target)
+                if target_x is None:
+                    continue
+                target_suffix = target.replace(f"{family} ", "")
+                p_value = metric_map.get((family, target_suffix))
+                if p_value is None:
+                    continue
+                if metric_values is not None:
+                    target_val = metric_values.get(target)
+                    if base_val is not None and target_val is not None and target_val < base_val:
+                        continue
+                distance = abs(target_x - base_x)
+                target_rows.append((distance, target, target_x, target_suffix))
+            if not target_rows:
+                continue
+            target_rows.sort(key=lambda item: item[0])
+            offset = family_offsets.get(family, base_offset)
+            for _, target, target_x, target_suffix in target_rows:
+                p_value = metric_map.get((family, target_suffix))
+                if p_value is None or float(p_value) >= 0.05:
+                    continue
+                if p_value < 0.001:
+                    label = "p<0.001"
+                elif p_value > 0.009:
+                    label = f"p={p_value:.2f}"
+                else:
+                    label = f"p={p_value:.3f}"
+                ax.plot(
+                    [base_x, base_x, target_x, target_x],
+                    [offset, offset + bracket_height, offset + bracket_height, offset],
+                    color="black",
+                    linewidth=1,
+                    clip_on=False,
+                    transform=transform,
+                )
+                text_y = offset + bracket_height + text_padding
+                ax.text(
+                    (base_x + target_x) / 2,
+                    text_y,
+                    label,
+                    ha="center",
+                    va="bottom",
+                    fontsize=ANNOTATION_FONT_SIZE,
+                    clip_on=False,
+                    transform=transform,
+                )
+                offset += offset_step
+            family_offsets[family] = offset
+        return
+
     y_max = y_max_override if y_max_override is not None else ax.get_ylim()[1]
     # Use fixed spacing constants for consistent, non-overlapping annotations
     base_margin = 18.0
@@ -335,11 +409,16 @@ def plot_metric_panels(
     significance: dict | None = None,
     comparisons: dict | None = None,
     layout: str = "vertical",
+    metric_columns: list[tuple[str, str]] | None = None,
+    bottom_margin: float | None = None,
+    top_margin: float | None = None,
+    annotation_above_axes: bool = False,
 ) -> None:
     if df.empty:
         return
+    selected_metrics = metric_columns or METRIC_COLUMNS
     df = df.copy()
-    for metric_col, _ in METRIC_COLUMNS:
+    for metric_col, _ in selected_metrics:
         if metric_col in df.columns:
             df[metric_col] = df[metric_col] * 100.0
     y_limit = MAX_Y_LIM
@@ -351,6 +430,7 @@ def plot_metric_panels(
         models = _ordered_models(df["model"].tolist())
         df = df.set_index("model").loc[models].reset_index()
     positions, family_bounds = _group_positions(models)
+    x_span = (max(positions) - min(positions)) if positions else 0.0
     pos_lookup = _position_lookup(models)
     if "color_override" in df.columns:
         colors = df["color_override"].tolist()
@@ -361,14 +441,14 @@ def plot_metric_panels(
     else:
         variant_labels = [_variant_label(model) for model in models]
     if layout == "combined":
-        width = max(18, 0.7 * len(models) * len(METRIC_COLUMNS))
+        width = max(18, WIDTH_PER_X_UNIT * max(1.0, x_span) * len(selected_metrics))
         height = 10
         fig, ax = plt.subplots(figsize=(width, height))
         total_width = 0.8
-        bar_width = total_width / len(METRIC_COLUMNS)
+        bar_width = total_width / len(selected_metrics)
         handles: list[Patch] = []
         ax.set_ylim(0, y_limit)
-        for idx, (metric, label) in enumerate(METRIC_COLUMNS):
+        for idx, (metric, label) in enumerate(selected_metrics):
             metric_color = METRIC_PALETTE.get(metric, "#4c72b0")
             offsets = [pos - total_width / 2 + bar_width * (idx + 0.5) for pos in positions]
             values = df[metric].tolist()
@@ -398,34 +478,34 @@ def plot_metric_panels(
         ax.set_ylim(0, y_limit)
         ax.set_ylabel("Percentage", fontsize=AXIS_LABEL_SIZE)
         ax.tick_params(axis="both", labelsize=AXIS_TICK_SIZE)
-        ax.tick_params(axis="x", pad=12)
+        ax.tick_params(axis="x", pad=X_TICK_PAD)
         ax.set_xticks(positions)
-        ax.set_xticklabels(variant_labels, rotation=25, ha="right", fontsize=AXIS_TICK_SIZE)
+        ax.set_xticklabels(variant_labels, rotation=LABEL_ROTATION, ha="right", fontsize=AXIS_TICK_SIZE)
         ax.grid(axis="y", linestyle="--", alpha=0.3)
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
         ax.legend(handles=handles, fontsize=AXIS_TICK_SIZE, frameon=False)
         axes = [ax]
     else:
-        width = max(14, 0.7 * len(models))
-        height = 16
+        width = max(14, WIDTH_PER_X_UNIT * max(1.0, x_span))
+        height = 7 if len(selected_metrics) == 1 else 16
         # hspace is a fraction of the average axis height; 0.4 ~= 40% gap between stacked plots.
         fig, axes = plt.subplots(
-            len(METRIC_COLUMNS),
+            len(selected_metrics),
             1,
             figsize=(width, height),
             sharex=True,
             gridspec_kw={"hspace": 0.6},
         )
-        for ax in axes:
-            ax.tick_params(axis="x", pad=12)
-        bar_width = 0.8
-        if len(METRIC_COLUMNS) == 1:
+        if len(selected_metrics) == 1:
             axes = [axes]
-        for ax, (metric, label) in zip(axes, METRIC_COLUMNS):
+        for ax in axes:
+            ax.tick_params(axis="x", pad=X_TICK_PAD)
+        bar_width = 0.8
+        for ax, (metric, label) in zip(axes, selected_metrics):
             values = df[metric].tolist()
             metric_map = significance.get(metric) if significance else None
-            metric_headroom = 50.0 if metric_map else 0.0
+            metric_headroom = 50.0 if metric_map and not annotation_above_axes else 0.0
             y_limit_for_metric = max(y_limit, max(values, default=0) + metric_headroom)
             # Shade base/FT/QSP/FT+QSP groups differently when style_group present
             if "style_group" in df.columns:
@@ -438,14 +518,14 @@ def plot_metric_panels(
             else:
                 bar_colors = colors
             bars = ax.bar(positions, values, color=bar_colors, width=bar_width)
-            ax.set_ylim(0, y_limit)
+            ax.set_ylim(0, y_limit_for_metric)
             ax.set_ylabel(f"{label} (%)", fontsize=AXIS_LABEL_SIZE)
             ax.tick_params(axis="both", labelsize=AXIS_TICK_SIZE)
             ax.grid(axis="y", linestyle="--", alpha=0.3)
             ax.spines["top"].set_visible(False)
             ax.spines["right"].set_visible(False)
             for bar, value in zip(bars, values):
-                label_y = min(y_limit - 1.0, value + 4.0)
+                label_y = min(y_limit_for_metric - 1.0, value + 4.0)
                 ax.text(
                     bar.get_x() + bar.get_width() / 2,
                     label_y,
@@ -464,13 +544,22 @@ def plot_metric_panels(
                 comparisons,
                 metric_values=value_map,
                 y_max_override=y_limit_for_metric,
+                annotation_above_axes=annotation_above_axes,
             )
         axes[-1].set_xticks(positions)
-        axes[-1].set_xticklabels(variant_labels, rotation=25, ha="right", fontsize=AXIS_TICK_SIZE)
+        axes[-1].set_xticklabels(variant_labels, rotation=LABEL_ROTATION, ha="right", fontsize=AXIS_TICK_SIZE)
     _annotate_families(axes[-1], family_bounds)
     fig.suptitle(title, fontsize=TITLE_FONT_SIZE)
     if layout == "combined":
-        fig.tight_layout()
+        fig.tight_layout(rect=(0, BOTTOM_MARGIN_COMBINED, 1, 0.97))
+    else:
+        if top_margin is not None:
+            fig.subplots_adjust(
+                bottom=bottom_margin if bottom_margin is not None else BOTTOM_MARGIN_VERTICAL,
+                top=top_margin,
+            )
+        else:
+            fig.subplots_adjust(bottom=bottom_margin if bottom_margin is not None else BOTTOM_MARGIN_VERTICAL)
     fig.savefig(output_path, dpi=300)
     plt.close(fig)
 
@@ -594,6 +683,7 @@ def generate_figures(
     comparisons=None,
     base_name: str | None = None,
     display_title: str | None = None,
+    metric_output_dir: Path | None = None,
 ) -> None:
     """Render accuracy bar chart and metrics table per scenario."""
     if subset.empty:
@@ -611,6 +701,25 @@ def generate_figures(
         layout="vertical",
     )
     save_table(subset, f"{title} Metrics", output_dir / f"{slug}-table.png")
+    if metric_output_dir is not None:
+        metric_output_dir.mkdir(parents=True, exist_ok=True)
+        for metric, label in METRIC_COLUMNS:
+            metric_sig = None
+            if significance and metric in significance:
+                metric_sig = {metric: significance[metric]}
+            plot_metric_panels(
+                subset,
+                qid_df=None,
+                title=title,
+                output_path=metric_output_dir / f"{slug}-{slugify(label)}.png",
+                significance=metric_sig,
+                comparisons=comparisons or FAMILY_COMPARISONS,
+                layout="vertical",
+                metric_columns=[(metric, label)],
+                bottom_margin=0.24,
+                top_margin=0.80,
+                annotation_above_axes=True,
+            )
 QID_TOPICS = {
     1: "Patient Sequences?",
     2: "In vitro Drug Susceptibility?",

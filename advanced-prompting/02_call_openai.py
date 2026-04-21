@@ -23,7 +23,7 @@ import tiktoken
 
 BASE_MODEL_NAME = "gpt-4o-mini-2024-07-18"
 RATE_LIMIT_TOKENS_PER_MINUTE = 180_000_000
-DEFAULT_COMPLETION_BUDGET = 2_000
+DEFAULT_COMPLETION_BUDGET = int(os.environ.get("PMID_MAX_OUTPUT_TOKENS", "4000"))
 MAX_WORKERS = int(os.environ.get("PMID_MAX_WORKERS", "8"))
 EXPECTED_ANSWER_COUNT = 16
 MIN_RESPONSE_TOKENS = int(os.environ.get("PMID_MIN_RESPONSE_TOKENS", "200"))
@@ -127,6 +127,12 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=Path("advanced-prompting/log"),
         help="Directory for job logs (default: advanced-prompting/log).",
+    )
+    parser.add_argument(
+        "--max-output-tokens",
+        type=int,
+        default=DEFAULT_COMPLETION_BUDGET,
+        help=f"Maximum output tokens per response (default: {DEFAULT_COMPLETION_BUDGET}).",
     )
     return parser.parse_args()
 
@@ -416,6 +422,7 @@ async def worker(
     progress: Progress,
     logger: logging.Logger,
     model_name: str,
+    max_output_tokens: int,
 ) -> None:
     while True:
         job = await queue.get()
@@ -433,7 +440,11 @@ async def worker(
         )
 
         try:
-            response = await client.responses.create(model=model_name, input=job.prompt)
+            response = await client.responses.create(
+                model=model_name,
+                input=job.prompt,
+                max_output_tokens=max_output_tokens,
+            )
             output_text = response.output_text
         except Exception as exc:  # pragma: no cover - network failures
             logger.exception(
@@ -465,6 +476,7 @@ async def process_jobs(
     logger: logging.Logger,
     api_key: str,
     model_name: str,
+    max_output_tokens: int,
 ) -> None:
     if not jobs:
         logger.info("No new PMIDs to process.")
@@ -500,6 +512,7 @@ async def process_jobs(
                 progress=progress,
                 logger=logger,
                 model_name=model_name,
+                max_output_tokens=max_output_tokens,
             )
         )
         for i in range(worker_count)
@@ -533,7 +546,7 @@ def resolve_model_name(model: str, api_key: str, logger: logging.Logger) -> str 
     return model_name
 
 
-def run_job_config(config: JobConfig, api_key: str) -> int:
+def run_job_config(config: JobConfig, api_key: str, max_output_tokens: int) -> int:
     logger = setup_logger(config.log_path, config.label)
 
     if not config.prompts_path.exists():
@@ -585,6 +598,7 @@ def run_job_config(config: JobConfig, api_key: str) -> int:
                 logger,
                 api_key,
                 model_name,
+                max_output_tokens,
             )
         )
 
@@ -617,7 +631,7 @@ def main() -> int:
 
     exit_code = 0
     for config in jobs:
-        exit_code = max(exit_code, run_job_config(config, api_key))
+        exit_code = max(exit_code, run_job_config(config, api_key, args.max_output_tokens))
     return exit_code
 
 

@@ -105,7 +105,7 @@ def compute_fisher_tests(
                 p_values = {}
                 for qid, row in pivot.iterrows():
                     counts = _contingency_counts(row, metric, base_label, target)
-                    if counts is None:
+                    if counts is None or counts[0] is None or counts[1] is None:
                         continue
                     (base_pos, base_neg, base_val), (target_pos, target_neg, target_val) = counts
                     table = np.array([[base_pos, base_neg], [target_pos, target_neg]])
