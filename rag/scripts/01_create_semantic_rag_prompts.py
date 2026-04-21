@@ -1,46 +1,42 @@
 #!/usr/bin/env python3
-"""Build per-paper BM25 RAG prompts for the HIVDB evaluation papers.
-
-This script implements the reviewer-aligned retrieval baseline:
-each paper is chunked independently, each of the 16 questions retrieves
-top-k chunks from that paper only, and the final prompt contains only the
-retrieved passages rather than the full article text.
-"""
+"""Build per-paper semantic-similarity RAG prompts for the HIVDB evaluation papers."""
 
 from __future__ import annotations
 
 import argparse
 import csv
 import json
-import math
+import os
 import re
-from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
+import numpy as np
 import pandas as pd
+from dotenv import load_dotenv
+from openai import OpenAI
 
 
-ROOT = Path(__file__).resolve().parent
-REPO_ROOT = ROOT.parent
-ADVANCED_PROMPTING_DIR = ROOT.parent / "advanced-prompting"
+SCRIPT_ROOT = Path(__file__).resolve().parent
+RAG_ROOT = SCRIPT_ROOT.parent
+REPO_ROOT = RAG_ROOT.parent
+ADVANCED_PROMPTING_DIR = REPO_ROOT / "advanced-prompting"
 DEFAULT_METADATA = ADVANCED_PROMPTING_DIR / "csv" / "ground_truth.xlsx"
-DEFAULT_PROMPT_TEMPLATE = ROOT.parent / "eval" / "gpt-5" / "gpt-5-mini-prompt.md"
-DEFAULT_OUTPUT_DIR = ROOT / "jsonl"
-DEFAULT_LOG_DIR = ROOT / "log"
-DEFAULT_MANIFEST_PATH = ROOT / "run_manifest.json"
+DEFAULT_PROMPT_TEMPLATE = REPO_ROOT / "eval" / "gpt-5" / "gpt-5-mini-prompt.md"
+DEFAULT_OUTPUT_DIR = RAG_ROOT / "jsonl"
+DEFAULT_LOG_DIR = RAG_ROOT / "csv" / "log"
+DEFAULT_MANIFEST_PATH = RAG_ROOT / "run_manifest.json"
 DEFAULT_DATASETS = {
     "original120": ADVANCED_PROMPTING_DIR / "papers",
     "new30": ADVANCED_PROMPTING_DIR / "papers_2025_30",
 }
 DEFAULT_OUTPUTS = {
-    "original120": DEFAULT_OUTPUT_DIR / "pmid_prompts_bm25_rag_original120.jsonl",
-    "new30": DEFAULT_OUTPUT_DIR / "pmid_prompts_bm25_rag_new30.jsonl",
+    "original120": DEFAULT_OUTPUT_DIR / "pmid_prompts_semantic_rag_original120.jsonl",
+    "new30": DEFAULT_OUTPUT_DIR / "pmid_prompts_semantic_rag_new30.jsonl",
 }
-
-TOKEN_RE = re.compile(r"[A-Za-z0-9]+(?:[-_/][A-Za-z0-9]+)*")
+DEFAULT_EMBEDDING_MODEL = "text-embedding-3-small"
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.*)$")
 REFERENCE_HEADING_RE = re.compile(r"^(references|bibliography)\b", re.IGNORECASE)
 
@@ -123,6 +119,17 @@ def parse_args() -> argparse.Namespace:
         help="Paragraph overlap between adjacent chunks within a section (default: 1).",
     )
     parser.add_argument(
+        "--embedding-model",
+        default=DEFAULT_EMBEDDING_MODEL,
+        help=f"Embedding model to use (default: {DEFAULT_EMBEDDING_MODEL}).",
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=64,
+        help="Embedding batch size (default: 64).",
+    )
+    parser.add_argument(
         "--log-dir",
         type=Path,
         default=DEFAULT_LOG_DIR,
@@ -137,6 +144,15 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def load_env() -> None:
+    load_dotenv(override=False)
+    advanced_env = ADVANCED_PROMPTING_DIR / ".env"
+    if advanced_env.exists():
+        load_dotenv(advanced_env, override=True)
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise RuntimeError(f"OPENAI_API_KEY not found. Checked environment and {advanced_env}.")
+
+
 def normalize_identifier(value: object) -> str:
     text = str(value).strip()
     return text[:-2] if text.endswith(".0") and text[:-2].isdigit() else text
@@ -147,10 +163,6 @@ def repo_relative(path: Path) -> str:
         return str(path.resolve().relative_to(REPO_ROOT))
     except ValueError:
         return str(path)
-
-
-def tokenize(text: str) -> list[str]:
-    return [match.group(0).lower() for match in TOKEN_RE.finditer(text)]
 
 
 def load_questions(metadata_xlsx: Path) -> list[Question]:
@@ -201,7 +213,6 @@ def collect_papers(papers_dir: Path) -> list[tuple[str, Path]]:
 
 
 def split_sections(markdown_text: str) -> list[tuple[str, list[str]]]:
-    """Split markdown into section-aware paragraph lists."""
     heading_stack: list[str] = []
     sections: list[tuple[str, list[str]]] = []
     current_paragraphs: list[str] = []
@@ -231,7 +242,6 @@ def split_sections(markdown_text: str) -> list[tuple[str, list[str]]]:
                 heading_stack.pop()
             heading_stack.append(heading_text)
             continue
-
         if not line.strip():
             if paragraph_lines:
                 current_paragraphs.append("\n".join(paragraph_lines).strip())
@@ -245,15 +255,10 @@ def split_sections(markdown_text: str) -> list[tuple[str, list[str]]]:
     return sections
 
 
-def build_chunks(
-    markdown_text: str,
-    chunk_chars: int,
-    overlap_paragraphs: int,
-) -> list[Chunk]:
+def build_chunks(markdown_text: str, chunk_chars: int, overlap_paragraphs: int) -> list[Chunk]:
     sections = split_sections(markdown_text)
     chunks: list[Chunk] = []
     chunk_id = 1
-
     for section_path, paragraphs in sections:
         if not paragraphs:
             continue
@@ -270,22 +275,13 @@ def build_chunks(
                 buffer.append(paragraph)
                 size = projected
                 idx += 1
-
             chunk_text = "\n\n".join(buffer).strip()
             if chunk_text:
-                chunks.append(
-                    Chunk(
-                        chunk_id=chunk_id,
-                        section_path=section_path,
-                        text=chunk_text,
-                    )
-                )
+                chunks.append(Chunk(chunk_id=chunk_id, section_path=section_path, text=chunk_text))
                 chunk_id += 1
-
             if idx >= len(paragraphs):
                 break
             start = max(start + 1, idx - max(0, overlap_paragraphs))
-
     return chunks
 
 
@@ -298,68 +294,6 @@ def build_base_prompt(prompt_text: str, article_text: str) -> str:
         f"PAPER ENDED\n\n"
         f"{prompt_text.strip()}"
     )
-
-
-class PaperBM25Index:
-    """Small BM25 implementation without extra retrieval dependencies."""
-
-    def __init__(self, chunks: Iterable[Chunk], k1: float = 1.5, b: float = 0.75) -> None:
-        self.chunks = list(chunks)
-        self.k1 = k1
-        self.b = b
-        self.term_freqs: list[Counter[str]] = []
-        self.doc_lengths: list[int] = []
-        self.doc_freqs: Counter[str] = Counter()
-
-        for chunk in self.chunks:
-            tokens = tokenize(chunk.text)
-            counts = Counter(tokens)
-            self.term_freqs.append(counts)
-            self.doc_lengths.append(sum(counts.values()))
-            self.doc_freqs.update(counts.keys())
-
-        self.avg_doc_length = (
-            sum(self.doc_lengths) / len(self.doc_lengths) if self.doc_lengths else 0.0
-        )
-
-    def score(self, query: str) -> list[float]:
-        query_terms = tokenize(query)
-        if not query_terms or not self.chunks:
-            return [0.0 for _ in self.chunks]
-
-        num_docs = len(self.chunks)
-        scores = [0.0 for _ in self.chunks]
-        unique_terms = Counter(query_terms)
-
-        for term, query_weight in unique_terms.items():
-            df = self.doc_freqs.get(term, 0)
-            if df == 0:
-                continue
-            idf = math.log(1.0 + (num_docs - df + 0.5) / (df + 0.5))
-            for idx, counts in enumerate(self.term_freqs):
-                tf = counts.get(term, 0)
-                if tf == 0:
-                    continue
-                doc_len = self.doc_lengths[idx] or 1
-                denom = tf + self.k1 * (
-                    1 - self.b + self.b * (doc_len / (self.avg_doc_length or 1.0))
-                )
-                scores[idx] += query_weight * idf * ((tf * (self.k1 + 1)) / denom)
-        return scores
-
-    def retrieve(self, query: str, top_k: int) -> list[tuple[Chunk, float]]:
-        scores = self.score(query)
-        ranked = sorted(
-            enumerate(scores),
-            key=lambda item: (item[1], -self.chunks[item[0]].chunk_id),
-            reverse=True,
-        )
-        selected: list[tuple[Chunk, float]] = []
-        for idx, score in ranked[:top_k]:
-            selected.append((self.chunks[idx], score))
-        if selected and any(score > 0 for _, score in selected):
-            return selected
-        return [(chunk, 0.0) for chunk in self.chunks[:top_k]]
 
 
 def aggregate_evidence_pool(
@@ -467,6 +401,7 @@ def write_retrieval_audit(rows: list[dict[str, str]], output_path: Path) -> None
                 "chunk_ids",
                 "sections",
                 "scores",
+                "embedding_model",
             ],
         )
         writer.writeheader()
@@ -489,6 +424,7 @@ def write_pool_audit(rows: list[dict[str, str]], output_path: Path) -> None:
                 "pool_chunk_count",
                 "prompt_chars",
                 "base_prompt_chars",
+                "embedding_model",
             ],
         )
         writer.writeheader()
@@ -505,8 +441,21 @@ def update_run_manifest(manifest_path: Path, entry_key: str, payload: dict[str, 
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
 
 
+def embed_texts(client: OpenAI, model: str, texts: list[str], batch_size: int) -> np.ndarray:
+    vectors: list[list[float]] = []
+    for start in range(0, len(texts), batch_size):
+        batch = texts[start : start + batch_size]
+        response = client.embeddings.create(model=model, input=batch)
+        vectors.extend(item.embedding for item in response.data)
+    arr = np.asarray(vectors, dtype=np.float32)
+    norms = np.linalg.norm(arr, axis=1, keepdims=True)
+    return arr / np.clip(norms, 1e-12, None)
+
+
 def main() -> int:
     args = parse_args()
+    load_env()
+    client = OpenAI()
     template = args.prompt_template.read_text(encoding="utf-8").strip()
     questions = load_questions(args.metadata_xlsx)
     datasets = args.dataset or list(DEFAULT_DATASETS.keys())
@@ -543,10 +492,16 @@ def main() -> int:
                 raise ValueError(f"No chunks created for PMID {pmid} from {markdown_path}")
             chunk_counts.append(len(chunks))
 
-            index = PaperBM25Index(chunks)
+            chunk_texts = [chunk.text for chunk in chunks]
+            question_texts = [question.question for question in questions]
+            chunk_embeddings = embed_texts(client, args.embedding_model, chunk_texts, args.batch_size)
+            question_embeddings = embed_texts(client, args.embedding_model, question_texts, args.batch_size)
+
             retrievals: dict[int, list[tuple[Chunk, float]]] = {}
-            for question in questions:
-                retrieved = index.retrieve(question.question, args.top_k)
+            for question, query_vec in zip(questions, question_embeddings):
+                scores = chunk_embeddings @ query_vec
+                ranked = np.argsort(scores)[::-1][: args.top_k]
+                retrieved = [(chunks[int(idx)], float(scores[int(idx)])) for idx in ranked]
                 retrievals[question.qid] = retrieved
                 retrieval_rows.append(
                     {
@@ -556,6 +511,7 @@ def main() -> int:
                         "chunk_ids": "|".join(str(chunk.chunk_id) for chunk, _ in retrieved),
                         "sections": "|".join(chunk.section_path for chunk, _ in retrieved),
                         "scores": "|".join(f"{score:.4f}" for _, score in retrieved),
+                        "embedding_model": args.embedding_model,
                     }
                 )
 
@@ -582,13 +538,14 @@ def main() -> int:
                     "pool_chunk_count": str(len(trimmed_pool)),
                     "prompt_chars": str(len(prompt)),
                     "base_prompt_chars": str(base_prompt_chars),
+                    "embedding_model": args.embedding_model,
                 }
             )
 
         write_jsonl(records, output_path)
-        audit_path = args.log_dir / f"bm25_rag_retrieval_{dataset}.csv"
+        audit_path = args.log_dir / f"semantic_rag_retrieval_{dataset}.csv"
         write_retrieval_audit(retrieval_rows, audit_path)
-        pool_audit_path = args.log_dir / f"bm25_rag_pool_{dataset}.csv"
+        pool_audit_path = args.log_dir / f"semantic_rag_pool_{dataset}.csv"
         write_pool_audit(pool_rows, pool_audit_path)
         manifest_datasets[dataset] = {
             "papers_dir": repo_relative(papers_dir),
@@ -610,10 +567,10 @@ def main() -> int:
 
     update_run_manifest(
         args.manifest_path,
-        "bm25",
+        "semantic",
         {
             "updated_at_utc": datetime.now(timezone.utc).isoformat(),
-            "retriever": "bm25",
+            "retriever": "semantic",
             "parameters": {
                 "top_k": args.top_k,
                 "chunk_chars": args.chunk_chars,
@@ -624,9 +581,9 @@ def main() -> int:
                 "shared_evidence_pool": True,
                 "pool_ranking": "hit_count_then_rrf",
                 "pool_prompt_shorter_than_base": True,
-                "tokenizer_regex": TOKEN_RE.pattern,
-                "bm25_k1": 1.5,
-                "bm25_b": 0.75,
+                "embedding_model": args.embedding_model,
+                "embedding_batch_size": args.batch_size,
+                "similarity": "cosine",
                 "prompt_template": repo_relative(args.prompt_template),
                 "metadata_xlsx": repo_relative(args.metadata_xlsx),
                 "manifest_path": repo_relative(args.manifest_path),

@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
-"""Extract structured question/answer responses from JSONL model outputs."""
+"""Extract structured question/answer responses from CSV model outputs."""
 
 from __future__ import annotations
 
 import argparse
-import json
 import re
 from pathlib import Path
 
 import pandas as pd
 
 
-ROOT = Path(__file__).resolve().parent
-ADVANCED_PROMPTING_DIR = ROOT.parent / "advanced-prompting"
+SCRIPT_ROOT = Path(__file__).resolve().parent
+RAG_ROOT = SCRIPT_ROOT.parent
+REPO_ROOT = RAG_ROOT.parent
+ADVANCED_PROMPTING_DIR = REPO_ROOT / "advanced-prompting"
 DEFAULT_METADATA = ADVANCED_PROMPTING_DIR / "csv" / "S4Table.xlsx"
-DEFAULT_PROMPT_TEMPLATE = ROOT.parent / "eval" / "gpt-5" / "gpt-5-mini-prompt.md"
+DEFAULT_PROMPT_TEMPLATE = REPO_ROOT / "eval" / "gpt-5" / "gpt-5-mini-prompt.md"
+DEFAULT_RESPONSES_CSV = RAG_ROOT / "csv" / "llama3.1" / "70B_RAG_Semantic_30.csv"
 PROMPT_QUESTION_PATTERN = re.compile(r"Question\s+(\d+):\s*(.+)")
 QUESTION_HEADER_PATTERN = re.compile(
     r'^\s*(?:["`>\-]+\s*)?(?:#+\s*)?(?:\*\*)?Question(?:\s+(\d+))?\s*:?\s*(.*?)(?:\*\*)?\s*$',
@@ -30,7 +32,6 @@ ANSWER_ONLY_PATTERN = re.compile(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--responses-jsonl", type=Path, required=True, help="Input JSONL with {pmid,response}.")
     parser.add_argument(
         "--metadata-xlsx",
         type=Path,
@@ -43,7 +44,6 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_PROMPT_TEMPLATE,
         help="Prompt template used to derive canonical question ordering.",
     )
-    parser.add_argument("--output-csv", type=Path, required=True, help="Output parsed CSV path.")
     return parser.parse_args()
 
 
@@ -115,10 +115,27 @@ def load_prompt_questions(path: Path) -> dict[str, tuple[int, str]]:
     return question_map
 
 
+def load_responses_csv(path: Path) -> pd.DataFrame:
+    df = pd.read_csv(path, dtype=str, keep_default_na=False, encoding="utf-8-sig")
+    print(f"Loaded {len(df)} rows from {path}")
+    required = ["PMID", "FT Answer"]
+    missing = [column for column in required if column not in df.columns]
+    if missing:
+        raise ValueError(f"Responses CSV missing columns: {missing}")
+    return df
+
+
+def build_output_csv_path(input_csv: Path) -> Path:
+    parsed_name = f"llama3.1-{input_csv.stem}_parsed.csv"
+    return RAG_ROOT / "csv" / "parsed" / parsed_name
+
+
 def main() -> int:
     args = parse_args()
     metadata = load_metadata(args.metadata_xlsx)
     prompt_questions = load_prompt_questions(args.prompt_template)
+    responses_df = load_responses_csv(DEFAULT_RESPONSES_CSV)
+    output_csv = build_output_csv_path(DEFAULT_RESPONSES_CSV)
     ordered_prompt_questions = sorted(prompt_questions.values(), key=lambda item: item[0])
     metadata_by_qid = {
         int(row["QID"]): {
@@ -129,41 +146,42 @@ def main() -> int:
     }
     parsed_rows: list[dict[str, str | int]] = []
 
-    with args.responses_jsonl.open("r", encoding="utf-8") as infile:
-        for line in infile:
-            line = line.strip()
-            if not line:
+    for _, record in responses_df.iterrows():
+        pmid = normalize_identifier(record.get("PMID", ""))
+        pairs = extract_pairs(record.get("FT Answer", ""), ordered_prompt_questions)
+        if not pairs:
+            continue
+        for q_norm, answer in pairs:
+            prompt_match = prompt_questions.get(q_norm)
+            if not prompt_match:
                 continue
-            record = json.loads(line)
-            pmid = normalize_identifier(record.get("pmid", ""))
-            pairs = extract_pairs(record.get("response", ""), ordered_prompt_questions)
-            if not pairs:
-                continue
-            for q_norm, answer in pairs:
-                prompt_match = prompt_questions.get(q_norm)
-                if not prompt_match:
-                    continue
-                qid, question_text = prompt_match
-                meta = metadata_by_qid.get(qid, {})
-                parsed_rows.append(
-                    {
-                        "PMID": pmid,
-                        "QID": qid,
-                        "Question": question_text,
-                        "Type": meta.get("Type", ""),
-                        "Category": meta.get("Category", ""),
-                        "Answer": answer,
-                    }
-                )
+            qid, question_text = prompt_match
+            meta = metadata_by_qid.get(qid, {})
+            parsed_rows.append(
+                {
+                    "PMID": pmid,
+                    "QID": qid,
+                    "Question": question_text,
+                    "Type": meta.get("Type", ""),
+                    "Category": meta.get("Category", ""),
+                    "Answer": answer,
+                }
+            )
 
     output_df = pd.DataFrame(parsed_rows)
     if output_df.empty:
         output_df = pd.DataFrame(columns=["PMID", "QID", "Question", "Type", "Category", "Answer"])
     else:
-        output_df = output_df.sort_values(["PMID", "QID"])
-    args.output_csv.parent.mkdir(parents=True, exist_ok=True)
-    output_df.to_csv(args.output_csv, index=False)
-    print(f"Wrote {len(output_df)} parsed answers to {args.output_csv}")
+        output_df = output_df.sort_values(["PMID", "QID"]).drop_duplicates(subset=["PMID", "QID"], keep="first")
+    output_csv.parent.mkdir(parents=True, exist_ok=True)
+    output_df.to_csv(output_csv, index=False)
+    if output_df.empty:
+        print("No parsed rows found for any PMID")
+    else:
+        pmid_counts = output_df.groupby("PMID").size()
+        for pmid, row_count in pmid_counts.items():
+            print(f"PMID {pmid}: {row_count} rows")
+    print(f"Wrote {len(output_df)} parsed answers to {output_csv}")
     return 0
 
 

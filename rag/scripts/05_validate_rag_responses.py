@@ -12,12 +12,14 @@ import pandas as pd
 import tiktoken
 
 
-ROOT = Path(__file__).resolve().parent
+SCRIPT_ROOT = Path(__file__).resolve().parent
+RAG_ROOT = SCRIPT_ROOT.parent
+REPO_ROOT = RAG_ROOT.parent
 DEFAULT_RESPONSE_FILES = [
-    ROOT / "jsonl" / "pmid_responses_bm25_rag_gpt4o_original120.jsonl",
-    ROOT / "jsonl" / "pmid_responses_bm25_rag_gpt4o_new30.jsonl",
-    ROOT / "jsonl" / "pmid_responses_semantic_rag_gpt4o_original120.jsonl",
-    ROOT / "jsonl" / "pmid_responses_semantic_rag_gpt4o_new30.jsonl",
+    RAG_ROOT / "jsonl" / "pmid_responses_bm25_rag_gpt4o_original120.jsonl",
+    RAG_ROOT / "jsonl" / "pmid_responses_bm25_rag_gpt4o_new30.jsonl",
+    RAG_ROOT / "jsonl" / "pmid_responses_semantic_rag_gpt4o_original120.jsonl",
+    RAG_ROOT / "jsonl" / "pmid_responses_semantic_rag_gpt4o_new30.jsonl",
 ]
 ANSWER_PATTERN = re.compile(r"Answer:\s*", re.IGNORECASE)
 EXPECTED_ANSWER_COUNT = 16
@@ -52,7 +54,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-csv",
         type=Path,
-        default=ROOT / "response_validation_summary.csv",
+        default=RAG_ROOT / "csv" / "verification" / "response_validation_summary.csv",
         help="Write per-PMID validation results to this CSV.",
     )
     return parser.parse_args()
@@ -92,7 +94,7 @@ def main() -> int:
         if not path.exists():
             rows.append(
                 {
-                    "file": str(path.relative_to(ROOT.parent)),
+                    "file": str(path.relative_to(REPO_ROOT)),
                     "pmid": "",
                     "valid": False,
                     "reason": "missing_file",
@@ -112,7 +114,7 @@ def main() -> int:
                 valid, reason = is_failed_response(response)
                 rows.append(
                     {
-                        "file": str(path.relative_to(ROOT.parent)),
+                        "file": str(path.relative_to(REPO_ROOT)),
                         "pmid": pmid,
                         "valid": not valid,
                         "reason": reason,

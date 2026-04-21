@@ -13,21 +13,23 @@ from pathlib import Path
 import pandas as pd
 
 
-ROOT = Path(__file__).resolve().parent
-if str(ROOT.parent) not in sys.path:
-    sys.path.append(str(ROOT.parent))
+SCRIPT_ROOT = Path(__file__).resolve().parent
+RAG_ROOT = SCRIPT_ROOT.parent
+REPO_ROOT = RAG_ROOT.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.append(str(REPO_ROOT))
 
 from eval.normalize import canonicalize_answer, list_match_stats  # type: ignore
 
-ADVANCED_PROMPTING_DIR = ROOT.parent / "advanced-prompting"
+ADVANCED_PROMPTING_DIR = REPO_ROOT / "advanced-prompting"
 DEFAULT_TRUTH = ADVANCED_PROMPTING_DIR / "csv" / "ground_truth.xlsx"
 DEFAULT_BM25_POOL_LOGS = [
-    ROOT / "log" / "bm25_rag_pool_original120.csv",
-    ROOT / "log" / "bm25_rag_pool_new30.csv",
+    RAG_ROOT / "csv" / "log" / "bm25_rag_pool_original120.csv",
+    RAG_ROOT / "csv" / "log" / "bm25_rag_pool_new30.csv",
 ]
 DEFAULT_SEMANTIC_POOL_LOGS = [
-    ROOT / "log" / "semantic_rag_pool_original120.csv",
-    ROOT / "log" / "semantic_rag_pool_new30.csv",
+    RAG_ROOT / "csv" / "log" / "semantic_rag_pool_original120.csv",
+    RAG_ROOT / "csv" / "log" / "semantic_rag_pool_new30.csv",
 ]
 PAPER_ROOTS = [
     ADVANCED_PROMPTING_DIR / "papers",
@@ -48,7 +50,11 @@ class Chunk:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--truth-xlsx", type=Path, default=DEFAULT_TRUTH)
-    parser.add_argument("--output-csv", type=Path, default=ROOT / "list_retrieval_audit.csv")
+    parser.add_argument(
+        "--output-csv",
+        type=Path,
+        default=RAG_ROOT / "csv" / "verification" / "retrieval_audit_focus_q9_q15_q16.csv",
+    )
     parser.add_argument("--top-n", type=int, default=20, help="Max rows per QID, hardest first (default: 20).")
     parser.add_argument("--chunk-chars", type=int, default=1800)
     parser.add_argument("--chunk-overlap-paragraphs", type=int, default=1)

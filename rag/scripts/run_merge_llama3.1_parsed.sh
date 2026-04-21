@@ -2,16 +2,17 @@
 
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TARGET_FULL150="$ROOT/eval/merged_answers_full150.xlsx"
-TARGET_120="$ROOT/eval/merged_answers_original120.xlsx"
-TARGET_30="$ROOT/eval/merged_answers_new30.xlsx"
+SCRIPT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+RAG_ROOT="$(cd "$SCRIPT_ROOT/.." && pwd)"
+TARGET_FULL150="$RAG_ROOT/eval/merged_answers_full150.xlsx"
+TARGET_120="$RAG_ROOT/eval/merged_answers_original120.xlsx"
+TARGET_30="$RAG_ROOT/eval/merged_answers_new30.xlsx"
 shopt -s nullglob
 
-files=("$ROOT"/llama3.1-*.csv)
+files=("$RAG_ROOT"/csv/parsed/llama3.1-*.csv)
 
 if [ "${#files[@]}" -eq 0 ]; then
-  echo "No llama3.1-*.csv files found in $ROOT"
+  echo "No llama3.1-*.csv files found in $RAG_ROOT/csv/parsed"
   exit 1
 fi
 
@@ -38,11 +39,11 @@ for file in "${files[@]}"; do
   label="$label RAG"
 
   echo "Merging $base.csv as '$label' into $(basename "$target") and $(basename "$TARGET_FULL150")"
-  uv run python "$ROOT/03_merge_model_answers.py" \
+  uv run python "$SCRIPT_ROOT/03_merge_model_answers.py" \
     --source "$file" \
     --column-name "$label" \
     --target "$target"
-  uv run python "$ROOT/03_merge_model_answers.py" \
+  uv run python "$SCRIPT_ROOT/03_merge_model_answers.py" \
     --source "$file" \
     --column-name "$label" \
     --target "$TARGET_FULL150"

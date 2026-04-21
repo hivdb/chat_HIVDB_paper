@@ -922,6 +922,12 @@ def main() -> int:
     parser.add_argument("--gpt5-path", type=Path, default=None, help="Override GPT-5 responses path.")
     parser.add_argument("--output-dir", type=Path, default=None, help="Directory for metrics/results outputs.")
     parser.add_argument("--figures-dir", type=Path, default=None, help="Directory for figure outputs.")
+    parser.add_argument(
+        "--per-metric-figures-dir",
+        type=Path,
+        default=None,
+        help="Optional directory for separate one-metric summary figures.",
+    )
     parser.add_argument("--output-suffix", type=str, default="", help="Suffix appended to output filenames (e.g., new30).")
     args = parser.parse_args()
 
@@ -1100,6 +1106,7 @@ def main() -> int:
             comparisons=FAMILY_COMPARISONS,
             base_name=base_name,
             display_title=full_title,
+            metric_output_dir=args.per_metric_figures_dir,
         )
     return 0
 

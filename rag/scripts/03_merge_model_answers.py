@@ -9,7 +9,9 @@ from pathlib import Path
 import pandas as pd
 
 
-ROOT = Path(__file__).resolve().parent
+SCRIPT_ROOT = Path(__file__).resolve().parent
+RAG_ROOT = SCRIPT_ROOT.parent
+REPO_ROOT = RAG_ROOT.parent
 MERGE_KEYS = ["PMID", "QID"]
 
 
@@ -20,7 +22,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--target",
         type=Path,
-        default=ROOT.parent / "advanced-prompting" / "csv" / "merged_answers.xlsx",
+        default=REPO_ROOT / "advanced-prompting" / "csv" / "merged_answers.xlsx",
         help="Merged workbook to update (default: advanced-prompting/csv/merged_answers.xlsx).",
     )
     parser.add_argument(

@@ -10,11 +10,13 @@ from pathlib import Path
 import pandas as pd
 
 
-ROOT = Path(__file__).resolve().parent
-ADVANCED_PROMPTING_DIR = ROOT.parent / "advanced-prompting"
+SCRIPT_ROOT = Path(__file__).resolve().parent
+RAG_ROOT = SCRIPT_ROOT.parent
+REPO_ROOT = RAG_ROOT.parent
+ADVANCED_PROMPTING_DIR = REPO_ROOT / "advanced-prompting"
 DEFAULT_METADATA = ADVANCED_PROMPTING_DIR / "csv" / "S4Table.xlsx"
-DEFAULT_PROMPT_TEMPLATE = ROOT.parent / "eval" / "gpt-5" / "gpt-5-mini-prompt.md"
-DEFAULT_RESPONSES_CSV = ROOT / "llama3.1" / "8B_RAG_Semantic_120.csv"
+DEFAULT_PROMPT_TEMPLATE = REPO_ROOT / "eval" / "gpt-5" / "gpt-5-mini-prompt.md"
+DEFAULT_RESPONSES_CSV = RAG_ROOT / "csv" / "llama3.1" / "8B_RAG_BM25_30.csv"
 PROMPT_QUESTION_PATTERN = re.compile(r"Question\s+(\d+):\s*(.+)")
 QUESTION_HEADER_PATTERN = re.compile(
     r'^\s*(?:["`>\-]+\s*)?(?:#+\s*)?(?:\*\*)?Question(?:\s+(\d+))?\s*:?\s*(.*?)(?:\*\*)?\s*$',
@@ -125,7 +127,7 @@ def load_responses_csv(path: Path) -> pd.DataFrame:
 
 def build_output_csv_path(input_csv: Path) -> Path:
     parsed_name = f"llama3.1-{input_csv.stem}_parsed.csv"
-    return ROOT / parsed_name
+    return RAG_ROOT / "csv" / "parsed" / parsed_name
 
 
 def main() -> int:

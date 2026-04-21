@@ -11,9 +11,9 @@
         "output_jsonl": "rag/jsonl/pmid_prompts_bm25_rag_new30.jsonl",
         "paper_count": 30,
         "papers_dir": "advanced-prompting/papers_2025_30",
-        "pool_log_csv": "rag/log/bm25_rag_pool_new30.csv",
+        "pool_log_csv": "rag/csv/log/bm25_rag_pool_new30.csv",
         "questions_per_paper": 16,
-        "retrieval_log_csv": "rag/log/bm25_rag_retrieval_new30.csv"
+        "retrieval_log_csv": "rag/csv/log/bm25_rag_retrieval_new30.csv"
       },
       "original120": {
         "chunk_counts": {
@@ -25,9 +25,9 @@
         "output_jsonl": "rag/jsonl/pmid_prompts_bm25_rag_original120.jsonl",
         "paper_count": 120,
         "papers_dir": "advanced-prompting/papers",
-        "pool_log_csv": "rag/log/bm25_rag_pool_original120.csv",
+        "pool_log_csv": "rag/csv/log/bm25_rag_pool_original120.csv",
         "questions_per_paper": 16,
-        "retrieval_log_csv": "rag/log/bm25_rag_retrieval_original120.csv"
+        "retrieval_log_csv": "rag/csv/log/bm25_rag_retrieval_original120.csv"
       }
     },
     "parameters": {
@@ -62,9 +62,9 @@
         "output_jsonl": "rag/jsonl/pmid_prompts_semantic_rag_new30.jsonl",
         "paper_count": 30,
         "papers_dir": "advanced-prompting/papers_2025_30",
-        "pool_log_csv": "rag/log/semantic_rag_pool_new30.csv",
+        "pool_log_csv": "rag/csv/log/semantic_rag_pool_new30.csv",
         "questions_per_paper": 16,
-        "retrieval_log_csv": "rag/log/semantic_rag_retrieval_new30.csv"
+        "retrieval_log_csv": "rag/csv/log/semantic_rag_retrieval_new30.csv"
       },
       "original120": {
         "chunk_counts": {
@@ -76,9 +76,9 @@
         "output_jsonl": "rag/jsonl/pmid_prompts_semantic_rag_original120.jsonl",
         "paper_count": 120,
         "papers_dir": "advanced-prompting/papers",
-        "pool_log_csv": "rag/log/semantic_rag_pool_original120.csv",
+        "pool_log_csv": "rag/csv/log/semantic_rag_pool_original120.csv",
         "questions_per_paper": 16,
-        "retrieval_log_csv": "rag/log/semantic_rag_retrieval_original120.csv"
+        "retrieval_log_csv": "rag/csv/log/semantic_rag_retrieval_original120.csv"
       }
     },
     "parameters": {
