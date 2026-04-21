@@ -1,0 +1,481 @@
+PMID,QID,Question,Type,Category,Answer
+40391923,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+40391923,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"No, the paper does not report in vitro drug susceptibility data."
+40391923,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"Yes, the sequences from the paper were made publicly available."
+40391923,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,"The GenBank accession numbers for the sequenced HIV isolates are PV008448-PV008641, PV407014-PV407203, and PV419497-PV419583."
+40391923,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,234 individuals had samples obtained for HIV sequencing.
+40391923,6,From which countries were the sequenced samples obtained?,List,Demographics,"The sequenced samples were obtained from Cameroon, Côte d'Ivoire, Malawi, Republic of Congo, Uganda, Zambia, and Zimbabwe."
+40391923,7,From what years were the sequenced samples obtained?,List,Demographics,The sequenced samples were obtained between 2022 and 2025.
+40391923,8,Were samples cloned prior to sequencing?,Boolean,Technical,"No, the samples were not cloned prior to sequencing."
+40391923,9,Which HIV genes were reported to have been sequenced?,List,Technical,The HIV genes that were reported to have been sequenced are integrase (IN) and protease/reverse transcriptase (PR/RT).
+40391923,10,What method was used for sequencing?,List,Technical,The method used for sequencing was Sanger sequencing.
+40391923,11,What type of samples were sequenced?,List,Technical,The type of samples that were sequenced were plasma or dried blood spots (DBS).
+40391923,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,"Yes, sequences were obtained from individuals with virological failure on a treatment regimen."
+40391923,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,"No, the patients in the study were not in a clinical trial."
+40391923,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,"Yes, the paper reports HIV sequences from individuals who had previously received ARV drugs."
+40391923,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,The drug classes that were received by individuals in the study before sample sequencing were NRTIs and INSTIs.
+40391923,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"The drugs that were received by individuals in the study before sample sequencing were tenofovir, lamivudine, and dolutegravir."
+40400229,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+40400229,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+40400229,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"No, the sequences from the paper were not made publicly available."
+40400229,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+40400229,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,43 individuals had samples obtained for HIV sequencing.
+40400229,6,From which countries were the sequenced samples obtained?,List,Demographics,England.
+40400229,7,From what years were the sequenced samples obtained?,List,Demographics,2017-2020.
+40400229,8,Were samples cloned prior to sequencing?,Boolean,Technical,Not available.
+40400229,9,Which HIV genes were reported to have been sequenced?,List,Technical,The M184I/V and K103Q genes were reported to have been sequenced.
+40400229,10,What method was used for sequencing?,List,Technical,The Stanford algorithm was used for sequencing.
+40400229,11,What type of samples were sequenced?,List,Technical,Blood or other bodily fluids from HIV-positive individuals.
+40400229,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,"Yes, sequences were obtained from individuals with virological failure on a treatment regimen."
+40400229,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,"Yes, the patients in the study were in a clinical trial."
+40400229,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Not available.
+40400229,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,Not available.
+40400229,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,Not available.
+40431710,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes
+40431710,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,Yes
+40431710,3,Were sequences from the paper made publicly available?,Boolean,Data availability,No
+40431710,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not mentioned
+40431710,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,1
+40431710,6,From which countries were the sequenced samples obtained?,List,Demographics,Switzerland
+40431710,7,From what years were the sequenced samples obtained?,List,Demographics,1994
+40431710,8,Were samples cloned prior to sequencing?,Boolean,Technical,Not mentioned
+40431710,9,Which HIV genes were reported to have been sequenced?,List,Technical,HIV-1 protease and reverse transcriptase
+40431710,10,What method was used for sequencing?,List,Technical,Next-generation sequencing
+40431710,11,What type of samples were sequenced?,List,Technical,Blood sample
+40431710,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes
+40431710,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,No
+40431710,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes
+40431710,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,"NRTIs, NNRTIs, PIs, and INSTIs"
+40431710,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"Bictegravir (BIC), Emtricitabine (FTC), Tenofovir alafenamide (TAF), and Doravirine (DOR)"
+40431742,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+40431742,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+40431742,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"No, sequences from the paper were not made publicly available."
+40431742,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,No information is available to answer this question.
+40431742,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,1677 individuals had samples obtained for HIV sequencing.
+40431742,6,From which countries were the sequenced samples obtained?,List,Demographics,Argentina.
+40431742,7,From what years were the sequenced samples obtained?,List,Demographics,2017-2021.
+40431742,8,Were samples cloned prior to sequencing?,Boolean,Technical,No information is available to answer this question.
+40431742,9,Which HIV genes were reported to have been sequenced?,List,Technical,The protease and reverse-transcriptase regions of the HIV-1 pol gene.
+40431742,10,What method was used for sequencing?,List,Technical,Sanger sequencing.
+40431742,11,What type of samples were sequenced?,List,Technical,Plasma samples.
+40431742,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,No information is available to answer this question.
+40431742,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,No information is available to answer this question.
+40431742,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,"No, the paper does not report HIV sequences from individuals who had previously received ARV drugs."
+40431742,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,No drug classes were received by individuals in the study before sample sequencing.
+40431742,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,No drugs were received by individuals in the study before sample sequencing.
+40490983,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+40490983,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+40490983,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"No, the paper does not explicitly state that sequences from the paper were made publicly available."
+40490983,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+40490983,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,Not available.
+40490983,6,From which countries were the sequenced samples obtained?,List,Demographics,Kenya.
+40490983,7,From what years were the sequenced samples obtained?,List,Demographics,2011-2021.
+40490983,8,Were samples cloned prior to sequencing?,Boolean,Technical,Not available.
+40490983,9,Which HIV genes were reported to have been sequenced?,List,Technical,Protease and reverse transcriptase.
+40490983,10,What method was used for sequencing?,List,Technical,Sanger sequencing.
+40490983,11,What type of samples were sequenced?,List,Technical,Plasma HIV-1 RNA.
+40490983,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes.
+40490983,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Not available.
+40490983,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+40490983,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,Protease inhibitors (PIs) and nucleoside reverse transcriptase inhibitors (NRTIs).
+40490983,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"Efavirenz, nevirapine, atazanavir/ritonavir, and lopinavir/ritonavir."
+40573423,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+40573423,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+40573423,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"Yes, the sequences from the paper were made publicly available."
+40573423,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+40573423,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,487 individuals had samples obtained for HIV sequencing.
+40573423,6,From which countries were the sequenced samples obtained?,List,Demographics,The sequenced samples were obtained from South Korea.
+40573423,7,From what years were the sequenced samples obtained?,List,Demographics,The sequenced samples were obtained between 2021 and 2024.
+40573423,8,Were samples cloned prior to sequencing?,Boolean,Technical,"No, the samples were not cloned prior to sequencing."
+40573423,9,Which HIV genes were reported to have been sequenced?,List,Technical,"The HIV genes that were reported to have been sequenced include env, gag, pol, protease, reverse transcriptase, and integrase."
+40573423,10,What method was used for sequencing?,List,Technical,Sanger sequencing was used for sequencing.
+40573423,11,What type of samples were sequenced?,List,Technical,The type of samples that were sequenced were plasma or serum.
+40573423,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,"Yes, some sequences were obtained from individuals with virological failure on a treatment regimen."
+40573423,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Not available.
+40573423,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,"Yes, the paper reports HIV sequences from individuals who had previously received ARV drugs."
+40573423,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,The drug classes that were received by individuals in the study before sample sequencing were INSTIs and NRTIs.
+40573423,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"The drugs that were received by individuals in the study before sample sequencing were INSTIs and NRTIs, including DTG, RAL, EVG, BIC, CAB, and TDF."
+40596906,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes.
+40596906,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,No.
+40596906,3,Were sequences from the paper made publicly available?,Boolean,Data availability,Yes.
+40596906,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,PV526713-PV526742.
+40596906,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,15.
+40596906,6,From which countries were the sequenced samples obtained?,List,Demographics,Brazil.
+40596906,7,From what years were the sequenced samples obtained?,List,Demographics,2007-2022.
+40596906,8,Were samples cloned prior to sequencing?,Boolean,Technical,No.
+40596906,9,Which HIV genes were reported to have been sequenced?,List,Technical,HIV pol region (protease/reverse transcriptase-PR/RT).
+40596906,10,What method was used for sequencing?,List,Technical,ViroSeq Genotyping System.
+40596906,11,What type of samples were sequenced?,List,Technical,Blood samples.
+40596906,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes.
+40596906,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,No.
+40596906,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+40596906,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,NRTIs and protease inhibitors.
+40596906,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"ZDV, 3TC, NVP, lopinavir/ritonavir, and efavirenz."
+40713598,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes
+40713598,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,Yes
+40713598,3,Were sequences from the paper made publicly available?,Boolean,Data availability,No
+40713598,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available
+40713598,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,20
+40713598,6,From which countries were the sequenced samples obtained?,List,Demographics,Ghana
+40713598,7,From what years were the sequenced samples obtained?,List,Demographics,Not available
+40713598,8,Were samples cloned prior to sequencing?,Boolean,Technical,Not available
+40713598,9,Which HIV genes were reported to have been sequenced?,List,Technical,"HIV-1 pol gene, protease (PR), and reverse transcriptase (RT)"
+40713598,10,What method was used for sequencing?,List,Technical,Next-generation sequencing (NGS)
+40713598,11,What type of samples were sequenced?,List,Technical,Frozen plasma samples
+40713598,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes
+40713598,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Not available
+40713598,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes
+40713598,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,Not available
+40713598,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,Not available
+40763144,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+40763144,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+40763144,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"No, the sequences from the paper were not made publicly available."
+40763144,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+40763144,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,Not available.
+40763144,6,From which countries were the sequenced samples obtained?,List,Demographics,Uganda.
+40763144,7,From what years were the sequenced samples obtained?,List,Demographics,2021-2023.
+40763144,8,Were samples cloned prior to sequencing?,Boolean,Technical,No.
+40763144,9,Which HIV genes were reported to have been sequenced?,List,Technical,NNRTI genes.
+40763144,10,What method was used for sequencing?,List,Technical,Sanger sequencing or Next generation sequencing.
+40763144,11,What type of samples were sequenced?,List,Technical,Plasma or dried blood spot (DBS) samples.
+40763144,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes.
+40763144,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,No.
+40763144,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+40763144,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,NNRTI.
+40763144,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,Efavirenz and nevirapine.
+40779404,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes
+40779404,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,Yes
+40779404,3,Were sequences from the paper made publicly available?,Boolean,Data availability,No
+40779404,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available
+40779404,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,20
+40779404,6,From which countries were the sequenced samples obtained?,List,Demographics,Not available
+40779404,7,From what years were the sequenced samples obtained?,List,Demographics,Not available
+40779404,8,Were samples cloned prior to sequencing?,Boolean,Technical,No
+40779404,9,Which HIV genes were reported to have been sequenced?,List,Technical,"Protease (PR), Reverse Transcriptase (RT), and Integrase (IN)"
+40779404,10,What method was used for sequencing?,List,Technical,Next-Generation Sequencing (NGS)
+40779404,11,What type of samples were sequenced?,List,Technical,Whole blood samples
+40779404,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,No
+40779404,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Yes
+40779404,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes
+40779404,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,"TFV, INSTIs, NNRTIs, and PR inhibitors"
+40779404,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"TFV, INSTIs, NNRTIs, and PR inhibitors"
+40839365,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes.
+40839365,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,No.
+40839365,3,Were sequences from the paper made publicly available?,Boolean,Data availability,Yes.
+40839365,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+40839365,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,212.
+40839365,6,From which countries were the sequenced samples obtained?,List,Demographics,Malawi.
+40839365,7,From what years were the sequenced samples obtained?,List,Demographics,2022-2023.
+40839365,8,Were samples cloned prior to sequencing?,Boolean,Technical,Not available.
+40839365,9,Which HIV genes were reported to have been sequenced?,List,Technical,"Protease, reverse transcriptase, and integrase."
+40839365,10,What method was used for sequencing?,List,Technical,Sanger sequencing.
+40839365,11,What type of samples were sequenced?,List,Technical,Plasma.
+40839365,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes.
+40839365,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Not available.
+40839365,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+40839365,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,Antiretroviral therapy (ART).
+40839365,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,Dolutegravir.
+40857111,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes.
+40857111,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,Yes.
+40857111,3,Were sequences from the paper made publicly available?,Boolean,Data availability,No.
+40857111,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+40857111,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,22.
+40857111,6,From which countries were the sequenced samples obtained?,List,Demographics,Not available.
+40857111,7,From what years were the sequenced samples obtained?,List,Demographics,Not available.
+40857111,8,Were samples cloned prior to sequencing?,Boolean,Technical,No.
+40857111,9,Which HIV genes were reported to have been sequenced?,List,Technical,"Protease (PR), reverse transcriptase (RT), and integrase (IN) genes."
+40857111,10,What method was used for sequencing?,List,Technical,Not available.
+40857111,11,What type of samples were sequenced?,List,Technical,Not available.
+40857111,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes.
+40857111,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Yes.
+40857111,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+40857111,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,"Nucleoside/nucleotide reverse transcriptase inhibitors (NRTIs), non-nucleoside reverse transcriptase inhibitors (NNRTIs), and integrase strand transfer inhibitors (INSTIs)."
+40857111,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"Bictegravir (BIC), dolutegravir (DTG), emtricitabine (FTC), tenofovir alafenamide (TAF), and tenofovir disoproxil fumarate (TDF)."
+40872801,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+40872801,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+40872801,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"Yes, sequences from the paper may be made publicly available."
+40872801,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+40872801,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,9685 individuals had samples obtained for HIV sequencing.
+40872801,6,From which countries were the sequenced samples obtained?,List,Demographics,Tanzania.
+40872801,7,From what years were the sequenced samples obtained?,List,Demographics,2004-2024.
+40872801,8,Were samples cloned prior to sequencing?,Boolean,Technical,Not available.
+40872801,9,Which HIV genes were reported to have been sequenced?,List,Technical,"HIV-1 subtypes, including subtype C, subtypes A1 and D, CRFs, and URFs."
+40872801,10,What method was used for sequencing?,List,Technical,Not available.
+40872801,11,What type of samples were sequenced?,List,Technical,HIV patient samples.
+40872801,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes.
+40872801,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Not available.
+40872801,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+40872801,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,"NRTIs, including 3TC, FTC, AZT, and TDF."
+40872801,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"3TC, FTC, AZT, d4T, and TDF."
+40938120,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes.
+40938120,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,No.
+40938120,3,Were sequences from the paper made publicly available?,Boolean,Data availability,Yes.
+40938120,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,PX133190-PX134237.
+40938120,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,"1,260."
+40938120,6,From which countries were the sequenced samples obtained?,List,Demographics,China.
+40938120,7,From what years were the sequenced samples obtained?,List,Demographics,2019-2022.
+40938120,8,Were samples cloned prior to sequencing?,Boolean,Technical,No.
+40938120,9,Which HIV genes were reported to have been sequenced?,List,Technical,The pol gene.
+40938120,10,What method was used for sequencing?,List,Technical,Sanger sequencing.
+40938120,11,What type of samples were sequenced?,List,Technical,Plasma.
+40938120,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,No.
+40938120,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,No.
+40938120,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,No.
+40938120,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,Not specified.
+40938120,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,Not specified.
+40938996,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"No, the paper does not report HIV sequences from patient samples."
+40938996,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+40938996,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"No, the passage does not explicitly state that the sequences were made publicly available."
+40938996,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,No GenBank accession numbers for sequenced HIV isolates were provided.
+40938996,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,The passage does not provide a specific number of individuals.
+40938996,6,From which countries were the sequenced samples obtained?,List,Demographics,The passage does not provide information about the countries where the sequenced samples were obtained.
+40938996,7,From what years were the sequenced samples obtained?,List,Demographics,No information about the years when the sequenced samples were obtained was provided.
+40938996,8,Were samples cloned prior to sequencing?,Boolean,Technical,"Yes, the samples were cloned prior to sequencing."
+40938996,9,Which HIV genes were reported to have been sequenced?,List,Technical,The HIV genes that were reported to have been sequenced include the NC gene and the IN gene.
+40938996,10,What method was used for sequencing?,List,Technical,"The method used for sequencing was not explicitly stated, but it appears to have involved the use of Seqtk."
+40938996,11,What type of samples were sequenced?,List,Technical,The type of samples that were sequenced were HIV-1 clones.
+40938996,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,"Yes, the sequences were obtained from individuals with virological failure on a treatment regimen."
+40938996,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,No information about whether the patients in the study were in a clinical trial was provided.
+40938996,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,"Yes, the paper reports HIV sequences from individuals who had previously received ARV drugs."
+40938996,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,No information about which drug classes were received by individuals in the study before sample sequencing was provided.
+40938996,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,The passage does not provide information about which drugs were received by individuals in the study before sample sequencing.
+40965168,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+40965168,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+40965168,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"No, the sequences from the paper were not made publicly available."
+40965168,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+40965168,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,24 individuals.
+40965168,6,From which countries were the sequenced samples obtained?,List,Demographics,Not available.
+40965168,7,From what years were the sequenced samples obtained?,List,Demographics,Not available.
+40965168,8,Were samples cloned prior to sequencing?,Boolean,Technical,"Yes, the samples were cloned prior to sequencing."
+40965168,9,Which HIV genes were reported to have been sequenced?,List,Technical,The gag and protease genes.
+40965168,10,What method was used for sequencing?,List,Technical,Next-generation sequencing or Sanger sequencing.
+40965168,11,What type of samples were sequenced?,List,Technical,Plasma samples.
+40965168,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Not available.
+40965168,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,"Yes, the patients were in a clinical trial."
+40965168,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Not available.
+40965168,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,Not available.
+40965168,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,Not available.
+40974886,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+40974886,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+40974886,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"No, the sequences from the paper were not made publicly available."
+40974886,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,No GenBank accession numbers were provided for sequenced HIV isolates.
+40974886,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,70 individuals had samples obtained for HIV sequencing.
+40974886,6,From which countries were the sequenced samples obtained?,List,Demographics,No information is available about the countries where the sequenced samples were obtained.
+40974886,7,From what years were the sequenced samples obtained?,List,Demographics,The sequenced samples were obtained from 2016 to 2019.
+40974886,8,Were samples cloned prior to sequencing?,Boolean,Technical,No information is available about whether samples were cloned prior to sequencing.
+40974886,9,Which HIV genes were reported to have been sequenced?,List,Technical,"The HIV genes PR, RT, and IN were reported to have been sequenced."
+40974886,10,What method was used for sequencing?,List,Technical,No information is available about the sequencing method used.
+40974886,11,What type of samples were sequenced?,List,Technical,Whole blood samples were sequenced.
+40974886,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,No information is available about whether sequences were obtained from individuals with virological failure on a treatment regimen.
+40974886,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,"Yes, the patients in the study were in a clinical trial."
+40974886,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,"Yes, the paper reports HIV sequences from individuals who had previously received ARV drugs."
+40974886,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,"The individuals in the study had previously received various drug classes, including INSTI-containing regimens."
+40974886,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"The individuals in the study had previously received B/F/TAF or comparator regimens, including INSTI-containing regimens."
+41004608,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes.
+41004608,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,Yes.
+41004608,3,Were sequences from the paper made publicly available?,Boolean,Data availability,No clear answer can be provided based on the given evidence.
+41004608,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,No answer can be provided based on the given evidence.
+41004608,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,1182.
+41004608,6,From which countries were the sequenced samples obtained?,List,Demographics,The UK.
+41004608,7,From what years were the sequenced samples obtained?,List,Demographics,2015-2021.
+41004608,8,Were samples cloned prior to sequencing?,Boolean,Technical,No answer can be provided based on the given evidence.
+41004608,9,Which HIV genes were reported to have been sequenced?,List,Technical,"3'PPT, Env, and NC."
+41004608,10,What method was used for sequencing?,List,Technical,Sequence capture method and Genomancer.
+41004608,11,What type of samples were sequenced?,List,Technical,HIV-positive samples.
+41004608,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,No.
+41004608,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,No clear answer can be provided based on the given evidence.
+41004608,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+41004608,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,INSTI-based regimen.
+41004608,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,INSTIs.
+41012586,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"No, the paper does not explicitly report HIV sequences from patient samples."
+41012586,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+41012586,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"No, the sequences from the paper were not made publicly available."
+41012586,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+41012586,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,249 individuals.
+41012586,6,From which countries were the sequenced samples obtained?,List,Demographics,Not available.
+41012586,7,From what years were the sequenced samples obtained?,List,Demographics,The sequenced samples were obtained up to 2024.
+41012586,8,Were samples cloned prior to sequencing?,Boolean,Technical,Not available.
+41012586,9,Which HIV genes were reported to have been sequenced?,List,Technical,Not available.
+41012586,10,What method was used for sequencing?,List,Technical,Not available.
+41012586,11,What type of samples were sequenced?,List,Technical,Not available.
+41012586,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,"Yes, sequences were obtained from individuals with virological failure on a treatment regimen."
+41012586,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Not available.
+41012586,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,"Yes, the paper reports HIV sequences from individuals who had previously received ARV drugs."
+41012586,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,INSTI-based regimens.
+41012586,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"Raltegravir, elvitegravir, and dolutegravir."
+41023944,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes.
+41023944,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,Yes.
+41023944,3,Were sequences from the paper made publicly available?,Boolean,Data availability,Yes.
+41023944,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+41023944,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,28.
+41023944,6,From which countries were the sequenced samples obtained?,List,Demographics,Mozambique.
+41023944,7,From what years were the sequenced samples obtained?,List,Demographics,2023-2024.
+41023944,8,Were samples cloned prior to sequencing?,Boolean,Technical,No.
+41023944,9,Which HIV genes were reported to have been sequenced?,List,Technical,HIV integrase region.
+41023944,10,What method was used for sequencing?,List,Technical,Sanger method.
+41023944,11,What type of samples were sequenced?,List,Technical,Plasma samples.
+41023944,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes.
+41023944,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Not available.
+41023944,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+41023944,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,Rifampicin-based anti-tuberculosis treatment.
+41023944,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,Rifampicin-based anti-tuberculosis treatment.
+41029850,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes.
+41029850,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,Yes.
+41029850,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"Yes, but with some limitations."
+41029850,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,"PQ893197, PQ893192, OQ985810, OR259747, and PQ893191."
+41029850,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,203.
+41029850,6,From which countries were the sequenced samples obtained?,List,Demographics,Cameroon.
+41029850,7,From what years were the sequenced samples obtained?,List,Demographics,2022-2023.
+41029850,8,Were samples cloned prior to sequencing?,Boolean,Technical,No.
+41029850,9,Which HIV genes were reported to have been sequenced?,List,Technical,HIV-1 protease and reverse-transcriptase genes.
+41029850,10,What method was used for sequencing?,List,Technical,Sanger sequencing.
+41029850,11,What type of samples were sequenced?,List,Technical,Plasma samples.
+41029850,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes.
+41029850,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,No.
+41029850,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+41029850,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,"NRTI, NNRTI, and PI/r."
+41029850,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"ATV/r, LPV/r, TDF, AZT, 3TC, FTC, ABC, DTG, and DRV/r."
+41056006,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+41056006,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+41056006,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"Yes, sequences from the paper may be made publicly available."
+41056006,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+41056006,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,10 individuals had samples obtained for HIV sequencing.
+41056006,6,From which countries were the sequenced samples obtained?,List,Demographics,The sequenced samples were obtained from the USA and Dominican Republic.
+41056006,7,From what years were the sequenced samples obtained?,List,Demographics,The sequenced samples were obtained in 2019 and 2020.
+41056006,8,Were samples cloned prior to sequencing?,Boolean,Technical,Not available.
+41056006,9,Which HIV genes were reported to have been sequenced?,List,Technical,The HIV-1 capsid gene was reported to have been sequenced.
+41056006,10,What method was used for sequencing?,List,Technical,The GenoSure Gag-Pro and PhenoSense Gag-Pro assays were used for sequencing.
+41056006,11,What type of samples were sequenced?,List,Technical,Blood samples were sequenced.
+41056006,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,"Yes, sequences were obtained from individuals with virological failure on a treatment regimen."
+41056006,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,"Yes, the patients in the study were in a clinical trial."
+41056006,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,"Yes, the paper reports HIV sequences from individuals who had previously received ARV drugs."
+41056006,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,"The individuals in the study received emtricitabine/tenofovir alafenamide (F/TAF), bictegravir, and lenacapavir before sample sequencing."
+41056006,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"The individuals in the study received lenacapavir, emtricitabine/tenofovir alafenamide (F/TAF), and bictegravir before sample sequencing."
+41057785,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+41057785,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+41057785,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"Yes, sequences from the paper were made publicly available."
+41057785,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+41057785,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,Not available.
+41057785,6,From which countries were the sequenced samples obtained?,List,Demographics,Uganda.
+41057785,7,From what years were the sequenced samples obtained?,List,Demographics,2018-2023.
+41057785,8,Were samples cloned prior to sequencing?,Boolean,Technical,Not available.
+41057785,9,Which HIV genes were reported to have been sequenced?,List,Technical,"The passage does not specify which HIV genes were sequenced, but it mentions the prevalence of specific DRMs across major ART drug classes, including PIs, INSTIs, NRTIs, and NNRTIs."
+41057785,10,What method was used for sequencing?,List,Technical,Not available.
+41057785,11,What type of samples were sequenced?,List,Technical,Not available.
+41057785,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,"Yes, sequences were obtained from individuals with virological failure on a treatment regimen."
+41057785,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Not available.
+41057785,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,"Yes, the paper reports HIV sequences from individuals who had previously received ARV drugs."
+41057785,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,"The passage does not specify which drug classes were received by individuals in the study before sample sequencing, but it mentions the prevalence of specific DRMs across major ART drug classes, including PIs, INSTIs, NRTIs, and NNRTIs."
+41057785,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"The passage does not specify which drugs were received by individuals in the study before sample sequencing, but it mentions the prevalence of specific DRMs across major ART drug classes, including PIs, INSTIs, NRTIs, and NNRTIs."
+41088231,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes.
+41088231,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,No.
+41088231,3,Were sequences from the paper made publicly available?,Boolean,Data availability,Yes.
+41088231,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,PV187006.
+41088231,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,1.
+41088231,6,From which countries were the sequenced samples obtained?,List,Demographics,China.
+41088231,7,From what years were the sequenced samples obtained?,List,Demographics,"2023, 2025."
+41088231,8,Were samples cloned prior to sequencing?,Boolean,Technical,No.
+41088231,9,Which HIV genes were reported to have been sequenced?,List,Technical,The passage does not specify which HIV genes were sequenced.
+41088231,10,What method was used for sequencing?,List,Technical,Sanger sequencing.
+41088231,11,What type of samples were sequenced?,List,Technical,Plasma and whole-blood samples.
+41088231,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,No.
+41088231,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,No.
+41088231,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+41088231,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,No information is provided.
+41088231,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,No information is provided.
+41091504,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes.
+41091504,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,Yes.
+41091504,3,Were sequences from the paper made publicly available?,Boolean,Data availability,No.
+41091504,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+41091504,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,28.
+41091504,6,From which countries were the sequenced samples obtained?,List,Demographics,Not available.
+41091504,7,From what years were the sequenced samples obtained?,List,Demographics,Not available.
+41091504,8,Were samples cloned prior to sequencing?,Boolean,Technical,No.
+41091504,9,Which HIV genes were reported to have been sequenced?,List,Technical,HIV-1 protease.
+41091504,10,What method was used for sequencing?,List,Technical,Not available.
+41091504,11,What type of samples were sequenced?,List,Technical,HIV-1 protease variants.
+41091504,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes.
+41091504,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,No.
+41091504,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+41091504,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,Protease inhibitors.
+41091504,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,Darunavir.
+41093949,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes.
+41093949,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,Yes.
+41093949,3,Were sequences from the paper made publicly available?,Boolean,Data availability,Yes.
+41093949,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,PQ735970-PQ735985.
+41093949,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,"8654 (subtype B) and 10,551 (CRF01_AE)."
+41093949,6,From which countries were the sequenced samples obtained?,List,Demographics,China and the United States.
+41093949,7,From what years were the sequenced samples obtained?,List,Demographics,1978-2023.
+41093949,8,Were samples cloned prior to sequencing?,Boolean,Technical,Yes.
+41093949,9,Which HIV genes were reported to have been sequenced?,List,Technical,Pol region.
+41093949,10,What method was used for sequencing?,List,Technical,Site-directed mutagenesis.
+41093949,11,What type of samples were sequenced?,List,Technical,HIV sequences.
+41093949,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes.
+41093949,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,No.
+41093949,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+41093949,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,"AZT, 3TC, TDF, ABC, FTC, NVP, ETR, EFV, and FNC."
+41093949,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"AZT, 3TC, TDF, ABC, FTC, NVP, ETR, EFV, and FNC."
+41112839,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes.
+41112839,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,Yes.
+41112839,3,Were sequences from the paper made publicly available?,Boolean,Data availability,Yes.
+41112839,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,PP280627 to PP280757.
+41112839,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,237 individuals.
+41112839,6,From which countries were the sequenced samples obtained?,List,Demographics,Senegal.
+41112839,7,From what years were the sequenced samples obtained?,List,Demographics,2017-2018.
+41112839,8,Were samples cloned prior to sequencing?,Boolean,Technical,No.
+41112839,9,Which HIV genes were reported to have been sequenced?,List,Technical,The RT gene.
+41112839,10,What method was used for sequencing?,List,Technical,"The ANRS AC11 genotyping technique, followed by Big Dye Terminator v3.1 and ABI 3100 Avant sequencer."
+41112839,11,What type of samples were sequenced?,List,Technical,DBS and venous blood.
+41112839,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,No.
+41112839,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,No.
+41112839,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,No.
+41112839,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,NRTIs and NNRTIs.
+41112839,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"Lamivudine, Emtricitabine, Efavirenz, Nevirapine, and Tenofovir Disoproxil Fumarate (TDF)."
+41129268,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+41129268,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+41129268,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"No, the sequences from the paper were not made publicly available."
+41129268,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+41129268,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,333 individuals had samples obtained for HIV sequencing.
+41129268,6,From which countries were the sequenced samples obtained?,List,Demographics,Uganda.
+41129268,7,From what years were the sequenced samples obtained?,List,Demographics,2021.
+41129268,8,Were samples cloned prior to sequencing?,Boolean,Technical,Not available.
+41129268,9,Which HIV genes were reported to have been sequenced?,List,Technical,"The HIV genes that were reported to have been sequenced include those encoding NRTIs, NNRTIs, protease inhibitors (PIs), and integrase inhibitors (INSTIs)."
+41129268,10,What method was used for sequencing?,List,Technical,Sanger sequencing technology.
+41129268,11,What type of samples were sequenced?,List,Technical,Plasma samples.
+41129268,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,"Yes, sequences were obtained from individuals with virological failure on a treatment regimen."
+41129268,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Not available.
+41129268,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,"Yes, the paper reports HIV sequences from individuals who had previously received ARV drugs."
+41129268,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,"The drug classes that were received by individuals in the study before sample sequencing include DTG, LPV/r, EFV, and NVP."
+41129268,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,"The drugs that were received by individuals in the study before sample sequencing include DTG, LPV/r, EFV, and NVP."
+41130593,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,Yes.
+41130593,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,Yes.
+41130593,3,Were sequences from the paper made publicly available?,Boolean,Data availability,Yes.
+41130593,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+41130593,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,At least 18 individuals had samples obtained for HIV sequencing.
+41130593,6,From which countries were the sequenced samples obtained?,List,Demographics,Not available.
+41130593,7,From what years were the sequenced samples obtained?,List,Demographics,Not available.
+41130593,8,Were samples cloned prior to sequencing?,Boolean,Technical,Not available.
+41130593,9,Which HIV genes were reported to have been sequenced?,List,Technical,"CA, protease (PR), reverse transcriptase (RT), and integrase."
+41130593,10,What method was used for sequencing?,List,Technical,Next-generation sequencing platform (MiSeq; Illumina).
+41130593,11,What type of samples were sequenced?,List,Technical,Plasma samples.
+41130593,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes.
+41130593,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Yes.
+41130593,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Not available.
+41130593,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,Not available.
+41130593,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,Not available.
+41140464,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,"Yes, the paper reports HIV sequences from patient samples."
+41140464,2,Does the paper report in vitro drug susceptibility data?,Boolean,Data availability,"Yes, the paper reports in vitro drug susceptibility data."
+41140464,3,Were sequences from the paper made publicly available?,Boolean,Data availability,"Yes, sequences from the paper were made publicly available."
+41140464,4,What were the GenBank accession numbers for sequenced HIV isolates?,List,Data availability,Not available.
+41140464,5,How many individuals had samples obtained for HIV sequencing?,Number,Data availability,7724 individuals had samples obtained for HIV sequencing.
+41140464,6,From which countries were the sequenced samples obtained?,List,Demographics,"Kenya, Uganda, Tanzania, and Ethiopia."
+41140464,7,From what years were the sequenced samples obtained?,List,Demographics,2015-2025.
+41140464,8,Were samples cloned prior to sequencing?,Boolean,Technical,Not available.
+41140464,9,Which HIV genes were reported to have been sequenced?,List,Technical,"PR/RT, RT, and IN sequences."
+41140464,10,What method was used for sequencing?,List,Technical,Not available.
+41140464,11,What type of samples were sequenced?,List,Technical,Pol sequences.
+41140464,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Boolean,Treatment,Yes.
+41140464,13,Were the patients in the study in a clinical trial?,Boolean,Treatment,Yes.
+41140464,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Boolean,Treatment,Yes.
+41140464,15,Which drug classes were received by individuals in the study before sample sequencing?,List,Treatment,NNRTIs and NRTIs.
+41140464,16,Which drugs were received by individuals in the study before sample sequencing?,List,Treatment,NNRTIs and NRTIs.
