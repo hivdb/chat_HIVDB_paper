@@ -82,6 +82,7 @@ def _compute_mcnemar_tests(
     detail_df: pd.DataFrame,
     comparisons: dict,
     metrics: Iterable[str],
+    bh_comparisons: Iterable[str] | None = None,
 ) -> pd.DataFrame:
     if qid_df.empty or detail_df.empty:
         return pd.DataFrame()
@@ -92,6 +93,7 @@ def _compute_mcnemar_tests(
     qid_lookup = _metric_lookup(qid_df)
     all_qids = sorted(qid_df["QID"].astype(int).unique().tolist())
     records: list[dict] = []
+    bh_comparison_set = {str(value) for value in bh_comparisons} if bh_comparisons is not None else None
 
     for family, mapping in comparisons.items():
         base_model = mapping["base"]
@@ -156,6 +158,8 @@ def _compute_mcnemar_tests(
                 continue
             vals = df.loc[metric_mask, p_col]
             valid_mask = metric_mask & vals.notna()
+            if bh_comparison_set is not None:
+                valid_mask = valid_mask & df["comparison"].isin(bh_comparison_set)
             pvals = df.loc[valid_mask, p_col].astype(float).tolist()
             if not pvals:
                 continue
@@ -382,6 +386,7 @@ def build_workbook(output_path: Path, suffix: str) -> Path:
         detail_df,
         FAMILY_COMPARISONS,
         ["accuracy", "recall"],
+        bh_comparisons=DEFAULT_COMPARISONS,
     )
     mcnemar_qid_df = _build_fisher_qid_sheet(mcnemar_df)
 
