@@ -6,13 +6,14 @@ from .constants import MODEL_BASE_COLORS, VARIANT_TINTS  # re-exported for plott
 
 ROOT = Path(__file__).resolve().parents[1]
 EVAL_DIR = ROOT / "eval"
-MERGED_PATH = ROOT / "advanced-prompting/csv/merged_answers.xlsx"
+DEFAULT_SUFFIX = "full150"
+MERGED_PATH = ROOT / "advanced-prompting/csv/merged_answers_full_150.xlsx"
 GPT5_PATH = EVAL_DIR / "gpt-5/gpt5_responses.csv"
 OUTPUT_DIR = EVAL_DIR / "results"
-OUTPUT_METRICS = OUTPUT_DIR / "evaluation_metrics.csv"
-OUTPUT_METRICS_BY_QID = OUTPUT_DIR / "evaluation_metrics_by_qid.csv"
-STAT_RESULTS = OUTPUT_DIR / "statistical_tests.xlsx"
-DETAIL_METRICS_HUMAN = OUTPUT_DIR / "detailed_evaluation.csv"
+OUTPUT_METRICS = OUTPUT_DIR / f"evaluation_metrics_{DEFAULT_SUFFIX}.csv"
+OUTPUT_METRICS_BY_QID = OUTPUT_DIR / f"evaluation_metrics_by_qid_{DEFAULT_SUFFIX}.csv"
+STAT_RESULTS = OUTPUT_DIR / f"statistical_tests_{DEFAULT_SUFFIX}.xlsx"
+DETAIL_METRICS_HUMAN = OUTPUT_DIR / f"detailed_evaluation_{DEFAULT_SUFFIX}.csv"
 OUTPUT_TABLE_DIR = EVAL_DIR / "figures"
 LEARNING_CURVE_RESPONSES = {
     "GPT-4o FT-100": EVAL_DIR / "learning-curve/responses/size100_responses.csv",

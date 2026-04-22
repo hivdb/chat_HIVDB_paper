@@ -928,7 +928,12 @@ def main() -> int:
         default=None,
         help="Optional directory for separate one-metric summary figures.",
     )
-    parser.add_argument("--output-suffix", type=str, default="", help="Suffix appended to output filenames (e.g., new30).")
+    parser.add_argument(
+        "--output-suffix",
+        type=str,
+        default=config.DEFAULT_SUFFIX,
+        help="Suffix appended to output filenames (default: full150).",
+    )
     args = parser.parse_args()
 
     suffix = args.output_suffix.strip()
