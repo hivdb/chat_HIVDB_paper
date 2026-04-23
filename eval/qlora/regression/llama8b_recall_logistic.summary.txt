@@ -1,50 +1,50 @@
-Accuracy summary
-model  rank  total_cases  correct_cases  accuracy
-   R8     8         2400           2017  0.840417
-  R16    16         2400           2100  0.875000
-   FT    25         2400           2048  0.853333
-  R32    32         2400           1991  0.829583
+Recall summary
+model  rank  positive_cases  true_positives   recall
+   R8     8            1040             672 0.646154
+  R16    16            1040             675 0.649038
+   FT    25            1040             611 0.587500
+  R32    32            1040             672 0.646154
 
-Numeric rank trend model: correct ~ rank
+Numeric rank trend model: detected ~ rank
                                GEE Regression Results                              
 ===================================================================================
-Dep. Variable:                     correct   No. Observations:                 9600
-Model:                                 GEE   No. clusters:                     2400
+Dep. Variable:                    detected   No. Observations:                 4160
+Model:                                 GEE   No. clusters:                     1040
 Method:                        Generalized   Min. cluster size:                   4
                       Estimating Equations   Max. cluster size:                   4
 Family:                           Binomial   Mean cluster size:                 4.0
 Dependence structure:         Independence   Num. iterations:                     2
 Date:                     Thu, 23 Apr 2026   Scale:                           1.000
-Covariance type:                    robust   Time:                         10:02:14
+Covariance type:                    robust   Time:                         10:02:36
 ==============================================================================
                  coef    std err          z      P>|z|      [0.025      0.975]
 ------------------------------------------------------------------------------
-Intercept      1.8348      0.068     27.042      0.000       1.702       1.968
-rank          -0.0051      0.003     -2.012      0.044      -0.010      -0.000
+Intercept      0.6190      0.072      8.613      0.000       0.478       0.760
+rank          -0.0038      0.003     -1.516      0.129      -0.009       0.001
 ==============================================================================
-Skew:                         -1.9551   Kurtosis:                       1.8244
-Centered skew:                -0.7658   Centered kurtosis:              4.0910
+Skew:                         -0.5481   Kurtosis:                      -1.6984
+Centered skew:                -0.3315   Centered kurtosis:              1.1641
 ==============================================================================
 
-Categorical rank model: correct ~ C(rank), reference rank=8
+Categorical rank model: detected ~ C(rank), reference rank=8
                                GEE Regression Results                              
 ===================================================================================
-Dep. Variable:                     correct   No. Observations:                 9600
-Model:                                 GEE   No. clusters:                     2400
+Dep. Variable:                    detected   No. Observations:                 4160
+Model:                                 GEE   No. clusters:                     1040
 Method:                        Generalized   Min. cluster size:                   4
                       Estimating Equations   Max. cluster size:                   4
 Family:                           Binomial   Mean cluster size:                 4.0
 Dependence structure:         Independence   Num. iterations:                     2
 Date:                     Thu, 23 Apr 2026   Scale:                           1.000
-Covariance type:                    robust   Time:                         10:02:14
+Covariance type:                    robust   Time:                         10:02:36
 =========================================================================================================
                                             coef    std err          z      P>|z|      [0.025      0.975]
 ---------------------------------------------------------------------------------------------------------
-Intercept                                 1.6613      0.056     29.806      0.000       1.552       1.771
-C(rank, Treatment(reference=8))[T.16]     0.2846      0.061      4.638      0.000       0.164       0.405
-C(rank, Treatment(reference=8))[T.25]     0.0997      0.063      1.580      0.114      -0.024       0.223
-C(rank, Treatment(reference=8))[T.32]    -0.0787      0.063     -1.240      0.215      -0.203       0.046
+Intercept                                 0.6022      0.065      9.286      0.000       0.475       0.729
+C(rank, Treatment(reference=8))[T.16]     0.0126      0.061      0.206      0.837      -0.108       0.133
+C(rank, Treatment(reference=8))[T.25]    -0.2485      0.072     -3.437      0.001      -0.390      -0.107
+C(rank, Treatment(reference=8))[T.32]    4.5e-15      0.064      7e-14      1.000      -0.126       0.126
 ==============================================================================
-Skew:                         -1.9491   Kurtosis:                       1.8165
-Centered skew:                -0.7278   Centered kurtosis:              4.0234
+Skew:                         -0.5463   Kurtosis:                      -1.6890
+Centered skew:                -0.2854   Centered kurtosis:              1.1433
 ==============================================================================

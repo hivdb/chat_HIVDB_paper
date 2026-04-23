@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plot Llama3.1-70B recall, precision, and accuracy regression curves by rank."""
+"""Plot Llama3.1-8B recall, precision, and accuracy regression curves by rank."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("regression/llama70b_regression_plot.png"),
+        default=Path("regression/llama8b_regression_plot.png"),
         help="Output figure path.",
     )
     return parser.parse_args()
@@ -111,7 +111,7 @@ def plot_panel(
         },
     )
 
-    ax.set_title(f"Llama3.1-70B {metric.capitalize()} by QLoRA Rank", pad=32)
+    ax.set_title(f"Llama3.1-8B {metric.capitalize()} by QLoRA Rank", pad=32)
     ax.set_xlabel("LoRA rank")
     ax.set_ylabel(metric.capitalize())
     ax.set_xticks([8, 16, 25, 32])
@@ -126,9 +126,9 @@ def main() -> None:
     args = parse_args()
     args.output.parent.mkdir(parents=True, exist_ok=True)
 
-    recall_summary = pd.read_csv("regression/llama70b_recall_logistic.recall_summary.csv")
-    precision_summary = pd.read_csv("regression/llama70b_precision_logistic.precision_summary.csv")
-    accuracy_summary = pd.read_csv("regression/llama70b_accuracy_logistic.accuracy_summary.csv")
+    recall_summary = pd.read_csv("regression/llama8b_recall_logistic.recall_summary.csv")
+    precision_summary = pd.read_csv("regression/llama8b_precision_logistic.precision_summary.csv")
+    accuracy_summary = pd.read_csv("regression/llama8b_accuracy_logistic.accuracy_summary.csv")
 
     plt.rcParams.update(
         {
@@ -143,7 +143,7 @@ def main() -> None:
     plot_panel(
         axes[0],
         accuracy_summary,
-        Path("regression/llama70b_accuracy_logistic.odds_ratios.csv"),
+        Path("regression/llama8b_accuracy_logistic.odds_ratios.csv"),
         metric="accuracy",
         numerator_col="correct_cases",
         denominator_col="total_cases",
@@ -153,7 +153,7 @@ def main() -> None:
     plot_panel(
         axes[1],
         precision_summary,
-        Path("regression/llama70b_precision_logistic.odds_ratios.csv"),
+        Path("regression/llama8b_precision_logistic.odds_ratios.csv"),
         metric="precision",
         numerator_col="true_positives",
         denominator_col="predicted_positive_cases",
@@ -163,7 +163,7 @@ def main() -> None:
     plot_panel(
         axes[2],
         recall_summary,
-        Path("regression/llama70b_recall_logistic.odds_ratios.csv"),
+        Path("regression/llama8b_recall_logistic.odds_ratios.csv"),
         metric="recall",
         numerator_col="true_positives",
         denominator_col="positive_cases",
@@ -171,7 +171,7 @@ def main() -> None:
         color="#1f6f8b",
     )
 
-    fig.suptitle("GEE Logistic Regression of Rank Effects", fontsize=15, fontweight="bold")
+    fig.suptitle("GEE Logistic Regression of Llama3.1-8B Rank Effects", fontsize=15, fontweight="bold")
     fig.savefig(args.output, bbox_inches="tight")
     print(f"Wrote {args.output}")
 
