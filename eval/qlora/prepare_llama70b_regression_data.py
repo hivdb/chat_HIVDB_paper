@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a recall-ready long dataframe for Llama3.1-70B rank comparisons."""
+"""Build a regression-ready long dataframe for Llama3.1-70B rank comparisons."""
 
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ ID_COLUMNS = ["PMID", "QID", "Question", "Type", "Category", "Human Answer"]
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Build per-item outcomes and recall-ready rows for Llama3.1-70B."
+        description="Build per-item outcomes and regression-ready rows for Llama3.1-70B."
     )
     parser.add_argument(
         "--input",
@@ -44,8 +44,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("llama70b_recall_long.csv"),
-        help="Output CSV file for recall-ready long data.",
+        default=Path("llama70b_regression_data.csv"),
+        help="Output CSV file for regression-ready long data.",
     )
     return parser.parse_args()
 

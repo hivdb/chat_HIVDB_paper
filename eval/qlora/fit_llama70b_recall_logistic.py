@@ -14,18 +14,18 @@ import statsmodels.formula.api as smf
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Fit GEE logistic regression for recall using llama70b_recall_long.csv."
+        description="Fit GEE logistic regression for recall using llama70b_regression_data.csv."
     )
     parser.add_argument(
         "--input",
         type=Path,
-        default=Path("llama70b_recall_long.csv"),
+        default=Path("llama70b_regression_data.csv"),
         help="Recall-ready long CSV.",
     )
     parser.add_argument(
         "--output-prefix",
         type=Path,
-        default=Path("llama70b_recall_logistic"),
+        default=Path("regression/llama70b_recall_logistic"),
         help="Prefix for output files.",
     )
     return parser.parse_args()
@@ -50,6 +50,7 @@ def odds_ratio_table(result) -> pd.DataFrame:
 
 def main() -> None:
     args = parse_args()
+    args.output_prefix.parent.mkdir(parents=True, exist_ok=True)
     df = pd.read_csv(args.input, encoding="utf-8-sig")
 
     required = {"item_id", "model", "rank", "ref_positive", "detected"}

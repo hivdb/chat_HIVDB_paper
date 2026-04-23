@@ -4,34 +4,42 @@ This directory contains scripts for preparing per-paper-question Llama3.1-70B ra
 
 ## 1. Scripts To Call
 
+Run the full pipeline with one command:
+
+```bash
+./run_llama70b_regression_pipeline.sh
+```
+
+Or run the steps manually:
+
 Run scripts from this directory:
 
 ```bash
 cd /Users/kaimingtao/HIVDB/chat_HIVDB_paper/eval/qlora
 ```
 
-First build the TP/TN/FP/FN long dataframe used for recall and precision:
+First build the TP/TN/FP/FN long dataframe used for the regression analyses:
 
 ```bash
-uv run python prepare_llama70b_recall.py
+uv run python prepare_llama70b_regression_data.py
 ```
 
 Output:
 
 ```text
-llama70b_recall_long.csv
+llama70b_regression_data.csv
 ```
 
 Validate that the long file matches the original correctness columns in `merged_answers_with_correct.csv`:
 
 ```bash
-uv run python validate_llama70b_recall.py
+uv run python validate_llama70b_regression_data.py
 ```
 
 Expected result:
 
 ```text
-Validation passed: llama70b_recall_long.csv matches merged_answers_with_correct.csv.
+Validation passed: llama70b_regression_data.csv matches merged_answers_with_correct.csv.
 ```
 
 Fit recall regression:

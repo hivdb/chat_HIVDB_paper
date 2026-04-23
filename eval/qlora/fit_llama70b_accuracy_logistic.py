@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fit logistic regression models for Llama3.1-70B precision by rank."""
+"""Fit logistic regression models for Llama3.1-70B accuracy by rank."""
 
 from __future__ import annotations
 
@@ -14,18 +14,18 @@ import statsmodels.formula.api as smf
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Fit GEE logistic regression for precision using llama70b_regression_data.csv."
+        description="Fit GEE logistic regression for accuracy using llama70b_regression_data.csv."
     )
     parser.add_argument(
         "--input",
         type=Path,
         default=Path("llama70b_regression_data.csv"),
-        help="Long CSV with per-item TP/TN/FP/FN outcomes.",
+        help="Long CSV with per-item correctness by rank.",
     )
     parser.add_argument(
         "--output-prefix",
         type=Path,
-        default=Path("regression/llama70b_precision_logistic"),
+        default=Path("regression/llama70b_accuracy_logistic"),
         help="Prefix for output files.",
     )
     return parser.parse_args()
@@ -53,44 +53,41 @@ def main() -> None:
     args.output_prefix.parent.mkdir(parents=True, exist_ok=True)
     df = pd.read_csv(args.input, encoding="utf-8-sig")
 
-    required = {"item_id", "model", "rank", "outcome"}
+    required = {"item_id", "model", "rank", "correct"}
     missing = required - set(df.columns)
     if missing:
         raise KeyError(f"Missing required columns: {sorted(missing)}")
 
-    # Precision is TP / (TP + FP), so use the scorer's actual TP/FP outcomes.
-    precision_df = df[df["outcome"].isin(["TP", "FP"])].copy()
-    precision_df["rank"] = pd.to_numeric(precision_df["rank"], errors="raise")
-    precision_df["precise"] = (precision_df["outcome"] == "TP").astype(int)
+    accuracy_df = df.copy()
+    accuracy_df["rank"] = pd.to_numeric(accuracy_df["rank"], errors="raise")
+    accuracy_df["correct"] = pd.to_numeric(accuracy_df["correct"], errors="raise").astype(int)
 
-    precision_summary = (
-        precision_df.groupby(["model", "rank"], as_index=False)["precise"]
-        .agg(predicted_positive_cases="count", true_positives="sum")
+    accuracy_summary = (
+        accuracy_df.groupby(["model", "rank"], as_index=False)["correct"]
+        .agg(total_cases="count", correct_cases="sum")
         .sort_values("rank")
     )
-    precision_summary["precision"] = (
-        precision_summary["true_positives"] / precision_summary["predicted_positive_cases"]
-    )
+    accuracy_summary["accuracy"] = accuracy_summary["correct_cases"] / accuracy_summary["total_cases"]
 
     trend_fit = smf.gee(
-        "precise ~ rank",
+        "correct ~ rank",
         groups="item_id",
-        data=precision_df,
+        data=accuracy_df,
         family=sm.families.Binomial(),
     ).fit()
 
     categorical_fit = smf.gee(
-        "precise ~ C(rank, Treatment(reference=8))",
+        "correct ~ C(rank, Treatment(reference=8))",
         groups="item_id",
-        data=precision_df,
+        data=accuracy_df,
         family=sm.families.Binomial(),
     ).fit()
 
     summary_path = args.output_prefix.with_suffix(".summary.txt")
     or_path = args.output_prefix.with_suffix(".odds_ratios.csv")
-    precision_summary_path = args.output_prefix.with_suffix(".precision_summary.csv")
+    accuracy_summary_path = args.output_prefix.with_suffix(".accuracy_summary.csv")
 
-    precision_summary.to_csv(precision_summary_path, index=False)
+    accuracy_summary.to_csv(accuracy_summary_path, index=False)
     odds_tables = pd.concat(
         [
             odds_ratio_table(trend_fit).assign(model_fit="numeric_rank_trend"),
@@ -101,19 +98,19 @@ def main() -> None:
     odds_tables.to_csv(or_path, index=False)
 
     with summary_path.open("w", encoding="utf-8") as handle:
-        handle.write("Precision summary\n")
-        handle.write(precision_summary.to_string(index=False))
-        handle.write("\n\nNumeric rank trend model: precise ~ rank\n")
+        handle.write("Accuracy summary\n")
+        handle.write(accuracy_summary.to_string(index=False))
+        handle.write("\n\nNumeric rank trend model: correct ~ rank\n")
         handle.write(trend_fit.summary().as_text())
-        handle.write("\n\nCategorical rank model: precise ~ C(rank), reference rank=8\n")
+        handle.write("\n\nCategorical rank model: correct ~ C(rank), reference rank=8\n")
         handle.write(categorical_fit.summary().as_text())
         handle.write("\n")
 
-    print(f"Precision rows used: {len(precision_df)}")
-    print(precision_summary.to_string(index=False))
+    print(f"Accuracy rows used: {len(accuracy_df)}")
+    print(accuracy_summary.to_string(index=False))
     print(f"\nWrote {summary_path}")
     print(f"Wrote {or_path}")
-    print(f"Wrote {precision_summary_path}")
+    print(f"Wrote {accuracy_summary_path}")
 
 
 if __name__ == "__main__":

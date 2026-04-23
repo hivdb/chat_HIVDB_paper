@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate llama70b_recall_long.csv against merged_answers_with_correct.csv."""
+"""Validate llama70b_regression_data.csv against merged_answers_with_correct.csv."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ KEY_COLUMNS = ["PMID", "QID"]
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Validate that llama70b_recall_long.csv matches merged_answers_with_correct.csv."
+        description="Validate that llama70b_regression_data.csv matches merged_answers_with_correct.csv."
     )
     parser.add_argument(
         "--merged",
@@ -32,8 +32,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--recall",
         type=Path,
-        default=Path("llama70b_recall_long.csv"),
-        help="Recall-ready long file to validate.",
+        default=Path("llama70b_regression_data.csv"),
+        help="Regression-ready long file to validate.",
     )
     return parser.parse_args()
 
@@ -145,7 +145,7 @@ def main() -> None:
     if not missing_in_recall.empty or not missing_in_merged.empty:
         raise SystemExit(1)
 
-    print("\nValidation passed: llama70b_recall_long.csv matches merged_answers_with_correct.csv.")
+    print("\nValidation passed: llama70b_regression_data.csv matches merged_answers_with_correct.csv.")
 
 
 if __name__ == "__main__":

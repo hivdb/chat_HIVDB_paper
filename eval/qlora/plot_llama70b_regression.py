@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plot Llama3.1-70B recall and precision regression curves by rank."""
+"""Plot Llama3.1-70B recall, precision, and accuracy regression curves by rank."""
 
 from __future__ import annotations
 
@@ -13,12 +13,12 @@ import pandas as pd
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Plot recall and precision GEE logistic regression curves."
+        description="Plot recall, precision, and accuracy GEE logistic regression curves."
     )
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("llama70b_regression_plot.png"),
+        default=Path("regression/llama70b_regression_plot.png"),
         help="Output figure path.",
     )
     return parser.parse_args()
@@ -122,9 +122,11 @@ def plot_panel(
 
 def main() -> None:
     args = parse_args()
+    args.output.parent.mkdir(parents=True, exist_ok=True)
 
-    recall_summary = pd.read_csv("llama70b_recall_logistic.recall_summary.csv")
-    precision_summary = pd.read_csv("llama70b_precision_logistic.precision_summary.csv")
+    recall_summary = pd.read_csv("regression/llama70b_recall_logistic.recall_summary.csv")
+    precision_summary = pd.read_csv("regression/llama70b_precision_logistic.precision_summary.csv")
+    accuracy_summary = pd.read_csv("regression/llama70b_accuracy_logistic.accuracy_summary.csv")
 
     plt.rcParams.update(
         {
@@ -134,12 +136,12 @@ def main() -> None:
         }
     )
 
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5), constrained_layout=True)
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5), constrained_layout=True)
 
     plot_panel(
         axes[0],
         recall_summary,
-        Path("llama70b_recall_logistic.odds_ratios.csv"),
+        Path("regression/llama70b_recall_logistic.odds_ratios.csv"),
         metric="recall",
         numerator_col="true_positives",
         denominator_col="positive_cases",
@@ -149,12 +151,22 @@ def main() -> None:
     plot_panel(
         axes[1],
         precision_summary,
-        Path("llama70b_precision_logistic.odds_ratios.csv"),
+        Path("regression/llama70b_precision_logistic.odds_ratios.csv"),
         metric="precision",
         numerator_col="true_positives",
         denominator_col="predicted_positive_cases",
         count_note="Point label:\nTP / predicted positives",
         color="#b85c38",
+    )
+    plot_panel(
+        axes[2],
+        accuracy_summary,
+        Path("regression/llama70b_accuracy_logistic.odds_ratios.csv"),
+        metric="accuracy",
+        numerator_col="correct_cases",
+        denominator_col="total_cases",
+        count_note="Point label:\nCorrect / total",
+        color="#4c956c",
     )
 
     fig.suptitle("GEE Logistic Regression of Rank Effects", fontsize=15, fontweight="bold")
