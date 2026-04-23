@@ -1,0 +1,16 @@
+Cochran-Armitage trend test for recall
+Alternative: two-sided
+Success definition: detected
+
+model  rank  total_cases  success_cases   recall
+   R8     8         1040            846 0.813462
+  R16    16         1040            801 0.770192
+   FT    25         1040            738 0.709615
+  R32    32         1040            700 0.673077
+
+Statistic: -2037.2500000000
+Variance: 65536.0832682135
+Z: -7.9580027569
+P-value: 1.776356839e-15
+
+Note: this test treats rows within each rank as independent and does not model repeated measures across the same item_id.

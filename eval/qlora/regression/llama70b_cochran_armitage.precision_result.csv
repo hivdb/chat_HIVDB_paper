@@ -1,0 +1,2 @@
+metric,success_definition,alternative,scores,successes,totals,statistic,variance,z,p_value
+precision,precise,two-sided,"8,16,25,32","846,801,738,700","1035,862,788,769",1145.5518239722064,27790.122478341087,6.87178417131959,6.340261649029344e-12

@@ -1,0 +1,16 @@
+Cochran-Armitage trend test for precision
+Alternative: two-sided
+Success definition: precise
+
+model  rank  total_cases  success_cases  precision
+   R8     8         1035            846   0.817391
+  R16    16          862            801   0.929234
+   FT    25          788            738   0.936548
+  R32    32          769            700   0.910273
+
+Statistic: 1145.5518239722
+Variance: 27790.1224783411
+Z: 6.8717841713
+P-value: 6.340261649e-12
+
+Note: this test treats rows within each rank as independent and does not model repeated measures across the same item_id.

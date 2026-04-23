@@ -1,0 +1,2 @@
+metric,success_definition,alternative,scores,successes,totals,statistic,variance,z,p_value
+recall,detected,two-sided,"8,16,25,32","846,801,738,700","1040,1040,1040,1040",-2037.25,65536.08326821352,-7.958002756893446,1.7763568394002505e-15
