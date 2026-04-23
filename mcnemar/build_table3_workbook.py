@@ -18,27 +18,7 @@ from mcnemar.build_suppfile2_workbook import DEFAULT_COMPARISONS, _compute_mcnem
 
 DEFAULT_SUFFIX = "full150"
 DEFAULT_OUTPUT = Path(__file__).resolve().parent / "Table3_formatted.xlsx"
-LEGACY_TABLE = ROOT / "eval" / "results" / "Table3_formatted.xlsx"
-
 FAMILY_ORDER = ["GPT-4o", "Llama3.1-70B", "Llama3.1-8B"]
-
-
-def _legacy_order_map(path: Path) -> dict[str, list[int]]:
-    order_map: dict[str, list[int]] = {family: [] for family in FAMILY_ORDER}
-    if not path.exists():
-        return order_map
-    ws = load_workbook(path, data_only=True).active
-    current_family: str | None = None
-    for row_idx in range(1, ws.max_row + 1):
-        first_val = ws.cell(row_idx, 1).value
-        if first_val in FAMILY_ORDER:
-            current_family = str(first_val)
-            continue
-        if current_family is None:
-            continue
-        if isinstance(first_val, int):
-            order_map[current_family].append(int(first_val))
-    return order_map
 
 
 def _metric_lookup(qid_df: pd.DataFrame) -> dict[tuple[int, str], dict[str, float]]:
@@ -88,17 +68,10 @@ def _format_metric_value(value: float | None, adj_p: float | None, significant: 
     return f"{value * 100:.1f}{suffix}"
 
 
-def _ordered_qids(sig_qids: list[int], legacy_order: list[int]) -> list[int]:
-    preferred = [qid for qid in legacy_order if qid in sig_qids]
-    extras = sorted(qid for qid in sig_qids if qid not in legacy_order)
-    return preferred + extras
-
-
 def _build_records(
     qid_df: pd.DataFrame,
     long_df: pd.DataFrame,
     metrics: list[str],
-    legacy_order: dict[str, list[int]],
 ) -> dict[str, list[dict[str, object]]]:
     qid_question = qid_df.groupby("QID")["Question"].first().to_dict()
     metric_lookup = _metric_lookup(qid_df)
@@ -113,9 +86,8 @@ def _build_records(
         if not sig_qids:
             records_by_family[family] = []
             continue
-        ordered_qids = _ordered_qids(sig_qids, legacy_order.get(family, []))
         family_rows: list[dict[str, object]] = []
-        for qid in ordered_qids:
+        for qid in sig_qids:
             row: dict[str, object] = {
                 "QID": qid,
                 "Question": qid_question.get(qid, ""),
@@ -200,9 +172,8 @@ def build_workbook(output_path: Path, suffix: str) -> Path:
         )
     )
 
-    legacy_order = _legacy_order_map(LEGACY_TABLE)
-    fisher_records = _build_records(qid_df, fisher_long, ["accuracy", "precision", "recall"], legacy_order)
-    mcnemar_records = _build_records(qid_df, mcnemar_long, ["accuracy", "recall"], legacy_order)
+    fisher_records = _build_records(qid_df, fisher_long, ["accuracy", "precision", "recall"])
+    mcnemar_records = _build_records(qid_df, mcnemar_long, ["accuracy", "recall"])
 
     wb = Workbook()
     ws_fisher = wb.active
