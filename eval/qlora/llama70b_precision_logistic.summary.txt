@@ -1,0 +1,50 @@
+Precision summary
+model  rank  predicted_positive_cases  true_positives  precision
+   R8     8                      1035             846   0.817391
+  R16    16                       862             801   0.929234
+   FT    25                       788             738   0.936548
+  R32    32                       769             700   0.910273
+
+Numeric rank trend model: precise ~ rank
+                               GEE Regression Results                              
+===================================================================================
+Dep. Variable:                     precise   No. Observations:                 3454
+Model:                                 GEE   No. clusters:                     1175
+Method:                        Generalized   Min. cluster size:                   1
+                      Estimating Equations   Max. cluster size:                   4
+Family:                           Binomial   Mean cluster size:                 2.9
+Dependence structure:         Independence   Num. iterations:                     2
+Date:                     Wed, 22 Apr 2026   Scale:                           1.000
+Covariance type:                    robust   Time:                         18:41:32
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept      1.3545      0.101     13.378      0.000       1.156       1.553
+rank           0.0432      0.005      7.996      0.000       0.033       0.054
+==============================================================================
+Skew:                         -2.4946   Kurtosis:                       4.3680
+Centered skew:                 0.2326   Centered kurtosis:             -1.2599
+==============================================================================
+
+Categorical rank model: precise ~ C(rank), reference rank=8
+                               GEE Regression Results                              
+===================================================================================
+Dep. Variable:                     precise   No. Observations:                 3454
+Model:                                 GEE   No. clusters:                     1175
+Method:                        Generalized   Min. cluster size:                   1
+                      Estimating Equations   Max. cluster size:                   4
+Family:                           Binomial   Mean cluster size:                 2.9
+Dependence structure:         Independence   Num. iterations:                     2
+Date:                     Wed, 22 Apr 2026   Scale:                           1.000
+Covariance type:                    robust   Time:                         18:41:32
+=========================================================================================================
+                                            coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------------------
+Intercept                                 1.4988      0.080     18.629      0.000       1.341       1.656
+C(rank, Treatment(reference=8))[T.16]     1.0762      0.116      9.285      0.000       0.849       1.303
+C(rank, Treatment(reference=8))[T.25]     1.1931      0.140      8.503      0.000       0.918       1.468
+C(rank, Treatment(reference=8))[T.32]     0.8182      0.112      7.335      0.000       0.600       1.037
+==============================================================================
+Skew:                         -2.4460   Kurtosis:                       4.2730
+Centered skew:                 0.8751   Centered kurtosis:             -0.8529
+==============================================================================
