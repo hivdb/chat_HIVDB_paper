@@ -7,6 +7,7 @@ import argparse
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 QLORA_DIR = Path(__file__).resolve().parent
@@ -30,6 +31,10 @@ STATS_XLSX = QLORA_DIR / "statistical_tests_full150.xlsx"
 CORRECT_CSV = QLORA_DIR / "merged_answers_with_correct.csv"
 CORRECT_XLSX = QLORA_DIR / "merged_answers_with_correct.xlsx"
 BAR_CHART = QLORA_DIR / "full150-bar-chart.png"
+BAR_CHART_CI_CSV = QLORA_DIR / "full150-bar-chart-confidence-intervals.csv"
+BOOTSTRAP_ITERATIONS = 5000
+CONFIDENCE_LEVEL = 0.95
+BOOTSTRAP_SEED = 42
 BAR_CHART_MODELS = [
     "Llama3.1-70B R8",
     "Llama3.1-70B R16",
@@ -60,6 +65,7 @@ for path in (ROOT, ROOT.parent):
         sys.path.insert(0, str(path))
 
 from eval import config  # type: ignore
+from eval.normalize import human_answer_counts  # type: ignore
 from eval.evaluation import build_qid_metrics  # type: ignore
 from eval.plots import plot_metric_panels  # type: ignore
 from eval import statistics as stat_utils  # type: ignore
@@ -259,6 +265,103 @@ def build_statistical_tests(qid_df: pd.DataFrame, wilcoxon_only: bool = False) -
     return stats_df[keep_columns].reset_index(drop=True)
 
 
+def _metrics_from_count_arrays(
+    tp: np.ndarray,
+    tn: np.ndarray,
+    fp: np.ndarray,
+    fn: np.ndarray,
+) -> dict[str, np.ndarray]:
+    total = tp + tn + fp + fn
+    accuracy = np.divide(tp + tn, total, out=np.zeros_like(total, dtype=float), where=total != 0)
+    precision_den = tp + fp
+    precision = np.divide(tp, precision_den, out=np.zeros_like(tp, dtype=float), where=precision_den != 0)
+    recall_den = tp + fn
+    recall = np.divide(tp, recall_den, out=np.zeros_like(tp, dtype=float), where=recall_den != 0)
+    f1_den = precision + recall
+    f1 = np.divide(2 * precision * recall, f1_den, out=np.zeros_like(precision, dtype=float), where=f1_den != 0)
+    return {
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+        "f1": f1,
+    }
+
+
+def build_bar_chart_confidence_intervals(df: pd.DataFrame) -> pd.DataFrame:
+    available_models = [model for model in BAR_CHART_MODELS if model in df.columns]
+    if not available_models:
+        raise SystemExit(f"None of the bar chart model columns were found: {', '.join(BAR_CHART_MODELS)}")
+
+    cache: dict[str, str] = {}
+    ref_norm = ensure_norm(df, config.REF_COL, cache)
+    model_norm_lookup = {
+        model: ensure_norm(df, model, cache)
+        for model in available_models
+    }
+
+    alpha = 1.0 - CONFIDENCE_LEVEL
+    lower_pct = 100 * (alpha / 2)
+    upper_pct = 100 * (1 - alpha / 2)
+    rng = np.random.default_rng(BOOTSTRAP_SEED)
+    ci_rows: list[dict[str, float | int | str]] = []
+
+    for model in available_models:
+        row_counts: list[tuple[int, int, int, int]] = []
+        pred_norm = model_norm_lookup[model]
+        for _, row in df.iterrows():
+            question_type = str(row.get("Type", ""))
+            allow_partial = question_type.strip().lower() == "list"
+            counts, _ = human_answer_counts(
+                question_type,
+                row.get(pred_norm, ""),
+                row.get(ref_norm, ""),
+                question_text=row.get("Question", ""),
+                ref_raw=row.get(config.REF_COL, ""),
+                pred_raw=row.get(model, ""),
+                allow_partial_list=allow_partial,
+            )
+            row_counts.append((counts["tp"], counts["tn"], counts["fp"], counts["fn"]))
+
+        count_array = np.asarray(row_counts, dtype=int)
+        tp = count_array[:, 0]
+        tn = count_array[:, 1]
+        fp = count_array[:, 2]
+        fn = count_array[:, 3]
+        point_metrics = _metrics_from_count_arrays(
+            np.array([tp.sum()]),
+            np.array([tn.sum()]),
+            np.array([fp.sum()]),
+            np.array([fn.sum()]),
+        )
+
+        sample_size = len(count_array)
+        bootstrap_idx = rng.integers(0, sample_size, size=(BOOTSTRAP_ITERATIONS, sample_size))
+        boot_tp = tp[bootstrap_idx].sum(axis=1)
+        boot_tn = tn[bootstrap_idx].sum(axis=1)
+        boot_fp = fp[bootstrap_idx].sum(axis=1)
+        boot_fn = fn[bootstrap_idx].sum(axis=1)
+        boot_metrics = _metrics_from_count_arrays(boot_tp, boot_tn, boot_fp, boot_fn)
+
+        for metric, point_value_arr in point_metrics.items():
+            point_value = float(point_value_arr[0])
+            ci_low = float(np.percentile(boot_metrics[metric], lower_pct))
+            ci_high = float(np.percentile(boot_metrics[metric], upper_pct))
+            ci_rows.append(
+                {
+                    "model": model,
+                    "display_label": BAR_CHART_LABELS.get(model, model.rsplit(" ", 1)[-1]),
+                    "metric": metric,
+                    "value": point_value * 100.0,
+                    "ci_low": ci_low * 100.0,
+                    "ci_high": ci_high * 100.0,
+                    "confidence_level": CONFIDENCE_LEVEL,
+                }
+            )
+
+    columns = ["model", "display_label", "metric", "value", "ci_low", "ci_high", "confidence_level"]
+    return pd.DataFrame(ci_rows)[columns]
+
+
 def main() -> int:
     args = parse_args()
     df = load_dataset(args.merged_path)
@@ -273,6 +376,8 @@ def main() -> int:
     stats_df.to_excel(STATS_XLSX, index=False)
     correct_df.to_csv(CORRECT_CSV, index=False, encoding="utf-8-sig")
     correct_df.to_excel(CORRECT_XLSX, index=False)
+    bar_chart_ci_df = build_bar_chart_confidence_intervals(df)
+    bar_chart_ci_df.to_csv(BAR_CHART_CI_CSV, index=False, encoding="utf-8-sig")
     bar_chart_df = metrics_df[metrics_df["model"].isin(BAR_CHART_MODELS)].copy()
     bar_chart_df["display_order"] = bar_chart_df["model"].map(
         {model: idx for idx, model in enumerate(BAR_CHART_MODELS)}
