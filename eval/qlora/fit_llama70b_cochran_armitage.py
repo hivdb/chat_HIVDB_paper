@@ -34,6 +34,12 @@ def parse_args() -> argparse.Namespace:
         help="Alternative hypothesis for the trend test.",
     )
     parser.add_argument(
+        "--scores",
+        choices=["order", "rank"],
+        default="order",
+        help="Score assignment for ordered groups: sequential order or raw rank values.",
+    )
+    parser.add_argument(
         "--output-prefix",
         type=Path,
         default=Path("regression/llama70b_cochran_armitage"),
@@ -142,9 +148,21 @@ def main() -> None:
     )
     summary[args.metric] = summary["success_cases"] / summary["total_cases"]
 
-    scores = summary["rank"].astype(float).tolist()
+    if args.scores == "order":
+        scores = list(range(1, len(summary) + 1))
+    else:
+        scores = summary["rank"].astype(float).tolist()
     successes = summary["success_cases"].astype(int).tolist()
     totals = summary["total_cases"].astype(int).tolist()
+    print(
+        "cochran_armitage_test inputs:",
+        {
+            "successes": successes,
+            "totals": totals,
+            "scores": scores,
+            "alternative": args.alternative,
+        },
+    )
     result = cochran_armitage_test(successes, totals, scores, args.alternative)
 
     results_table = pd.DataFrame(
@@ -153,6 +171,7 @@ def main() -> None:
                 "metric": args.metric,
                 "success_definition": success_label,
                 "alternative": args.alternative,
+                "score_mode": args.scores,
                 "scores": ",".join(
                     str(int(score)) if float(score).is_integer() else str(score)
                     for score in scores
@@ -183,6 +202,7 @@ def main() -> None:
     with text_path.open("w", encoding="utf-8") as handle:
         handle.write(f"Cochran-Armitage trend test for {args.metric}\n")
         handle.write(f"Alternative: {args.alternative}\n")
+        handle.write(f"Score mode: {args.scores}\n")
         handle.write(f"Success definition: {success_label}\n\n")
         handle.write(summary.to_string(index=False))
         handle.write("\n\n")
@@ -198,6 +218,7 @@ def main() -> None:
     print(summary.to_string(index=False))
     print(f"\nCochran-Armitage test for {args.metric}")
     print(f"Alternative: {args.alternative}")
+    print(f"Score mode: {args.scores}")
     print(f"Z = {result['z']:.6f}")
     print(f"p-value = {result['p_value']:.6g}")
     print(f"\nWrote {summary_path}")
