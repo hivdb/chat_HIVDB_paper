@@ -172,6 +172,39 @@ def _compute_mcnemar_tests(
     return df
 
 
+def _restrict_bh_scope(
+    df: pd.DataFrame,
+    metrics: Iterable[str],
+    bh_comparisons: Iterable[str] | None = None,
+) -> pd.DataFrame:
+    if df is None or df.empty:
+        return df
+    scoped = df.copy()
+    bh_comparison_set = {str(value) for value in bh_comparisons} if bh_comparisons is not None else None
+    qid_cols = sorted(
+        int(col.split("_")[-1]) for col in scoped.columns if col.startswith("p_value_qid_")
+    )
+    for metric in metrics:
+        metric_mask = scoped["metric"] == metric
+        for qid in qid_cols:
+            p_col = f"p_value_qid_{qid}"
+            adj_col = f"adj_p_qid_{qid}"
+            vals = scoped.loc[metric_mask, p_col]
+            valid_mask = metric_mask & vals.notna()
+            if bh_comparison_set is not None:
+                valid_mask = valid_mask & scoped["comparison"].isin(bh_comparison_set)
+            pvals = scoped.loc[valid_mask, p_col].astype(float).tolist()
+            scoped.loc[metric_mask, adj_col] = float("nan")
+            if not pvals:
+                continue
+            adjusted = stat_utils.benjamini_hochberg(pvals)
+            scoped.loc[valid_mask, adj_col] = [_round_sig(val) for val in adjusted]
+    for col in scoped.columns:
+        if scoped[col].dtype.kind in {"f", "i"}:
+            scoped[col] = scoped[col].apply(_round_sig)
+    return scoped
+
+
 def _build_suppfile2_individquest_mcnemar(
     qid_df: pd.DataFrame,
     mcnemar_qid_df: pd.DataFrame,
@@ -374,6 +407,11 @@ def build_workbook(output_path: Path, suffix: str) -> Path:
         qid_df,
         FAMILY_COMPARISONS,
         ["accuracy", "precision", "recall", "f1"],
+    )
+    fisher_df = _restrict_bh_scope(
+        fisher_df,
+        ["accuracy", "precision", "recall", "f1"],
+        bh_comparisons=DEFAULT_COMPARISONS,
     )
     fisher_qid_df = _build_fisher_qid_sheet(fisher_df)
     pair_df, _, _ = stat_utils.compute_pairwise_tests(

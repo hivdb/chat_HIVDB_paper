@@ -58,6 +58,13 @@ The generated workbook has 4 sheets:
 - `ModelComp_SignedRankFig4`: paired t-test / Wilcoxon summary for `full150`.
 - `ModelComp_BH_AdjustFig4`: BH-adjusted model-comparison summary for `full150`.
 
+For the per-question supplementary sheets, BH correction is applied only across the comparisons that are actually shown on the sheet:
+
+- Fisher sheet: `FT` and `QSP` only
+- McNemar sheet: `FT` and `QSP` only
+
+So the BH adjustment universe is 6 comparisons per metric per QID (`3 families × 2 displayed comparisons`), not 9.
+
 Run from the repo root:
 
 ```bash
