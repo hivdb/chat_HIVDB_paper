@@ -23,7 +23,7 @@ from eval.scoring import build_detail_rows, ensure_norm, evaluate_group, evaluat
 from scipy.stats import fisher_exact
 import numpy as np
 
-from eval.normalize import slugify
+from eval.normalize import human_answer_counts, slugify
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 
@@ -41,6 +41,9 @@ FAMILY_COMPARISONS = {
         "targets": ["Llama3.1-8B FT", "Llama3.1-8B FT+QSP", "Llama3.1-8B QSP"],
     },
 }
+CONFIDENCE_LEVEL = 0.95
+BOOTSTRAP_ITERATIONS = 5000
+BOOTSTRAP_SEED = 42
 
 
 def build_qid_metrics(
@@ -265,6 +268,103 @@ def _aggregate_fisher_summary(
         adjusted = stat_utils.benjamini_hochberg(metric_rows["p_value"].tolist())
         summary.loc[mask, "adj_p_value"] = adjusted
     return summary
+
+
+def _metrics_from_count_arrays(
+    tp: np.ndarray,
+    tn: np.ndarray,
+    fp: np.ndarray,
+    fn: np.ndarray,
+) -> dict[str, np.ndarray]:
+    total = tp + tn + fp + fn
+    accuracy = np.divide(tp + tn, total, out=np.zeros_like(total, dtype=float), where=total != 0)
+    precision_den = tp + fp
+    precision = np.divide(tp, precision_den, out=np.zeros_like(tp, dtype=float), where=precision_den != 0)
+    recall_den = tp + fn
+    recall = np.divide(tp, recall_den, out=np.zeros_like(tp, dtype=float), where=recall_den != 0)
+    f1_den = precision + recall
+    f1 = np.divide(2 * precision * recall, f1_den, out=np.zeros_like(precision, dtype=float), where=f1_den != 0)
+    return {
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+        "f1": f1,
+    }
+
+
+def build_bar_chart_confidence_intervals(details_path: Path, subset: pd.DataFrame) -> pd.DataFrame:
+    if subset.empty:
+        return pd.DataFrame(columns=["model", "display_label", "metric", "value", "ci_low", "ci_high", "confidence_level"])
+    details_df = pd.read_excel(details_path, sheet_name="All", keep_default_na=False, na_filter=False)
+    cache: dict[str, str] = {}
+    ref_norm = ensure_norm(details_df, config.REF_COL, cache)
+    alpha = 1.0 - CONFIDENCE_LEVEL
+    lower_pct = 100 * (alpha / 2)
+    upper_pct = 100 * (1 - alpha / 2)
+    rng = np.random.default_rng(BOOTSTRAP_SEED)
+    rows: list[dict[str, float | str]] = []
+
+    ordered_subset = subset.copy()
+    if "display_order" in ordered_subset.columns:
+        ordered_subset = ordered_subset.sort_values("display_order")
+
+    for item in ordered_subset.itertuples(index=False):
+        model = str(getattr(item, "model"))
+        answer_col = f"{model} Answer"
+        if answer_col not in details_df.columns:
+            raise ValueError(f"Answer column missing from detailed evaluation workbook: {answer_col}")
+        pred_norm = ensure_norm(details_df, answer_col, cache)
+
+        row_counts: list[tuple[int, int, int, int]] = []
+        for _, detail_row in details_df.iterrows():
+            allow_partial = str(detail_row.get("Type", "")).strip().lower() == "list"
+            counts, _ = human_answer_counts(
+                str(detail_row.get("Type", "")),
+                str(detail_row.get(pred_norm, "")),
+                str(detail_row.get(ref_norm, "")),
+                question_text=str(detail_row.get("Question", "")),
+                ref_raw=str(detail_row.get(config.REF_COL, "")),
+                pred_raw=str(detail_row.get(answer_col, "")),
+                allow_partial_list=allow_partial,
+            )
+            row_counts.append((counts["tp"], counts["tn"], counts["fp"], counts["fn"]))
+
+        count_array = np.asarray(row_counts, dtype=int)
+        tp = count_array[:, 0]
+        tn = count_array[:, 1]
+        fp = count_array[:, 2]
+        fn = count_array[:, 3]
+        point_metrics = _metrics_from_count_arrays(
+            np.array([tp.sum()]),
+            np.array([tn.sum()]),
+            np.array([fp.sum()]),
+            np.array([fn.sum()]),
+        )
+
+        sample_size = len(count_array)
+        bootstrap_idx = rng.integers(0, sample_size, size=(BOOTSTRAP_ITERATIONS, sample_size))
+        boot_tp = tp[bootstrap_idx].sum(axis=1)
+        boot_tn = tn[bootstrap_idx].sum(axis=1)
+        boot_fp = fp[bootstrap_idx].sum(axis=1)
+        boot_fn = fn[bootstrap_idx].sum(axis=1)
+        boot_metrics = _metrics_from_count_arrays(boot_tp, boot_tn, boot_fp, boot_fn)
+
+        display_label = str(getattr(item, "display_label", model))
+        for metric in ["accuracy", "precision", "recall", "f1"]:
+            rows.append(
+                {
+                    "model": model,
+                    "display_label": display_label,
+                    "metric": metric,
+                    "value": float(point_metrics[metric][0]) * 100.0,
+                    "ci_low": float(np.percentile(boot_metrics[metric], lower_pct)) * 100.0,
+                    "ci_high": float(np.percentile(boot_metrics[metric], upper_pct)) * 100.0,
+                    "confidence_level": CONFIDENCE_LEVEL,
+                }
+            )
+
+    columns = ["model", "display_label", "metric", "value", "ci_low", "ci_high", "confidence_level"]
+    return pd.DataFrame(rows)[columns]
 
 
 def _build_fisher_qid_sheet(fisher: pd.DataFrame) -> pd.DataFrame:
@@ -1062,6 +1162,7 @@ def main() -> int:
         scenario_metrics.to_excel(fisher_metrics_path, index=False)
         logging.info("Wrote metrics with Fisher p-values to %s", fisher_metrics_path)
     dataset_label = _dataset_label_from_suffix(args.output_suffix)
+    details_path = config.OUTPUT_DIR / f"detailed_evaluation{suffix}.xlsx"
     for display_title, scenario_title, subset, scenario_qid_df in figures:
         sig = overall_stats
         if suffix:
@@ -1078,6 +1179,9 @@ def main() -> int:
             base_name=base_name,
             display_title=full_title,
         )
+        ci_df = build_bar_chart_confidence_intervals(details_path, subset)
+        ci_path = config.OUTPUT_TABLE_DIR / f"{base_name}-bar-chart-confidence-intervals.csv"
+        ci_df.to_csv(ci_path, index=False, encoding="utf-8-sig")
     return 0
 
 
