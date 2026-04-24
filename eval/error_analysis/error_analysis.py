@@ -22,6 +22,14 @@ from matplotlib.patches import Patch
 EVAL_DIR = Path(__file__).resolve().parent.parent
 RESULTS_DIR = EVAL_DIR / "results"
 ERROR_ANALYSIS_DIR = EVAL_DIR / "error_analysis"
+ROOT = EVAL_DIR.parent
+ROOT_PARENT = ROOT.parent
+for path in (ROOT, ROOT_PARENT):
+    if str(path) not in sys.path:
+        sys.path.insert(0, str(path))
+
+from eval.normalize import human_answer_counts  # type: ignore
+from eval.scoring import ensure_norm  # type: ignore
 
 
 # === analysis_by_qid ===
@@ -113,6 +121,10 @@ def run_analysis_by_qid(suffix: str) -> int:
 # === failure_prev (rate plots) ===
 DEFAULT_DATA_PATH = RESULTS_DIR / "evaluation_metrics_by_qid_full150.csv"
 OUTPUT_DIR = ERROR_ANALYSIS_DIR / "figures"
+DEFAULT_DETAILS_PATH = RESULTS_DIR / "detailed_evaluation_full150.xlsx"
+CONFIDENCE_LEVEL = 0.95
+BOOTSTRAP_ITERATIONS = 5000
+BOOTSTRAP_SEED = 42
 
 MODEL_FAMILIES = [
     ("GPT-4o", "GPT-4o base", "GPT-4o FT", "GPT-4o QSP"),
@@ -444,6 +456,111 @@ def write_rate_table(rates: dict[str, dict[int, float]], qids: list[int], output
     pd.DataFrame(rows).to_csv(output_path, index=False)
 
 
+def _metrics_from_count_arrays(
+    tp: np.ndarray,
+    tn: np.ndarray,
+    fp: np.ndarray,
+    fn: np.ndarray,
+) -> dict[str, np.ndarray]:
+    total = tp + tn + fp + fn
+    accuracy = np.divide(tp + tn, total, out=np.zeros_like(total, dtype=float), where=total != 0)
+    precision_den = tp + fp
+    precision = np.divide(tp, precision_den, out=np.zeros_like(tp, dtype=float), where=precision_den != 0)
+    recall_den = tp + fn
+    recall = np.divide(tp, recall_den, out=np.zeros_like(tp, dtype=float), where=recall_den != 0)
+    f1_den = precision + recall
+    f1 = np.divide(2 * precision * recall, f1_den, out=np.zeros_like(precision, dtype=float), where=f1_den != 0)
+    return {
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+        "f1": f1,
+    }
+
+
+def _suffix_from_metrics_path(path: Path) -> str:
+    stem = path.stem
+    prefix = "evaluation_metrics_by_qid_"
+    if stem.startswith(prefix):
+        return stem[len(prefix):]
+    return DEFAULT_SUFFIX
+
+
+def build_f1_confidence_intervals(details_path: Path) -> pd.DataFrame:
+    details_df = pd.read_excel(details_path, sheet_name="All", keep_default_na=False, na_filter=False)
+    cache: dict[str, str] = {}
+    ref_norm = ensure_norm(details_df, "Human Answer", cache)
+
+    plotted_models = [
+        "GPT-4o FT",
+        "GPT-4o QSP",
+        "Llama3.1-70B FT",
+        "Llama3.1-70B QSP",
+    ]
+    alpha = 1.0 - CONFIDENCE_LEVEL
+    lower_pct = 100 * (alpha / 2)
+    upper_pct = 100 * (1 - alpha / 2)
+    rng = np.random.default_rng(BOOTSTRAP_SEED)
+    rows: list[dict[str, float | str]] = []
+
+    qids = sorted(details_df["QID"].astype(int).unique().tolist())
+    for model in plotted_models:
+        answer_col = f"{model} Answer"
+        if answer_col not in details_df.columns:
+            raise ValueError(f"Answer column missing from detailed evaluation workbook: {answer_col}")
+        pred_norm = ensure_norm(details_df, answer_col, cache)
+        for qid in qids:
+            qid_df = details_df[details_df["QID"].astype(int) == qid].copy()
+            row_counts: list[tuple[int, int, int, int]] = []
+            for _, detail_row in qid_df.iterrows():
+                allow_partial = str(detail_row.get("Type", "")).strip().lower() == "list"
+                counts, _ = human_answer_counts(
+                    str(detail_row.get("Type", "")),
+                    str(detail_row.get(pred_norm, "")),
+                    str(detail_row.get(ref_norm, "")),
+                    question_text=str(detail_row.get("Question", "")),
+                    ref_raw=str(detail_row.get("Human Answer", "")),
+                    pred_raw=str(detail_row.get(answer_col, "")),
+                    allow_partial_list=allow_partial,
+                )
+                row_counts.append((counts["tp"], counts["tn"], counts["fp"], counts["fn"]))
+
+            count_array = np.asarray(row_counts, dtype=int)
+            tp = count_array[:, 0]
+            tn = count_array[:, 1]
+            fp = count_array[:, 2]
+            fn = count_array[:, 3]
+            point_metrics = _metrics_from_count_arrays(
+                np.array([tp.sum()]),
+                np.array([tn.sum()]),
+                np.array([fp.sum()]),
+                np.array([fn.sum()]),
+            )
+
+            sample_size = len(count_array)
+            bootstrap_idx = rng.integers(0, sample_size, size=(BOOTSTRAP_ITERATIONS, sample_size))
+            boot_tp = tp[bootstrap_idx].sum(axis=1)
+            boot_tn = tn[bootstrap_idx].sum(axis=1)
+            boot_fp = fp[bootstrap_idx].sum(axis=1)
+            boot_fn = fn[bootstrap_idx].sum(axis=1)
+            boot_metrics = _metrics_from_count_arrays(boot_tp, boot_tn, boot_fp, boot_fn)
+
+            rows.append(
+                {
+                    "model": model,
+                    "display_label": f"Q{qid}",
+                    "metric": "f1",
+                    "value": float(point_metrics["f1"][0]) * 100.0,
+                    "ci_low": float(np.percentile(boot_metrics["f1"], lower_pct)) * 100.0,
+                    "ci_high": float(np.percentile(boot_metrics["f1"], upper_pct)) * 100.0,
+                    "confidence_level": CONFIDENCE_LEVEL,
+                }
+            )
+
+    columns = ["model", "display_label", "metric", "value", "ci_low", "ci_high", "confidence_level"]
+    return pd.DataFrame(rows)[columns]
+
+
 def run_failure_prev(data_path: Path | None) -> int:
     path = data_path or DEFAULT_DATA_PATH
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -481,6 +598,11 @@ def run_failure_prev(data_path: Path | None) -> int:
         rates = build_error_share_rates(df, error_type)
         plot_rate_grid(qids, type_map, question_map, rates, title, filename, as_percent=True)
         write_rate_table(rates, qids, ERROR_ANALYSIS_DIR / "results" / csv_name)
+
+    suffix = _suffix_from_metrics_path(path)
+    details_path = RESULTS_DIR / f"detailed_evaluation_{suffix}.xlsx"
+    f1_ci_df = build_f1_confidence_intervals(details_path)
+    f1_ci_df.to_csv(OUTPUT_DIR / "f1-confidence-intervals.csv", index=False, encoding="utf-8-sig")
 
     plot_overall_histogram(df, qids, type_map, question_map, "overall_hist.png")
     plot_models_histogram(df, qids, type_map, "models_hist.png")
