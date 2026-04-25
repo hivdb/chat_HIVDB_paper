@@ -116,7 +116,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--limit", type=int, default=None, help="Optional limit on evaluation rows.")
     parser.add_argument("--merged-path", type=Path, default=None, help="Override merged answers path.")
-    parser.add_argument("--output-suffix", type=str, default="", help="Suffix for output filenames (e.g., new30).")
+    parser.add_argument(
+        "--output-suffix",
+        type=str,
+        default=config.DEFAULT_SUFFIX,
+        help="Suffix for output filenames (default: full150).",
+    )
     parser.add_argument("--pairwise-baseline", type=Path, default=None, help="Optional baseline pairwise stats to align with.")
     return parser.parse_args()
 

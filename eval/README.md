@@ -8,6 +8,7 @@ make -C eval
 This runs the suffixed evaluation and learning-curve pipelines for Full 150, New 30, and Original 120, regenerating metrics, figures, and statistical test workbooks. Unsuffixed artifacts are not produced.
 
 This folder scores model outputs against human answers and emits metrics, details, figures, and statistical tests. All outputs are suffix-specific (e.g., `full150`, `new30`, `original120`) to avoid ambiguity.
+If you run the main evaluation scripts without passing a suffix, the default is now `full150`.
 
 ## Key scripts
 - `evaluation.py`: end-to-end scoring for a merged answer sheet. Outputs per-suffix metrics CSVs, detailed evaluation CSVs, figures (`eval/figures/*_<suffix>-*.png`), and a combined stats workbook `statistical_tests_<suffix>.xlsx` (sheets: Paired Tests, Fisher Exact Test).
