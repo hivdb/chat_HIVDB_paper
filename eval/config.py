@@ -16,7 +16,7 @@ STAT_RESULTS = OUTPUT_DIR / f"statistical_tests_{DEFAULT_SUFFIX}.xlsx"
 DETAIL_METRICS_HUMAN = OUTPUT_DIR / f"detailed_evaluation_{DEFAULT_SUFFIX}.csv"
 OUTPUT_TABLE_DIR = EVAL_DIR / "figures"
 LEARNING_CURVE_RESPONSES = {
-    "GPT-4o FT-100": EVAL_DIR / "learning-curve/responses/size100_responses.csv",
+    "GPT-4o FT-100": EVAL_DIR / "learning-curve/responses/size100_full150_responses.csv",
 }
 REF_COL = "Human Answer"
 

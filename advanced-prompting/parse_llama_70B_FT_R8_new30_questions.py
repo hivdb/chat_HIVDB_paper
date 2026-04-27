@@ -1,0 +1,272 @@
+#!/usr/bin/env python3
+"""Parse FT answers in csv/llama-70b/llama-3.1-70B-FT_R8_new30.csv into per-question rows."""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import pathlib
+import re
+from typing import Dict, List, Tuple
+
+DEFAULT_INPUT = pathlib.Path("./csv/llama-70b/llama-3.1-70B-FT_R8_new30.csv")
+DEFAULT_S4 = pathlib.Path("./csv/S4Table.xlsx")  # aka Table S4.xlsx
+
+
+def clean_text(value: object) -> str:
+    if value is None:
+        return ""
+    text = str(value)
+    if text.lower() == "nan":
+        return ""
+    return text.strip()
+
+
+def normalise_question_text(question: str) -> str:
+    cleaned = clean_text(question)
+    cleaned = re.sub(r"\s+", " ", cleaned).strip().lower()
+    return cleaned.rstrip("?:.")
+
+
+def clean_line_prefix(line: str) -> str:
+    return line.strip().strip('"').strip("#*_ ").lstrip("> \t*-").strip('"')
+
+
+QUESTION_LIST: List[str] = [
+    "Does the paper report HIV sequences from patient samples?",
+    "Does the paper report in vitro drug susceptibility data?",
+    "Were sequences from the paper made publicly available?",
+    "What were the GenBank accession numbers for sequenced HIV isolates?",
+    "How many individuals had samples obtained for HIV sequencing?",
+    "From which countries were the sequenced samples obtained?",
+    "From what years were the sequenced samples obtained?",
+    "Were samples cloned prior to sequencing?",
+    "Which HIV genes were reported to have been sequenced?",
+    "What method was used for sequencing?",
+    "What type of samples were sequenced?",
+    "Were any sequences obtained from individuals with virological failure on a treatment regimen?",
+    "Were the patients in the study in a clinical trial?",
+    "Does the paper report HIV sequences from individuals who had previously received ARV drugs?",
+    "Which drug classes were received by individuals in the study before sample sequencing?",
+    "Which drugs were received by individuals in the study before sample sequencing?",
+]
+
+QUESTION_MAP = {idx: text for idx, text in enumerate(QUESTION_LIST, start=1)}
+QUESTION_LOOKUP = {
+    normalise_question_text(text): str(idx) for idx, text in QUESTION_MAP.items() if text
+}
+EXPECTED_QIDS = [str(i) for i in range(1, 17)]
+
+
+def load_s4_questions(s4_path: pathlib.Path) -> Tuple[Dict[str, str], Dict[str, str]]:
+    """Return (qid -> question, normalized question -> qid) using the S4 table."""
+    qid_to_question: Dict[str, str] = {}
+    question_lookup: Dict[str, str] = {}
+
+    try:
+        from openpyxl import load_workbook
+
+        workbook = load_workbook(s4_path, read_only=True, data_only=True)
+        sheet = workbook.active
+        rows = list(sheet.iter_rows(values_only=True))
+        if rows:
+            header = [clean_text(value) for value in rows[0]]
+            qid_idx = header.index("QID") if "QID" in header else None
+            question_idx = header.index("Question") if "Question" in header else None
+            if qid_idx is not None and question_idx is not None:
+                for row in rows[1:]:
+                    qid = clean_text(row[qid_idx] if qid_idx < len(row) else "")
+                    question = clean_text(row[question_idx] if question_idx < len(row) else "")
+                    if not qid or not question:
+                        continue
+                    qid_to_question[str(qid)] = question
+                    norm_question = normalise_question_text(question)
+                    if norm_question and norm_question not in question_lookup:
+                        question_lookup[norm_question] = str(qid)
+    except Exception:
+        pass
+
+    for qid in EXPECTED_QIDS:
+        if qid not in qid_to_question and QUESTION_MAP.get(int(qid)):
+            qid_to_question[qid] = QUESTION_MAP[int(qid)]
+            norm_question = normalise_question_text(QUESTION_MAP[int(qid)])
+            if norm_question and norm_question not in question_lookup:
+                question_lookup[norm_question] = qid
+    return qid_to_question, question_lookup
+
+
+def match_question_to_qid(question_line: str, s4_lookup: Dict[str, str]) -> str | None:
+    norm_line = normalise_question_text(question_line)
+    if not norm_line:
+        return None
+
+    if (
+        "genbank accession number" in norm_line
+        and "sequenced hiv isolates" in norm_line
+    ):
+        return "4"
+
+    if norm_line in s4_lookup:
+        return s4_lookup[norm_line]
+
+    for norm_question, qid in QUESTION_LOOKUP.items():
+        if not norm_question:
+            continue
+        if norm_question in norm_line or norm_line in norm_question:
+            return qid
+
+    numeric_match = re.search(r"(?:^question\s+)?(?P<id>\d+)\b", norm_line)
+    if numeric_match:
+        candidate = numeric_match.group("id")
+        if candidate in EXPECTED_QIDS:
+            return candidate
+    return None
+
+
+def extract_entries(ft_answer: str, s4_lookup: Dict[str, str]) -> List[Dict[str, str]]:
+    """Extract question/answer pairs from a single FT Answer cell."""
+    entries: List[Dict[str, str]] = []
+    lines = ft_answer.replace("\r\n", "\n").replace("\r", "\n").splitlines()
+    i = 0
+    while i < len(lines):
+        raw_line = lines[i]
+        cleaned = clean_line_prefix(raw_line)
+        if not cleaned:
+            i += 1
+            continue
+
+        if cleaned.lower().startswith("question"):
+            question_line = re.sub(
+                r"^question\s*[:\-\u2013]?\s*",
+                "",
+                cleaned,
+                flags=re.IGNORECASE,
+            ).strip()
+            j = i + 1
+            while not question_line and j < len(lines) and not lines[j].strip():
+                j += 1
+            if not question_line and j < len(lines):
+                question_line = lines[j].strip()
+
+            qid = match_question_to_qid(question_line, s4_lookup)
+            answer_lines: List[str] = []
+
+            k = j + 1
+            while k < len(lines):
+                candidate = clean_line_prefix(lines[k])
+                if candidate.lower().startswith("question"):
+                    break
+                if candidate.lower().startswith("answer"):
+                    inline = re.sub(r"^answer\s*[:\-\u2013]?\s*", "", candidate, flags=re.IGNORECASE)
+                    if inline:
+                        answer_lines.append(inline)
+                    k += 1
+                    while k < len(lines):
+                        follow = clean_line_prefix(lines[k])
+                        if follow.lower().startswith("question"):
+                            break
+                        answer_lines.append(lines[k].rstrip())
+                        k += 1
+                    break
+                k += 1
+
+            entries.append(
+                {
+                    "qid": qid or "",
+                    "question": question_line,
+                    "answer": "\n".join(answer_lines).strip(),
+                }
+            )
+        i += 1
+    return entries
+
+
+def parse_file(input_path: pathlib.Path, output_path: pathlib.Path, s4_path: pathlib.Path) -> None:
+    qid_to_question, s4_lookup = load_s4_questions(s4_path)
+
+    pmid_order: List[str] = []
+    pmid_to_qid: Dict[str, Dict[str, Dict[str, str]]] = {}
+
+    with input_path.open(newline="", encoding="utf-8-sig") as handle:
+        reader = csv.DictReader(handle)
+        for row in reader:
+            pmid = clean_text(row.get("PMID"))
+            if not pmid:
+                continue
+            if pmid not in pmid_order:
+                pmid_order.append(pmid)
+
+            ft_answer_text = clean_text(row.get("FT Answer"))
+            if not ft_answer_text:
+                continue
+
+            for entry in extract_entries(ft_answer_text, s4_lookup):
+                qid = entry.get("qid") or match_question_to_qid(entry.get("question", ""), s4_lookup)
+                if not qid:
+                    continue
+
+                pmid_to_qid.setdefault(pmid, {})[qid] = {
+                    "question": qid_to_question.get(qid, entry.get("question", "")),
+                    "answer": clean_text(entry.get("answer")),
+                }
+
+    rows: List[Dict[str, str]] = []
+    for pmid in pmid_order:
+        found = pmid_to_qid.get(pmid, {})
+        for qid in EXPECTED_QIDS:
+            data = found.get(qid, {})
+            rows.append(
+                {
+                    "PMID": pmid,
+                    "QID": qid,
+                    "Question": qid_to_question.get(qid, data.get("question", "")),
+                    "Answer": data.get("answer", ""),
+                }
+            )
+
+    with output_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=["PMID", "QID", "Question", "Answer"])
+        writer.writeheader()
+        writer.writerows(rows)
+
+    counts: Dict[str, int] = {}
+    for row in rows:
+        counts[row["PMID"]] = counts.get(row["PMID"], 0) + 1
+    for pmid in sorted(counts):
+        print(f"{pmid}: {counts[pmid]}")
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--input",
+        type=pathlib.Path,
+        default=DEFAULT_INPUT,
+        help="Input CSV path (default: ./csv/llama-70b/llama-3.1-70B-FT_R8_new30.csv)",
+    )
+    parser.add_argument(
+        "--output",
+        type=pathlib.Path,
+        help="Output CSV path (default: add _parsed before extension)",
+    )
+    parser.add_argument(
+        "--s4",
+        type=pathlib.Path,
+        default=DEFAULT_S4,
+        help="Path to Table S4.xlsx (default: ./csv/S4Table.xlsx)",
+    )
+    return parser
+
+
+def main() -> None:
+    parser = build_parser()
+    args = parser.parse_args()
+
+    input_path: pathlib.Path = args.input
+    output_path = args.output or input_path.with_name(f"{input_path.stem}_parsed{input_path.suffix}")
+    print(f"Parsing {input_path} -> {output_path}")
+    parse_file(input_path, output_path, args.s4)
+
+
+if __name__ == "__main__":
+    main()

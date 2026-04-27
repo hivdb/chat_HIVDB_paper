@@ -126,10 +126,29 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def discover_default_responses() -> List[Tuple[str, Path]]:
+def discover_default_responses(output_suffix: str | None = None) -> List[Tuple[str, Path]]:
     base_dir = LC_DIR / "responses"
     if not base_dir.exists():
         return []
+
+    suffix_token = (output_suffix or "").strip().lstrip("_")
+    if suffix_token:
+        suffix_marker = f"_{suffix_token}"
+        suffixed_responses: List[Tuple[str, Path]] = []
+        for path in sorted(base_dir.glob(f"*{suffix_marker}_responses.csv")):
+            stem = path.stem
+            label = stem[: -len("_responses")]
+            if not label.endswith(suffix_marker):
+                continue
+            label = label[: -len(suffix_marker)]
+            if label:
+                suffixed_responses.append((label, path))
+        if suffixed_responses:
+            return suffixed_responses
+        if suffix_token in {"full150", "new30"}:
+            logging.warning("No %s learning-curve responses found under %s.", suffix_token, base_dir)
+            return []
+
     candidates = sorted(base_dir.glob("*_responses.csv"))
     responses: List[Tuple[str, Path]] = []
     for path in candidates:
@@ -366,7 +385,7 @@ def main() -> int:
     suffix = f"_{suffix}" if suffix else ""
     baseline_path = args.pairwise_baseline
 
-    responses = args.responses or discover_default_responses()
+    responses = args.responses or discover_default_responses(args.output_suffix)
     families: List[Tuple[str, List[Tuple[str, Path]]]] = []
     if responses:
         families.append((args.column_prefix, responses))

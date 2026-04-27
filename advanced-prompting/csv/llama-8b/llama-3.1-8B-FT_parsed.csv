@@ -1949,8 +1949,8 @@ PMID,QID,Question,Answer
 40938120,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
 40938120,13,Were the patients in the study in a clinical trial?,
 40938120,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No
-40938120,15,Which drug classes were received by individuals in the study before sample sequencing?,
-40938120,16,Which drugs were received by individuals in the study before sample sequencing?,
+40938120,15,Which drug classes were received by individuals in the study before sample sequencing?,None
+40938120,16,Which drugs were received by individuals in the study before sample sequencing?,None
 40938996,1,Does the paper report HIV sequences from patient samples?,
 40938996,2,Does the paper report in vitro drug susceptibility data?,
 40938996,3,Were sequences from the paper made publicly available?,
@@ -1959,14 +1959,14 @@ PMID,QID,Question,Answer
 40938996,6,From which countries were the sequenced samples obtained?,Not reported
 40938996,7,From what years were the sequenced samples obtained?,Not Found
 40938996,8,Were samples cloned prior to sequencing?,No
-40938996,9,Which HIV genes were reported to have been sequenced?,
+40938996,9,Which HIV genes were reported to have been sequenced?,None
 40938996,10,What method was used for sequencing?,Unknown
 40938996,11,What type of samples were sequenced?,Not reported
 40938996,12,Were any sequences obtained from individuals with virological failure on a treatment regimen?,
 40938996,13,Were the patients in the study in a clinical trial?,
 40938996,14,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,
-40938996,15,Which drug classes were received by individuals in the study before sample sequencing?,
-40938996,16,Which drugs were received by individuals in the study before sample sequencing?,
+40938996,15,Which drug classes were received by individuals in the study before sample sequencing?,None
+40938996,16,Which drugs were received by individuals in the study before sample sequencing?,None
 41129268,1,Does the paper report HIV sequences from patient samples?,
 41129268,2,Does the paper report in vitro drug susceptibility data?,
 41129268,3,Were sequences from the paper made publicly available?,

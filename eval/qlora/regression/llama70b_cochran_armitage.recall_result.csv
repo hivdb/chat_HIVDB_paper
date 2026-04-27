@@ -1,0 +1,2 @@
+metric,success_definition,alternative,score_mode,scores,successes,totals,statistic,variance,z,p_value
+recall,detected,two-sided,order,"1,2,3,4","846,801,738,700","1040,1040,1040,1040",-250.5,996.7465135849965,-7.934423323488024,2.220446049250313e-15

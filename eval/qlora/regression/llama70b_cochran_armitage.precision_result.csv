@@ -1,0 +1,2 @@
+metric,success_definition,alternative,score_mode,scores,successes,totals,statistic,variance,z,p_value
+precision,precise,two-sided,order,"1,2,3,4","846,801,738,700","1035,862,788,769",138.92096120440073,421.5385239874821,6.766267203426901,1.3214762617508313e-11

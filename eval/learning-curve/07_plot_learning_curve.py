@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -28,12 +29,18 @@ from eval.plots import (  # type: ignore
     _color_for_model,
     generate_figures,
 )
+from eval.normalize import human_answer_counts  # type: ignore
+from eval.scoring import ensure_norm  # type: ignore
 
 
 LC_RESULTS = LC_DIR / "results/learning_curve_metrics_full150.csv"
 BASE_RESULTS = ROOT / "eval/results/evaluation_metrics_full150.csv"
 OUTPUT_DIR = LC_DIR / "figures"
 SIGNIFICANCE_JSON = LC_DIR / "results/learning_curve_significance_full150.json"
+DETAILS_RESULTS = LC_DIR / "results/learning_curve_details_full150.csv"
+CONFIDENCE_LEVEL = 0.95
+BOOTSTRAP_ITERATIONS = 5000
+BOOTSTRAP_SEED = 42
 
 DISPLAY_SLOTS = [
     ("base", 0, ["GPT-4o base"]),
@@ -58,7 +65,9 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--metrics", type=Path, default=None, help="Learning-curve metrics CSV.")
     parser.add_argument("--base-results", type=Path, default=None, help="Base evaluation metrics CSV.")
+    parser.add_argument("--details", type=Path, default=None, help="Learning-curve details CSV for CI export.")
     parser.add_argument("--output-dir", type=Path, default=None, help="Directory for figure outputs.")
+    parser.add_argument("--ci-output", type=Path, default=None, help="Combined chart CI CSV output path.")
     parser.add_argument("--significance", type=Path, default=None, help="Significance JSON path.")
     parser.add_argument("--suffix", type=str, default="", help="Suffix appended to output filenames (e.g., new30).")
     parser.add_argument("--title", type=str, default="Learning Curve Analysis", help="Plot title.")
@@ -72,6 +81,16 @@ def load_metrics(path: Path, scenarios: List[str] | None = None) -> pd.DataFrame
     if scenarios and "scenario" in df.columns:
         df = df[df["scenario"].isin(scenarios)].copy()
     return df
+
+
+def resolve_suffixed_path(path: Path, suffix: str) -> Path:
+    if not suffix:
+        return path
+    suffix_token = suffix.lstrip("_")
+    stem = path.stem
+    if stem.endswith(f"_{suffix_token}"):
+        return path
+    return path.with_name(f"{stem}_{suffix_token}{path.suffix}")
 
 
 def select_models(df: pd.DataFrame, slots: List[tuple[str, int, List[str]]]) -> pd.DataFrame:
@@ -190,6 +209,102 @@ def plot_dual_learning_curve(
     plt.close(fig)
 
 
+def _metrics_from_count_arrays(
+    tp: np.ndarray,
+    tn: np.ndarray,
+    fp: np.ndarray,
+    fn: np.ndarray,
+) -> dict[str, np.ndarray]:
+    total = tp + tn + fp + fn
+    accuracy = np.divide(tp + tn, total, out=np.zeros_like(total, dtype=float), where=total != 0)
+    precision_den = tp + fp
+    precision = np.divide(tp, precision_den, out=np.zeros_like(tp, dtype=float), where=precision_den != 0)
+    recall_den = tp + fn
+    recall = np.divide(tp, recall_den, out=np.zeros_like(tp, dtype=float), where=recall_den != 0)
+    f1_den = precision + recall
+    f1 = np.divide(2 * precision * recall, f1_den, out=np.zeros_like(precision, dtype=float), where=f1_den != 0)
+    return {
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+        "f1": f1,
+    }
+
+
+def build_combined_confidence_intervals(details_path: Path, combined_df: pd.DataFrame) -> pd.DataFrame:
+    if combined_df.empty:
+        return pd.DataFrame(columns=["model", "display_label", "metric", "value", "ci_low", "ci_high", "confidence_level"])
+    if not details_path.exists():
+        raise FileNotFoundError(f"Details file missing: {details_path}")
+
+    details_df = pd.read_csv(details_path, keep_default_na=False, na_filter=False)
+    cache: dict[str, str] = {}
+    ref_norm = ensure_norm(details_df, "Human Answer", cache)
+
+    alpha = 1.0 - CONFIDENCE_LEVEL
+    lower_pct = 100 * (alpha / 2)
+    upper_pct = 100 * (1 - alpha / 2)
+    rng = np.random.default_rng(BOOTSTRAP_SEED)
+    ci_rows: list[dict[str, float | str]] = []
+
+    ordered_models = combined_df.sort_values("display_order")[["model", "display_label"]].drop_duplicates()
+    for row in ordered_models.itertuples(index=False):
+        answer_col = f"{row.model} Answer"
+        if answer_col not in details_df.columns:
+            raise ValueError(f"Answer column missing from details CSV: {answer_col}")
+        pred_norm = ensure_norm(details_df, answer_col, cache)
+
+        row_counts: list[tuple[int, int, int, int]] = []
+        for _, detail_row in details_df.iterrows():
+            allow_partial = str(detail_row.get("Type", "")).strip().lower() == "list"
+            counts, _ = human_answer_counts(
+                str(detail_row.get("Type", "")),
+                str(detail_row.get(pred_norm, "")),
+                str(detail_row.get(ref_norm, "")),
+                question_text=str(detail_row.get("Question", "")),
+                ref_raw=str(detail_row.get("Human Answer", "")),
+                pred_raw=str(detail_row.get(answer_col, "")),
+                allow_partial_list=allow_partial,
+            )
+            row_counts.append((counts["tp"], counts["tn"], counts["fp"], counts["fn"]))
+
+        count_array = np.asarray(row_counts, dtype=int)
+        tp = count_array[:, 0]
+        tn = count_array[:, 1]
+        fp = count_array[:, 2]
+        fn = count_array[:, 3]
+        point_metrics = _metrics_from_count_arrays(
+            np.array([tp.sum()]),
+            np.array([tn.sum()]),
+            np.array([fp.sum()]),
+            np.array([fn.sum()]),
+        )
+
+        sample_size = len(count_array)
+        bootstrap_idx = rng.integers(0, sample_size, size=(BOOTSTRAP_ITERATIONS, sample_size))
+        boot_tp = tp[bootstrap_idx].sum(axis=1)
+        boot_tn = tn[bootstrap_idx].sum(axis=1)
+        boot_fp = fp[bootstrap_idx].sum(axis=1)
+        boot_fn = fn[bootstrap_idx].sum(axis=1)
+        boot_metrics = _metrics_from_count_arrays(boot_tp, boot_tn, boot_fp, boot_fn)
+
+        for metric, point_value_arr in point_metrics.items():
+            ci_rows.append(
+                {
+                    "model": row.model,
+                    "display_label": row.display_label,
+                    "metric": metric,
+                    "value": float(point_value_arr[0]) * 100.0,
+                    "ci_low": float(np.percentile(boot_metrics[metric], lower_pct)) * 100.0,
+                    "ci_high": float(np.percentile(boot_metrics[metric], upper_pct)) * 100.0,
+                    "confidence_level": CONFIDENCE_LEVEL,
+                }
+            )
+
+    columns = ["model", "display_label", "metric", "value", "ci_low", "ci_high", "confidence_level"]
+    return pd.DataFrame(ci_rows)[columns]
+
+
 def load_significance(path: Path) -> Tuple[Dict[str, Dict[Tuple[str, str], float]] | None, Dict[str, dict] | None]:
     if not path.exists():
         return None, None
@@ -213,10 +328,16 @@ def main() -> int:
     suffix = f"_{suffix}" if suffix else ""
     lc_results = args.metrics or LC_RESULTS
     base_results = args.base_results or BASE_RESULTS
+    details_results = args.details or resolve_suffixed_path(DETAILS_RESULTS, suffix)
     output_dir = args.output_dir or OUTPUT_DIR
+    ci_output = args.ci_output or output_dir / (
+        f"learning-curve_combined{suffix}-bar-chart-confidence-intervals.csv"
+        if suffix
+        else "learning-curve_combined-bar-chart-confidence-intervals.csv"
+    )
     # P-value annotations are intentionally disabled for learning-curve plots.
     # Keep the significance path wiring in case we want to re-enable later, but do not load/use it here.
-    significance_json = args.significance or SIGNIFICANCE_JSON.with_name(f"{SIGNIFICANCE_JSON.stem}{suffix}{SIGNIFICANCE_JSON.suffix}")
+    significance_json = args.significance or resolve_suffixed_path(SIGNIFICANCE_JSON, suffix)
 
     combined_ft = build_combined(lc_results, base_results, DISPLAY_SLOTS)
     combined_llama_ft = build_combined(lc_results, base_results, DISPLAY_SLOTS_LLAMA)
@@ -254,6 +375,10 @@ def main() -> int:
             combined_path,
             "Learning Curve: GPT-4o vs Llama3.1-70B",
         )
+        combined_side_by_side = build_side_by_side(combined_ft, combined_llama_ft)
+        ci_df = build_combined_confidence_intervals(details_results, combined_side_by_side)
+        ci_output.parent.mkdir(parents=True, exist_ok=True)
+        ci_df.to_csv(ci_output, index=False, encoding="utf-8-sig")
     print(f"Figures saved to {output_dir}")
     return 0
 

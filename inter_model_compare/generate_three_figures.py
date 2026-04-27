@@ -20,6 +20,7 @@ from typing import Dict, Iterable, List, Sequence, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import sys
 
 METRICS: Sequence[str] = ["Accuracy", "Precision", "Recall", "F1"]
 METRIC_COLUMNS: Sequence[str] = [f"Q{i}" for i in range(1, 17)]
@@ -27,6 +28,18 @@ DATA_FILE = Path("metrics_by_model_and_metric.csv")
 STATS_FILE = Path("Inter_model_Stat_results.xlsx")
 BH_TABLE_OUT = Path("bh_corrected_pvalues.csv")
 SUMMARY_METRICS_FILE = Path("evaluation_metrics_full150.csv")
+DETAILS_FILE = Path("../eval/results/detailed_evaluation_full150.xlsx")
+CONFIDENCE_LEVEL = 0.95
+BOOTSTRAP_ITERATIONS = 5000
+BOOTSTRAP_SEED = 42
+
+ROOT = Path(__file__).resolve().parents[1]
+for path in (ROOT, ROOT.parent):
+    if str(path) not in sys.path:
+        sys.path.insert(0, str(path))
+
+from eval.normalize import human_answer_counts  # type: ignore
+from eval.scoring import ensure_norm  # type: ignore
 
 FIGURE_CONFIGS = [
     {
@@ -141,6 +154,96 @@ def load_metric_means() -> Dict[Tuple[str, str], float]:
         for col, name in metric_map.items():
             metrics[(row["model"], name)] = float(row[col]) * 100.0
     return metrics
+
+
+def _metrics_from_count_arrays(
+    tp: np.ndarray,
+    tn: np.ndarray,
+    fp: np.ndarray,
+    fn: np.ndarray,
+) -> dict[str, np.ndarray]:
+    total = tp + tn + fp + fn
+    accuracy = np.divide(tp + tn, total, out=np.zeros_like(total, dtype=float), where=total != 0)
+    precision_den = tp + fp
+    precision = np.divide(tp, precision_den, out=np.zeros_like(tp, dtype=float), where=precision_den != 0)
+    recall_den = tp + fn
+    recall = np.divide(tp, recall_den, out=np.zeros_like(tp, dtype=float), where=recall_den != 0)
+    f1_den = precision + recall
+    f1 = np.divide(2 * precision * recall, f1_den, out=np.zeros_like(precision, dtype=float), where=f1_den != 0)
+    return {
+        "Accuracy": accuracy,
+        "Precision": precision,
+        "Recall": recall,
+        "F1": f1,
+    }
+
+
+def build_confidence_intervals_for_figure(models: Sequence[Dict[str, str]], details_path: Path) -> pd.DataFrame:
+    details_df = pd.read_excel(details_path, sheet_name="All", keep_default_na=False, na_filter=False)
+    cache: dict[str, str] = {}
+    ref_norm = ensure_norm(details_df, "Human Answer", cache)
+    alpha = 1.0 - CONFIDENCE_LEVEL
+    lower_pct = 100 * (alpha / 2)
+    upper_pct = 100 * (1 - alpha / 2)
+    rng = np.random.default_rng(BOOTSTRAP_SEED)
+    rows: list[dict[str, float | str]] = []
+
+    metric_map = {"Accuracy": "accuracy", "Precision": "precision", "Recall": "recall", "F1": "f1"}
+    for model in models:
+        answer_col = f"{model['label']} Answer"
+        if answer_col not in details_df.columns:
+            raise ValueError(f"Answer column missing from detailed evaluation workbook: {answer_col}")
+        pred_norm = ensure_norm(details_df, answer_col, cache)
+
+        row_counts: list[tuple[int, int, int, int]] = []
+        for _, detail_row in details_df.iterrows():
+            allow_partial = str(detail_row.get("Type", "")).strip().lower() == "list"
+            counts, _ = human_answer_counts(
+                str(detail_row.get("Type", "")),
+                str(detail_row.get(pred_norm, "")),
+                str(detail_row.get(ref_norm, "")),
+                question_text=str(detail_row.get("Question", "")),
+                ref_raw=str(detail_row.get("Human Answer", "")),
+                pred_raw=str(detail_row.get(answer_col, "")),
+                allow_partial_list=allow_partial,
+            )
+            row_counts.append((counts["tp"], counts["tn"], counts["fp"], counts["fn"]))
+
+        count_array = np.asarray(row_counts, dtype=int)
+        tp = count_array[:, 0]
+        tn = count_array[:, 1]
+        fp = count_array[:, 2]
+        fn = count_array[:, 3]
+        point_metrics = _metrics_from_count_arrays(
+            np.array([tp.sum()]),
+            np.array([tn.sum()]),
+            np.array([fp.sum()]),
+            np.array([fn.sum()]),
+        )
+
+        sample_size = len(count_array)
+        bootstrap_idx = rng.integers(0, sample_size, size=(BOOTSTRAP_ITERATIONS, sample_size))
+        boot_tp = tp[bootstrap_idx].sum(axis=1)
+        boot_tn = tn[bootstrap_idx].sum(axis=1)
+        boot_fp = fp[bootstrap_idx].sum(axis=1)
+        boot_fn = fn[bootstrap_idx].sum(axis=1)
+        boot_metrics = _metrics_from_count_arrays(boot_tp, boot_tn, boot_fp, boot_fn)
+
+        for metric in METRICS:
+            rows.append(
+                {
+                    "model": model["label"],
+                    "display_label": metric,
+                    "metric": metric_map[metric],
+                    "value": float(point_metrics[metric][0]) * 100.0,
+                    "ci_low": float(np.percentile(boot_metrics[metric], lower_pct)) * 100.0,
+                    "ci_high": float(np.percentile(boot_metrics[metric], upper_pct)) * 100.0,
+                    "confidence_level": CONFIDENCE_LEVEL,
+                }
+            )
+
+    columns = ["model", "display_label", "metric", "value", "ci_low", "ci_high", "confidence_level"]
+    return pd.DataFrame(rows)[columns]
 
 
 def build_pvalue_lookup(df_stats: pd.DataFrame) -> Dict[Tuple[Tuple[str, str], str, str], float]:
@@ -353,6 +456,8 @@ def main() -> None:
             bh_corrected_lookup=bh_corrected_lookup,
             output_path=config["output"],
         )
+        ci_df = build_confidence_intervals_for_figure(config["models"], DETAILS_FILE)
+        ci_df.to_csv(config["output"].with_name(f"{config['output'].stem}-confidence-intervals.csv"), index=False, encoding="utf-8-sig")
         print(f"Wrote {config['output']}")
 
     dump_bh_table(pvalue_lookup=pvalue_lookup, bh_corrected_lookup=bh_corrected_lookup, output_path=BH_TABLE_OUT)
