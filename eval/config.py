@@ -87,24 +87,21 @@ COLUMN_RENAMES = {
     "llama-3.1-8B 10shot": "Llama3.1-8B BM25 10-shot",
     "llama-3.1-70B 5shot": "Llama3.1-70B BM25 5-shot",
     "llama-3.1-70B 10shot": "Llama3.1-70B BM25 10-shot",
-    "gpt-4o-mini BM25 RAG": "GPT-4o BM25 RAG",
-    "GPT-4o BM25 RAG": "GPT-4o BM25 RAG",
-    "gpt-4o-mini Semantic RAG": "GPT-4o Semantic RAG",
-    "GPT-4o Semantic RAG": "GPT-4o Semantic RAG",
-    "llama-3.1-70B BM25 RAG": "Llama3.1-70B BM25 RAG",
-    "Llama3.1-70B BM25 RAG": "Llama3.1-70B BM25 RAG",
-    "llama-3.1-70B Semantic RAG": "Llama3.1-70B Semantic RAG",
-    "Llama3.1-70B Semantic RAG": "Llama3.1-70B Semantic RAG",
-    "llama-3.1-8B BM25 RAG": "Llama3.1-8B BM25 RAG",
-    "Llama3.1-8B BM25 RAG": "Llama3.1-8B BM25 RAG",
-    "llama-3.1-8B Semantic RAG": "Llama3.1-8B Semantic RAG",
-    "Llama3.1-8B Semantic RAG": "Llama3.1-8B Semantic RAG",
+    "gpt-4o-mini Semantic RAG": "GPT-4o RAG",
+    "GPT-4o Semantic RAG": "GPT-4o RAG",
+    "GPT-4o RAG": "GPT-4o RAG",
+    "llama-3.1-70B Semantic RAG": "Llama3.1-70B RAG",
+    "Llama3.1-70B Semantic RAG": "Llama3.1-70B RAG",
+    "Llama3.1-70B RAG": "Llama3.1-70B RAG",
+    "llama-3.1-8B Semantic RAG": "Llama3.1-8B RAG",
+    "Llama3.1-8B Semantic RAG": "Llama3.1-8B RAG",
+    "Llama3.1-8B RAG": "Llama3.1-8B RAG",
 }
 
 FAMILY_OPTIONAL_TARGETS = {
-    "GPT-4o": ["GPT-4o BM25 RAG", "GPT-4o Semantic RAG"],
-    "Llama3.1-70B": ["Llama3.1-70B BM25 RAG", "Llama3.1-70B Semantic RAG"],
-    "Llama3.1-8B": ["Llama3.1-8B BM25 RAG", "Llama3.1-8B Semantic RAG"],
+    "GPT-4o": ["GPT-4o RAG"],
+    "Llama3.1-70B": ["Llama3.1-70B RAG"],
+    "Llama3.1-8B": ["Llama3.1-8B RAG"],
 }
 
 SCENARIOS = [
