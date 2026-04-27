@@ -11,7 +11,13 @@ run_eval() {
   local output_dir="$2"
   local figures_dir="$3"
   local suffix="$4"
-  local per_metric_dir="${5:-}"
+  local per_metric_dir=""
+  if [ "$#" -ge 5 ]; then
+    per_metric_dir="$5"
+    shift 5
+  else
+    shift 4
+  fi
 
   echo "Evaluating $(basename "$merged_path")"
   local cmd=(
@@ -24,6 +30,7 @@ run_eval() {
   if [ -n "$per_metric_dir" ]; then
     cmd+=(--per-metric-figures-dir "$per_metric_dir")
   fi
+  cmd+=("$@")
   "${cmd[@]}"
 }
 
@@ -32,7 +39,9 @@ run_eval \
   "$RAG_ROOT/eval/results_full150" \
   "$RAG_ROOT/eval/figures_full150" \
   "full150" \
-  "$RAG_ROOT/eval/figures_full150/metrics"
+  "$RAG_ROOT/eval/figures_full150/metrics" \
+  --figure-title "Comparison with RAG" \
+  --significance-target RAG
 
 run_eval \
   "$RAG_ROOT/eval/merged_answers_original120.xlsx" \

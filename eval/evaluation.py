@@ -220,6 +220,24 @@ def _dataset_label_from_suffix(suffix: str) -> str:
     return normalized.replace("_", " ").title()
 
 
+def _filter_comparisons_by_targets(comparisons: dict, target_suffixes: list[str]) -> dict:
+    suffix_set = {suffix.strip().lower() for suffix in target_suffixes if suffix.strip()}
+    if not suffix_set:
+        return comparisons
+    filtered = {}
+    for family, mapping in comparisons.items():
+        targets = []
+        for target in mapping.get("targets", []):
+            target_suffix = target.replace(f"{family} ", "")
+            if target_suffix.lower() in suffix_set or target.lower() in suffix_set:
+                targets.append(target)
+        filtered[family] = {
+            **mapping,
+            "targets": targets,
+        }
+    return filtered
+
+
 def _aggregate_fisher_summary(
     qid_df: pd.DataFrame,
     comparisons: dict,
@@ -1034,6 +1052,18 @@ def main() -> int:
         default=config.DEFAULT_SUFFIX,
         help="Suffix appended to output filenames (default: full150).",
     )
+    parser.add_argument(
+        "--figure-title",
+        type=str,
+        default=None,
+        help="Optional title for generated figure panels.",
+    )
+    parser.add_argument(
+        "--significance-target",
+        action="append",
+        default=[],
+        help="Restrict plot p-value annotations to a target suffix, e.g. RAG. May be repeated.",
+    )
     args = parser.parse_args()
 
     suffix = args.output_suffix.strip()
@@ -1197,6 +1227,7 @@ def main() -> int:
         logging.info("Wrote metrics with Fisher p-values to %s", fisher_metrics_path)
     dataset_label = _dataset_label_from_suffix(args.output_suffix)
     details_path = config.OUTPUT_DIR / f"detailed_evaluation{suffix}.xlsx"
+    plot_comparisons = _filter_comparisons_by_targets(FAMILY_COMPARISONS, args.significance_target)
     for display_title, scenario_title, subset, scenario_qid_df in figures:
         sig = overall_stats
         if suffix:
@@ -1209,9 +1240,10 @@ def main() -> int:
             scenario_title,
             config.OUTPUT_TABLE_DIR,
             significance=sig,
-            comparisons=FAMILY_COMPARISONS,
+            comparisons=plot_comparisons,
             base_name=base_name,
             display_title=full_title,
+            figure_title=args.figure_title,
             metric_output_dir=args.per_metric_figures_dir,
         )
         ci_df = build_bar_chart_confidence_intervals(details_path, subset)

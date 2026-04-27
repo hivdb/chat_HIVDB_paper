@@ -674,6 +674,7 @@ def generate_figures(
     comparisons=None,
     base_name: str | None = None,
     display_title: str | None = None,
+    figure_title: str | None = None,
     metric_output_dir: Path | None = None,
 ) -> None:
     """Render accuracy bar chart and metrics table per scenario."""
@@ -682,10 +683,11 @@ def generate_figures(
     output_dir.mkdir(parents=True, exist_ok=True)
     slug = base_name or slugify(scenario)
     title = display_title or scenario
+    panel_title = figure_title or title
     plot_metric_panels(
         subset,
         qid_df=None,
-        title=title,
+        title=panel_title,
         output_path=output_dir / f"{slug}-bar-chart.png",
         significance=significance,
         comparisons=comparisons or FAMILY_COMPARISONS,
@@ -701,7 +703,7 @@ def generate_figures(
             plot_metric_panels(
                 subset,
                 qid_df=None,
-                title=title,
+                title=panel_title,
                 output_path=metric_output_dir / f"{slug}-{slugify(label)}.png",
                 significance=metric_sig,
                 comparisons=comparisons or FAMILY_COMPARISONS,
