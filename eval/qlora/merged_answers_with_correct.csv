@@ -4277,7 +4277,7 @@ The final answer is:",Not reported,Yes,No,No,No,"Not reported
 """"""",No,No,1,1,1,1,1,1,1,1
 37896860,9,Which HIV genes were reported to have been sequenced?,List,Technical,"PR, RT, IN",No,"PR, RT","The genes sequenced include those encoding the reverse transcriptase, protease, and integrase.","PR, RT","Reverse transcriptase, RT; Protease, PR","RT, PI","PR, RT","PR, RT",No,No,"RT, PR",Not reported,Not reported,Not reported,Not reported,No,"Reverse transcriptase, RT; Protease, PR","Reverse transcriptase, RT; Protease, PR","Reverse transcriptase, RT; Protease, PR","Reverse transcriptase, RT; Protease, PR",No,"PR, RT, IN",Not reported,"Reverse transcriptase, RT; Protease, PR
 """"""
-""""""","PR, RT","PR, RT",0,0,1,1,0,0,0,0
+""""""","PR, RT","PR, RT",0,1,1,1,0,0,0,0
 37910452,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,No,No,No,No,No,No,No,No,No,No,No,No,Yes,No,No,No,No,No,No,No,No,No,No,No,"No
 """"""
 """"""",No,No,1,1,1,1,1,1,1,1
@@ -4926,7 +4926,7 @@ The final answer is:",Not reported,Yes,No,No,No,"Not reported
 """"""",No,No,1,1,1,1,1,1,1,1
 38020274,9,Which HIV genes were reported to have been sequenced?,List,Technical,"PR, RT, IN",No,"PR, RT",The paper does not specify the exact genes that were sequenced.,RT and protease,"Reverse transcriptase, RT; Protease, PR",Pol (RT and PR),Not reported.,"PR, RT",No,"PR, RT","Pol, RT","Pol, RT","Reverse transcriptase, PR",Not reported,Not reported,"Protease, PR; Reverse transcriptase, RT","Reverse transcriptase, RT; Protease, PR","Reverse transcriptase, RT; Integrase, IN","Reverse transcriptase, RT; Protease, PR","Reverse transcriptase, PR; Integrase, IN","PR, RT",Not reported,"""PR, RT""","Reverse transcriptase, RT; Integrase, IN
 """"""
-""""""",Not reported,Not reported,1,0,0,0,1,0,0,0
+""""""",Not reported,Not reported,1,1,0,0,1,1,0,0
 38022124,1,Does the paper report HIV sequences from patient samples?,Boolean,Data availability,No,No,No,No evidence found,No,No,No,No,No,No,No,Yes,Yes,No,No,No,No,No,No,No,No,No,No,No,"No
 """"""
 """"""",No,No,1,1,1,1,1,1,1,1
@@ -6024,7 +6024,7 @@ Here are the answers in the requested format:","Atazanavir/ritonavir, Lopinavir/
 40596906,10,What method was used for sequencing?,List,Technical,Sanger,The ViroSeq Genotyping System was used for sequencing.,The sequencing method used was the ViroSeq Genotyping System.,ViroSeq Genotyping System,ViroSeq Genotyping System,Sanger sequencing,ViroSeq Genotyping System,Not reported,Sanger sequencing,Sanger sequencing.,Sanger sequencing,ViroSeq,Not reported,ViroSeq,,,Sanger sequencing,Sanger sequencing,Sanger sequencing,Sanger sequencing,Sanger sequencing,Sanger sequencing,Sanger sequencing,Sanger sequencing,"Sanger sequencing
 """"""
 
-""""""",Sanger sequencing,,1,1,1,0,1,0,0,0
+""""""",Sanger sequencing,,1,1,1,0,1,1,0,0
 40596906,11,What type of samples were sequenced?,List,Technical,Plasma,"Samples sequenced were from HIV-1 infected individuals, specifically from mother-child pairs.",The sequenced samples were clinical specimens from mother-child pairs with confirmed vertical transmission of HIV-1.,Clinical samples (blood),Clinical samples from patients diagnosed with HIV infection,Whole Blood,Patient samples,Not reported,Plasma,Not reported.,Unknown,Not reported,Not reported,Not reported,,,Unknown,Whole Blood,Unknown,Whole Blood,Whole Blood,Not reported,Plasma,Not reported,"Not reported
 """"""
 
