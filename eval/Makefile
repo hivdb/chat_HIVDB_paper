@@ -1,4 +1,4 @@
-PYTHON ?= ../.venv/bin/python
+PYTHON ?= ../advanced-prompting/.venv/bin/python
 PYTHONPATH ?= ..
 export PYTHONPATH
 
