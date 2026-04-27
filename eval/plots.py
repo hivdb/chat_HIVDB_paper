@@ -255,10 +255,6 @@ def _annotate_significance(
                 p_value = metric_map.get((family, target_suffix))
                 if p_value is None:
                     continue
-                if metric_values is not None:
-                    target_val = metric_values.get(target)
-                    if base_val is not None and target_val is not None and target_val < base_val:
-                        continue
                 distance = abs(target_x - base_x)
                 target_rows.append((distance, target, target_x, target_suffix))
             if not target_rows:
@@ -337,11 +333,6 @@ def _annotate_significance(
             p_value = metric_map.get((family, target_suffix))
             if p_value is None:
                 continue
-            # Blanket policy: skip annotation when target metric is lower than base
-            if metric_values is not None:
-                target_val = metric_values.get(target)
-                if base_val is not None and target_val is not None and target_val < base_val:
-                    continue
             distance = abs(target_x - base_x)
             target_rows.append((distance, target, target_x, target_suffix))
         if not target_rows:
