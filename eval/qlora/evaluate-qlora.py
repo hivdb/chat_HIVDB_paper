@@ -388,7 +388,7 @@ def main() -> int:
     plot_metric_panels(
         bar_chart_df,
         qid_df=None,
-        title="Full 150",
+        title="Comparison with QLoRA",
         output_path=BAR_CHART,
         significance=None,
         comparisons=None,
