@@ -48,11 +48,11 @@ def draw(content, columns, cmp_name, save_path):
     plt.ylabel(f'{cmp_name} (%)', fontweight='bold', fontsize=18)
     # plt.title(Path(save_path).stem, fontsize=27, pad=10)
 
-    plt.legend()
+    plt.legend(fontsize=16)
 
     ticks = [0, 25, 50, 75, 100]
-    plt.xticks(ticks)
-    plt.yticks(ticks)
+    plt.xticks(ticks, fontsize=16)
+    plt.yticks(ticks, fontsize=16)
 
     ax = plt.gca()
     ax.set_xticklabels(['0', '25', '50', '75', '100'])
@@ -65,26 +65,26 @@ def draw(content, columns, cmp_name, save_path):
 
     save_path = Path(save_path)
     save_path.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(save_path)
+    plt.savefig(save_path, dpi=300)
 
 
 def work():
     content = load_csv('./evaluation_metrics_by_qid_full150_converted.csv')
     # print(content[0])
-    draw(content, ['base A', 'FT A'], 'FT', 'FT/FT_Accuracy.svg')
-    draw(content, ['base P', 'FT P'], 'FT', 'FT/FT_Precision.svg')
-    draw(content, ['base R', 'FT R'], 'FT', 'FT/FT_Recall.svg')
-    draw(content, ['base F', 'FT F'], 'FT', 'FT/FT_F1.svg')
+    draw(content, ['base A', 'FT A'], 'FT', 'FT/FT_Accuracy.png')
+    draw(content, ['base P', 'FT P'], 'FT', 'FT/FT_Precision.png')
+    draw(content, ['base R', 'FT R'], 'FT', 'FT/FT_Recall.png')
+    draw(content, ['base F', 'FT F'], 'FT', 'FT/FT_F1.png')
 
-    draw(content, ['base A', 'QSP A'], 'QSP', 'QSP/QSP_Accuracy.svg')
-    draw(content, ['base P', 'QSP P'], 'QSP', 'QSP/QSP_Precision.svg')
-    draw(content, ['base R', 'QSP R'], 'QSP', 'QSP/QSP_Recall.svg')
-    draw(content, ['base F', 'QSP F'], 'QSP', 'QSP/QSP_F1.svg')
+    draw(content, ['base A', 'QSP A'], 'QSP', 'QSP/QSP_Accuracy.png')
+    draw(content, ['base P', 'QSP P'], 'QSP', 'QSP/QSP_Precision.png')
+    draw(content, ['base R', 'QSP R'], 'QSP', 'QSP/QSP_Recall.png')
+    draw(content, ['base F', 'QSP F'], 'QSP', 'QSP/QSP_F1.png')
 
-    draw(content, ['base A', 'FT+QSP A'], 'FT+QSP', 'FT_QSP/FT_QSP_Accuracy.svg')
-    draw(content, ['base P', 'FT+QSP P'], 'FT+QSP', 'FT_QSP/FT_QSP_Precision.svg')
-    draw(content, ['base R', 'FT+QSP R'], 'FT+QSP', 'FT_QSP/FT_QSP_Recall.svg')
-    draw(content, ['base F', 'FT+QSP F'], 'FT+QSP', 'FT_QSP/FT_QSP_F1.svg')
+    draw(content, ['base A', 'FT+QSP A'], 'FT+QSP', 'FT_QSP/FT_QSP_Accuracy.png')
+    draw(content, ['base P', 'FT+QSP P'], 'FT+QSP', 'FT_QSP/FT_QSP_Precision.png')
+    draw(content, ['base R', 'FT+QSP R'], 'FT+QSP', 'FT_QSP/FT_QSP_Recall.png')
+    draw(content, ['base F', 'FT+QSP F'], 'FT+QSP', 'FT_QSP/FT_QSP_F1.png')
 
 
 if __name__ == '__main__':
