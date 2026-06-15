@@ -31,6 +31,19 @@ for path in (ROOT, ROOT_PARENT):
 from eval.normalize import human_answer_counts  # type: ignore
 from eval.scoring import ensure_norm  # type: ignore
 
+matplotlib.rcParams.update(
+    {
+        "font.size": 13,
+        "axes.labelsize": 15,
+        "axes.titlesize": 17,
+        "xtick.labelsize": 13,
+        "ytick.labelsize": 13,
+        "legend.fontsize": 13,
+        "legend.title_fontsize": 14,
+        "figure.titlesize": 18,
+    }
+)
+
 
 # === analysis_by_qid ===
 DEFAULT_SUFFIX = "full150"
@@ -209,6 +222,17 @@ def _shade(color: str, target: str, amount: float) -> tuple[float, float, float]
     return tuple((1 - amount) * base + amount * tgt)
 
 
+def _save_figure(fig: plt.Figure, output_path: Path, *, is_f1: bool = False) -> None:
+    save_kwargs = {
+        "dpi": 300,
+        "bbox_inches": "tight",
+        "pad_inches": 0.1 if is_f1 else 0.15,
+    }
+    if output_path.suffix.lower() in {".tif", ".tiff"}:
+        save_kwargs["pil_kwargs"] = {"compression": "tiff_lzw"}
+    fig.savefig(output_path, **save_kwargs)
+
+
 def plot_rate_grid(
     qids: list[int],
     type_map: pd.Series,
@@ -220,7 +244,7 @@ def plot_rate_grid(
     model_families: list[tuple[str, ...]] | None = None,
     include_base: bool = True,
 ) -> None:
-    is_f1 = output_name == "f1.png"
+    is_f1 = output_name in {"f1.png", "f1.tif", "f1.tiff"}
     f1_label_map = {
         "GPT-4o": "GPT-4o F1-score",
         "Llama3.1-70B": "Llama-3.1-70B F1-score",
@@ -274,10 +298,10 @@ def plot_rate_grid(
                 ax.text(
                     bar.get_x() + bar.get_width() / 2,
                     height + label_offset,
-                    f"{height:.1f}" if as_percent else f"{height:.2f}",
+                    f"{round(height):.0f}" if as_percent else f"{height:.2f}",
                     ha="center",
                     va="bottom",
-                    fontsize=8,
+                    fontsize=13,
                 )
         if is_f1:
             ax.set_ylabel("")
@@ -288,12 +312,13 @@ def plot_rate_grid(
                 transform=ax.transAxes,
                 ha="left",
                 va="bottom",
-                fontsize=11,
+                fontsize=17,
                 fontweight="bold",
             )
         else:
-            ax.set_ylabel(f"{family} (%)")
+            ax.set_ylabel(f"{family} (%)", fontsize=17)
         ax.set_ylim(0, y_limit)
+        ax.tick_params(axis="y", labelsize=15)
         ax.grid(axis="y", linestyle="--", alpha=0.3)
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
@@ -324,12 +349,12 @@ def plot_rate_grid(
         else:
             model_handles = [h for h in style_handles if h.get_label() != "Base"]
         axes[0].legend(handles=model_handles, loc="upper right", bbox_to_anchor=(1, 1.25), ncol=len(model_handles), title="Model")
-        fig.suptitle(title, fontsize=16, y=0.9)
+        fig.suptitle(title, fontsize=18, y=0.9)
         fig.tight_layout(rect=[0, 0, 0.98, 0.94])
     else:
         fig.tight_layout(pad=0.4)
     output_path = OUTPUT_DIR / output_name
-    fig.savefig(output_path, dpi=300, bbox_inches="tight", pad_inches=0.1 if is_f1 else 0.15)
+    _save_figure(fig, output_path, is_f1=is_f1)
     plt.close(fig)
 
 
@@ -365,9 +390,9 @@ def plot_overall_histogram(df: pd.DataFrame, qids: list[int], type_map: pd.Serie
     ax.barh(y_positions, fp_vals, left=fn_vals, color=[mcolors.to_rgba(c, alpha=0.8) for c in colors], label="False Positives")
 
     ax.set_yticks(y_positions)
-    ax.set_yticklabels(labels, fontsize=9)
-    ax.set_xlabel("Incorrect Answers (count)", fontsize=12)
-    ax.set_title("Incorrect Answer Frequency across all base and FT models", fontsize=14)
+    ax.set_yticklabels(labels, fontsize=12)
+    ax.set_xlabel("Incorrect Answers (count)", fontsize=15)
+    ax.set_title("Incorrect Answer Frequency across all base and FT models", fontsize=17)
     ax.grid(axis="x", linestyle="--", alpha=0.3)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -384,7 +409,7 @@ def plot_overall_histogram(df: pd.DataFrame, qids: list[int], type_map: pd.Serie
 
     fig.tight_layout()
     output_path = OUTPUT_DIR / output_name
-    fig.savefig(output_path, dpi=300, bbox_inches="tight")
+    _save_figure(fig, output_path)
     plt.close(fig)
 
 
@@ -417,8 +442,8 @@ def plot_models_histogram(df: pd.DataFrame, qids: list[int], type_map: pd.Series
         ax.bar(x_positions, fn_vals, color=[mcolors.to_rgba(c, alpha=0.5) for c in colors], label="False Negatives")
         ax.bar(x_positions, fp_vals, bottom=fn_vals, color=[mcolors.to_rgba(c, alpha=0.8) for c in colors], label="False Positives")
 
-        ax.set_ylabel("Incorrect Answers", fontsize=10)
-        ax.set_title(model, fontsize=11, fontweight="bold")
+        ax.set_ylabel("Incorrect Answers", fontsize=13)
+        ax.set_title(model, fontsize=14, fontweight="bold")
         ax.set_xticks(x_positions)
         ax.grid(axis="y", linestyle="--", alpha=0.3)
         ax.spines["top"].set_visible(False)
@@ -430,16 +455,16 @@ def plot_models_histogram(df: pd.DataFrame, qids: list[int], type_map: pd.Series
                 Patch(facecolor="gray", alpha=0.8, label="False Positives"),
             ]
             type_handles = [Patch(facecolor=TYPE_COLORS[t], label=t.title()) for t in sorted(TYPE_COLORS.keys())]
-            legend1 = ax.legend(handles=error_handles, loc="upper left", ncol=2, fontsize=9)
+            legend1 = ax.legend(handles=error_handles, loc="upper left", ncol=2, fontsize=12)
             ax.add_artist(legend1)
-            ax.legend(handles=type_handles, loc="upper right", ncol=3, fontsize=9, title="Question Type")
+            ax.legend(handles=type_handles, loc="upper right", ncol=3, fontsize=12, title="Question Type")
 
-    axes[-1].set_xlabel("QID", fontsize=12)
+    axes[-1].set_xlabel("QID", fontsize=15)
     axes[-1].set_xticklabels([str(qid) for qid in qids])
 
     fig.tight_layout()
     output_path = OUTPUT_DIR / output_name
-    fig.savefig(output_path, dpi=300, bbox_inches="tight")
+    _save_figure(fig, output_path)
     plt.close(fig)
 
 
@@ -574,7 +599,7 @@ def run_failure_prev(data_path: Path | None) -> int:
         ("precision", "Precision = TP / (TP + FP)", "precision.png", None, True, False),
         ("recall", "Recall = TP / (TP + FN)", "recall.png", None, True, False),
         ("accuracy", "Accuracy = (TP + TN) / (TP + TN + FP + FN)", "accuracy.png", None, True, False),
-        ("f1", "F1 = 2 * Precision * Recall / (Precision + Recall)", "f1.png", MODEL_FAMILIES[:2], False, True),
+        ("f1", "F1 = 2 * Precision * Recall / (Precision + Recall)", "f1.tiff", MODEL_FAMILIES[:2], False, True),
     ]
     for metric, title, filename, families, include_base, as_percent in metric_specs:
         rates = build_rates(df, metric)
