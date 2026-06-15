@@ -1,5 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 import numpy as np
 from pathlib import Path
 
@@ -66,20 +67,51 @@ def draw(content, columns, cmp_name, save_path):
     save_path = Path(save_path)
     save_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(save_path, dpi=300)
+    plt.close()
+
+
+def compose_grid(image_paths, save_path):
+    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+
+    for ax, image_path in zip(axes.flat, image_paths):
+        ax.imshow(mpimg.imread(image_path))
+        ax.axis('off')
+
+    fig.tight_layout()
+    fig.savefig(save_path, dpi=300, bbox_inches='tight')
+    plt.close(fig)
 
 
 def work():
     content = load_csv('./evaluation_metrics_by_qid_full150_converted.csv')
     # print(content[0])
-    draw(content, ['base A', 'FT A'], 'FT', 'FT/FT_Accuracy.png')
-    draw(content, ['base P', 'FT P'], 'FT', 'FT/FT_Precision.png')
-    draw(content, ['base R', 'FT R'], 'FT', 'FT/FT_Recall.png')
-    draw(content, ['base F', 'FT F'], 'FT', 'FT/FT_F1.png')
+    ft_accuracy_path = 'FT/FT_Accuracy.png'
+    ft_precision_path = 'FT/FT_Precision.png'
+    ft_recall_path = 'FT/FT_Recall.png'
+    ft_f1_path = 'FT/FT_F1.png'
 
-    draw(content, ['base A', 'QSP A'], 'QSP', 'QSP/QSP_Accuracy.png')
-    draw(content, ['base P', 'QSP P'], 'QSP', 'QSP/QSP_Precision.png')
-    draw(content, ['base R', 'QSP R'], 'QSP', 'QSP/QSP_Recall.png')
-    draw(content, ['base F', 'QSP F'], 'QSP', 'QSP/QSP_F1.png')
+    draw(content, ['base A', 'FT A'], 'FT', ft_accuracy_path)
+    draw(content, ['base P', 'FT P'], 'FT', ft_precision_path)
+    draw(content, ['base R', 'FT R'], 'FT', ft_recall_path)
+    draw(content, ['base F', 'FT F'], 'FT', ft_f1_path)
+    compose_grid(
+        [ft_accuracy_path, ft_precision_path, ft_recall_path, ft_f1_path],
+        'FT/FT_2x2.png'
+    )
+
+    qsp_accuracy_path = 'QSP/QSP_Accuracy.png'
+    qsp_precision_path = 'QSP/QSP_Precision.png'
+    qsp_recall_path = 'QSP/QSP_Recall.png'
+    qsp_f1_path = 'QSP/QSP_F1.png'
+
+    draw(content, ['base A', 'QSP A'], 'QSP', qsp_accuracy_path)
+    draw(content, ['base P', 'QSP P'], 'QSP', qsp_precision_path)
+    draw(content, ['base R', 'QSP R'], 'QSP', qsp_recall_path)
+    draw(content, ['base F', 'QSP F'], 'QSP', qsp_f1_path)
+    compose_grid(
+        [qsp_accuracy_path, qsp_precision_path, qsp_recall_path, qsp_f1_path],
+        'QSP/QSP_2x2.png'
+    )
 
     draw(content, ['base A', 'FT+QSP A'], 'FT+QSP', 'FT_QSP/FT_QSP_Accuracy.png')
     draw(content, ['base P', 'FT+QSP P'], 'FT+QSP', 'FT_QSP/FT_QSP_Precision.png')
