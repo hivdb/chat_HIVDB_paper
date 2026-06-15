@@ -77,7 +77,7 @@ def draw(content, columns, cmp_name, save_path, metric_label):
 
     save_path = Path(save_path)
     save_path.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(save_path, dpi=300)
+    plt.savefig(save_path, dpi=300, pil_kwargs={'compression': 'tiff_lzw'})
     plt.close()
 
 
@@ -89,7 +89,7 @@ def compose_grid(image_paths, save_path):
         ax.axis('off')
 
     fig.tight_layout()
-    fig.savefig(save_path, dpi=300, bbox_inches='tight')
+    fig.savefig(save_path, dpi=300, bbox_inches='tight', pil_kwargs={'compression': 'tiff_lzw'})
     plt.close(fig)
 
 
