@@ -15,7 +15,7 @@ def load_csv(file_path):
     return table
 
 
-def draw(content, columns, cmp_name, save_path):
+def draw(content, columns, cmp_name, save_path, metric_label):
     x_c, y_c = columns
 
     models = sorted(list(set([
@@ -58,6 +58,17 @@ def draw(content, columns, cmp_name, save_path):
     ax = plt.gca()
     ax.set_xticklabels(['0', '25', '50', '75', '100'])
     ax.set_yticklabels(['', '25', '50', '75', '100'])
+    ax.text(
+        0.98,
+        0.02,
+        metric_label,
+        transform=ax.transAxes,
+        ha='right',
+        va='bottom',
+        fontsize=22,
+        fontweight='bold',
+        bbox={'facecolor': 'white', 'alpha': 0.8, 'edgecolor': 'none', 'pad': 4}
+    )
 
     plt.xlim(0, 110)
     plt.ylim(0, 110)
@@ -85,38 +96,38 @@ def compose_grid(image_paths, save_path):
 def work():
     content = load_csv('./evaluation_metrics_by_qid_full150_converted.csv')
     # print(content[0])
-    ft_accuracy_path = 'FT/FT_Accuracy.png'
-    ft_precision_path = 'FT/FT_Precision.png'
-    ft_recall_path = 'FT/FT_Recall.png'
-    ft_f1_path = 'FT/FT_F1.png'
+    ft_accuracy_path = 'FT/FT_Accuracy.tiff'
+    ft_precision_path = 'FT/FT_Precision.tiff'
+    ft_recall_path = 'FT/FT_Recall.tiff'
+    ft_f1_path = 'FT/FT_F1.tiff'
 
-    draw(content, ['base A', 'FT A'], 'FT', ft_accuracy_path)
-    draw(content, ['base P', 'FT P'], 'FT', ft_precision_path)
-    draw(content, ['base R', 'FT R'], 'FT', ft_recall_path)
-    draw(content, ['base F', 'FT F'], 'FT', ft_f1_path)
+    draw(content, ['base A', 'FT A'], 'FT', ft_accuracy_path, 'Accuracy')
+    draw(content, ['base P', 'FT P'], 'FT', ft_precision_path, 'Precision')
+    draw(content, ['base R', 'FT R'], 'FT', ft_recall_path, 'Recall')
+    draw(content, ['base F', 'FT F'], 'FT', ft_f1_path, 'F1-Score')
     compose_grid(
         [ft_accuracy_path, ft_precision_path, ft_recall_path, ft_f1_path],
-        'FT/FT_2x2.png'
+        'FT/FT_2x2.tiff'
     )
 
-    qsp_accuracy_path = 'QSP/QSP_Accuracy.png'
-    qsp_precision_path = 'QSP/QSP_Precision.png'
-    qsp_recall_path = 'QSP/QSP_Recall.png'
-    qsp_f1_path = 'QSP/QSP_F1.png'
+    qsp_accuracy_path = 'QSP/QSP_Accuracy.tiff'
+    qsp_precision_path = 'QSP/QSP_Precision.tiff'
+    qsp_recall_path = 'QSP/QSP_Recall.tiff'
+    qsp_f1_path = 'QSP/QSP_F1.tiff'
 
-    draw(content, ['base A', 'QSP A'], 'QSP', qsp_accuracy_path)
-    draw(content, ['base P', 'QSP P'], 'QSP', qsp_precision_path)
-    draw(content, ['base R', 'QSP R'], 'QSP', qsp_recall_path)
-    draw(content, ['base F', 'QSP F'], 'QSP', qsp_f1_path)
+    draw(content, ['base A', 'QSP A'], 'QSP', qsp_accuracy_path, 'Accuracy')
+    draw(content, ['base P', 'QSP P'], 'QSP', qsp_precision_path, 'Precision')
+    draw(content, ['base R', 'QSP R'], 'QSP', qsp_recall_path, 'Recall')
+    draw(content, ['base F', 'QSP F'], 'QSP', qsp_f1_path, 'F1-Score')
     compose_grid(
         [qsp_accuracy_path, qsp_precision_path, qsp_recall_path, qsp_f1_path],
-        'QSP/QSP_2x2.png'
+        'QSP/QSP_2x2.tiff'
     )
 
-    draw(content, ['base A', 'FT+QSP A'], 'FT+QSP', 'FT_QSP/FT_QSP_Accuracy.png')
-    draw(content, ['base P', 'FT+QSP P'], 'FT+QSP', 'FT_QSP/FT_QSP_Precision.png')
-    draw(content, ['base R', 'FT+QSP R'], 'FT+QSP', 'FT_QSP/FT_QSP_Recall.png')
-    draw(content, ['base F', 'FT+QSP F'], 'FT+QSP', 'FT_QSP/FT_QSP_F1.png')
+    draw(content, ['base A', 'FT+QSP A'], 'FT+QSP', 'FT_QSP/FT_QSP_Accuracy.tiff', 'Accuracy')
+    draw(content, ['base P', 'FT+QSP P'], 'FT+QSP', 'FT_QSP/FT_QSP_Precision.tiff', 'Precision')
+    draw(content, ['base R', 'FT+QSP R'], 'FT+QSP', 'FT_QSP/FT_QSP_Recall.tiff', 'Recall')
+    draw(content, ['base F', 'FT+QSP F'], 'FT+QSP', 'FT_QSP/FT_QSP_F1.tiff', 'F1-Score')
 
 
 if __name__ == '__main__':
