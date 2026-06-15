@@ -2,9 +2,14 @@ import os
 
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
+from matplotlib.ticker import FuncFormatter
 import numpy as np
 import pandas as pd
 from scipy import stats
+
+
+def save_tiff(path: str) -> None:
+    plt.savefig(path, dpi=300, pil_kwargs={"compression": "tiff_lzw"})
 
 
 def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
@@ -13,7 +18,14 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
         raise ValueError("No columns containing 'Correct' found.")
 
     title_fontsize = 16
-    axis_label_fontsize = 14
+    axis_label_fontsize = 16
+    x_tick_fontsize = 15
+    y_tick_fontsize = 16
+
+    def format_k_ticks(value: float, _: float) -> str:
+        if value >= 1000:
+            return f"{int(round(value / 1000.0))}k"
+        return str(int(round(value)))
 
     df["content_length"] = pd.to_numeric(df["content_length"], errors="coerce")
 
@@ -43,6 +55,7 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
         set_plot_title(ax, trim_correct_label(col))
         ax.set_xlabel("# Characters", fontweight="bold", fontsize=axis_label_fontsize)
         ax.set_ylabel("Accuracy", fontweight="bold", fontsize=axis_label_fontsize)
+        ax.xaxis.set_major_formatter(FuncFormatter(format_k_ticks))
 
         valid_mask = x.notna() & y.notna()
         if valid_mask.sum() >= 2:
@@ -77,11 +90,18 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
         if col != "All Correct":
             ax.set_ylim(bottom=0.51)
             ax.set_yticks([0.51, 0.75, 1.0])
-            ax.set_yticklabels(["51%", "75%", "100%"])
+            ax.set_yticklabels(["51%", "75%", "100%"], fontsize=y_tick_fontsize)
         else:
             ax.set_ylim(bottom=100)
             ax.set_yticks([100, 150, 200])
         valid_x = x[x.notna()]
+        if not valid_x.empty:
+            x_tick_start = int(np.floor(valid_x.min() / 10000.0) * 10000)
+            x_tick_end = int(np.ceil(valid_x.max() / 10000.0) * 10000)
+            if x_tick_end > x_tick_start:
+                ax.set_xticks(np.arange(x_tick_start, x_tick_end + 1, 10000))
+        ax.tick_params(axis="x", labelsize=x_tick_fontsize)
+        ax.tick_params(axis="y", labelsize=y_tick_fontsize)
         if not valid_x.empty:
             y_min, y_max = ax.get_ylim()
             span = y_max - y_min
@@ -98,8 +118,8 @@ def plot_correct_figures(df: pd.DataFrame, output_dir: str) -> None:
         fig.tight_layout(rect=(0, 0, 1, 1))
 
         safe_name = f"{idx:02d}_{col}".replace(os.sep, "_")
-        filename = os.path.join(output_dir, f"{safe_name}.png")
-        plt.savefig(filename, dpi=300)
+        filename = os.path.join(output_dir, f"{safe_name}.tiff")
+        save_tiff(filename)
         plt.close()
 
         print(f"Wrote {filename}")
@@ -109,7 +129,7 @@ def save_montage(grid_dir: str, output_path: str, nrows: int = 3, ncols: int = 3
     image_paths = sorted(
         path
         for path in (os.path.join(grid_dir, name) for name in os.listdir(grid_dir))
-        if path.lower().endswith(".png")
+        if path.lower().endswith((".png", ".tif", ".tiff"))
     )
     if not image_paths:
         raise ValueError(f"No PNG files found in {grid_dir}")
@@ -122,7 +142,7 @@ def save_montage(grid_dir: str, output_path: str, nrows: int = 3, ncols: int = 3
             ax.imshow(img)
         ax.axis("off")
     fig.tight_layout(pad=0)
-    plt.savefig(output_path, dpi=300)
+    save_tiff(output_path)
     plt.close()
     print(f"Wrote {output_path}")
 
@@ -147,7 +167,7 @@ def main() -> None:
         os.makedirs(output_dir, exist_ok=True)
         plot_correct_figures(subset.copy(), output_dir)
         if output_dir == "All":
-            save_montage(output_dir, "All.png")
+            save_montage(output_dir, "All.tiff")
 
 
 if __name__ == "__main__":
