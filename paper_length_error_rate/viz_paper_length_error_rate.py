@@ -129,10 +129,10 @@ def save_montage(grid_dir: str, output_path: str, nrows: int = 3, ncols: int = 3
     image_paths = sorted(
         path
         for path in (os.path.join(grid_dir, name) for name in os.listdir(grid_dir))
-        if path.lower().endswith((".png", ".tif", ".tiff"))
+        if path.lower().endswith(".tiff")
     )
     if not image_paths:
-        raise ValueError(f"No PNG files found in {grid_dir}")
+        raise ValueError(f"No TIFF files found in {grid_dir}")
 
     fig, axes = plt.subplots(nrows, ncols, figsize=(ncols * 4, nrows * 3))
     axes = np.atleast_2d(axes)
