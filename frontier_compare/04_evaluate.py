@@ -2,10 +2,14 @@
 """Score frontier-model answers against the human annotations with the paper's scorer.
 
 Per-row scoring reuses eval.normalize.human_answer_counts exactly as the paper does (partial
-list matches allowed for List questions). Metrics are computed per QID across PMIDs, then
-summarized across the 16 QIDs:
-  macro  - unweighted mean of the 16 per-QID values (the proposal's primary aggregation)
-  pooled - metrics over all PMID x QID rows (what eval/figures/full150-bar-chart.png plots)
+list matches allowed for List questions). Aggregation follows the paper's Figure 4:
+  pooled - metrics over all PMID x QID rows, 95% CI from a row bootstrap (5000, seed 42), as in
+           eval/evaluation.py::build_bar_chart_confidence_intervals. This reproduces the paper's
+           reported deltas (e.g. GPT-4o FT recall +11%, Llama-70B FT precision +16%).
+  macro  - unweighted mean of the 16 per-QID values (reported for reference only)
+Paired tests run on the 16 per-QID values (Wilcoxon signed-rank, as stated in the paper, plus
+the paired t-test also in S5), BH-adjusted within each (metric, test) slice as in
+eval/statistics.py. Exact McNemar on row correctness is a sensitivity analysis.
 Cached GPT-4o comparators are re-scored on the same PMID subset as the frontier models.
 
 Outputs (results/): detailed_rows.csv, metrics_by_qid.csv, metrics_summary.csv,
@@ -21,7 +25,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from scipy.stats import wilcoxon
+from scipy.stats import ttest_rel, wilcoxon
 from statsmodels.stats.contingency_tables import mcnemar
 from statsmodels.stats.multitest import multipletests
 
@@ -40,7 +44,7 @@ from frontier_compare import config  # noqa: E402
 
 METRICS = ["accuracy", "precision", "recall", "f1"]
 LABELS = ["tp", "tn", "fp", "fn"]
-BOOTSTRAP_ITERATIONS = 2000
+BOOTSTRAP_ITERATIONS = 5000  # matches eval/evaluation.py
 SEED = 42
 
 
@@ -161,23 +165,22 @@ def main() -> int:
     by_qid = pd.DataFrame(qid_rows)
     by_qid.to_csv(config.RESULTS_DIR / "metrics_by_qid.csv", index=False)
 
-    # Summary: macro (mean of per-QID) and pooled, with paper-level bootstrap CIs on the macro value
+    # Summary: pooled (paper Fig. 4) with row-bootstrap CIs; macro mean of per-QID values for reference
     rng = np.random.default_rng(SEED)
-    boot_idx = rng.integers(0, len(pmids), size=(BOOTSTRAP_ITERATIONS, len(pmids)))
+    boot_idx = rng.integers(0, len(df), size=(BOOTSTRAP_ITERATIONS, len(df)))
     summary_rows = []
     for model in models:
-        cube = count_cube(df, pmids, model)
-        per_qid = metrics_from_counts(cube.sum(axis=0))
-        pooled = metrics_from_counts(cube.sum(axis=(0, 1)))
-        boot = metrics_from_counts(cube[boot_idx].sum(axis=1))  # (B, 16)
+        onehot = np.stack([(df[f"{model} label"] == lab).to_numpy(int) for lab in LABELS], axis=1)
+        pooled = metrics_from_counts(onehot.sum(axis=0))
+        boot = metrics_from_counts(onehot[boot_idx].sum(axis=1))
+        per_qid = metrics_from_counts(count_cube(df, pmids, model).sum(axis=0))
         for metric in METRICS:
-            macro_boot = boot[metric].mean(axis=1)
             summary_rows.append(
                 {"model": model, "metric": metric,
-                 "macro": per_qid[metric].mean(),
-                 "macro_ci_low": np.percentile(macro_boot, 2.5),
-                 "macro_ci_high": np.percentile(macro_boot, 97.5),
-                 "pooled": float(pooled[metric])}
+                 "pooled": float(pooled[metric]),
+                 "pooled_ci_low": np.percentile(boot[metric], 2.5),
+                 "pooled_ci_high": np.percentile(boot[metric], 97.5),
+                 "macro": per_qid[metric].mean()}
             )
     summary = pd.DataFrame(summary_rows)
     summary.to_csv(config.RESULTS_DIR / "metrics_summary.csv", index=False)
@@ -187,26 +190,28 @@ def main() -> int:
         config.RESULTS_DIR / "metrics_by_type.csv", index=False
     )
 
-    # Frontier vs each comparator: Wilcoxon over 16 paired per-QID values (as in the paper's Fig. 4
-    # stats) plus exact McNemar on pooled row correctness as a sensitivity analysis. BH across all.
+    # Frontier vs each comparator: paired tests over the 16 per-QID values (paper Fig. 4 stats),
+    # plus exact McNemar on row correctness. BH within each (metric, test) slice.
     test_rows = []
     for f_model, comp in itertools.product(frontier, config.COMPARATORS):
         a = by_qid[by_qid["model"] == f_model].sort_values("QID")
         b = by_qid[by_qid["model"] == comp].sort_values("QID")
         for metric in METRICS:
-            diff = a[metric].to_numpy() - b[metric].to_numpy()
-            p = wilcoxon(diff).pvalue if np.any(diff != 0) else 1.0
-            test_rows.append({"frontier": f_model, "comparator": comp, "metric": metric, "test": "wilcoxon_qid",
-                              "mean_diff": diff.mean(), "wins": int((diff > 0).sum()),
-                              "losses": int((diff < 0).sum()), "p_raw": p})
+            x, y = a[metric].to_numpy(), b[metric].to_numpy()
+            diff = x - y
+            base = {"frontier": f_model, "comparator": comp, "metric": metric, "mean_qid_diff": diff.mean(),
+                    "wins": int((diff > 0).sum()), "losses": int((diff < 0).sum())}
+            same = not np.any(diff != 0)
+            test_rows.append({**base, "test": "wilcoxon_qid", "p_raw": 1.0 if same else wilcoxon(x, y).pvalue})
+            test_rows.append({**base, "test": "ttest_qid", "p_raw": 1.0 if same else ttest_rel(x, y).pvalue})
         fc, cc = df[f"{f_model} correct"], df[f"{comp} correct"]
         table = [[int(((fc == 1) & (cc == 1)).sum()), int(((fc == 1) & (cc == 0)).sum())],
                  [int(((fc == 0) & (cc == 1)).sum()), int(((fc == 0) & (cc == 0)).sum())]]
         test_rows.append({"frontier": f_model, "comparator": comp, "metric": "accuracy", "test": "mcnemar_rows",
-                          "mean_diff": fc.mean() - cc.mean(), "wins": table[0][1], "losses": table[1][0],
+                          "mean_qid_diff": fc.mean() - cc.mean(), "wins": table[0][1], "losses": table[1][0],
                           "p_raw": mcnemar(table, exact=True).pvalue})
     tests = pd.DataFrame(test_rows)
-    tests["p_bh"] = multipletests(tests["p_raw"], method="fdr_bh")[1]
+    tests["p_bh"] = tests.groupby(["metric", "test"])["p_raw"].transform(lambda p: multipletests(p, method="fdr_bh")[1])
     tests.to_csv(config.RESULTS_DIR / "pairwise_tests.csv", index=False)
 
     # Run-to-run stability
@@ -224,7 +229,7 @@ def main() -> int:
     if stab_rows:
         pd.DataFrame(stab_rows).to_csv(config.RESULTS_DIR / "stability.csv", index=False)
 
-    print(summary.pivot(index="model", columns="metric", values="macro").round(3).to_string())
+    print(summary.pivot(index="model", columns="metric", values="pooled").round(3).to_string())
     return 0
 
 

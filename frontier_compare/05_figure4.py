@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Updated Figure 4: accuracy, precision, recall, F1 for frontier models vs cached GPT-4o.
 
-Bars are the mean of the 16 per-QID values (--aggregation macro, default) or pooled over all
-rows (--aggregation pooled, as in eval/figures/full150-bar-chart.png). Error bars are 95%
-paper-level bootstrap CIs (macro only). A star marks a BH-adjusted Wilcoxon p < 0.05 versus
+Bars pool all PMID x QID rows, as in the paper's Figure 4 (--aggregation pooled, default), with
+95% row-bootstrap CIs; --aggregation macro plots the mean of the 16 per-QID values instead
+(no CIs). A star marks a BH-adjusted Wilcoxon p < 0.05 versus
 config.PRIMARY_COMPARATOR (the best cached GPT-4o condition).
 """
 
@@ -27,7 +27,7 @@ COMPARATOR_COLORS = ["#4d4d4a", "#8a8983", "#bdbcb4"]  # neutral steps: cached b
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--aggregation", choices=["macro", "pooled"], default="macro")
+    parser.add_argument("--aggregation", choices=["pooled", "macro"], default="pooled")
     args = parser.parse_args()
 
     summary = pd.read_csv(config.RESULTS_DIR / "metrics_summary.csv")
@@ -45,8 +45,8 @@ def main() -> int:
         vals = rows[args.aggregation].to_numpy() * 100
         pos = x - 0.4 + width * (i + 0.5)
         yerr = None
-        if args.aggregation == "macro":
-            yerr = np.vstack([vals - rows["macro_ci_low"] * 100, rows["macro_ci_high"] * 100 - vals])
+        if args.aggregation == "pooled":
+            yerr = np.vstack([vals - rows["pooled_ci_low"] * 100, rows["pooled_ci_high"] * 100 - vals])
         ax.bar(pos, vals, width * 0.92, color=colors[model], label=model, yerr=yerr,
                error_kw={"elinewidth": 1, "capsize": 2, "ecolor": "#3d3d3a"})
         ink = "#1a1a19" if colors[model] == COMPARATOR_COLORS[-1] else "white"
@@ -62,7 +62,7 @@ def main() -> int:
 
     ax.set_xticks(x, [label for _, label in METRICS], fontsize=11)
     ax.set_ylim(0, 105)
-    ax.set_ylabel("%" + (" (mean of 16 per-question values)" if args.aggregation == "macro" else " (pooled)"))
+    ax.set_ylabel("%" + (" (pooled over all paper × question pairs)" if args.aggregation == "pooled" else " (mean of 16 per-question values)"))
     ax.yaxis.grid(True, color="#e5e4de", linewidth=0.8)
     ax.set_axisbelow(True)
     for side in ("top", "right"):

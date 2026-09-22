@@ -42,14 +42,23 @@ class ModelSpec:
     # USD per 1M tokens; used only when the provider does not return cost directly
     price_in: float | None = None
     price_out: float | None = None
-    # OpenRouter PDF handling: "native" sends the PDF to a multimodal model as-is;
-    # "mistral-ocr" / "pdf-text" parse it first (text-only parsing loses figures).
-    pdf_engine: str | None = None
-    max_output_tokens: int = 16000
+    # How the article is sent:
+    #   "pdf"          - the PDF file itself (model ingests PDFs natively, e.g. OpenAI)
+    #   "images+text"  - every page rendered as an image plus the PDF's text layer, extracted
+    #                    locally. Used for vision models without PDF ingestion. (OpenRouter's
+    #                    file-parser plugin was rejected: combined with images it dropped all but
+    #                    page 1 and took ~7 min per paper; see README "Smoke test".)
+    input_mode: str = "pdf"
+    page_image_dpi: int = 110
+    # OpenRouter provider pin (reproducibility: hosts serve different quantizations)
+    provider_order: tuple[str, ...] = ()
+    max_concurrency: int = 16
+    max_output_tokens: int = 32000
     reasoning_effort: str | None = None
 
 
-# TODO(verify): model IDs and prices must be confirmed against provider docs before the full run.
+# IDs confirmed 2026-09-21 via the OpenAI /v1/models and OpenRouter /api/v1/models listings.
+# Qwen3.8 2.4T A95B was dropped: OpenRouter lists it as text-only, so it cannot see figures.
 MODELS: dict[str, ModelSpec] = {
     "gpt6-astra": ModelSpec(
         key="gpt6-astra",
@@ -58,15 +67,20 @@ MODELS: dict[str, ModelSpec] = {
         model_id=os.environ.get("FC_GPT6_MODEL_ID", "gpt-6-astra"),
         price_in=float(os.environ["FC_GPT6_PRICE_IN"]) if "FC_GPT6_PRICE_IN" in os.environ else None,
         price_out=float(os.environ["FC_GPT6_PRICE_OUT"]) if "FC_GPT6_PRICE_OUT" in os.environ else None,
+        max_concurrency=48,  # account limit: 15k RPM / 40M TPM
     ),
-    "qwen3.8": ModelSpec(
-        key="qwen3.8",
-        label="Qwen3.8-2.4T-A95B QSP",
+    "kimi-k3": ModelSpec(
+        key="kimi-k3",
+        label="Kimi K3 QSP",
         provider="openrouter",
-        model_id=os.environ.get("FC_QWEN_MODEL_ID", "qwen/qwen3.8-2.4t-a95b"),
-        pdf_engine=os.environ.get("FC_QWEN_PDF_ENGINE", "native"),
+        model_id=os.environ.get("FC_KIMI_MODEL_ID", "moonshotai/kimi-k3"),
+        input_mode="images+text",
+        provider_order=("moonshotai",),
+        max_concurrency=24,
     ),
 }
+
+ENV_FILES = [ROOT / "advanced-prompting/.env", ROOT / ".env", FC_DIR / ".env"]
 
 PROVIDER_ENDPOINTS = {
     "openai": ("https://api.openai.com/v1/chat/completions", "OPENAI_API_KEY"),

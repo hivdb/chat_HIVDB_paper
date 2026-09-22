@@ -8,7 +8,7 @@ already have a successful record in the target run file are skipped.
 
 Examples:
   python frontier_compare/02_query_models.py --model gpt6-astra --run 1 --dry-run --limit 2
-  python frontier_compare/02_query_models.py --model qwen3.8 --run 1 --max-concurrency 4
+  python frontier_compare/02_query_models.py --model kimi-k3 --run 1 --max-concurrency 4
 """
 
 from __future__ import annotations
@@ -26,6 +26,7 @@ from pathlib import Path
 
 import httpx
 import pandas as pd
+import pymupdf
 from dotenv import load_dotenv
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -68,6 +69,12 @@ def build_system_prompt() -> str:
     return text.split(marker)[0].rstrip() + "\n\n" + OUTPUT_INSTRUCTIONS
 
 
+def load_env() -> None:
+    for path in config.ENV_FILES:
+        if path.exists():
+            load_dotenv(path, override=False)
+
+
 def load_manifest() -> pd.DataFrame:
     if not config.PDF_MANIFEST.exists():
         raise FileNotFoundError("Run 01_pdf_manifest.py --stage first.")
@@ -78,15 +85,41 @@ def pdf_path(pmid: str) -> Path:
     return config.PDF_DIR / f"{pmid}.pdf"
 
 
-def build_payload(spec: config.ModelSpec, system_prompt: str, pmid: str) -> dict:
-    encoded = base64.b64encode(pdf_path(pmid).read_bytes()).decode("ascii")
-    user_content = [
-        {"type": "text", "text": f"PMID: {pmid}\nAnswer Questions 1-16 for the attached article."},
-        {
-            "type": "file",
-            "file": {"filename": f"{pmid}.pdf", "file_data": f"data:application/pdf;base64,{encoded}"},
-        },
+def render_page_images(path: Path, dpi: int) -> list[str]:
+    """Every PDF page as a JPEG data URL, so a vision model sees figures as drawn."""
+    urls = []
+    with pymupdf.open(path) as doc:
+        for page in doc:
+            jpg = page.get_pixmap(dpi=dpi).tobytes("jpeg", jpg_quality=80)
+            urls.append("data:image/jpeg;base64," + base64.b64encode(jpg).decode("ascii"))
+    return urls
+
+
+def build_user_content(spec: config.ModelSpec, path: Path, text: str) -> list[dict]:
+    if spec.input_mode == "pdf":
+        encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+        return [
+            {"type": "text", "text": text},
+            {"type": "file", "file": {"filename": path.name, "file_data": f"data:application/pdf;base64,{encoded}"}},
+        ]
+    with pymupdf.open(path) as doc:
+        layer = "\n\n".join(f"--- Page {i} ---\n{page.get_text()}" for i, page in enumerate(doc, start=1))
+    pages = render_page_images(path, spec.page_image_dpi)
+    return [
+        {"type": "text", "text": text},
+        {"type": "text", "text": f"Article text layer extracted from the PDF:\n\n{layer}"},
+        {"type": "text", "text": f"The article rendered as {len(pages)} page images, in order. "
+                                 "Use them for tables, figures, and anything the text layer garbles:"},
+        *({"type": "image_url", "image_url": {"url": url}} for url in pages),
     ]
+
+
+def build_payload(spec: config.ModelSpec, system_prompt: str, pmid: str) -> dict:
+    user_text = f"PMID: {pmid}\nAnswer Questions 1-16 for the attached article."
+    return build_request(spec, system_prompt, build_user_content(spec, pdf_path(pmid), user_text))
+
+
+def build_request(spec: config.ModelSpec, system_prompt: str, user_content: list[dict]) -> dict:
     payload: dict = {
         "model": spec.model_id,
         "messages": [
@@ -101,8 +134,8 @@ def build_payload(spec: config.ModelSpec, system_prompt: str, pmid: str) -> dict
     else:
         payload["max_tokens"] = spec.max_output_tokens
         payload["usage"] = {"include": True}  # OpenRouter returns billed cost in usage.cost
-        if spec.pdf_engine:
-            payload["plugins"] = [{"id": "file-parser", "pdf": {"engine": spec.pdf_engine}}]
+        if spec.provider_order:
+            payload["provider"] = {"order": list(spec.provider_order), "allow_fallbacks": False}
         if spec.reasoning_effort:
             payload["reasoning"] = {"effort": spec.reasoning_effort}
     return payload
@@ -171,7 +204,8 @@ async def call_once(
             return record
         if status is not None and status not in RETRY_STATUS:
             return record
-        await asyncio.sleep(delay)
+        retry_after = resp.headers.get("retry-after") if status is not None else None
+        await asyncio.sleep(float(retry_after) if retry_after and retry_after.replace(".", "").isdigit() else delay)
         delay = min(delay * 2, 120)
     return record
 
@@ -205,13 +239,12 @@ def main() -> int:
     parser.add_argument("--run", type=int, default=1, help="Replicate index (for run-to-run stability).")
     parser.add_argument("--pmids", nargs="*", help="Restrict to these PMIDs.")
     parser.add_argument("--limit", type=int)
-    parser.add_argument("--max-concurrency", type=int, default=4)
+    parser.add_argument("--max-concurrency", type=int, help="Default: the model's max_concurrency in config.")
     parser.add_argument("--dry-run", action="store_true", help="Build requests and report sizes; no API calls.")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    load_dotenv(config.ROOT / ".env")
-    load_dotenv(config.FC_DIR / ".env", override=True)
+    load_env()
     spec = config.MODELS[args.model]
 
     manifest = load_manifest()
@@ -235,7 +268,7 @@ def main() -> int:
     if not os.environ.get(key_env):
         logging.error("%s is not set (put it in .env or frontier_compare/.env).", key_env)
         return 1
-    asyncio.run(run(spec, args.run, targets, args.max_concurrency))
+    asyncio.run(run(spec, args.run, targets, args.max_concurrency or spec.max_concurrency))
     return 0
 
 

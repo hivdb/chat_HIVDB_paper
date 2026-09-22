@@ -3,14 +3,14 @@
 *Status: template. Fill in from `results/` and `figures/` once all runs are complete.*
 
 ## Setup (1 paragraph)
-- Models: GPT-6 Astra (`<model_id>`, run dates), Qwen3.8 2.4T A95B via OpenRouter (`<model_id>`, provider, PDF engine).
+- Models: GPT-6 Astra (`gpt-6-astra`, PDF input, run dates); Kimi K3 (`moonshotai/kimi-k3`, Moonshot AI host, page images + text layer, run dates).
 - Input: full-text PDFs for N/150 papers (list exclusions). Prompt: paper QSP (Nov17_Version1) with a JSON output contract.
 - Comparators: cached GPT-4o (gpt-4o-mini-2024-07-18) FT, QSP, and FT+QSP, re-scored on the same PMIDs with the same scorer.
 - Replicates: R runs per model.
 
 ## Q1. Do frontier prompted models exceed GPT-4o?
-- Figure: `figures/figure4_frontier_macro.png` (pooled version in `figure4_frontier_pooled.png`).
-- Table: macro and pooled accuracy/precision/recall/F1 with 95% CIs (`results/metrics_summary.csv`).
+- Figure: `figures/figure4_frontier_pooled.png` (pooled over all paper × question pairs, as in the paper).
+- Table: pooled accuracy/precision/recall/F1 with 95% row-bootstrap CIs (`results/metrics_summary.csv`).
 - Tests: Wilcoxon over the 16 per-QID values vs each GPT-4o condition, BH-adjusted; McNemar on rows as a sensitivity check (`results/pairwise_tests.csv`).
 - Answer: yes/no per model and metric, with effect size and CI, not only the p-value.
 
