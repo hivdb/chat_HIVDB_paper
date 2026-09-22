@@ -42,6 +42,7 @@ class ModelSpec:
     # USD per 1M tokens; used only when the provider does not return cost directly
     price_in: float | None = None
     price_out: float | None = None
+    price_cached_in: float | None = None
     # How the article is sent:
     #   "pdf"          - the PDF file itself (model ingests PDFs natively, e.g. OpenAI)
     #   "images+text"  - every page rendered as an image plus the PDF's text layer, extracted
@@ -65,8 +66,10 @@ MODELS: dict[str, ModelSpec] = {
         label="GPT-6 Astra QSP",
         provider="openai",
         model_id=os.environ.get("FC_GPT6_MODEL_ID", "gpt-6-astra"),
-        price_in=float(os.environ["FC_GPT6_PRICE_IN"]) if "FC_GPT6_PRICE_IN" in os.environ else None,
-        price_out=float(os.environ["FC_GPT6_PRICE_OUT"]) if "FC_GPT6_PRICE_OUT" in os.environ else None,
+        # developers.openai.com/api/docs/models/gpt-6-astra (2026-09-21); x2 input / x1.5 output above 272K
+        price_in=10.0,
+        price_out=50.0,
+        price_cached_in=1.0,
         max_concurrency=48,  # account limit: 15k RPM / 40M TPM
     ),
     "kimi-k3": ModelSpec(
@@ -90,6 +93,24 @@ PROVIDER_ENDPOINTS = {
 QUESTION_TYPES = ["Boolean", "List", "Number"]
 # Questions the paper flagged as difficult; reported separately in the secondary analysis.
 HARD_QIDS = {8: "Cloning", 15: "ARV drug classes", 16: "ARV drugs"}
+
+
+def request_cost(spec: ModelSpec, usage: dict) -> float | None:
+    """Billed cost if the provider reports it (OpenRouter), else computed from token usage."""
+    if usage.get("cost") is not None:
+        return float(usage["cost"])
+    if spec.price_in is None or spec.price_out is None or not usage:
+        return None
+    prompt = usage.get("prompt_tokens", 0)
+    cached = (usage.get("prompt_tokens_details") or {}).get("cached_tokens", 0) or 0
+    long_ctx = prompt > 272_000
+    in_mult, out_mult = (2.0, 1.5) if long_ctx else (1.0, 1.0)
+    cached_price = spec.price_cached_in if spec.price_cached_in is not None else spec.price_in
+    return (
+        (prompt - cached) * spec.price_in * in_mult
+        + cached * cached_price * in_mult
+        + usage.get("completion_tokens", 0) * spec.price_out * out_mult
+    ) / 1e6
 
 
 def run_path(model_key: str, run_id: int) -> Path:

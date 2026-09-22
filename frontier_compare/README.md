@@ -32,7 +32,7 @@ Or run `make -C frontier_compare all` after the query step.
 
 Keys are read from `advanced-prompting/.env` (also `.env` or `frontier_compare/.env`):
 `OPENAI_API_KEY`, `OPENROUTER_API_KEY`. Model IDs can be overridden with `FC_GPT6_MODEL_ID` and
-`FC_KIMI_MODEL_ID`. GPT-6 Astra cost needs `FC_GPT6_PRICE_IN/OUT` (USD per 1M tokens), since
+`FC_KIMI_MODEL_ID`. GPT-6 Astra cost is computed from usage at published rates in `config.py`, since
 OpenAI doesn't return cost; OpenRouter reports the billed cost per request.
 
 Concurrency defaults come from each model's `max_concurrency` in `config.py` (48 for GPT-6 Astra,
@@ -113,7 +113,7 @@ letters or case reports.
 1. **46 PDFs need manual download.** See `data/pdfs_to_download.csv` and save each as
    `frontier_compare/pdfs/<PMID>.pdf`, then re-run `01_pdf_manifest.py`. Ideally use the same
    version the curators annotated.
-2. **GPT-6 Astra pricing** is not returned by the API. Set `FC_GPT6_PRICE_IN/OUT` for cost metrics.
+2. **GPT-6 Astra pricing** is not returned by the API, so cost is computed from token usage at the published rates ($10 / $1 cached / $50 per 1M tokens).
 3. **OpenRouter budget.** The key has a $50 cap. A single Kimi run over 150 papers is estimated at
    $28–48 depending on reasoning length (input: 5.1M tokens, $15.35), so it is tight.
 4. **Confound: model vs input.** The cached GPT-4o runs used markdown, so frontier-vs-GPT-4o

@@ -141,16 +141,6 @@ def build_request(spec: config.ModelSpec, system_prompt: str, user_content: list
     return payload
 
 
-def estimate_cost(spec: config.ModelSpec, usage: dict) -> float | None:
-    if usage.get("cost") is not None:
-        return float(usage["cost"])
-    if spec.price_in is None or spec.price_out is None:
-        return None
-    return (
-        usage.get("prompt_tokens", 0) * spec.price_in + usage.get("completion_tokens", 0) * spec.price_out
-    ) / 1e6
-
-
 def completed_pmids(path: Path) -> set[str]:
     done: set[str] = set()
     if path.exists():
@@ -197,7 +187,7 @@ async def call_once(
                 content=choice["message"].get("content") or "",
                 finish_reason=choice.get("finish_reason"),
                 usage=usage,
-                cost_usd=estimate_cost(spec, usage),
+                cost_usd=config.request_cost(spec, usage),
                 served_model=body.get("model"),
                 provider=body.get("provider"),
             )
@@ -236,7 +226,7 @@ async def run(spec: config.ModelSpec, run_id: int, pmids: list[str], concurrency
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--model", required=True, choices=sorted(config.MODELS))
-    parser.add_argument("--run", type=int, default=1, help="Replicate index (for run-to-run stability).")
+    parser.add_argument("--run", type=int, default=1, help="Run index (the study uses a single run, 1).")
     parser.add_argument("--pmids", nargs="*", help="Restrict to these PMIDs.")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--max-concurrency", type=int, help="Default: the model's max_concurrency in config.")
@@ -252,7 +242,13 @@ def main() -> int:
     missing = sorted(set(manifest["PMID"]) - set(available))
     if missing:
         logging.warning("%d PMIDs have no staged PDF and will be skipped (see pdf_manifest.csv).", len(missing))
-    targets = [p for p in available if not args.pmids or p in set(args.pmids)]
+    if args.pmids:
+        requested = {p for arg in args.pmids for p in arg.split()}
+        unknown = sorted(requested - set(available))
+        if unknown:
+            logging.error("Requested PMIDs without a staged PDF or not in the eval set: %s", ", ".join(unknown))
+            return 1
+    targets = [p for p in available if not args.pmids or p in requested]
     done = completed_pmids(config.run_path(spec.key, args.run))
     targets = [p for p in targets if p not in done][: args.limit]
 
@@ -268,6 +264,7 @@ def main() -> int:
     if not os.environ.get(key_env):
         logging.error("%s is not set (put it in .env or frontier_compare/.env).", key_env)
         return 1
+    logging.info("%s: sending %d requests (%d already done in run %d).", spec.key, len(targets), len(done), args.run)
     asyncio.run(run(spec, args.run, targets, args.max_concurrency or spec.max_concurrency))
     return 0
 
