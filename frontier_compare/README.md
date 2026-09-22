@@ -71,11 +71,39 @@ rendered at 110 dpi plus the PDF's own text layer, extracted locally with PyMuPD
 `01a_fetch_pdfs.py` maps PMIDs to PMCID/DOI (NCBI ID converter; PubMed for DOIs), then downloads
 from the **PMC Open Access dataset on AWS S3**, falling back to the publisher PDF link registered
 with Crossref. PMC and Europe PMC web PDF links sit behind bot challenges and are not used.
-Every file is checked for a `%PDF` header. Result: **104/150 staged** (all 30 new + 74 of the
-original 120). The other 46 are listed in `data/pdfs_to_download.csv` for manual download:
-25 are in PMC but outside the open-access subset, and 21 have no PMC copy (JAC, CID, HIV
-Medicine, JMV, Elsevier titles). Short PDFs (2–4 pages) were checked and are complete research
-letters or case reports.
+Every file is checked for a `%PDF` header. The script fetched 104/150 (all 30 new + 74 of the
+original 120); the remaining 46 were downloaded by hand from PubMed/PMC, because PMC's PDF link
+serves a JavaScript bot challenge that a script cannot (and should not) pass.
+
+**All 150 PDFs are now staged and verified**: every file opens, yields extractable text, and its
+PubMed title appears in the first two pages (8 initial mismatches were ligature/prime/"Brief
+Report:" artifacts, checked by hand). 1,606 pages total. Short PDFs (2–4 pages) are complete
+research letters or case reports.
+
+## Pilot (10 papers, 2026-09-22)
+
+5 original + 5 new papers (seed 0, 3–31 pages), scored on 160 rows. Directional only.
+
+| | correct/160 | accuracy | precision | recall | F1 | $/paper | s/paper |
+|---|---|---|---|---|---|---|---|
+| Kimi K3 | 149 | 0.931 | 0.953 | 0.920 | 0.936 | $0.22 | 108–432 |
+| GPT-6 Astra (high effort) | 144 | 0.900 | 0.919 | 0.898 | 0.908 | $0.52 | 109 |
+| GPT-6 Astra (default) | 143 | 0.894 | 0.918 | 0.886 | 0.902 | $0.42 | 41–76 |
+| GPT-4o FT | 138 | 0.862 | 0.971 | 0.773 | 0.861 | cached | - |
+| GPT-4o QSP | 138 | 0.862 | 0.934 | 0.807 | 0.866 | cached | - |
+| GPT-4o FT+QSP | 135 | 0.844 | 0.957 | 0.750 | 0.841 | cached | - |
+
+All 30 requests returned strict-valid JSON with all 16 answers; no truncation, no retries.
+
+**Reasoning effort.** `gpt-6-astra` accepts low/medium/high/xhigh. `medium` is the API default and
+measured identical to the default run (~145 reasoning tokens/paper, 4/160 cosmetic answer diffs).
+`high` raises reasoning to ~2.4k tokens/paper and fixed exactly one row (a QID 5 count), at +$0.10
+and +50 s per paper.
+
+`07_review_workbook.py` writes `results/pilot_review.xlsx` for manual triage of every error
+(model evidence + rationale, comparator answers, verdict dropdown, PubMed link), plus a sheet of
+rows both frontier models got wrong — 7 of 9 with identical answers, the strongest
+annotation-error candidates.
 
 ## Design decisions
 

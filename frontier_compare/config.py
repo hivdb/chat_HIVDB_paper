@@ -53,6 +53,9 @@ class ModelSpec:
     page_image_dpi: int = 110
     # OpenRouter provider pin (reproducibility: hosts serve different quantizations)
     provider_order: tuple[str, ...] = ()
+    # Variant of another model (e.g. a different reasoning effort): reported, but not one of the
+    # two headline frontier models.
+    is_variant: bool = False
     max_concurrency: int = 16
     max_output_tokens: int = 32000
     reasoning_effort: str | None = None
@@ -71,6 +74,21 @@ MODELS: dict[str, ModelSpec] = {
         price_out=50.0,
         price_cached_in=1.0,
         max_concurrency=48,  # account limit: 15k RPM / 40M TPM
+    ),
+    # Same model at higher reasoning effort. Supported: low/medium/high/xhigh; "medium" is the
+    # API default and measured identical to the default run (~145 reasoning tokens/paper),
+    # so the informative comparison is "high" (~3.3k reasoning tokens).
+    "gpt6-astra-high": ModelSpec(
+        key="gpt6-astra-high",
+        label="GPT-6 Astra QSP (high effort)",
+        provider="openai",
+        model_id=os.environ.get("FC_GPT6_MODEL_ID", "gpt-6-astra"),
+        price_in=10.0,
+        price_out=50.0,
+        price_cached_in=1.0,
+        reasoning_effort="high",
+        max_concurrency=48,
+        is_variant=True,
     ),
     "kimi-k3": ModelSpec(
         key="kimi-k3",
