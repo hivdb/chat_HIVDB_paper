@@ -20,7 +20,7 @@ python frontier_compare/00_smoke_test.py --real-pmid 40596906        # can each 
 python frontier_compare/01a_fetch_pdfs.py                              # open-access PDFs: PMC OA on S3, then publisher
 python frontier_compare/01_pdf_manifest.py --stage                    # inventory and stage PDFs -> pdfs/<PMID>.pdf
 python frontier_compare/02_query_models.py --model gpt6-astra --run 1 --dry-run --limit 3
-python frontier_compare/02_query_models.py --model gpt6-astra --run 1  # repeat with --run 2, 3 for stability
+python frontier_compare/02_query_models.py --model gpt6-astra --run 1  # one run per paper
 python frontier_compare/02_query_models.py --model kimi-k3    --run 1
 python frontier_compare/03_parse_responses.py                          # raw JSONL -> answers + ops table
 python frontier_compare/04_evaluate.py                                 # metrics, tests, stability
@@ -114,8 +114,8 @@ letters or case reports.
    `frontier_compare/pdfs/<PMID>.pdf`, then re-run `01_pdf_manifest.py`. Ideally use the same
    version the curators annotated.
 2. **GPT-6 Astra pricing** is not returned by the API. Set `FC_GPT6_PRICE_IN/OUT` for cost metrics.
-3. **OpenRouter budget.** The key has a $50 cap. Kimi costs about $0.07–0.10 per paper, so
-   3 runs × 150 papers comes to about $35–45.
+3. **OpenRouter budget.** The key has a $50 cap. A single Kimi run over 150 papers is estimated at
+   $28–48 depending on reasoning length (input: 5.1M tokens, $15.35), so it is tight.
 4. **Confound: model vs input.** The cached GPT-4o runs used markdown, so frontier-vs-GPT-4o
    differences mix model and modality effects. A cheap ablation is to run one frontier model on
    the same markdown (`<PMID>.checked.md`) to separate the two.

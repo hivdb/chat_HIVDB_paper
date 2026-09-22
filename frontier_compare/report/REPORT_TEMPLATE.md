@@ -6,7 +6,7 @@
 - Models: GPT-6 Astra (`gpt-6-astra`, PDF input, run dates); Kimi K3 (`moonshotai/kimi-k3`, Moonshot AI host, page images + text layer, run dates).
 - Input: full-text PDFs for N/150 papers (list exclusions). Prompt: paper QSP (Nov17_Version1) with a JSON output contract.
 - Comparators: cached GPT-4o (gpt-4o-mini-2024-07-18) FT, QSP, and FT+QSP, re-scored on the same PMIDs with the same scorer.
-- Replicates: R runs per model.
+- One run per paper per model (no replicates; run-to-run stability not assessed).
 
 ## Q1. Do frontier prompted models exceed GPT-4o?
 - Figure: `figures/figure4_frontier_pooled.png` (pooled over all paper × question pairs, as in the paper).
@@ -27,7 +27,7 @@
 
 ## Q4. Autonomous entry or curator-assisted review?
 - Decision criteria (agree before looking at results): e.g. autonomous entry requires >= X% precision on every QID that writes to HIVDB and zero `UNSUPPORTED`/`FABRICATED_EVIDENCE` errors on identity fields (accessions, drugs); otherwise curator-assisted.
-- Operational fit: cost per paper, latency, invalid-JSON rate, run-to-run agreement (`results/secondary_operational.csv`).
+- Operational fit: cost per paper, latency, invalid-JSON rate (`results/secondary_operational.csv`).
 - Recommendation per question group.
 
 ## Caveats
