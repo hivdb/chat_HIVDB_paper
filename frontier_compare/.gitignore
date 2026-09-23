@@ -1,0 +1,3 @@
+# Publisher PDFs (copyrighted) and API keys stay local
+pdfs/
+.env

@@ -1,0 +1,127 @@
+{
+  "kimi-k3": {
+    "meta": {
+      "status": 200,
+      "latency_s": 15.6,
+      "usage": {
+        "prompt_tokens": 1955,
+        "completion_tokens": 439,
+        "total_tokens": 2394,
+        "cost": 0.01245,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.01245,
+          "upstream_inference_prompt_cost": 0.005865,
+          "upstream_inference_completions_cost": 0.006585
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 267,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "served_model": "moonshotai/kimi-k3",
+      "provider": "Moonshot AI",
+      "json_status": "strict"
+    },
+    "checks": {
+      "text_code": {
+        "expected": "ZEBRA-4471",
+        "got": "ZEBRA-4471",
+        "pass": true
+      },
+      "table_kisumu_n": {
+        "expected": "73",
+        "got": "73",
+        "pass": true
+      },
+      "table_kisumu_year": {
+        "expected": "2019",
+        "got": "2019",
+        "pass": true
+      },
+      "figure_tallest_label": {
+        "expected": "M184V",
+        "got": "M184V",
+        "pass": true
+      },
+      "figure_tallest_value": {
+        "expected": "61",
+        "got": "61",
+        "pass": true
+      },
+      "figure_tallest_color": {
+        "expected": "green",
+        "got": "green",
+        "pass": true
+      },
+      "figure_code": {
+        "expected": "ORCHID-92",
+        "got": "ORCHID-92",
+        "pass": true
+      }
+    },
+    "channels": {
+      "text_code": "text",
+      "table_kisumu_n": "table",
+      "table_kisumu_year": "table",
+      "figure_tallest_label": "image",
+      "figure_tallest_value": "image",
+      "figure_tallest_color": "image",
+      "figure_code": "image"
+    },
+    "real": {
+      "pmid": "40596906",
+      "meta": {
+        "status": 200,
+        "latency_s": 59.4,
+        "usage": {
+          "prompt_tokens": 26356,
+          "completion_tokens": 2444,
+          "total_tokens": 28800,
+          "cost": 0.115728,
+          "is_byok": false,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0,
+            "audio_tokens": 0,
+            "video_tokens": 0
+          },
+          "cost_details": {
+            "upstream_inference_cost": 0.115728,
+            "upstream_inference_prompt_cost": 0.079068,
+            "upstream_inference_completions_cost": 0.03666
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 2022,
+            "image_tokens": 0,
+            "audio_tokens": 0
+          }
+        },
+        "served_model": "moonshotai/kimi-k3",
+        "provider": "Moonshot AI",
+        "json_status": "lenient"
+      },
+      "answers": {
+        "title": "Drug resistance mutations and phylogenetic analysis of HIV-1 subtypes B and F from mothers and children with vertical transmission",
+        "table1_caption": "Main drug resistance–associated mutations and genetic difference detected between pair in HIV-1 sequences isolated from mother–child pairs in Maranhão and Pernambuco (Northeast region of Brazil), 2007–2022. PI, protease inhibitors; NNRTIs, non-nucleoside reverse transcriptase inhibitors; NRTIs, nucleoside reverse transcriptase inhibitors",
+        "table1_first_row": [
+          "M1",
+          "15",
+          "None",
+          "V108I",
+          "None",
+          "0.0314"
+        ],
+        "figure1_description": "Figure 1 is a grouped bar chart with two panels comparing Mother (red/pink bars) and Child (teal/green bars) groups per the 'Group' legend. Panel A shows 'NNRTI Drugs' (DOR, EFV, ETR, NVP, RPV) on the x-axis with y-axis 'Resistance count (N)' scaled 0–10; Panel B shows 'NRTI Drugs' (3TC, ABC, AZT, D4T, DDI, FTC, TDF) on the x-axis with y-axis 'Resistance count (N)' scaled 0–6. Specific visible values: for EFV the mother bar reaches 10 versus 8 for children (NVP is likewise 10 vs 8), and for ABC both mothers and children have a resistance count of 6.",
+        "figure1_detail_not_in_caption": "The x-axis of panel B labels the zidovudine drug as 'AZT', whereas the caption and article text only use/define the abbreviation 'ZDV' (zidovudine); 'AZT' appears only on the figure axis and is not mentioned in the caption or body text."
+      }
+    }
+  }
+}

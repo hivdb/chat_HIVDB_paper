@@ -1,0 +1,324 @@
+PMID,QID,Model,verdict,note
+21115794,10,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+24227862,15,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+24227862,16,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+26311878,10,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+27009474,6,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+27009474,6,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+27124362,9,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+28559249,15,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+28559249,15,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+28559249,16,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+28559249,9,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+29373677,6,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+30053052,10,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+30053052,15,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+30053052,15,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+30053052,16,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+30803972,10,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+30803972,10,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+31988104,11,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+31988104,11,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+31988104,12,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+31988104,12,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+31988104,4,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+32601157,10,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+33855437,5,GPT-6 Astra QSP,annotation/convention,R6 QID 5 denominator: both 5357 and 6 are stated in the paper
+34516245,11,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+34516245,15,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+35730213,6,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+35913500,11,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35913500,11,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35913500,15,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35913500,15,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35913500,16,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35913500,16,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35913500,6,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35913500,6,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35913500,7,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35945163,11,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35945163,12,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35945163,14,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35945163,15,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35945163,16,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+35945163,5,Kimi K3 QSP,annotation/convention,R6 QID 5 denominator: both 35 and 6 are stated in the paper
+35945163,5,GPT-4o FT,annotation/convention,R6 QID 5 denominator: both 35 and 6 are stated in the paper
+35945163,5,GPT-4o FT+QSP,annotation/convention,R6 QID 5 denominator: both 35 and 6 are stated in the paper
+35945163,9,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36519389,6,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36519389,6,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36519389,7,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36519389,7,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36597160,5,GPT-4o QSP,annotation/convention,R6 QID 5 denominator: both 382 and 6 are stated in the paper
+36659824,11,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36659824,11,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36659824,11,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36659824,12,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+36659824,14,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+36659824,15,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+36659824,16,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+36659824,6,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+36659824,7,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+36659824,9,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+36660819,11,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36660819,11,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36660819,12,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36660819,12,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36660819,14,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36660819,15,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36660819,15,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36660819,16,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36660819,16,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36660819,9,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36660819,9,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36706364,11,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36706364,16,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36706364,9,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36706364,9,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36738248,15,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36738248,5,GPT-4o FT+QSP,annotation/convention,R6 QID 5 denominator: both 607 and 527 are stated in the paper
+36738248,7,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36779485,11,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36779485,12,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36779485,14,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36779485,15,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36779485,16,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36779485,6,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36795586,11,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36795586,12,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36795586,14,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36795586,15,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36795586,6,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36851760,16,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36851760,16,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36931676,11,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36931676,12,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36931676,12,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36931676,14,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36931676,15,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36931676,15,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36931676,16,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36931676,16,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36931676,6,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36931676,7,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36931676,7,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36931676,9,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+36961945,15,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36961945,16,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36982978,12,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+36982978,14,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+36982978,15,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+36982978,16,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+36982978,9,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+37052343,11,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37052343,7,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37071019,10,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37071019,12,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37071019,14,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37071019,15,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37071019,15,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37071019,16,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37071019,16,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37147875,15,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37147875,16,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37279764,11,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37340869,11,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37340869,11,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37340869,11,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37340869,12,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+37340869,12,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37340869,14,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+37340869,15,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+37340869,16,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+37340869,16,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37340869,6,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37340869,6,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37340869,9,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+37340869,9,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37358226,15,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37358226,15,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37358226,16,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37358226,6,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37358226,6,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37381002,15,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37515146,5,GPT-6 Astra QSP,annotation/convention,R6 QID 5 denominator: both 391 and 379 are stated in the paper
+37540331,15,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37540331,6,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37541705,14,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37541705,14,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37541705,15,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37541705,15,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37541705,15,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37541705,6,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37541705,6,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37541705,6,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+37541705,7,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37541705,7,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37541705,7,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+37546367,16,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37546367,16,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37546367,5,GPT-6 Astra QSP,annotation/convention,R6 QID 5 denominator: both 3274 and 2074 are stated in the paper
+37554471,11,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37554471,12,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37554471,14,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37554471,15,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37554471,15,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+37554471,15,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37554471,16,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37554471,16,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+37554471,16,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37554471,16,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37554471,6,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37573167,16,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37573167,16,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37593123,6,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37593123,6,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37593123,7,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37593123,7,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37632071,6,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37649807,11,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37649807,6,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37649807,6,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37649807,7,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37649807,7,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37701387,16,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37701387,6,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37701387,6,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37701387,6,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+37701387,7,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37701387,7,Kimi K3 QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37701387,7,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+37701387,9,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37775947,15,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37775947,16,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37872202,10,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37872202,6,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+37878637,4,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37878637,4,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37896785,15,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+37896785,15,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37896785,16,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+37914679,15,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+37914679,15,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37938856,11,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37938856,11,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37938856,11,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37938856,11,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37946329,5,GPT-6 Astra QSP,annotation/convention,R6 QID 5 denominator: both 1078 and 921 are stated in the paper
+37966701,6,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37966701,7,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37966701,7,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+37993493,5,GPT-4o FT,annotation/convention,R6 QID 5 denominator: both 600 and 33 are stated in the paper
+37993493,5,GPT-4o QSP,annotation/convention,R6 QID 5 denominator: both 600 and 33 are stated in the paper
+37993493,5,GPT-4o FT+QSP,annotation/convention,R6 QID 5 denominator: both 600 and 33 are stated in the paper
+38020274,10,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38020274,16,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38020274,16,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38020274,16,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38022124,15,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38022124,6,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38022124,7,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38031075,16,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38031075,16,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38031075,6,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38031075,7,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38033131,15,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38033131,15,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38033131,6,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38033131,6,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38033131,7,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38033131,7,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38090027,11,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+38090027,16,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+38090027,6,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+38090027,7,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+38090027,9,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+38140553,4,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38140553,4,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38140667,11,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+38140667,12,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+38140667,12,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+38140667,14,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+38140667,14,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+38140667,15,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+38140667,16,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+38140667,6,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+38140667,7,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+38140667,9,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+38140667,9,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+38142692,15,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38142692,15,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38142692,16,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38142692,16,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38142692,6,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38142692,6,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38142692,7,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38142692,7,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38152686,6,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38152686,6,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38152686,6,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38314093,15,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+38314093,15,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38314093,15,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38314093,16,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+38314093,16,GPT-4o QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38427738,10,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+38427738,10,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+40400229,5,GPT-4o FT,annotation/convention,R6 QID 5 denominator: both 54 and 47 are stated in the paper
+40400229,5,GPT-4o FT+QSP,annotation/convention,R6 QID 5 denominator: both 54 and 47 are stated in the paper
+40431710,13,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+40713598,5,GPT-6 Astra QSP,annotation/convention,R6 QID 5 denominator: both 96 and 20 are stated in the paper
+40763144,5,GPT-6 Astra QSP,annotation/convention,R6 QID 5 denominator: both 363 and 295 are stated in the paper
+40839365,5,GPT-6 Astra QSP,annotation/convention,R6 QID 5 denominator: both 288 and 212 are stated in the paper
+40872801,1,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+40938120,5,GPT-6 Astra QSP,annotation/convention,R6 QID 5 denominator: both 1260 and 1048 are stated in the paper
+40938120,5,Kimi K3 QSP,annotation/convention,R6 QID 5 denominator: both 1260 and 1048 are stated in the paper
+40938120,5,GPT-4o FT,annotation/convention,R6 QID 5 denominator: both 1260 and 1048 are stated in the paper
+40938120,5,GPT-4o FT+QSP,annotation/convention,R6 QID 5 denominator: both 1260 and 1048 are stated in the paper
+40938996,10,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+40938996,11,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+40938996,11,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+40938996,12,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+40938996,14,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+40938996,15,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+40938996,9,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+40965168,6,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+40965168,9,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+40965168,9,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+40974886,5,Kimi K3 QSP,annotation/convention,R6 QID 5 denominator: both 241 and 223 are stated in the paper
+40974886,5,GPT-4o FT,annotation/convention,R6 QID 5 denominator: both 241 and 223 are stated in the paper
+40974886,5,GPT-4o QSP,annotation/convention,R6 QID 5 denominator: both 241 and 223 are stated in the paper
+41004608,12,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+41004608,14,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+41004608,15,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+41004608,16,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+41012586,12,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+41012586,12,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41012586,14,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+41012586,14,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41012586,15,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+41012586,15,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41012586,16,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+41012586,16,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41012586,6,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+41012586,6,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41012586,9,GPT-4o FT,model error,M2 cascade: the model's own QID 1 answer was wrong
+41012586,9,GPT-4o FT+QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41056006,11,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41056006,12,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41056006,14,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41056006,15,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41056006,16,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41056006,7,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+41056006,7,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+41056006,7,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41056006,7,GPT-4o FT+QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+41056006,9,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41088231,15,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+41088231,15,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+41088231,16,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+41088231,16,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+41093949,11,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41093949,6,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41093949,7,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
+41112839,5,GPT-4o FT,annotation/convention,R6 QID 5 denominator: both 251 and 237 are stated in the paper
