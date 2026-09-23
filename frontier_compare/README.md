@@ -114,6 +114,65 @@ answers), and the PMID drops out of the evaluated set for every model.
 At 39 papers the Q5 prompt edit no longer separates from the base prompt on QID 5 itself
 (29/39 both) but still gains overall (+0.01 accuracy, +0.02 precision), which is within noise.
 
+## Annotation issues and evaluation artifacts (40-paper pilot)
+
+`08_error_triage.py` classifies every frontier error using signals checkable against the PDF:
+does the model's quoted evidence actually occur in the text layer, how much of the human answer
+occurs anywhere in the PDF, do both models agree, is the paper a review, is the annotation itself
+hedged. Output: `results/error_triage.csv` (also an "Auto-triage" sheet in the workbook).
+Suggestions only - nothing is applied to scoring.
+
+| Suggested cause | rows (of 110) |
+|---|---|
+| model error / needs review | 53 |
+| annotation error: paper is a review/meta-analysis | 16 |
+| curation convention: which individuals to count (QID 5) | 16 |
+| model error: quoted evidence not found in PDF | 9 |
+| annotation hedge: human answer explicitly uncertain | 5 |
+| needs review: evidence cited from a figure/table | 5 |
+| curation convention: sequencing method defaulted (QID 10) | 4 |
+| scoring artifact: cleanup rule fixes it | 2 |
+
+**PMID 40872801 is mis-annotated.** The PDF is a PRISMA systematic review and meta-analysis of
+Tanzanian studies; the QSP rules say reviews get "No"/"None". The annotation instead records
+primary-study details ("Sanger", "Plasma") whose words appear **zero** times in the PDF. It costs
+every frontier model 8 of 16 rows. Note GPT-4o QSP/FT+QSP score 12/16 on this paper: producing
+plausible detail matches a wrong annotation, so the error rewards the weaker behaviour.
+
+**Two curator conventions the prompt never states**, both systematic rather than capability gaps:
+- QID 5: annotations count individuals *successfully sequenced*; the models count individuals
+  *sampled* (16 rows).
+- QID 10: annotations default to "Sanger" for standard genotypic resistance testing even when the
+  paper never says so - one annotation literally reads "Sanger (not stated)". None of the three
+  papers involved contains the word "Sanger" (4 rows).
+
+**Evaluation artifacts are small.** Scoring an answer correct if *either* its raw or
+scaffolding-stripped form matches ("lenient OR", applied to every model) recovers **3 rows in
+total, all Kimi's** - caveats like "(paper states either Sanger sequencing or NGS)" that the
+scorer reads as a negation. Astra and all GPT-4o conditions gain nothing. A destructive cleanup
+(rewriting answers before scoring) is worse than useless: it gains 3 and loses 3, because stripping
+a parenthetical sometimes removes the text the scorer was matching. Near-miss list answers are
+*more* common for GPT-4o (23) than for Astra (5) or Kimi (8), so any leniency must be applied to
+all models or it flatters the comparator.
+
+**Sensitivity of the headline numbers** (accuracy on the 39-paper pilot):
+
+| | all rows | excl. 40872801 | excl. review + conventions + hedges |
+|---|---|---|---|
+| Kimi K3 | 0.918 | 0.929 | 0.946 |
+| Astra (Q5 v2) | 0.915 | 0.924 | 0.943 |
+| GPT-6 Astra | 0.905 | 0.916 | 0.939 |
+| GPT-4o FT | 0.886 | 0.895 | 0.912 |
+| GPT-4o FT+QSP | 0.877 | 0.880 | 0.893 |
+| GPT-4o QSP | 0.841 | 0.844 | 0.856 |
+
+Every model gains and the ranking is unchanged, so these issues do not create the frontier lead -
+but they do compress it, and roughly a quarter of all "errors" are not model errors.
+
+`data/proposed_alternatives.csv` holds 10 machine-proposed entries (the review paper, one
+figure-evidence row, one not-found row) for curator review. They are **not** in
+`accepted_alternatives.csv` and do not affect any metric until a curator moves them there.
+
 ## Q5 counting convention (pilot follow-up)
 
 Astra's question-5 errors were a convention mismatch, not a capability gap: it counts individuals

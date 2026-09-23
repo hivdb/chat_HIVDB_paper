@@ -10,6 +10,7 @@ Sheets:
   Both models wrong - rows where both frontier models agree with each other but not with the
                       human answer (the strongest annotation-error candidates)
   All answers       - every PMID x QID row with each model's answer and correctness
+  Auto-triage       - every error row with PDF-derived signals and a suggested cause
   Operations        - per-request latency, tokens, cost, JSON validity
 
 Run after 04_evaluate.py:  python frontier_compare/07_review_workbook.py
@@ -151,6 +152,10 @@ def main() -> int:
                           for c in (m, f"{m} correct", f"{m} outcome", f"{m} alternative_used")
                           if c in rows.columns]]]
 
+    triage_path = config.RESULTS_DIR / "error_triage.csv"
+    triage = (pd.read_csv(triage_path, dtype={"PMID": str}, keep_default_na=False)
+              if triage_path.exists() else pd.DataFrame())
+
     ops_path = config.RESULTS_DIR / "ops_requests.csv"
     ops = pd.read_csv(ops_path, dtype={"PMID": str}) if ops_path.exists() else pd.DataFrame()
 
@@ -158,7 +163,7 @@ def main() -> int:
         "Papers evaluated", "Questions per paper", "Rows scored", "Frontier models", "Comparators",
         "Prompt", "Input", "Scorer", "Aggregation", "",
         "How to use: 'Errors to review'", "Verdict column", "'Both models wrong' sheet", "Note on outcomes",
-        "Coverage", "Adjusted accuracy",
+        "Coverage", "Adjusted accuracy", "'Auto-triage' sheet",
     ], "Detail": [
         rows["PMID"].nunique(), rows["QID"].nunique(), len(rows), "; ".join(models),
         "; ".join(c for c in config.COMPARATORS if c in rows.columns),
@@ -172,6 +177,7 @@ def main() -> int:
         "FP = said something where the human said none/no; FN_missed = said nothing/no where the human had content; FN_wrong_value = gave a different value",
         "The 'papers' column in Summary shows how many papers each model was scored on. Reasoning-effort variants were only run on the first 10 papers. A paper is scored only where every primary model returned a response (see Operations for failures/refusals).",
         "accuracy_adjusted additionally accepts curator-approved alternative answers from data/accepted_alternatives.csv (annotation gaps, e.g. figure-only evidence). Primary metrics do not use them.",
+        "Machine-suggested cause per error, with checkable signals: evidence_in_pdf (the model's quoted evidence really occurs in the PDF text), human_answer_in_pdf (share of the human answer's words found in the PDF), models_agree, review_paper, annotation_hedge. Suggestions only - nothing is applied to scoring.",
     ]})
 
     config.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -179,7 +185,7 @@ def main() -> int:
         sheets = {
             "Overview": overview, "Summary": summary_wide, "By question": by_q,
             "Errors to review": errors, "Both models wrong": agree,
-            "All answers": all_answers, "Operations": ops,
+            "Auto-triage": triage, "All answers": all_answers, "Operations": ops,
         }
         for name, frame in sheets.items():
             frame.to_excel(writer, sheet_name=name, index=False)
