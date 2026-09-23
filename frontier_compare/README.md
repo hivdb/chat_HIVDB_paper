@@ -146,9 +146,8 @@ plausible detail matches a wrong annotation, so the error rewards the weaker beh
   paper never says so - one annotation literally reads "Sanger (not stated)". None of the three
   papers involved contains the word "Sanger" (4 rows).
 
-**Evaluation artifacts are small.** Scoring an answer correct if *either* its raw or
-scaffolding-stripped form matches (applied to every model) recovers **3 rows in
-total, all Kimi's** - caveats like "(paper states either Sanger sequencing or NGS)" that the
+**Evaluation artifacts are small.** Answer cleaning (below) recovers **3 rows in total, all
+Kimi's** - caveats like "(paper states either Sanger sequencing or NGS)" that the
 scorer reads as a negation. Astra and all GPT-4o conditions gain nothing. A destructive cleanup
 (rewriting answers before scoring) is worse than useless: it gains 3 and loses 3, because stripping
 a parenthetical sometimes removes the text the scorer was matching. Near-miss list answers are
@@ -183,9 +182,9 @@ but they do compress it, and roughly a quarter of all "errors" are not model err
 
 Pilot results with accepted answers applied (39 papers, 624 rows):
 
-| | accuracy | precision | recall | F1 | before accepted answers |
+| | accuracy | precision | recall | F1 | before cleaning + accepted answers |
 |---|---|---|---|---|---|
-| Kimi K3 | 0.938 | 0.944 | 0.922 | 0.933 | 0.918 |
+| Kimi K3 | 0.942 | 0.945 | 0.932 | 0.938 | 0.918 |
 | GPT-6 Astra | 0.925 | 0.922 | 0.918 | 0.920 | 0.905 |
 | GPT-4o FT | 0.894 | 0.942 | 0.827 | 0.880 | 0.886 |
 | GPT-4o FT+QSP | 0.886 | 0.915 | 0.837 | 0.874 | 0.877 |
@@ -214,6 +213,24 @@ default. Only the QID 5 effect is systematic.
 Adopting it for the headline comparison would mean the frontier models get a prompt the cached
 GPT-4o runs never saw. Options: keep the original prompt for the primary result and report v2 as a
 prompt-sensitivity analysis, or re-run everything on v2 (a second full pass, ~$95).
+
+## Answer cleaning (post-processing)
+
+`answer_cleaning.py` separates the answer proper from explanatory scaffolding the scorer would
+otherwise read as hedging: a preamble ("The paper reports that: X"), a trailing note ("X; the
+paper does not specify which"), or a commentary parenthetical ("X (paper states either X or Y)").
+Abbreviations such as "(3TC)" are preserved - a parenthetical is only dropped when it is wordy
+(>=4 words) or contains a hedge word.
+
+It is **non-destructive at scoring time**: `04_evaluate.py` scores the raw answer first and only
+falls back to the cleaned form, so a rule can rescue a row but never break one. The rule that
+fired is recorded per row (`<model> cleaning_rule`, outcome `correct_after_cleaning`). The same
+rules run for every model, including the cached GPT-4o comparators.
+
+Effect on the 40-paper pilot: **3 rows, all Kimi K3** (accuracy 0.938 -> 0.942); zero for
+GPT-6 Astra and all three GPT-4o conditions. An earlier destructive variant (rewriting every
+answer before scoring) was rejected: it gained 3 rows and lost 3, because stripping a
+parenthetical sometimes removes the text the scorer was matching.
 
 ## Annotation gaps: accepted alternatives
 

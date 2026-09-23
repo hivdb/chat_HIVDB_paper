@@ -50,6 +50,15 @@ the training annotations, while a prompted model can only follow what the prompt
 as a limitation of the comparison, and as an argument for curator-assisted review over autonomous
 entry until such conventions are written down.
 
+## Post-processing
+
+Two layers sit between the model's answer and the score, both applied to every model and both
+non-destructive (raw answer scored first):
+1. **Answer cleaning** (`answer_cleaning.py`): removes explanatory scaffolding. Worth 3 rows on
+   the pilot, all Kimi K3; zero for Astra and GPT-4o. Report the count per model - it is an
+   artifact of answer style, not extraction quality.
+2. **Accepted alternatives**: see below.
+
 ## Annotation quality
 
 Accepted alternative answers (`data/accepted_alternatives.csv`, applied to every model) cover rows

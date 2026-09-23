@@ -13,7 +13,14 @@ the paired t-test also in S5), BH-adjusted within each (metric, test) slice as i
 eval/statistics.py. Exact McNemar on row correctness is a sensitivity analysis.
 Cached GPT-4o comparators are re-scored on the same PMID subset as the frontier models.
 
-Accepted alternative answers come from two places and are applied to EVERY model equally:
+Two post-processing layers sit between the model's answer and the score, both applied to EVERY
+model equally (including the cached GPT-4o comparators), and both non-destructive - the raw
+answer is scored first and a layer can only rescue a row, never break one:
+
+1. Answer cleaning (answer_cleaning.py): strips explanatory scaffolding - a preamble, a trailing
+   note, or a commentary parenthetical - that the scorer would otherwise read as hedging.
+   Rescued rows are marked `correct_after_cleaning` and name the rule in `<model> cleaning_rule`.
+2. Accepted alternative answers, which come from two places and are applied to EVERY model equally:
   - data/accepted_alternatives.csv: curator-approved answers for rows where the annotation is
     wrong or incomplete (e.g. a review paper annotated as a primary study; figure-only evidence)
   - convention_alternatives(): the QID 10 "Sanger by default" curation convention
@@ -50,6 +57,7 @@ from eval.normalize import (  # noqa: E402
 )
 from eval.scoring import format_identifier  # noqa: E402
 from frontier_compare import config  # noqa: E402
+from frontier_compare.answer_cleaning import clean_answer  # noqa: E402
 
 METRICS = ["accuracy", "precision", "recall", "f1"]
 LABELS = ["tp", "tn", "fp", "fn"]
@@ -136,7 +144,7 @@ def score_rows(df: pd.DataFrame, model: str) -> pd.DataFrame:
     alternatives = load_alternatives()
     for key, value in CONVENTION_ALTERNATIVES.items():
         alternatives.setdefault(key, []).extend(value)
-    labels, labels_adj, correct, outcome, adjusted, alt_used = [], [], [], [], [], []
+    labels, labels_adj, correct, outcome, adjusted, alt_used, cleaned_by = [], [], [], [], [], [], []
     for pmid, qid, qtype, question, rr, rn, pr, pn in zip(
         df["PMID"], df["QID"], df["Type"], df["Question"], df[config.REF_COL], ref_norm, pred_raw, pred_norm
     ):
@@ -155,9 +163,20 @@ def score_rows(df: pd.DataFrame, model: str) -> pd.DataFrame:
             kind = "FN_missed"
         else:
             kind = "FN_wrong_value"
-        # Secondary scoring: also accept a curator-approved alternative reference answer.
-        ok_adj, used = ok, ""
+        # Post-processing fallback: re-score the answer with explanatory scaffolding removed.
+        # Non-destructive - only tried when the raw answer failed, so it can rescue but never break.
+        ok_adj, used, rule_used = ok, "", ""
         if not ok:
+            cleaned, rule = clean_answer(pr)
+            if rule and cleaned:
+                _, ok_clean = human_answer_counts(
+                    qtype, canonicalize_answer(cleaned), rn, question_text=question,
+                    ref_raw=rr, pred_raw=cleaned, allow_partial_list=is_list,
+                )
+                if ok_clean:
+                    ok_adj, rule_used = True, rule
+        # Also accept a curator-approved alternative reference answer.
+        if not ok_adj:
             for alt_answer, reason in alternatives.get((str(pmid), int(qid)), []):
                 _, alt_ok = human_answer_counts(
                     qtype, pn, canonicalize_answer(alt_answer), question_text=question,
@@ -169,16 +188,17 @@ def score_rows(df: pd.DataFrame, model: str) -> pd.DataFrame:
         # An accepted answer turns a miss into a hit: fn -> tp, fp -> tn.
         label_adj = label if ok_adj == ok else {"fn": "tp", "fp": "tn"}.get(label, label)
         if ok_adj and not ok:
-            kind = "correct_accepted_answer"
+            kind = "correct_after_cleaning" if rule_used else "correct_accepted_answer"
         labels.append(label)
         labels_adj.append(label_adj)
         correct.append(int(ok))
         outcome.append(kind)
         adjusted.append(int(ok_adj))
         alt_used.append(used)
+        cleaned_by.append(rule_used)
     return pd.DataFrame({"label": labels, "label_adjusted": labels_adj, "correct": correct,
                          "outcome": outcome, "correct_adjusted": adjusted,
-                         "alternative_used": alt_used}, index=df.index)
+                         "alternative_used": alt_used, "cleaning_rule": cleaned_by}, index=df.index)
 
 
 def metrics_from_counts(c: np.ndarray) -> dict[str, np.ndarray]:
@@ -241,6 +261,7 @@ def main() -> int:
         df[f"{model} correct"] = scored["correct_adjusted"]  # primary
         df[f"{model} correct_adjusted"] = scored["correct_adjusted"]
         df[f"{model} alternative_used"] = scored["alternative_used"]
+        df[f"{model} cleaning_rule"] = scored["cleaning_rule"]
         df.loc[~scored_masks[model], [f"{model} label", f"{model} label_strict", f"{model} correct",
                                       f"{model} correct_strict", f"{model} outcome",
                                       f"{model} correct_adjusted"]] = None

@@ -149,7 +149,8 @@ def main() -> int:
 
     all_answers = rows[["PMID", "QID", "Type", "Question", config.REF_COL,
                         *[c for m in all_models
-                          for c in (m, f"{m} correct", f"{m} outcome", f"{m} alternative_used")
+                          for c in (m, f"{m} correct", f"{m} outcome", f"{m} cleaning_rule",
+                                    f"{m} alternative_used")
                           if c in rows.columns]]]
 
     triage_path = config.RESULTS_DIR / "error_triage.csv"
@@ -163,7 +164,7 @@ def main() -> int:
         "Papers evaluated", "Questions per paper", "Rows scored", "Frontier models", "Comparators",
         "Prompt", "Input", "Scorer", "Aggregation", "",
         "How to use: 'Errors to review'", "Verdict column", "'Both models wrong' sheet", "Note on outcomes",
-        "Coverage", "Adjusted accuracy", "'Auto-triage' sheet",
+        "Coverage", "Adjusted accuracy", "Post-processing", "'Auto-triage' sheet",
     ], "Detail": [
         rows["PMID"].nunique(), rows["QID"].nunique(), len(rows), "; ".join(models),
         "; ".join(c for c in config.COMPARATORS if c in rows.columns),
@@ -177,6 +178,7 @@ def main() -> int:
         "FP = said something where the human said none/no; FN_missed = said nothing/no where the human had content; FN_wrong_value = gave a different value",
         "The 'papers' column in Summary shows how many papers each model was scored on. Reasoning-effort variants were only run on the first 10 papers. A paper is scored only where every primary model returned a response (see Operations for failures/refusals).",
         "Metrics INCLUDE curator-accepted alternative answers (data/accepted_alternatives.csv plus the QID 10 Sanger convention), applied to every model equally. 'accuracy_before_accepted_answers' is the unadjusted score, kept for comparability with the paper.",
+        "Answers are scored raw first; if that fails, the answer is re-scored with explanatory scaffolding removed (answer_cleaning.py) and then against accepted alternatives. Both layers apply to every model and can only rescue a row, never break one. Outcome 'correct_after_cleaning' / 'correct_accepted_answer' marks which layer fired.",
         "Machine-suggested cause per error, with checkable signals: evidence_in_pdf (the model's quoted evidence really occurs in the PDF text), human_answer_in_pdf (share of the human answer's words found in the PDF), models_agree, review_paper, annotation_hedge. Suggestions only - nothing is applied to scoring.",
     ]})
 

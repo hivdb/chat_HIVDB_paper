@@ -24,13 +24,13 @@ Kimi K3 QSP,6,List,From which countries were the sequenced samples obtained?,0.9
 Kimi K3 QSP,7,List,From what years were the sequenced samples obtained?,0.9743589743589743,0.9615384615384616,1.0,0.9803921568627451,25,13,1,0
 Kimi K3 QSP,8,Boolean,Were samples cloned prior to sequencing?,0.8974358974358975,1.0,0.2,0.33333333333333337,1,34,0,4
 Kimi K3 QSP,9,List,Which HIV genes were reported to have been sequenced?,0.9230769230769231,1.0,0.9117647058823529,0.9538461538461539,31,5,0,3
-Kimi K3 QSP,10,List,What method was used for sequencing?,0.8717948717948718,0.8928571428571429,0.9259259259259259,0.9090909090909091,25,9,3,2
+Kimi K3 QSP,10,List,What method was used for sequencing?,0.8974358974358975,0.896551724137931,0.9629629629629629,0.9285714285714286,26,9,3,1
 Kimi K3 QSP,11,List,What type of samples were sequenced?,0.9230769230769231,0.9642857142857143,0.9310344827586207,0.9473684210526316,27,9,1,2
 Kimi K3 QSP,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,0.9487179487179487,0.9411764705882353,0.9411764705882353,0.9411764705882353,16,21,1,1
 Kimi K3 QSP,13,Boolean,Were the patients in the study in a clinical trial?,0.9487179487179487,0.8333333333333334,0.8333333333333334,0.8333333333333334,5,32,1,1
 Kimi K3 QSP,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,0.9743589743589743,0.9473684210526315,1.0,0.972972972972973,18,20,1,0
-Kimi K3 QSP,15,List,Which drug classes were received by individuals in the study before sample sequencing?,0.9230769230769231,0.8888888888888888,0.9411764705882353,0.9142857142857143,16,20,2,1
-Kimi K3 QSP,16,List,Which drugs were received by individuals in the study before sample sequencing?,0.8974358974358975,0.8235294117647058,0.9333333333333333,0.8749999999999999,14,21,3,1
+Kimi K3 QSP,15,List,Which drug classes were received by individuals in the study before sample sequencing?,0.9487179487179487,0.8947368421052632,1.0,0.9444444444444444,17,20,2,0
+Kimi K3 QSP,16,List,Which drugs were received by individuals in the study before sample sequencing?,0.9230769230769231,0.8333333333333334,1.0,0.9090909090909091,15,21,3,0
 GPT-4o FT,1,Boolean,Does the paper report HIV sequences from patient samples?,0.9230769230769231,0.9642857142857143,0.9310344827586207,0.9473684210526316,27,9,1,2
 GPT-4o FT,2,Boolean,Does the paper report in vitro drug susceptibility data?,0.9743589743589743,1.0,0.6666666666666666,0.8,2,36,0,1
 GPT-4o FT,3,Boolean,Were sequences from the paper made publicly available?,1.0,1.0,1.0,1.0,8,31,0,0
