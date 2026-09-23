@@ -149,9 +149,10 @@ def main() -> int:
 
     all_answers = rows[["PMID", "QID", "Type", "Question", config.REF_COL,
                         *[c for m in all_models
-                          for c in (m, f"{m} correct", f"{m} outcome", f"{m} cleaning_rule",
-                                    f"{m} alternative_used")
+                          for c in (m, f"{m} correct", f"{m} outcome")
                           if c in rows.columns]]]
+    # cleaning_rule / alternative_used stay in results/detailed_rows.csv for audit; the outcome
+    # column already names the layer that fired (correct_after_cleaning / correct_accepted_answer).
 
     triage_path = config.RESULTS_DIR / "error_triage.csv"
     triage = (pd.read_csv(triage_path, dtype={"PMID": str}, keep_default_na=False)
