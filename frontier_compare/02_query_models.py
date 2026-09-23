@@ -19,6 +19,7 @@ import base64
 import json
 import logging
 import os
+import re
 import sys
 import time
 from datetime import datetime, timezone
@@ -60,13 +61,30 @@ question number.
 """
 
 
-def build_system_prompt() -> str:
-    """The paper's QSP text, with its free-text output section replaced by a JSON contract."""
+def build_system_prompt(variant: str | None = None) -> str:
+    """The paper's QSP text, with its free-text output section replaced by a JSON contract.
+
+    `variant` names a file in prompts/ that replaces exactly one "**Question N - ...**" block;
+    every other word of the prompt stays as the paper used it.
+    """
     text = config.QSP_PROMPT_PATH.read_text(encoding="utf-8")
     marker = "## For each question:"
     if marker not in text:
         raise ValueError(f"Could not find '{marker}' in {config.QSP_PROMPT_PATH}")
-    return text.split(marker)[0].rstrip() + "\n\n" + OUTPUT_INSTRUCTIONS
+    body = text.split(marker)[0].rstrip()
+    if variant:
+        replacement = (config.PROMPTS_DIR / f"{variant}.md").read_text(encoding="utf-8").strip()
+        header = replacement.splitlines()[0].strip()
+        number = re.match(r"\*\*Question (\d+)", header)
+        if not number:
+            raise ValueError(f"Prompt variant {variant} must start with '**Question N - ...**'")
+        start = body.index(header.split("–")[0].rstrip())
+        nxt = f"**Question {int(number.group(1)) + 1} "
+        end = body.index(nxt) if nxt in body else len(body)
+        if body[start:end].strip() == replacement:
+            raise ValueError(f"Prompt variant {variant} is identical to the original block")
+        body = body[:start] + replacement + "\n\n" + body[end:]
+    return body + "\n\n" + OUTPUT_INSTRUCTIONS
 
 
 def load_env() -> None:
@@ -203,7 +221,7 @@ async def call_once(
 async def run(spec: config.ModelSpec, run_id: int, pmids: list[str], concurrency: int) -> None:
     out_path = config.run_path(spec.key, run_id)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    system_prompt = build_system_prompt()
+    system_prompt = build_system_prompt(spec.prompt_variant)
     sem = asyncio.Semaphore(concurrency)
     lock = asyncio.Lock()
     log = logging.getLogger("frontier")
@@ -253,7 +271,7 @@ def main() -> int:
     targets = [p for p in targets if p not in done][: args.limit]
 
     if args.dry_run:
-        system_prompt = build_system_prompt()
+        system_prompt = build_system_prompt(spec.prompt_variant)
         for pmid in targets:
             payload = build_payload(spec, system_prompt, pmid)
             print(f"{pmid}: request body {len(json.dumps(payload)) / 1e6:.2f} MB -> {spec.model_id}")

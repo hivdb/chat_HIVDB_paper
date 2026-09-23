@@ -31,6 +31,38 @@ GPT-6 Astra QSP (high effort),13,Boolean,Were the patients in the study in a cli
 GPT-6 Astra QSP (high effort),14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,1.0,1.0,1.0,1.0,5,5,0,0
 GPT-6 Astra QSP (high effort),15,List,Which drug classes were received by individuals in the study before sample sequencing?,0.9,1.0,0.8,0.888888888888889,4,5,0,1
 GPT-6 Astra QSP (high effort),16,List,Which drugs were received by individuals in the study before sample sequencing?,1.0,1.0,1.0,1.0,5,5,0,0
+GPT-6 Astra QSP (Q5 convention),1,Boolean,Does the paper report HIV sequences from patient samples?,0.9,1.0,0.8888888888888888,0.9411764705882353,8,1,0,1
+GPT-6 Astra QSP (Q5 convention),2,Boolean,Does the paper report in vitro drug susceptibility data?,1.0,1.0,1.0,1.0,1,9,0,0
+GPT-6 Astra QSP (Q5 convention),3,Boolean,Were sequences from the paper made publicly available?,1.0,1.0,1.0,1.0,4,6,0,0
+GPT-6 Astra QSP (Q5 convention),4,List,What were the GenBank accession numbers for sequenced HIV isolates?,1.0,1.0,1.0,1.0,3,7,0,0
+GPT-6 Astra QSP (Q5 convention),5,Number,How many individuals had samples obtained for HIV sequencing?,0.7,1.0,0.6666666666666666,0.8,6,1,0,3
+GPT-6 Astra QSP (Q5 convention),6,List,From which countries were the sequenced samples obtained?,0.9,0.8571428571428571,1.0,0.923076923076923,6,3,1,0
+GPT-6 Astra QSP (Q5 convention),7,List,From what years were the sequenced samples obtained?,0.9,0.8571428571428571,1.0,0.923076923076923,6,3,1,0
+GPT-6 Astra QSP (Q5 convention),8,Boolean,Were samples cloned prior to sequencing?,0.8,0.0,0.0,0.0,0,8,0,2
+GPT-6 Astra QSP (Q5 convention),9,List,Which HIV genes were reported to have been sequenced?,0.9,1.0,0.9,0.9473684210526316,9,0,0,1
+GPT-6 Astra QSP (Q5 convention),10,List,What method was used for sequencing?,0.9,1.0,0.875,0.9333333333333333,7,2,0,1
+GPT-6 Astra QSP (Q5 convention),11,List,What type of samples were sequenced?,1.0,1.0,1.0,1.0,8,2,0,0
+GPT-6 Astra QSP (Q5 convention),12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,0.9,1.0,0.8,0.888888888888889,4,5,0,1
+GPT-6 Astra QSP (Q5 convention),13,Boolean,Were the patients in the study in a clinical trial?,0.9,0.6666666666666666,1.0,0.8,2,7,1,0
+GPT-6 Astra QSP (Q5 convention),14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,0.9,1.0,0.8,0.888888888888889,4,5,0,1
+GPT-6 Astra QSP (Q5 convention),15,List,Which drug classes were received by individuals in the study before sample sequencing?,0.8,1.0,0.6,0.7499999999999999,3,5,0,2
+GPT-6 Astra QSP (Q5 convention),16,List,Which drugs were received by individuals in the study before sample sequencing?,0.9,1.0,0.8,0.888888888888889,4,5,0,1
+GPT-6 Astra QSP (Q5 convention v2),1,Boolean,Does the paper report HIV sequences from patient samples?,1.0,1.0,1.0,1.0,9,1,0,0
+GPT-6 Astra QSP (Q5 convention v2),2,Boolean,Does the paper report in vitro drug susceptibility data?,1.0,1.0,1.0,1.0,1,9,0,0
+GPT-6 Astra QSP (Q5 convention v2),3,Boolean,Were sequences from the paper made publicly available?,1.0,1.0,1.0,1.0,4,6,0,0
+GPT-6 Astra QSP (Q5 convention v2),4,List,What were the GenBank accession numbers for sequenced HIV isolates?,0.9,0.75,1.0,0.8571428571428571,3,6,1,0
+GPT-6 Astra QSP (Q5 convention v2),5,Number,How many individuals had samples obtained for HIV sequencing?,0.7,1.0,0.6666666666666666,0.8,6,1,0,3
+GPT-6 Astra QSP (Q5 convention v2),6,List,From which countries were the sequenced samples obtained?,0.7,0.6666666666666666,1.0,0.8,6,1,3,0
+GPT-6 Astra QSP (Q5 convention v2),7,List,From what years were the sequenced samples obtained?,0.9,0.8571428571428571,1.0,0.923076923076923,6,3,1,0
+GPT-6 Astra QSP (Q5 convention v2),8,Boolean,Were samples cloned prior to sequencing?,0.8,0.0,0.0,0.0,0,8,0,2
+GPT-6 Astra QSP (Q5 convention v2),9,List,Which HIV genes were reported to have been sequenced?,0.9,1.0,0.9,0.9473684210526316,9,0,0,1
+GPT-6 Astra QSP (Q5 convention v2),10,List,What method was used for sequencing?,0.9,1.0,0.875,0.9333333333333333,7,2,0,1
+GPT-6 Astra QSP (Q5 convention v2),11,List,What type of samples were sequenced?,0.9,0.8888888888888888,1.0,0.9411764705882353,8,1,1,0
+GPT-6 Astra QSP (Q5 convention v2),12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,1.0,1.0,1.0,1.0,5,5,0,0
+GPT-6 Astra QSP (Q5 convention v2),13,Boolean,Were the patients in the study in a clinical trial?,0.9,0.6666666666666666,1.0,0.8,2,7,1,0
+GPT-6 Astra QSP (Q5 convention v2),14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,1.0,1.0,1.0,1.0,5,5,0,0
+GPT-6 Astra QSP (Q5 convention v2),15,List,Which drug classes were received by individuals in the study before sample sequencing?,0.9,1.0,0.8,0.888888888888889,4,5,0,1
+GPT-6 Astra QSP (Q5 convention v2),16,List,Which drugs were received by individuals in the study before sample sequencing?,0.9,1.0,0.8,0.888888888888889,4,5,0,1
 Kimi K3 QSP,1,Boolean,Does the paper report HIV sequences from patient samples?,1.0,1.0,1.0,1.0,9,1,0,0
 Kimi K3 QSP,2,Boolean,Does the paper report in vitro drug susceptibility data?,1.0,1.0,1.0,1.0,1,9,0,0
 Kimi K3 QSP,3,Boolean,Were sequences from the paper made publicly available?,1.0,1.0,1.0,1.0,4,6,0,0

@@ -56,6 +56,8 @@ class ModelSpec:
     # Variant of another model (e.g. a different reasoning effort): reported, but not one of the
     # two headline frontier models.
     is_variant: bool = False
+    # Replace one question block of the QSP prompt with prompts/<name>.md (everything else verbatim)
+    prompt_variant: str | None = None
     max_concurrency: int = 16
     max_output_tokens: int = 32000
     reasoning_effort: str | None = None
@@ -90,6 +92,31 @@ MODELS: dict[str, ModelSpec] = {
         max_concurrency=48,
         is_variant=True,
     ),
+    # Q5 counting-convention probe: the QSP prompt with only its Question 5 block replaced.
+    "gpt6-astra-q5": ModelSpec(
+        key="gpt6-astra-q5",
+        label="GPT-6 Astra QSP (Q5 convention)",
+        provider="openai",
+        model_id=os.environ.get("FC_GPT6_MODEL_ID", "gpt-6-astra"),
+        price_in=10.0,
+        price_out=50.0,
+        price_cached_in=1.0,
+        max_concurrency=48,
+        is_variant=True,
+        prompt_variant="q5_convention",
+    ),
+    "gpt6-astra-q5v2": ModelSpec(
+        key="gpt6-astra-q5v2",
+        label="GPT-6 Astra QSP (Q5 convention v2)",
+        provider="openai",
+        model_id=os.environ.get("FC_GPT6_MODEL_ID", "gpt-6-astra"),
+        price_in=10.0,
+        price_out=50.0,
+        price_cached_in=1.0,
+        max_concurrency=48,
+        is_variant=True,
+        prompt_variant="q5_convention_v2",
+    ),
     "kimi-k3": ModelSpec(
         key="kimi-k3",
         label="Kimi K3 QSP",
@@ -107,6 +134,11 @@ PROVIDER_ENDPOINTS = {
     "openai": ("https://api.openai.com/v1/chat/completions", "OPENAI_API_KEY"),
     "openrouter": ("https://openrouter.ai/api/v1/chat/completions", "OPENROUTER_API_KEY"),
 }
+
+PROMPTS_DIR = FC_DIR / "prompts"
+# Curator-approved alternative answers (annotation gaps, e.g. evidence only in a figure).
+# Used only for the secondary "adjusted" scoring; the primary metrics never use them.
+ALTERNATIVES_PATH = FC_DIR / "data/accepted_alternatives.csv"
 
 QUESTION_TYPES = ["Boolean", "List", "Number"]
 # Questions the paper flagged as difficult; reported separately in the secondary analysis.

@@ -1,0 +1,2 @@
+PMID,QID,accepted_answer,reason,source,added_by,date
+41130593,7,2021-2023,"Study period is given in the Figure 3 footnotes (""August 2021-September 2023""; ""June 2021-December 2023""). The human annotation says ""Not provided"" because it was made from the markdown conversion, which drops figures.",Figure 3 footnote,pilot review,2026-09-22

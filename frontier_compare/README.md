@@ -105,6 +105,45 @@ and +50 s per paper.
 rows both frontier models got wrong — 7 of 9 with identical answers, the strongest
 annotation-error candidates.
 
+## Q5 counting convention (pilot follow-up)
+
+Astra's question-5 errors were a convention mismatch, not a capability gap: it counts individuals
+**sampled**, the annotations count individuals **sequenced**. `prompts/q5_convention*.md` replace
+only the Question 5 block of the QSP prompt (`ModelSpec.prompt_variant`); every other word is the
+paper's. Measured on the 10 pilot papers:
+
+| Astra variant | QID 5 correct | total /160 | precision | recall |
+|---|---|---|---|---|
+| original prompt | 5/10 | 143 | 0.918 | 0.886 |
+| `q5_convention` (+2 bullets) | 7/10 | 144 | 0.962 | 0.852 |
+| `q5_convention_v2` (+1 bullet) | 7/10 | 144 | 0.919 | 0.898 |
+
+v1's second bullet ("exclude groups reported elsewhere") backfired on PMID 37340869: Astra answered
+0 for QID 5 and then cascaded "Not applicable" through QID 1/12/14/15/16, losing 5 correct rows.
+**v2 is the version to consider adopting.** Two caveats: the edit was derived from rows already
+scored (fitting to the test set), and the +1 total is within single-run variation — two of the 13
+changed rows are reworded list answers unrelated to QID 5, since temperature is left at the API
+default. Only the QID 5 effect is systematic.
+
+Adopting it for the headline comparison would mean the frontier models get a prompt the cached
+GPT-4o runs never saw. Options: keep the original prompt for the primary result and report v2 as a
+prompt-sensitivity analysis, or re-run everything on v2 (a second full pass, ~$95).
+
+## Annotation gaps: accepted alternatives
+
+`data/accepted_alternatives.csv` holds curator-approved alternative reference answers for rows
+where the annotation is known to be incomplete — typically evidence that exists only in a figure,
+which the curators' markdown conversion dropped. Each row records the accepted answer, the reason,
+and the source.
+
+Scoring is layered, never overwritten: `correct` uses the paper's scorer against the human answer
+only; `correct_adjusted` also accepts a listed alternative. Both appear in `detailed_rows.csv`,
+and `metrics_summary.csv` carries `row_accuracy_adjusted`. Primary metrics and figures use the
+strict score. Alternatives apply to every model equally.
+
+Seeded with one entry from the pilot: PMID 41130593 QID 7, where both frontier models read
+"August 2021-September 2023" from a Figure 3 footnote while the annotation says "Not provided".
+
 ## Design decisions
 
 - **One request per paper** answers all 16 questions, as in the paper's QSP runs. The system prompt

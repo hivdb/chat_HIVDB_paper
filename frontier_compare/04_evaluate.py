@@ -12,6 +12,10 @@ the paired t-test also in S5), BH-adjusted within each (metric, test) slice as i
 eval/statistics.py. Exact McNemar on row correctness is a sensitivity analysis.
 Cached GPT-4o comparators are re-scored on the same PMID subset as the frontier models.
 
+A curator-approved alternatives file (data/accepted_alternatives.csv) feeds a SECONDARY
+"adjusted" score for rows where the human annotation is known to be incomplete (e.g. evidence
+that exists only in a figure). Primary metrics never use it; both are reported.
+
 Outputs (results/): detailed_rows.csv, metrics_by_qid.csv, metrics_summary.csv,
 metrics_by_type.csv, pairwise_tests.csv, stability.csv (when >1 run exists).
 """
@@ -74,13 +78,27 @@ def attach_frontier(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str], dict[str
     return df, primary, runs
 
 
+def load_alternatives() -> dict[tuple[str, int], list[tuple[str, str]]]:
+    """(PMID, QID) -> [(accepted answer, reason)] approved by a curator during error review."""
+    if not config.ALTERNATIVES_PATH.exists():
+        return {}
+    alt = pd.read_csv(config.ALTERNATIVES_PATH, dtype=str, keep_default_na=False)
+    out: dict[tuple[str, int], list[tuple[str, str]]] = {}
+    for r in alt.itertuples(index=False):
+        out.setdefault((str(r.PMID).strip(), int(r.QID)), []).append((r.accepted_answer, r.reason))
+    return out
+
+
 def score_rows(df: pd.DataFrame, model: str) -> pd.DataFrame:
     """Per-row confusion label, correctness, and an error-analysis outcome."""
     ref_norm = df[config.REF_COL].map(canonicalize_answer)
     pred_raw = df[model].fillna("")
     pred_norm = pred_raw.map(canonicalize_answer)
-    labels, correct, outcome = [], [], []
-    for qtype, question, rr, rn, pr, pn in zip(df["Type"], df["Question"], df[config.REF_COL], ref_norm, pred_raw, pred_norm):
+    alternatives = load_alternatives()
+    labels, correct, outcome, adjusted, alt_used = [], [], [], [], []
+    for pmid, qid, qtype, question, rr, rn, pr, pn in zip(
+        df["PMID"], df["QID"], df["Type"], df["Question"], df[config.REF_COL], ref_norm, pred_raw, pred_norm
+    ):
         is_list = qtype.strip().lower() == "list"
         counts, ok = human_answer_counts(
             qtype, pn, rn, question_text=question, ref_raw=rr, pred_raw=pr, allow_partial_list=is_list
@@ -96,10 +114,24 @@ def score_rows(df: pd.DataFrame, model: str) -> pd.DataFrame:
             kind = "FN_missed"
         else:
             kind = "FN_wrong_value"
+        # Secondary scoring: also accept a curator-approved alternative reference answer.
+        ok_adj, used = ok, ""
+        if not ok:
+            for alt_answer, reason in alternatives.get((str(pmid), int(qid)), []):
+                _, alt_ok = human_answer_counts(
+                    qtype, pn, canonicalize_answer(alt_answer), question_text=question,
+                    ref_raw=alt_answer, pred_raw=pr, allow_partial_list=is_list,
+                )
+                if alt_ok:
+                    ok_adj, used = True, reason
+                    break
         labels.append(label)
         correct.append(int(ok))
         outcome.append(kind)
-    return pd.DataFrame({"label": labels, "correct": correct, "outcome": outcome}, index=df.index)
+        adjusted.append(int(ok_adj))
+        alt_used.append(used)
+    return pd.DataFrame({"label": labels, "correct": correct, "outcome": outcome,
+                         "correct_adjusted": adjusted, "alternative_used": alt_used}, index=df.index)
 
 
 def metrics_from_counts(c: np.ndarray) -> dict[str, np.ndarray]:
@@ -149,6 +181,8 @@ def main() -> int:
         df[f"{model} label"], df[f"{model} correct"], df[f"{model} outcome"] = (
             scored["label"], scored["correct"], scored["outcome"]
         )
+        df[f"{model} correct_adjusted"] = scored["correct_adjusted"]
+        df[f"{model} alternative_used"] = scored["alternative_used"]
     config.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     df.to_csv(config.RESULTS_DIR / "detailed_rows.csv", index=False)
 
@@ -174,9 +208,11 @@ def main() -> int:
         pooled = metrics_from_counts(onehot.sum(axis=0))
         boot = metrics_from_counts(onehot[boot_idx].sum(axis=1))
         per_qid = metrics_from_counts(count_cube(df, pmids, model).sum(axis=0))
+        adj_acc = float(df[f"{model} correct_adjusted"].mean())
         for metric in METRICS:
             summary_rows.append(
                 {"model": model, "metric": metric,
+                 "row_accuracy_adjusted": adj_acc if metric == "accuracy" else "",
                  "pooled": float(pooled[metric]),
                  "pooled_ci_low": np.percentile(boot[metric], 2.5),
                  "pooled_ci_high": np.percentile(boot[metric], 97.5),
