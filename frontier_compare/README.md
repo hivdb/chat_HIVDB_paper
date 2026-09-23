@@ -107,6 +107,38 @@ gain recall (+0.03 to +0.05 mean per-QID) and give up precision against GPT-4o F
 | GPT-6 Astra | $0.37 | 52 s | 99% | 1 policy refusal |
 | Kimi K3 | $0.19 | 125 s | 94% (5 needed fence-stripping) | 0 |
 
+## Row-by-row adjudication of every GPT-6 Astra error (99 rows)
+
+`09_error_dossier.py` builds an evidence dossier per error row - the model's answer, evidence
+quote and rationale, whether that quote is verbatim in the PDF, PDF context around both the human
+and model answers, what the other four models said, and whether the model contradicted its own
+QID 1/5. All 99 Astra error rows were then read and adjudicated one by one; verdicts and reasons
+are in `results/dossier_gpt6-astra.csv` and the workbook's "Adjudicated errors" sheet.
+
+| Verdict | rows | share |
+|---|---|---|
+| genuine model error | 44 | 44% |
+| annotation error or unstated curation convention | 38 | 38% |
+| borderline (both readings defensible) | 16 | 16% |
+| scoring artifact | 1 | 1% |
+
+**So roughly half of Astra's "errors" are not extraction failures.** Accuracy on the 79-paper
+pilot moves from 0.9217 as scored, to 0.9517 if the annotation/convention rows are counted
+correct, to 0.9652 if the borderline rows are allowed too. The residual genuine-error rate is
+**3.5%** (44/1264).
+
+Where each kind sits:
+- **Annotation/convention rows cluster at QID 5** (12 of 38) - the sampled-vs-sequenced counting
+  convention - then QID 9 (5) and QID 8 (4).
+- **Genuine model errors cluster at QID 15/16** (10 of 44: incomplete or over-inclusive ARV lists)
+  and QID 5 (5: wrong denominator).
+- **15 of the 44 genuine errors are cascades from just 3 papers**, where Astra's own QID 1 answer
+  ("does this paper report patient sequences?") was wrong and it then answered "Not applicable" -
+  or over-extracted - for every downstream question. Astra's QID 1 judgement is the single
+  highest-leverage failure: 2 wrong QID 1 answers cost 15 further rows.
+- **Borderline rows are inference-from-context** (country from an ethics committee or institution,
+  sample type from routine genotyping) and in-vitro-data judgement calls at QID 2.
+
 ## Annotation issues and evaluation artifacts (40-paper pilot)
 
 `08_error_triage.py` classifies every frontier error using signals checkable against the PDF:

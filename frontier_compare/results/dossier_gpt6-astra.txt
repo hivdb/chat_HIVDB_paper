@@ -1,0 +1,1188 @@
+
+=== [1] PMID 31988104  QID 1 (Boolean) ------------------------------
+Q: Does the paper report HIV sequences from patient samples?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=yes
+  evidence : “Recombinant mutant HIV-1 viruses were created either by site directed mutagenesis (SDM) of wild-type HIV-1 DNA, or by direct PCR of ART-experienced patient isolates (8).” “Patient-derived (PD) mutants were cloned from clinical plasma samples.”
+  rationale: The Methods on page 9 describe patient-derived material, and Table 4 on page 7 reports mutant RT sequences for patient-derived isolates and confirms their clinical plasma origin. This meets the criterion for reporting mutation lists derived from clinical sampl
+OTHERS: Kimi K3 QSP=Yes(X); GPT-4o FT=Yes(X); GPT-4o QSP=Yes(X); GPT-4o FT+QSP=Yes(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT', 'GPT-4o QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='14'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [2] PMID 36795586  QID 1 (Boolean) ------------------------------
+Q: Does the paper report HIV sequences from patient samples?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=partial
+  evidence : “Targeted HIV genotype testing was only sporadically available on a limited basis for CAHLIV failing second-line ART, and these results did not include information on DTG resistance.” “The average number of HIV genotype results per year per COE was 12 (range, 
+  rationale: The Methods and Results on page 577 document patient HIV genotyping and the availability of resulting genotypes, meeting the question's criterion for genotypic resistance testing. However, the article reports testing availability rather than individual sequenc
+OTHERS: Kimi K3 QSP=No(ok); GPT-4o FT=No(ok); GPT-4o QSP=No(ok); GPT-4o FT+QSP=No(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='Not reported'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [3] PMID 36931676  QID 1 (Boolean) ------------------------------
+Q: Does the paper report HIV sequences from patient samples?
+HUMAN : Yes
+MODEL : No   [main_text] quote-in-pdf=yes
+  evidence : “This article describes the prospective Swedish HIV cohort, InfCareHIV, including all diagnosed PLHIV in Sweden, with data dating back to the earliest cases in the 1980s.” “Also, since all viral (pol) sequences are stored in the database, reanalysis can easily
+  rationale: This is a cohort profile describing existing clinical sequence records and summarizing previously published research, rather than reporting newly generated patient sequences or mutation lists. The quoted descriptions appear on pages 2 and 4.
+OTHERS: Kimi K3 QSP=Yes(ok); GPT-4o FT=Yes(ok); GPT-4o QSP=No(X); GPT-4o FT+QSP=Yes(ok)
+  all-models-wrong=False  agree-with-model=['GPT-4o QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [4] PMID 37593123  QID 1 (Boolean) ------------------------------
+Q: Does the paper report HIV sequences from patient samples?
+HUMAN : Yes
+MODEL : No   [main_text] quote-in-pdf=yes
+  evidence : “These sequences were procured from both the National Center for AIDS/STD Control and Prevention, China CDC and the HIV sequence databases of the Los Alamos National Laboratory (https://www.hiv.lanl.gov/, retrieved December 30, 2022).” “Furthermore, GenBank an
+  rationale: The Methods (page 2) describe compiling existing sequences from China CDC and the Los Alamos database, not generating new sequences directly from clinical samples. Although the underlying sequences are patient-derived, no new clinical-sample sequencing or geno
+OTHERS: Kimi K3 QSP=No(X); GPT-4o FT=Yes(ok); GPT-4o QSP=Yes(ok); GPT-4o FT+QSP=Yes(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [5] PMID 36660819  QID 2 (Boolean) ------------------------------
+Q: Does the paper report in vitro drug susceptibility data?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=yes
+  evidence : “Endpoints assessed at week 152 included the following: the proportion of participants with plasma HIV-1 RNA less than 50 copies/mL and HIV-1 RNA of 50 copies/mL or greater, incidence of confirmed virologic failure (CVF; 2 consecutive plasma HIV-1 RNA measurem
+  rationale: The Outcomes section on page 2 explicitly identifies phenotypic resistance as an assessed endpoint, meeting the criterion for phenotypic resistance testing. Numerical patient-virus susceptibility results and assay details are not provided in the supplied PDF; 
+OTHERS: Kimi K3 QSP=Yes(X); GPT-4o FT=No(ok); GPT-4o QSP=No(ok); GPT-4o FT+QSP=No(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='14'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [6] PMID 37147875  QID 2 (Boolean) ------------------------------
+Q: Does the paper report in vitro drug susceptibility data?
+HUMAN : Yes
+MODEL : No   [main_text] quote-in-pdf=partial
+  evidence : “Retrospective baseline NGS was done using the MiSeq platform (Illumina, San Diego, CA, USA) and the data were analysed with PASeq software at two cut-offs (20% and 1%).” “These results demonstrated that the S230R substitution caused similar effects on viral r
+  rationale: The present study reports genotypic testing, not phenotypic susceptibility testing. The susceptibility measurements discussed on page 1802 are explicitly attributed to the previously published study by Pham et al., rather than generated for this patient.
+OTHERS: Kimi K3 QSP=No(X); GPT-4o FT=No(X); GPT-4o QSP=Yes(ok); GPT-4o FT+QSP=Yes(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT']
+  model said Q1='Yes' Q5='1'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [7] PMID 37340869  QID 2 (Boolean) ------------------------------
+Q: Does the paper report in vitro drug susceptibility data?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=yes
+  evidence : “Full details of the methodology of genotypic and phenotypic analyses have been published (Supplementary page 1) [24].”
+  rationale: The Methods explicitly identifies phenotypic analyses, satisfying the criterion that phenotypic testing was performed. However, numerical susceptibility results and assay details are not reproduced in the supplied PDF; the referenced supplementary material is 
+OTHERS: Kimi K3 QSP=No(ok); GPT-4o FT=No(ok); GPT-4o QSP=No(ok); GPT-4o FT+QSP=No(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='1431'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [8] PMID 38005921  QID 2 (Boolean) ------------------------------
+Q: Does the paper report in vitro drug susceptibility data?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=partial
+  evidence : “The experimental level of resistance provided in the dataset was determined using the Phenosense™ test system.” “To reduce noise, the FR values for duplicates were averaged.”
+  rationale: Section 2.1 (page 4) describes use of experimentally measured PhenoSense susceptibility data and fold-ratio values; Table 1 reports drug-specific FR thresholds and susceptible/resistant sample counts. These are reused database susceptibility data, not new assa
+OTHERS: Kimi K3 QSP=No(ok); GPT-4o FT=Yes(X); GPT-4o QSP=Yes(X); GPT-4o FT+QSP=Yes(X)
+  all-models-wrong=False  agree-with-model=['GPT-4o FT', 'GPT-4o QSP', 'GPT-4o FT+QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [9] PMID 41056006  QID 2 (Boolean) ------------------------------
+Q: Does the paper report in vitro drug susceptibility data?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=yes
+  evidence : “Emergence of LEN resistance was an exploratory endpoint.” “HIV-1 capsid genotypic and phenotypic data were assessed at study entry using the GenoSure Gag-Pro and PhenoSense Gag-Pro assays (Monogram Biosciences).”
+  rationale: The Methods explicitly state that phenotypic testing was performed using PhenoSense Gag-Pro (page 4), meeting the specified criterion even though numerical susceptibility results are not provided in the attached main article.
+OTHERS: Kimi K3 QSP=Yes(X); GPT-4o FT=No, the paper does not report in vitro d(ok); GPT-4o QSP=Yes(X); GPT-4o FT+QSP=No(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP', 'GPT-4o QSP']
+  model said Q1='Yes' Q5='182'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [10] PMID 41091504  QID 2 (Boolean) ------------------------------
+Q: Does the paper report in vitro drug susceptibility data?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=yes
+  evidence : “The number of mutations in a given variant ranged from 0 in wildtype up to 24 mutations, and the experimental enzyme inhibition constant (Ki) values ranged from picomolar to micromolar (Figure 2A and Table S3).” “The experimental potency values (Figure 2A and
+  rationale: Sections 2.1.4 and 2.3.3 report experimental darunavir inhibition constants for HIV-1 protease variants, which are quantitative biochemical susceptibility measures. These are reused published measurements, not newly performed whole-virus phenotypic assays; Fig
+OTHERS: Kimi K3 QSP=No(ok); GPT-4o FT=No, the paper does not report in vitro d(ok); GPT-4o QSP=No(ok); GPT-4o FT+QSP=No(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [11] PMID 38005921  QID 3 (Boolean) ------------------------------
+Q: Were sequences from the paper made publicly available?
+HUMAN : Yes
+MODEL : No   [main_text] quote-in-pdf=yes
+  evidence : “To build models for the web service, we used high quality filtered datasets available for downloading from StHIVdb.” “The datasets used for building models for the web-service is provided in Supplementary Materials.”
+  rationale: The paper redistributes model-building datasets derived from existing sequences, but reports no deposition of newly generated HIV sequences or reads in a public sequence repository (pages 3 and 12).
+OTHERS: Kimi K3 QSP=No(X); GPT-4o FT=Yes(ok); GPT-4o QSP=Yes(ok); GPT-4o FT+QSP=Yes(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [12] PMID 31988104  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 0
+MODEL : 14   [main_text] quote-in-pdf=yes
+  evidence : “A total of 68 viruses with various levels of TAF/TDF resistance and various numbers of TAMs were used in the viral breakthrough experiments (54 SDMs and 14 patient-derived isolates).” “Patient-derived (PD) mutants were cloned from clinical plasma samples.”
+  rationale: Page 6 identifies 14 patient-derived isolates, consistent with the counts in Table 3 on page 5. The number of contributing individuals is not explicitly given, so the specified one-isolate-per-individual assumption yields 14; laboratory mutants are excluded.
+OTHERS: Kimi K3 QSP=14(X); GPT-4o FT=0(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Not reported(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='14'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [13] PMID 33855437  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 6
+MODEL : 5357   [main_text] quote-in-pdf=yes
+  evidence : “We ascertained the overall prevalence of doravirine and rilpivirine mutations in treatment-naive subjects genotyped in Quebec genotyping programme (n = 5357).” “Patient-derived subtype B (n = 3) and non-B clinical isolates (n = 3), as well as the HIV NL4.3 re
+  rationale: Page 4 explicitly identifies 5357 genotyped individuals. Six patient-derived isolates were also studied in culture, but their overlap with the clinical genotyping population is not specified, so they are not added as a demonstrably mutually exclusive patient g
+OTHERS: Kimi K3 QSP=6(ok); GPT-4o FT=6(ok); GPT-4o QSP=6(ok); GPT-4o FT+QSP=6(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='5357'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [5357] ...scertained the overall prevalence of doravirine and rilpivirine mutations in treatment-naive subjects genotyped in Quebec gen- otyping programme (n = 5357). Overall, the prevalence of trans- mitted resistance to doravirine was rare, with low observed frequencies of V108I (0.008%), V106A/M (0.04%) and Y1...
+
+=== [14] PMID 36597160  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 6
+MODEL : 154   [table] quote-in-pdf=yes
+  evidence : "For the 314 patients with virologic success, 143 had a genotype available at baseline in the electronic health record (EHR); for the 13 patients with virologic failure, genotypes were available for 9, either available in the EHR or retrospectively collected a
+  rationale: Table 4 documents 152 individuals with historical baseline genotypes. Table 3 adds patient 11, whose baseline genotype was unavailable but whose failure genotype was reported, and its footnote adds later resistance testing for patient 08, whose baseline and in
+OTHERS: Kimi K3 QSP=153(X); GPT-4o FT=6(ok); GPT-4o QSP=382(X); GPT-4o FT+QSP=16(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='154'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [15] PMID 36659824  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 14
+MODEL : 112   [main_text] quote-in-pdf=yes
+  evidence : “At the baseline visit, samples were collected for routine testing, confirmation of HIV serology and HIV resistance genotyping.” “Thus, 112 were included in the ITT-FDA Snapshot analysis (see flow chart, Figure 1).”
+  rationale: Baseline genotyping was part of the sampling protocol for the 112-person analyzed HIV cohort (pages 770–771; Figure 1, page 772). Follow-up resistance testing involved members of this same cohort and does not add unique individuals; the paper does not separate
+OTHERS: Kimi K3 QSP=112(X); GPT-4o FT=0(X); GPT-4o QSP=112(X); GPT-4o FT+QSP=112(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP', 'GPT-4o QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='112'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [112] ...ion of participants in the ITT population with plasma HIV RNA (pVL) < 50 copies/mL at Week (W) 24 using the FDA Snapshot algorithm. Results: Overall, 112 participants were included in the ITT population. During follow-up, seven participants dis­ continued the study drug but remained on the study, and s...
+
+=== [16] PMID 36660819  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 8 and 10
+MODEL : 14   [main_text] quote-in-pdf=yes
+  evidence : “Overall, 12 (2.3%) participants in the Q8W arm and 2 (0.4%) in the Q4W arm had CVF.” “Eight and 10 participants with CVF had treatment-emergent, resistance-associated mutations to RPV and integrase inhibitors, respectively.”
+  rationale: The Abstract on page 1 identifies 14 participants in the virological-failure population for which resistance outcomes are reported. This is the identifiable resistance-analysis population, rather than all 1045 treated participants; the PDF does not separately 
+OTHERS: Kimi K3 QSP=14(X); GPT-4o FT=1045(X); GPT-4o QSP=0(X); GPT-4o FT+QSP=0(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='14'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [17] PMID 37340869  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 1651
+MODEL : 1431   [main_text] quote-in-pdf=yes
+  evidence : “Across 3 studies, 1651 unique participants were included, 23/1651 (1.4%) of whom had CVF.” “CVF risk according to combinations of the baseline factors identified as significant predictors in both BFAs (RPV RAMs, HIV-1 subtype A6/A1, and BMI ≥30 kg/m2) were ex
+  rationale: The article identifies 1431 unique participants with complete baseline resistance and subtype information, also shown in Figure 1 on page 3. This is the documented genotype-evaluable population; 1651 is the overall trial-analysis population, which includes par
+OTHERS: Kimi K3 QSP=1651(ok); GPT-4o FT=0(X); GPT-4o QSP=1651(ok); GPT-4o FT+QSP=Not reported(X)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='1431'
+  PDF near HUMAN answer: [1651] ...ong-acting (CAB + RPV LA) were expanded to include data beyond week 48, additional covariates, and additional participants. Methods. Pooled data from 1651 participants were used to explore dosing regimen (every 4 or every 8 weeks), demographic, viral, and pharmacokinetic covariates as potential predicto...
+  PDF near MODEL answer: [1431] ...the 199 participants with HIV-1 subtype A6/A1, 11/180 (6%) with subtype A6 had CVF and 2/19 (11%) with subtype A1 had CVF. The BFAs included 1363 and 1431 unique participants with complete records in the single-regimen and all-regimens mod­ els, respectively. Three baseline factors were retained and sig...
+
+=== [18] PMID 37515146  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 379
+MODEL : 391   [main_text] quote-in-pdf=yes
+  evidence : "A total of 391 participants were recruited, with sequencing successfully carried out in 379 individual participant samples, giving a genotyping success rate of 96.9%." "For each participant, 10 mL of venous blood was collected in an EDTA tube."
+  rationale: Sections 2.3 and 3.1 indicate that samples were collected from 391 participants for genotyping; 379 yielded successful sequences and 12 were unsuccessful. The count includes all individuals sampled for sequencing, not only successful sequences.
+OTHERS: Kimi K3 QSP=379(ok); GPT-4o FT=379(ok); GPT-4o QSP=379(ok); GPT-4o FT+QSP=379(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='391'
+  PDF near HUMAN answer: [379] ...m 2014 to 2019. Sequencing of HIV-1 protease and reverse transcriptase was performed, and HIVDR was interpreted using Stanford HIVdb.v.9.4. In total, 379 sequences were obtained from participants (62% female, mean age 36 ± 10 years). The overall PDR rate was 15.0% [95% CI: 11.8-19.0] nationwide, with s...
+  PDF near MODEL answer: [391] ...istic regression, adjusting for potential confounders such as age, sex, region, or HIV-1 subtypes. 3. Results 3.1. General Characteristics A total of 391 participants were recruited, with sequencing successfully carried out in 379 individual participant samples, giving a genotyping success rate of 96.9...
+
+=== [19] PMID 37554471  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 1
+MODEL : 0   [main_text] quote-in-pdf=yes
+  evidence : “We present a case of successful achievement of undetectable HIV RNA viral load levels in an acquired immunodeficiency syndrome (AIDS) patient with long-standing virologic failure within two months of CAB/RPV LA initiation.” “He did harbour HIV drug resistance
+  rationale: Although the article describes one patient, it does not report qualifying HIV sequencing data from that patient. Under the specified rule for papers without patient-derived sequence reporting, the answer is 0.
+OTHERS: Kimi K3 QSP=1(ok); GPT-4o FT=0(X); GPT-4o QSP=1(ok); GPT-4o FT+QSP=0(X)
+  all-models-wrong=False  agree-with-model=['GPT-4o FT', 'GPT-4o FT+QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [20] PMID 37593123  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 57902
+MODEL : 0   [main_text] quote-in-pdf=partial
+  evidence : “These sequences were procured from both the National Center for AIDS/STD Control and Prevention, China CDC and the HIV sequence databases of the Los Alamos National Laboratory (https://www.hiv.lanl.gov/, retrieved December 30, 2022).” “The study population co
+  rationale: The final analysis includes existing sequences representing 57,902 individuals, also confirmed by Supplementary Figure S1 (page 11). However, new sample collection for sequencing is not reported; the specified rule assigns 0 to studies compiling existing seque
+OTHERS: Kimi K3 QSP=0(X); GPT-4o FT=57902(ok); GPT-4o QSP=57902(ok); GPT-4o FT+QSP=67939(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: [57902] ... conducted in alignment with the progression of the National Free Antiretroviral Treatment Program's stages between 2004 and 2022. Results: Among the 57902 ART-naïve individuals infected with HIV, there was a notable decline in the prevalence of CRF01_AE, B, and C from 37.3%, 24.1%, and 1.3% respectivel...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [21] PMID 37626789  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 551
+MODEL : 110   [figure] quote-in-pdf=n/a
+  evidence : “Not Supressed (≥1000 copies/ml) (N=118)” “HIVDR not done (N=8)” “HIVDR amplification successful (N=110)”
+  rationale: Figure 1 on page 3 identifies 118 children eligible for resistance testing, of whom eight were not tested and 110 had successful amplification. Table 2 also reports genotypic resistance results totaling 110 individuals.
+OTHERS: Kimi K3 QSP=110(X); GPT-4o FT=0(X); GPT-4o QSP=554(X); GPT-4o FT+QSP=554(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='110'
+  PDF near HUMAN answer: [551] ...ession and drug resistance mutation among children on first-line antiretroviral therapy in Ethiopia. Method: A longitudinal study was conducted among 551 HIV-positive children (<15 years old) recruited between 2017 and 2019 at 40 antiretroviral treatment delivery sites in Ethiopia. Disease progression ...
+  PDF near MODEL answer: [110] ...sistance Mutations among Children on First-Line Antiretroviral Therapy in Ethiopia. Biomedicines 2023, 11, 2293. https://doi.org/10.3390/ biomedicines11082293 Academic Editors: Maria Letizia Barreca, Stefano Sabatini and Andrea Astolfi Received: 19 June 2023 Revised: 1 August 2023 Accepted: 3 August 20...
+
+=== [22] PMID 40713598  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 20
+MODEL : 96   [main_text] quote-in-pdf=partial
+  evidence : “Genotypic drug resistance testing of stored samples from the 96 individuals with HIV-1 RNA>1,000 copies/ml was attempted [8].” “Twenty samples were successfully amplified and sequenced (Figure S1).”
+  rationale: Samples from 96 individuals underwent attempted genotypic resistance testing, as reported on page 2. Of these, only 20 yielded successful sequences.
+OTHERS: Kimi K3 QSP=20(ok); GPT-4o FT=Samples were obtained from 20 individual(ok); GPT-4o QSP=20(ok); GPT-4o FT+QSP=20(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='96'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [23] PMID 40763144  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 295
+MODEL : 363   [figure] quote-in-pdf=NO
+  evidence : “Participants with repeat non suppressed VL N= 363” “Failed genotyping N= 68; 18%” “Successfully genotyped and included in the study N = 295; 81.3%”
+  rationale: Figure 1 on page 5 indicates genotyping was attempted for 363 individuals: 295 were successfully genotyped and 68 failed genotyping. The count includes everyone whose samples underwent attempted genotyping, not just successful sequences.
+OTHERS: Kimi K3 QSP=295(ok); GPT-4o FT=A total of 295 individuals had samples o(ok); GPT-4o QSP=295(ok); GPT-4o FT+QSP=295(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='363'
+  PDF near HUMAN answer: [295] ...h HIVDR with a p-value of <0.05 considered significant. PLOS One | https://doi.org/10.1371/journal.pone.0320623 August 5, 2025 2 / 13 Results A total 295 records were analyzed. Of these, majority were female (56.6%) and adults aged ≥20 years (49.2%). The median age was 19 (Inter quartile range [IQR]: 1...
+  PDF near MODEL answer: [363] ...ccessed by the principal investigator. PLOS One | https://doi.org/10.1371/journal.pone.0320623 August 5, 2025 5 / 13 Results During the study period, 363 PLHIV had virological failure but only 295 (81.3%) had HIV DR results and were considered for the study (Fig 1). Baseline participant characteristics...
+
+=== [24] PMID 40839365  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 212
+MODEL : 288   [main_text] quote-in-pdf=partial
+  evidence : “We sampled and enrolled 1035 participants; 79.4% (822/1035) of these participants resuppressed (defined as VL <1000 copies/mL) after IAC sessions, of whom 9.1% (75/822) had low level viremia (LLV) (200–999 copies/mL).” “Out of the remaining 20.6% (213/1035) w
+  rationale: The genotyping-results section on page 3 identifies 213 individuals with confirmed failure whose samples underwent genotyping and a separate 75-person LLV cohort that was also genotyped: 213 + 75 = 288. This counts individuals sampled for genotyping, including
+OTHERS: Kimi K3 QSP=213(ok); GPT-4o FT=Samples were obtained from 213 individua(ok); GPT-4o QSP=212(ok); GPT-4o FT+QSP=213(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='288'
+  PDF near HUMAN answer: [212] ...V drug resistance (Stanford levels 3-5), accounting for correlation within clinics. Results: Among 213 participants with confirmed virologic failure, 212 samples were successfully genotyped for protease, reverse transcriptase, and integrase. Prevalence of drug resistance mutations (DRMs) to nucleotide ...
+  PDF near MODEL answer: [288] ... Finally, drug resistance scores in the protease (spanning 6-99 codons), reverse transcriptase (spanning 1-251 codons), and the integrase (spanning 1-288 codons) regions were calculated by the Stanford University HIV Drug Resistance Database (version 9.4) (https://hivdb.stanford.edu/hivdb/by- sequences...
+
+=== [25] PMID 40938120  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 1048
+MODEL : 1260   [main_text] quote-in-pdf=yes
+  evidence : “In this study, we enrolled 1,260 newly diagnosed HIV-infected individuals.” “Among them, 1,159 pol gene sequences were successfully amplified.” “Venous blood samples (10 mL) were collected from each participant.”
+  rationale: Samples were obtained from all 1,260 enrolled individuals for the sequencing workflow (pages 2 and 12). Of these, 1,159 yielded successfully amplified sequences and 1,048 were included in the final analysis, as also shown in Figure 1 on page 3.
+OTHERS: Kimi K3 QSP=1,260(X); GPT-4o FT=Samples were obtained from 1,260 individ(X); GPT-4o QSP=1,048(ok); GPT-4o FT+QSP=1260(X)
+  all-models-wrong=False  agree-with-model=['GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='1260'
+  PDF near HUMAN answer: [1048] ...base. Multivariable logistic regression models were employed to identify factors associated with PDR and to cluster the molecular network. A total of 1048 eligible pol sequences were analyzed. The over­ all prevalence of PDR was 8.4%, with non-nucleoside reverse transcriptase inhibitors (NNRTIs) being t...
+  PDF near MODEL answer: [1260] ...- naïve individuals in Guangxi, China, from 2019 to 2022. A cross-sectional study was conducted between 2019 and 2022 in Nanning, Guangxi, involving 1260 newly diagnosed, ART-naïve individuals with HIV. PDR levels and mutations were identified using the Stanford HIV Drug Resistance Database. Multivari...
+
+=== [26] PMID 40974886  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 223
+MODEL : Not reported   [main_text] quote-in-pdf=NO
+  evidence : "Overall, 241 participants (35 from GS-US-380-4449, 93 from GS-US-380-4030, and 113 from GS-US-380-4580) were included, with genotype reports collected from March 1997 to March 2019." "Overall, from 70 participants (12 from GS-US-380-4449, 39 from GS-US-380-40
+  rationale: Sections 3.1.1 and 3.2.1 report 241 individuals in the longitudinal analysis and 70 in repeat testing. Both groups come from the same trials, but their overlap is not specified; therefore, an exact overall unique count cannot be determined and the groups shoul
+OTHERS: Kimi K3 QSP=241(X); GPT-4o FT=241 individuals had samples obtained for(X); GPT-4o QSP=241(X); GPT-4o FT+QSP=223(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='Not reported'
+  PDF near HUMAN answer: [223] ...eproducibility (%) of proviral RAM reporting was the number of times the mutation was detected per number of assays run (2-4 replicates). Results: In 223 participants, of 262 RAMs tracked longitudinally over 2 timepoints, 39 % (103/262) had 100 % detection and 61 % (159/262) had 50 % detection, with 64...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [27] PMID 41056006  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 10
+MODEL : 182   [main_text] quote-in-pdf=yes
+  evidence : “HIV-1 capsid genotypic and phenotypic data were assessed at study entry using the GenoSure Gag-Pro and PhenoSense Gag-Pro assays (Monogram Biosciences).” “No LEN resistance-associated mutations (RAMs) were detected in baseline samples.” “Of the 182 participan
+  rationale: Study-entry genotyping is described for the study population of 182 dosed participants (pages 4 and 6). Ten of these participants underwent additional resistance evaluation after meeting failure criteria; they are not additional individuals. The number of succ
+OTHERS: Kimi K3 QSP=182(X); GPT-4o FT=182 participants received at least one d(X); GPT-4o QSP=Not reported(X); GPT-4o FT+QSP=182(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='182'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [182] ...plus TAF and TG2 switched to lenacapavir plus bictegravir. At W80, TG4 completed the study and TG1-3 continued assigned treatments. Results. Overall, 182 participants received ≥1 dose of study drug (TG1-4, respectively: n = 52, n = 53, n = 52, n = 25). Virologic suppression (HIV-1 RNA <50 copies/mL) at...
+
+=== [28] PMID 41130593  QID 5 (Number) ------------------------------
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN : 64
+MODEL : 77   [main_text] quote-in-pdf=yes
+  evidence : “Non–study drug resistance was detected in 20 of the 60 P1 participants tested for resistance.” “Non–study drug resistance was detected in two of 17 participants from P2 and included the NNRTI resistance-associated substitution K103N (n=2) and the protease inh
+  rationale: Pages 5–6 report 60 PURPOSE 1 participants and 17 PURPOSE 2 participants tested for resistance, totaling 77. This includes incident and unrecognized baseline infections and counts individuals tested even where assays failed. Table 1 corroborates 53 and 11 inci
+OTHERS: Kimi K3 QSP=77(X); GPT-4o FT=Samples were obtained from a total of 54(X); GPT-4o QSP=55(X); GPT-4o FT+QSP=52(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='77'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [29] PMID 36795586  QID 6 (List) ------------------------------
+Q: From which countries were the sequenced samples obtained?
+HUMAN : Not reported
+MODEL : Botswana; Eswatini; Lesotho; Malawi; Tanzania; Uganda   [main_text] quote-in-pdf=partial
+  evidence : “COEs included in the study were from Botswana, Eswatini, Lesotho, Malawi, Tanzania-Mbeya, Tanzania-Mwanza and Uganda.” “The average number of HIV genotype results per year per COE was 12 (range, 0–30), with no DTG resistance testing.”
+  rationale: Page 577 identifies the six countries providing patient care and reports genotyping availability across these centers. The article does not identify which individual centers contributed the available genotypes.
+OTHERS: Kimi K3 QSP=Not applicable(ok); GPT-4o FT=No(ok); GPT-4o QSP=Not applicable(ok); GPT-4o FT+QSP=Not applicable(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='Not reported'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [botswana] ...pective analysis was performed among CALHIV 0-19 years old and weighing greater than or equal to 20 kg who received DTG from 2017 to 2020 at sites in Botswana, Eswatini, Lesotho, Malawi, Tan- zania and Uganda to determine effectiveness, safety and predictors of viral load suppression (VLS) among CALHIV usin... | [eswatini] ...alysis was performed among CALHIV 0-19 years old and weighing greater than or equal to 20 kg who received DTG from 2017 to 2020 at sites in Botswana, Eswatini, Lesotho, Malawi, Tan- zania and Uganda to determine effectiveness, safety and predictors of viral load suppression (VLS) among CALHIV using DTG, inc...
+
+=== [30] PMID 36931676  QID 6 (List) ------------------------------
+Q: From which countries were the sequenced samples obtained?
+HUMAN : Sweden
+MODEL : Not applicable   [main_text] quote-in-pdf=partial
+  evidence : “The InfCareHIV cohort was established in 2003 in the two largest cities in Sweden, Stockholm and Gothenburg.” “The other Swedish clinics joined thereafter and since 2008 the cohort has had complete national coverage, including all 29 clinical HIV centres in S
+  rationale: Page 2 establishes Sweden as the cohort location, but this paper does not report a newly sequenced patient sample set. The no-sequence applicability rule therefore applies.
+OTHERS: Kimi K3 QSP=Sweden(ok); GPT-4o FT=Sweden(ok); GPT-4o QSP=Sweden(ok); GPT-4o FT+QSP=Sweden(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: [sweden] .... doi:10.1136/bmjopen-2022-069688 Open access Cohort profile: InfCareHIV, a prospective registry-­based cohort study of people with diagnosed HIV in Sweden Christina Carlander ‍ ‍ ,12 Johanna Brännström,23 Fredrik Månsson,4 Olof Elvstam,56 Pernilla Albinsson,1 Simon Blom,7 Lena Mattsson,1 Sanne Hovmö...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [31] PMID 37340869  QID 6 (List) ------------------------------
+Q: From which countries were the sequenced samples obtained?
+HUMAN : Not reported
+MODEL : Russia   [main_text] quote-in-pdf=partial
+  evidence : “Overall, 11 participants with CVF were from Russia, all of whom had HIV-1 subtype A6/A1 (Supplementary Table 7A).” “Results were further evaluated by geographical region (North America, Europe, and ‘other’ regions) and by country.”
+  rationale: Russia is explicitly identified as a country of origin for genotyped participants. Other countries are not named in the supplied main article; the country-specific supplementary tables are referenced but not included.
+OTHERS: Kimi K3 QSP=Multinational; Russia specifically noted(ok); GPT-4o FT=No(ok); GPT-4o QSP=Russia(X); GPT-4o FT+QSP=Not reported(ok)
+  all-models-wrong=False  agree-with-model=['GPT-4o QSP']
+  model said Q1='Yes' Q5='1431'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [russia] ...er) • 1423 Clinical Infectious Diseases M A J O R A R T I C L E In FLAIR and ATLAS, 5/6 participants with CVF on LA therapy through week 48 were from Russia, had their HIV-1 subtype previously reported as A or A1, and had the integrase polymorphism L74I detected at baseline [16]. Further investi­ gation b...
+
+=== [32] PMID 37593123  QID 6 (List) ------------------------------
+Q: From which countries were the sequenced samples obtained?
+HUMAN : China
+MODEL : Not applicable   [main_text] quote-in-pdf=yes
+  evidence : “The primary aim of this broad-scale study was to examine the alterations in HIV-1 subtypes/sub-subtypes and TDR among ART-naïve HIV-infected individuals in China spanning the period 2004 to 2022.” “A total of 57,902 HIV-1 pol gene region sequences that covere
+  rationale: The existing sequence dataset represents China. Nevertheless, because the paper does not report newly generated clinical-sample sequences, the Question 1 exclusion makes this answer Not applicable under the specified rules.
+OTHERS: Kimi K3 QSP=Not applicable(X); GPT-4o FT=China(ok); GPT-4o QSP=China(ok); GPT-4o FT+QSP=Not reported(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: [china] ... Vital Surveillances Changes in HIV-1 Subtypes/Sub-Subtypes, and Transmitted Drug Resistance Among ART-Naïve HIV-Infected Individuals - China, 2004-2022 Xiu Liu1; Dong Wang1; Jing Hu1; Chang Song1; Lingjie Liao1; Yi Feng1; Dan Li1; Hui Xing1; Yuhua Ruan1,# ABSTRACT Introduction: The efficac...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [33] PMID 37957382  QID 6 (List) ------------------------------
+Q: From which countries were the sequenced samples obtained?
+HUMAN : Not reported
+MODEL : United States   [main_text] quote-in-pdf=yes
+  evidence : “A participant with non-suppressible viremia enrolled in the HIV Eradication and Latency (HEAL) cohort, a biorepository of Brigham and Women’s Hospital, was included as a part of eight NSVs.” “The study was approved by the Mass General Brigham Institutional Re
+  rationale: The Methods identify the US-based HEAL/Brigham and Women’s Hospital cohort; the affiliations locate that hospital in Boston, Massachusetts, USA. No non-US sample-collection location is reported.
+OTHERS: Kimi K3 QSP=United States(X); GPT-4o FT=No(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=United States(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='8'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [34] PMID 37973713  QID 6 (List) ------------------------------
+Q: From which countries were the sequenced samples obtained?
+HUMAN : Ukraine, Poland
+MODEL : Poland   [main_text] quote-in-pdf=partial
+  evidence : “The site of the recruitment of the cohorts were six clinical centers in Poland (two centers in Warsaw and one center in each city: Olsztyn, Lublin, Łódź and Rzeszów), all in the closest regions to the Polish–Ukrainian border, which cover territorially 40% of 
+  rationale: All recruitment and sample collection occurred in Poland. Ukraine, Belarus, Georgia, and Kazakhstan describe participants’ origins rather than collection sites.
+OTHERS: Kimi K3 QSP=Poland(X); GPT-4o FT=Poland, Ukraine, Belarus, Georgia, Kazak(ok); GPT-4o QSP=Ukraine, Belarus, Georgia, Kazakhstan(X); GPT-4o FT+QSP=Poland(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='117'
+  PDF near HUMAN answer: [ukraine] ...pało12 Accepted: 13 October 2023 / Published online: 16 November 2023 © The Author(s) 2023 Abstract In recent years, especially as a result of war in Ukraine, enormous movements of migration to Poland from eastern European countries have been reported, including people living with Human Immunodeficiency Vi... | [poland] ... online: 16 November 2023 © The Author(s) 2023 Abstract In recent years, especially as a result of war in Ukraine, enormous movements of migration to Poland from eastern European countries have been reported, including people living with Human Immunodeficiency Virus (HIV). We have conducted multi-center, ...
+  PDF near MODEL answer: [poland] ... online: 16 November 2023 © The Author(s) 2023 Abstract In recent years, especially as a result of war in Ukraine, enormous movements of migration to Poland from eastern European countries have been reported, including people living with Human Immunodeficiency Virus (HIV). We have conducted multi-center, ...
+
+=== [35] PMID 38152686  QID 6 (List) ------------------------------
+Q: From which countries were the sequenced samples obtained?
+HUMAN : Not reported
+MODEL : Brazil   [main_text] quote-in-pdf=yes
+  evidence : “This case was approved by the Research Ethics Committee of the São José Hospital of Infectious Diseases (HSJ) (CAAE: 61660022.0.0000.5044).” “The authors would like to acknowledge all the residents and staff of the Hospital São José de Doenças Infecciosas (HS
+  rationale: The clinical and institutional context on pages 1–2 identifies the case as originating at Hospital São José in Fortaleza, Brazil.
+OTHERS: Kimi K3 QSP=Brazil(X); GPT-4o FT=No(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Brazil(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='1'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [brazil] ...e 2023; accepted: 23 November 2023 1São José Hospital of Infectious Diseases of the Secretary of Health of the State of Ceará, Fortaleza, Ceará, Brazil 2University of São Paulo, São Paulo, Brazil 3State University of Ceará, Fortaleza, Ceará, Brazil 4Fortaleza University, Fortaleza, Ceará, Brazil...
+
+=== [36] PMID 41056006  QID 6 (List) ------------------------------
+Q: From which countries were the sequenced samples obtained?
+HUMAN : Not provided (multicenter trial)
+MODEL : United States; Dominican Republic   [main_text] quote-in-pdf=partial
+  evidence : “CALIBRATE was a Phase 2, randomized, open-label, active-controlled, multicenter study.” “Treatment-naïve PWH were enrolled across 41 sites in the USA and Dominican Republic (study design presented in Fig. 1).”
+  rationale: The clinical sampling population was recruited at sites in the United States and Dominican Republic (page 3).
+OTHERS: Kimi K3 QSP=USA, Dominican Republic(X); GPT-4o FT=The sequenced samples were obtained from(X); GPT-4o QSP=USA, Dominican Republic(X); GPT-4o FT+QSP=USA, Dominican Republic(X)
+  all-models-wrong=True  agree-with-model=[]
+  model said Q1='Yes' Q5='182'
+  PDF near HUMAN answer: [multicenter] ... the CALIBRATE study in treatment-naïve PWH. METHODS Study Design and Population CALIBRATE was a Phase 2, randomized, open-label, active-controlled, multicenter study. Treatment- naïve PWH were enrolled across 41 sites in the USA and Dominican Republic (study design presented in Fig. 1). Full methodologic de... | [trial] ...reatment-naïve PWH Potential conflicts of interest D. H. has served as an advisor/consultant to Gilead Sciences, Inc. M. B. has served as a clinical trial investigator for Gilead Sciences, Inc. G. E. C. has received research support from Gilead Sciences, Inc., ViiV, Janssen, Merck, and AbbVie Inc. M. N....
+  PDF near MODEL answer: [united] ...LEN) is a first-in-class, highly potent, twice-yearly inhibitor of HIV-1 capsid function [6]. LEN is approved, in combination with other ARVs, in the United States of America (USA), the European Union (EU), and other countries for HIV-1 treatment in heavily treatment-experienced (HTE) adults with multidru... | [states] ... a first-in-class, highly potent, twice-yearly inhibitor of HIV-1 capsid function [6]. LEN is approved, in combination with other ARVs, in the United States of America (USA), the European Union (EU), and other countries for HIV-1 treatment in heavily treatment-experienced (HTE) adults with multidrug resis...
+
+=== [37] PMID 41130593  QID 6 (List) ------------------------------
+Q: From which countries were the sequenced samples obtained?
+HUMAN : Not provided (multicenter trial)
+MODEL : South Africa   [main_text] quote-in-pdf=yes
+  evidence : “The LEN resistance-associated mutation K70R was also detected in one South African participant with a subtype C virus and no exposure to LEN.” “This is likely a rare polymorphism.”
+  rationale: Page 5 identifies a sequenced participant as South African, supporting South Africa as a sample origin. The supplied article does not enumerate the other recruitment countries; laboratory locations and author affiliations are not treated as sample origins.
+OTHERS: Kimi K3 QSP=South Africa (only country explicitly me(ok); GPT-4o FT=The paper mentions samples from South Af(X); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Not reported(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='77'
+  PDF near HUMAN answer: [trial] ...ster City, California, USA Background. Lenacapavir (LEN) is an HIV-1 capsid inhibitor being evaluated for preexposure prophylaxis (PrEP). The PURPOSE trials assessed the efficacy of LEN and emtricitabine/tenofovir disoproxil fumarate (F/TDF) in cisgender women (PURPOSE 1; P1) and in cisgender men, transg...
+  PDF near MODEL answer: [south] ...protease (PR), reverse transcriptase (RT), and integrase coding regions using the GenoSure® GAG PRO and GenoSure PRIme® assays (Monogram Biosciences, South San Francisco, California), which are validated tests run in a Clinical Laboratory Improvement Amendments-certified laboratory. Genotypic CA resistan... | [africa] ...le 4) and likely represent transmitted drug resistance in this population. The LEN resistance-associated mutation K70R was also detected in one South African participant with a subtype C virus and no exposure to LEN. This is likely a rare polymorphism. Purpose 2 Of the 3265 participants in the P2 EAP, 11 ...
+
+=== [38] PMID 36597160  QID 7 (List) ------------------------------
+Q: From what years were the sequenced samples obtained?
+HUMAN : 2014
+MODEL : Not reported   [main_text] quote-in-pdf=partial
+  evidence : "Eligible patients were adult patients (≥18 years old) with controlled HIV-1 infection on any stable ART regimen (no limit on the previous number of regimens) who switched to E/C/F/TDF between February 2014 (date of approval of E/C/F/TDF in France) and August 
+  rationale: The 2014–2015 dates describe treatment switching, not specimen collection. Genotypes include historical tests and subsequent failure tests, but their actual collection years are not provided; the switching dates cannot establish the complete sequencing-sample 
+OTHERS: Kimi K3 QSP=2014–2015(ok); GPT-4o FT=2014-2015(ok); GPT-4o QSP=2014–2015(ok); GPT-4o FT+QSP=2014-2015(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='154'
+  PDF near HUMAN answer: [2014] ...se dreams, dizziness and fatigue/loss of energy in patients switching from efavirenz [8]. E/C/F/TDF was the second STR approved in France in February 2014 for the treatment of HIV infection in naïve patients. After that date, clinicians switched patients to E/C/F/TDF for various reasons, including conv...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [39] PMID 37574435  QID 7 (List) ------------------------------
+Q: From what years were the sequenced samples obtained?
+HUMAN : 2016-2022
+MODEL : Not reported   [main_text] quote-in-pdf=yes
+  evidence : “PWH who were aged ≥20 years and received HIV care with at least 3 months of ART prescription between 1 January 2016 and 30 March 2022 were eligible for the study.” “We also collected the available reports of HIV genotypic resistance testing of included PWH.”
+  rationale: Pages 2–3 give a clinical eligibility period but do not date the specimens underlying the archived resistance reports. Figure 1 on page 4 additionally uses a 2019–2022 clinic-screening window; neither window establishes the collection years of the sequenced sa
+OTHERS: Kimi K3 QSP=2016-2022(ok); GPT-4o FT=2016-2022(ok); GPT-4o QSP=2016–2022(ok); GPT-4o FT+QSP=2016-2022(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='70'
+  PDF near HUMAN answer: [2016] ...nal Taiwan University Hospital (NTUH). PWH who were aged 20 years and received HIV care with at least 3 months of ART prescription between 1 January 2016 and 30 March 2022 were eligible for the study. For eligible PWH, available results of plasma HIV RNA load (PVL) were retrieved from the electronic me... | [2022] ...ity Hospital (NTUH). PWH who were aged 20 years and received HIV care with at least 3 months of ART prescription between 1 January 2016 and 30 March 2022 were eligible for the study. For eligible PWH, available results of plasma HIV RNA load (PVL) were retrieved from the electronic medical record data-...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [40] PMID 37593123  QID 7 (List) ------------------------------
+Q: From what years were the sequenced samples obtained?
+HUMAN : 2004-2022
+MODEL : Not applicable   [main_text] quote-in-pdf=yes
+  evidence : “A total of 67,739 sequences were extracted from the HIV-1 pol gene region (HXB2 (6) positions 2,253–3,312) of ART naïve HIV-infected individuals between the period of 2004 and 2022.” “The collected data from 2004 to 2022 was stratified into five distinct samp
+  rationale: The archived sequence data span 2004–2022, as described in the Methods (page 2). Because no new clinical-sample sequencing is reported, the specified applicability rule requires Not applicable.
+OTHERS: Kimi K3 QSP=Not applicable(X); GPT-4o FT=2004-2022(ok); GPT-4o QSP=2004–2022(ok); GPT-4o FT+QSP=2004–2022(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: [2004] ... Vital Surveillances Changes in HIV-1 Subtypes/Sub-Subtypes, and Transmitted Drug Resistance Among ART-Naïve HIV-Infected Individuals - China, 2004-2022 Xiu Liu1; Dong Wang1; Jing Hu1; Chang Song1; Lingjie Liao1; Yi Feng1; Dan Li1; Hui Xing1; Yuhua Ruan1,# ABSTRACT Introduction: The efficacy of t... | [2022] ... Vital Surveillances Changes in HIV-1 Subtypes/Sub-Subtypes, and Transmitted Drug Resistance Among ART-Naïve HIV-Infected Individuals - China, 2004-2022 Xiu Liu1; Dong Wang1; Jing Hu1; Chang Song1; Lingjie Liao1; Yi Feng1; Dan Li1; Hui Xing1; Yuhua Ruan1,# ABSTRACT Introduction: The efficacy of treatm...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [41] PMID 31988104  QID 8 (Boolean) ------------------------------
+Q: Were samples cloned prior to sequencing?
+HUMAN : No
+MODEL : Yes   [table] quote-in-pdf=yes
+  evidence : “Patient-derived (PD) mutants were cloned from clinical plasma samples.”
+  rationale: Table 4, footnote c, on page 7 explicitly identifies the patient-derived mutants as cloned from clinical plasma, and the table reports their mutant RT sequences. Both clinical mutation data and in vitro susceptibility data are reported.
+OTHERS: Kimi K3 QSP=Yes(X); GPT-4o FT=No(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Not reported(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='14'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [42] PMID 37957382  QID 8 (Boolean) ------------------------------
+Q: Were samples cloned prior to sequencing?
+HUMAN : Yes
+MODEL : Not applicable   [main_text] quote-in-pdf=yes
+  evidence : “Extracted DNA was endpoint-diluted and subjected to near full-length sequencing (NFL-seq), as previously described.” “Extracted RNA was diluted to single viral genome levels to meet the criteria of single-genome sequencing of having no more than one template 
+  rationale: Although limiting dilution and single-genome sequencing were performed, the prescribed applicability rule requires in vitro drug susceptibility data, which this paper does not report.
+OTHERS: Kimi K3 QSP=Not applicable(X); GPT-4o FT=No(X); GPT-4o QSP=No(X); GPT-4o FT+QSP=No(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='8'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [43] PMID 40938996  QID 8 (Boolean) ------------------------------
+Q: Were samples cloned prior to sequencing?
+HUMAN : Yes  
+MODEL : Not applicable   [main_text] quote-in-pdf=NO
+  evidence : “The full-length HIV-1 molecular clones pNL4-3 (87), pCH185 (88), and pCH077 (89) were used in this study.” “The PCR amplicon was purified and cloned into pCR-Blunt II-TOPO vector (Thermo Fisher Scientific) per the manufacturer’s instructions.”
+  rationale: Cloning is described for laboratory sequencing experiments (pages 11–12), but no HIV sequences came directly from individuals with HIV. The question's applicability rule therefore requires Not applicable, despite the laboratory cloning and susceptibility testi
+OTHERS: Kimi K3 QSP=Not applicable(X); GPT-4o FT=Yes(ok); GPT-4o QSP=No(X); GPT-4o FT+QSP=Not applicable(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT+QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [44] PMID 41088231  QID 8 (Boolean) ------------------------------
+Q: Were samples cloned prior to sequencing?
+HUMAN : Yes
+MODEL : Not applicable   [main_text] quote-in-pdf=yes
+  evidence : “Two overlapping halves of the HIV-1 genome were subsequently amplified by nested polymerase chain reaction (PCR) by utilizing LA Taq (TaKaRa, China) with a near endpoint dilution method as described previously [19].” “Whether L74I in CRF02_AG affects INSTI re
+  rationale: Although endpoint dilution and single-genome amplification were used, the question's applicability rule requires in vitro susceptibility data. None are reported, so the answer is Not applicable.
+OTHERS: Kimi K3 QSP=Not applicable(X); GPT-4o FT=No, samples were not cloned prior to seq(X); GPT-4o QSP=No(X); GPT-4o FT+QSP=No(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='1'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [45] PMID 41093949  QID 8 (Boolean) ------------------------------
+Q: Were samples cloned prior to sequencing?
+HUMAN : Yes
+MODEL : Not applicable   [main_text] quote-in-pdf=yes
+  evidence : “Site-directed mutagenesis containing resistance sites was performed on HIV-1 pNL4-3 and pGX002 using the Q5® Site-Directed Mutagenesis Kit (NEB, Cat. No. E0554S) in accordance with the manufacturer’s instructions.” “Positive clones were picked and amplified i
+  rationale: Although laboratory clones were sequenced (Methods, page 2), the question's applicability rule requires new patient-derived sequences. None were reported.
+OTHERS: Kimi K3 QSP=Not applicable(X); GPT-4o FT=Yes, samples were cloned prior to sequen(ok); GPT-4o QSP=Yes(ok); GPT-4o FT+QSP=Yes(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [46] PMID 41130593  QID 8 (Boolean) ------------------------------
+Q: Were samples cloned prior to sequencing?
+HUMAN : Yes (single genome)
+MODEL : Not applicable   [main_text] quote-in-pdf=yes
+  evidence : “Phenotyping of the clinical isolates in the PURPOSE trials was not attempted; no susceptibility data were available.” “Genotypic CA resistance testing at Monogram was conducted using a next-generation sequencing platform (MiSeq; Illumina), with reporting of m
+  rationale: Although clinical genotyping was performed, the study reports no in vitro susceptibility data. The question's applicability rule therefore requires Not applicable.
+OTHERS: Kimi K3 QSP=Not applicable(X); GPT-4o FT=No, samples were not cloned prior to seq(X); GPT-4o QSP=No(X); GPT-4o FT+QSP=Not reported(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='77'
+  PDF near HUMAN answer: [single] ...testing (NAAT) was performed using archived samples for incident HIV-1 cases to determine the earliest date with evidence of HIV-1 acquisition. HIV-1 single-copy assay (SCA) testing was performed retrospectively on the Hologic Panther platform using a multiple replicate strategy (Accelevir Diagnostics, Ba...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [47] PMID 30803972  QID 9 (List) ------------------------------
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN : Not reported
+MODEL : IN   [table] quote-in-pdf=yes
+  evidence : “Wild type indicates virus stocks produced from the parental (nonmutated) copies of pNL4-3 and pROD9.” “The integrase-encoding region of each plasmid clone was confirmed by automated Sanger DNA sequencing.”
+  rationale: Table 3 footnote a on page 5 explicitly identifies integrase as the sequenced region. This sequencing was of laboratory plasmid clones, not patient samples.
+OTHERS: Kimi K3 QSP=IN(X); GPT-4o FT=IN(X); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Not reported(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [48] PMID 37071019  QID 9 (List) ------------------------------
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN : Not reported
+MODEL : IN   [main_text] quote-in-pdf=yes
+  evidence : "Proper site-directed mutagenesis was validated by Sanger sequencing." "The pNL4.3-INBG118R and pNL4.3-INBR263K plasmids have been described elsewhere (14)."
+  rationale: The sequencing described in the integrase protein and virus production sections (pages 8–9) validated integrase constructs. IN is the reported target, but the sequences were laboratory-derived rather than patient-derived.
+OTHERS: Kimi K3 QSP=IN(X); GPT-4o FT=IN(X); GPT-4o QSP=IN(X); GPT-4o FT+QSP=IN(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT', 'GPT-4o QSP', 'GPT-4o FT+QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [49] PMID 37823653  QID 9 (List) ------------------------------
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN : NFLG, Envelope
+MODEL : Env   [main_text] quote-in-pdf=yes
+  evidence : “This is a retrospective cross-sectional study utilizing already generated 6,078 HIV-1C sequences covering the entire gp120.” “We used Gene cutter tool (https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html) to extract the gp120 fragment of the HIV
+  rationale: The explicitly identified gene target analyzed in this report is Env, specifically gp120. Near-full-length sequencing is mentioned, but individual additional gene targets are not specified as targets of this analysis (pages 2–3).
+OTHERS: Kimi K3 QSP=Env(X); GPT-4o FT=Near full length genome(X); GPT-4o QSP=Env(X); GPT-4o FT+QSP=Env(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP', 'GPT-4o QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='6078'
+  PDF near HUMAN answer: [envelope] ... people with HIV (PWH) who harbor HIV-1 variants with drug resistance mutations to currently used ARVs. Using 6030 HIV-1 sequences covering the HIV-1 envelope from PWH in Botswana who are antiretroviral therapy (ART) naïve as well as those who are failing ART, we explored the sequences for FTR resistance-a...
+  PDF near MODEL answer: [env] ... people with HIV (PWH) who harbor HIV-1 variants with drug resistance mutations to currently used ARVs. Using 6030 HIV-1 sequences covering the HIV-1 envelope from PWH in Botswana who are antiretroviral therapy (ART) naïve as well as those who are failing ART, we explored the sequences for FTR resista...
+
+=== [50] PMID 37957382  QID 9 (List) ------------------------------
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN : Full genome, NFLG
+MODEL : PR, RT, IN, CA, Env   [main_text] quote-in-pdf=yes
+  evidence : “Longitudinal single-genome sequencing of near-full-length proviruses and plasma HIV-1 pol-env RNA was performed.” “Plasma HIV-1 RNA sequencing of the 5′ leader/gag region of HIV-1 was performed to confirm the presence of these 5′ defects within the plasma HIV
+  rationale: Near-full-length proviral sequencing covers the requested PR, RT, IN, CA and Env targets. Plasma pol-env sequencing and the PR-, RT- and IN-resistance results further establish the Pol targets; CA is contained within the sequenced gag region of the near-full-l
+OTHERS: Kimi K3 QSP=Pol, PR, RT, IN, CA, Env(X); GPT-4o FT=Near full length genome(ok); GPT-4o QSP=Pol, Env(X); GPT-4o FT+QSP=Pol, Env(X)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='8'
+  PDF near HUMAN answer: [full] ...human immunodeficiency virus-1 (HIV-1) drug Received: 7 March 2023 Accepted: 25 September 2023 Published online: 13 November 2023 Check for updates A full list of affiliations appears at the end of the paper. e-mail: jli@bwh.harvard.edu Nature Medicine | Volume 29 | December 2023 | 3212-3223 3213 Articl... | [genome] ... not as ‘non-producer proviruses'. Non-suppressible viremia arose from expanded clones of producer proviruses that were significantly larger than the genome-intact proviral reservoir of ART-suppressed individuals. Integration sites of producer proviruses were enriched in proximity to the activating H3K36m...
+  PDF near MODEL answer: [env] ... assess aspects of host proviruses that contributed to NSV. Longitudinal single-genome sequencing of near-full-length proviruses and plasma HIV-1 pol-env RNA was performed. A total of 1987 single-genome proviral sequences and 222 single-genome plasma sequences were generated for the eight par- ticipant...
+
+=== [51] PMID 38005921  QID 9 (List) ------------------------------
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN : Not reported
+MODEL : PR, RT   [main_text] quote-in-pdf=yes
+  evidence : “Both multi-n-grams and k-mers were computed based on the amino acid sequences of HIV enzymes: reverse transcriptase and protease.” “The amino acid sequences of 99 residues for HIV protease and 240 residues for reverse transcriptase were used for model trainin
+  rationale: The sequence targets actually analyzed are protease and reverse transcriptase (Abstract, page 1; Section 3.3, page 11). These are existing database sequences, not newly sequenced genes in this study.
+OTHERS: Kimi K3 QSP=PR, RT(X); GPT-4o FT=PR, RT(X); GPT-4o QSP=PR, RT(X); GPT-4o FT+QSP=PR, RT(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT', 'GPT-4o QSP', 'GPT-4o FT+QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [52] PMID 38427738  QID 9 (List) ------------------------------
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN : Gag, Pol, Env, Nef, vpu
+MODEL : PR, RT, IN, CA, Env   [main_text] quote-in-pdf=yes
+  evidence : “To identify the genetic changes in the viral genome responsible for DTG resistance, we extracted genomic DNA from the infected cells at a number of time points and performed sequencing analysis of gag, pol, env, and vpu.” “We did not identify any changes in g
+  rationale: The laboratory-virus sequencing covered gag, pol, and env (pages 2 and 4). Within the requested target vocabulary, pol encompasses PR, RT, and IN, and gag includes CA; the article explicitly reports analysis of RT, IN, and CA coding regions. These are laborato
+OTHERS: Kimi K3 QSP=Pol, CA, Env(X); GPT-4o FT=Gag, Pol, Env, Vpu(ok); GPT-4o QSP=Pol, Env(X); GPT-4o FT+QSP=Pol, Env, Nef(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: [gag] ...icularly in the case of PIs and INSTIs, some PLWH experience virological failure in the absence of mutations in the target genes (7-11). Mutations in Gag and the envelope glycoprotein (Env) have been implicated in PI resist­ ance (12, 13). In vitro studies have reported that mutations in the 3′polypuri... | [pol] ...s in Gag and the envelope glycoprotein (Env) have been implicated in PI resist­ ance (12, 13). In vitro studies have reported that mutations in the 3′polypurine tract (3′PPT) reduce the susceptibility of HIV-­1 to INSTIs (14-16). 3′PPT mutations may lead to the accumulation of unintegrated 1-­LTR circl...
+  PDF near MODEL answer: [env] ...e presence of escalating concentrations of the INSTI dolutegravir. HIV-­1 became resistant to dolutegravir by sequentially acquiring mutations in the envelope glyco- protein (Env) and the nucleocapsid protein. The selected Env mutations enhance the ability of the virus to spread via cell-­cell transfer...
+
+=== [53] PMID 40938996  QID 9 (List) ------------------------------
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN : RT, IN, NC, Env
+MODEL : PR, RT, IN, CA, Env   [figure] quote-in-pdf=partial
+  evidence : “At the time points indicated by the arrows, genomic DNA was extracted from the drug-treated cultures, and the Gag-Pol and Env-Nef coding regions were sequenced.” “Mutations detected at frequencies greater than 25% in the bulk sequencing are shown.”
+  rationale: Figure 5's legend (page 9) identifies sequencing across Gag-Pol and Env-Nef. Among the requested targets, these regions encompass CA within Gag, PR/RT/IN within Pol, and Env. These were laboratory-derived sequences, not clinical sequences.
+OTHERS: Kimi K3 QSP=CA (Gag/NC), PR, RT, IN, Env(ok); GPT-4o FT=Env, NC, IN(ok); GPT-4o QSP=NC, IN(X); GPT-4o FT+QSP=Not applicable(X)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: [env] ...ailable for INSTIs to block viral DNA integration. We find that in primary peripheral blood mononuclear cells, HIV-­1 acquires mutations in the viral envelope glycoprotein, NC, and occasionally IN during selection for INSTI resistance. Notably, the selected NC and IN mutations act in concert to reduce ...
+  PDF near MODEL answer: [env] ...ailable for INSTIs to block viral DNA integration. We find that in primary peripheral blood mononuclear cells, HIV-­1 acquires mutations in the viral envelope glycoprotein, NC, and occasionally IN during selection for INSTI resistance. Notably, the selected NC and IN mutations act in concert to reduce ...
+
+=== [54] PMID 41004608  QID 9 (List) ------------------------------
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN : Whole genome
+MODEL : PR, RT, IN, CA, Env   [main_text] quote-in-pdf=yes
+  evidence : “The complete genomic sequencing of HIV was performed using a previously described sequence capture method and the short read data were assembled into consensus whole genomes using Genomancer, an in-house viral genome assembly pipeline [20].” “Consensus sequen
+  rationale: Pages 2–3 describe complete HIV genome sequencing, encompassing PR, RT, IN, CA, and Env. PR, RT, and IN resistance results are also reported on page 5; CA is included by whole-genome coverage, not because capsid-inhibitor resistance was specifically assessed. 
+OTHERS: Kimi K3 QSP=PR, RT, IN, Env(X); GPT-4o FT=The paper reports sequencing of the enti(X); GPT-4o QSP=Env, NC(X); GPT-4o FT+QSP=Env, NC(X)
+  all-models-wrong=True  agree-with-model=[]
+  model said Q1='Yes' Q5='1182'
+  PDF near HUMAN answer: [whole] ...ein (Env), and 3′ polypurine tract (3′PPT) have been identified in vitro. Methods. Between 2015 and 2021, human immunodeficiency virus type 1 (HIV-1) whole genome sequencing was performed on samples from people with recently acquired HIV-1 in the United Kingdom. Sequences were linked to demographic and c... | [genome] ...nv), and 3′ polypurine tract (3′PPT) have been identified in vitro. Methods. Between 2015 and 2021, human immunodeficiency virus type 1 (HIV-1) whole genome sequencing was performed on samples from people with recently acquired HIV-1 in the United Kingdom. Sequences were linked to demographic and clinical...
+  PDF near MODEL answer: [env] ..., and only 50% of cases have identified drug resistance mutations in the integrase gene. Nonintegrase mutations in the Gag-nucleocapsid protein (NC), envelope glycoprotein (Env), and 3′ polypurine tract (3′PPT) have been identified in vitro. Methods. Between 2015 and 2021, human immunodeficiency virus ...
+
+=== [55] PMID 41088231  QID 9 (List) ------------------------------
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN : Whole genome
+MODEL : PR, RT, IN, CA, Env   [main_text] quote-in-pdf=NO
+  evidence : “The NFLG sequence of 230794, which was 8260 nucleotides (nt) in length, was obtained and submitted to GenBank (accession number PV187006).” “The HIVdb program from the Stanford HIV Drug Resistance Database (https://hivdb.stanford.edu/hivdb/by-sequences/) was 
+  rationale: The near-full-length genome encompasses gag, including CA, the PR/RT/IN regions of pol, and Env, as supported by the genome map in Figure 1 on page 4. PR, RT, IN and Env are also specifically supported by the resistance and tropism analyses on page 3.
+OTHERS: Kimi K3 QSP=PR, RT, IN, Env(X); GPT-4o FT=The sequenced genes include the near ful(X); GPT-4o QSP=Pol, Env(X); GPT-4o FT+QSP=Pol(X)
+  all-models-wrong=True  agree-with-model=[]
+  model said Q1='Yes' Q5='1'
+  PDF near HUMAN answer: [whole] ...ample using a magnetic bead-based method. RNA was reverse transcribed to cDNA using the SuperScript III Sys­ tem. Proviral DNA was extracted from the whole-blood sample collected in 2025 with the Viral DNA Extrac­ tion Kit (Supbio, China). Two overlapping halves of the HIV-1 genome were subsequently ampl... | [genome] ...n China. Here, we observed a URF composed of subtypes F2 and CRF02_ AG isolated from a man (230794) in Guangdong, China. Methods The near full-length genome (NFLG) of HIV-1 was amplified with two overlapping segments by the near endpoint dilution method. The positive products were sequenced directly to ob...
+  PDF near MODEL answer: [env] ...G sequence of strain 230794 was 8260 nucleotides (nt) in length, with two CRF02_AG segments substituting in the backbone of subtype F2 in the vif and env gene regions. The genomic recombinant mosaic structures of 230794 were different from those of the other nine issued subtype F2/CRF02_AG URFs. No dru...
+
+=== [56] PMID 30803972  QID 10 (List) ------------------------------
+Q: What method was used for sequencing?
+HUMAN : Not reported
+MODEL : Sanger sequencing   [table] quote-in-pdf=yes
+  evidence : “Wild type indicates virus stocks produced from the parental (nonmutated) copies of pNL4-3 and pROD9.” “The integrase-encoding region of each plasmid clone was confirmed by automated Sanger DNA sequencing.”
+  rationale: Automated Sanger DNA sequencing is explicitly stated in Table 3 footnote a on page 5, for confirmation of laboratory plasmid clones.
+OTHERS: Kimi K3 QSP=Sanger sequencing(X); GPT-4o FT=No(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Not reported(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [sanger] ...ks produced from the parental (nonmutated) copies of pNL4-3 and pROD9. The integrase-encoding region of each plasmid clone was confirmed by automated Sanger DNA sequencing. bEC50, 50% effective concentrations determined in the MAGIC-5A single-cycle assay (means  SD from 3 independent assay runs). Values...
+
+=== [57] PMID 38427738  QID 10 (List) ------------------------------
+Q: What method was used for sequencing?
+HUMAN : Not reported
+MODEL : Sanger sequencing   [main_text] quote-in-pdf=yes
+  evidence : “Constructed plasmids were verified by Sanger DNA sequencing (Psomagen).” “Mutations detected at frequencies greater than 25% in the bulk sequencing are shown.”
+  rationale: Sanger sequencing is explicitly identified in the Methods (page 16), and the Figure 1 legend (page 3) describes bulk sequencing. No NGS method is reported for this study; citations to sequencing methods in earlier papers do not establish NGS use here.
+OTHERS: Kimi K3 QSP=Sanger sequencing(X); GPT-4o FT=No(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Not reported(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [sanger] ..._F and K3016_Xho I_R. The chimeric env amplicon was cloned into pCH185 using Pac I and Xho I restriction sites. Constructed plasmids were verified by Sanger DNA sequencing (Psomagen). Virus replication kinetic assays Virus replication was monitored in SupT1 cells as previously de- scribed (45). Briefly, S...
+
+=== [58] PMID 40431710  QID 10 (List) ------------------------------
+Q: What method was used for sequencing?
+HUMAN : Sanger
+MODEL : NGS   [main_text] quote-in-pdf=partial
+  evidence : “A genotypic resistance test [3] using next generation sequencing showed a complete ‘wild type’ for all RAMs with a sensitivity cut-off of 1.5% at a minimum depth of 1750 reads.” “Its strengths include pharmacokinetic analysis, comprehensive resistance testing
+  rationale: NGS is explicitly reported for HIV RNA and DNA. The methods used for the historical genotypes are not specified, so Sanger sequencing is not additionally inferred.
+OTHERS: Kimi K3 QSP=NGS(X); GPT-4o FT=Next generation sequencing was used for (X); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=NGS(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='1'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [ngs] ...ion that so far globally hardly any transmitted INSTI RAMs have been detected. However, systematic additional population-based drug resistance screenings will be needed to determine a potential contribution of transmitted INSTI drug resistance to treatment response in the future [20]. This case report ...
+
+=== [59] PMID 41093949  QID 10 (List) ------------------------------
+Q: What method was used for sequencing?
+HUMAN : Not stated
+MODEL : Sanger sequencing   [main_text] quote-in-pdf=yes
+  evidence : “Positive clones were picked and amplified in LB broth containing ampicillin, followed by Sanger sequencing (by SinoGenoMax).” “The wild-type and drug-resistant plasmids were stored in a freezer at -20 °C in preparation for packaging the corresponding virus.”
+  rationale: Methods (pages 2–3) explicitly identify Sanger sequencing of the laboratory clones.
+OTHERS: Kimi K3 QSP=Sanger sequencing(X); GPT-4o FT=Sanger sequencing was used.(X); GPT-4o QSP=Sanger sequencing(X); GPT-4o FT+QSP=Sanger sequencing(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP', 'GPT-4o QSP', 'GPT-4o FT+QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [sanger] ...(100 μg/ml; TransGen, Cat. No. GG101- 01) for amplification. Positive clones were picked and amplified in LB broth containing ampicillin, followed by Sanger sequencing (by SinoGenoMax). The plasmids containing the resistance sites were extracted with the Scientific Reports | (2025) 15:35936 2 | https://do...
+
+=== [60] PMID 31988104  QID 11 (List) ------------------------------
+Q: What type of samples were sequenced?
+HUMAN : Not reported
+MODEL : Plasma   [table] quote-in-pdf=yes
+  evidence : “Patient-derived (PD) mutants were cloned from clinical plasma samples.”
+  rationale: Table 4, footnote c, on page 7 explicitly identifies clinical plasma as the source of the patient-derived mutants.
+OTHERS: Kimi K3 QSP=Plasma(X); GPT-4o FT=No(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Not reported(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='14'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [plasma] ...M. bWT, wild-type virus. The TAMs included M41L, D67N, K70R, L210W, T215Y/F, and K219E/N/Q/R. cPatient-derived (PD) mutants were cloned from clinical plasma samples. SDM, site-directed mutants. dTFV was used at a concentration of 50 M; TAF was used at a concentration of 0.8 M. TAF Activity in Viruses wi...
+
+=== [61] PMID 36659824  QID 11 (List) ------------------------------
+Q: What type of samples were sequenced?
+HUMAN : Not reported
+MODEL : Plasma   [main_text] quote-in-pdf=partial
+  evidence : “At the baseline visit, samples were collected for routine testing, confirmation of HIV serology and HIV resistance genotyping.” “In such cases, National French Guidelines also recommended performance of a resistance genotypic test and determination of BIC, FT
+  rationale: Genotyping was performed at diagnosis and assessed during plasma-viremia-defined treatment failure. Plasma is inferred using the specified specimen rules; the article does not explicitly describe the material extracted for sequencing.
+OTHERS: Kimi K3 QSP=Plasma(X); GPT-4o FT=No(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Plasma(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='112'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [plasma] ...onnaire at each visit including a HIV anxiety 5-point Likert scale. The primary outcome was the proportion of participants in the ITT population with plasma HIV RNA (pVL) < 50 copies/mL at Week (W) 24 using the FDA Snapshot algorithm. Results: Overall, 112 participants were included in the ITT population....
+
+=== [62] PMID 36660819  QID 11 (List) ------------------------------
+Q: What type of samples were sequenced?
+HUMAN : Not reported
+MODEL : Plasma, PBMC   [main_text] quote-in-pdf=partial
+  evidence : “The additional participant who had non–protocol-defined virologic failure at week 48 (Q8W) had no RAMs to RPV or INSTIs present from baseline peripheral blood mononuclear cells; the RPV RAM E138K and the integrase inhibitor mutation S230S/R were detected at w
+  rationale: Page 4 explicitly identifies baseline PBMC genotyping. Plasma is included under the specified inference rule for samples collected at suspected virological failure; those failure-sample genotypes are described on page 7.
+OTHERS: Kimi K3 QSP=Plasma; PBMC(X); GPT-4o FT=PBMC(X); GPT-4o QSP=Not applicable(ok); GPT-4o FT+QSP=Not applicable(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='14'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [plasma] ...ressed (HIV-1 RNA <50 copies/mL) individuals were randomized to receive CAB+RPV LA Q8W or Q4W. Endpoints included the proportion of participants with plasma HIV-1 RNA ≥50 copies/mL and <50 copies/mL, incidence of confirmed virologic failure (CVF; 2 consecutive measurements ≥200 copies/mL), safety, and tol...
+
+=== [63] PMID 36795586  QID 11 (List) ------------------------------
+Q: What type of samples were sequenced?
+HUMAN : Not reported
+MODEL : Plasma   [main_text] quote-in-pdf=yes
+  evidence : “Assessment of ART drug resistance mutations via HIV genotype testing was not available as part of routine care at the COEs or pre-switch to DTG.” “Targeted HIV genotype testing was only sporadically available on a limited basis for CAHLIV failing second-line 
+  rationale: Genotyping was associated with second-line treatment failure. Plasma is inferred under the supplied rule for specimens obtained at virological failure; the article does not explicitly name the specimen type.
+OTHERS: Kimi K3 QSP=Not applicable(ok); GPT-4o FT=No(ok); GPT-4o QSP=Not applicable(ok); GPT-4o FT+QSP=Not applicable(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='Not reported'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [64] PMID 36931676  QID 11 (List) ------------------------------
+Q: What type of samples were sequenced?
+HUMAN : Plasma, CSF, PBMC
+MODEL : Not applicable   [main_text] quote-in-pdf=NO
+  evidence : “In the major clinical centres blood plasma/serum/liquor samples are collected, and in selected cases also peripheral blood mononuclear cells, HIV isolates, CSF and CSF cells in biobanks.” “These biobanks are separate from the cohort but linking between the co
+  rationale: The biobank description on pages 5–6 lists available specimen types, but does not identify specimens newly sequenced for this article. Because no new patient sequence dataset is reported, the question is not applicable.
+OTHERS: Kimi K3 QSP=Plasma(X); GPT-4o FT=Plasma, CSF(ok); GPT-4o QSP=Plasma, PBMC(ok); GPT-4o FT+QSP=Plasma, Cerebrospinal fluid, PBMCs(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: [plasma] ...el HIV viraemia while on ART associated with all-­cause mortality. Increased HIV RNA load in the cerebrospinal fluid (CSF) despite suppression of the plasma viral load was found in 5% of PLHIV, a phenomenon referred to as ‘CSF viral escape'. Dolutegravir-­based treatment in PLHIV with pre-­existing nucleo... | [csf] ...dish HIV-­epidemic, and low-­level HIV viraemia while on ART associated with all-­cause mortality. Increased HIV RNA load in the cerebrospinal fluid (CSF) despite suppression of the plasma viral load was found in 5% of PLHIV, a phenomenon referred to as ‘CSF viral escape'. Dolutegravir-­based treatment...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [65] PMID 37340869  QID 11 (List) ------------------------------
+Q: What type of samples were sequenced?
+HUMAN : Not reported
+MODEL : Plasma, PBMC   [main_text] quote-in-pdf=partial
+  evidence : “Historical genotypic evidence of any major INSTI or NNRTI RAMs, excluding K103N in plasma, was exclusionary per the 2015 (FLAIR and ATLAS) and 2019 (ATLAS-2M) International Antiviral Society-USA (IAS-USA) guidelines (Supplementary Table 1) [25, 26].” “Notably
+  rationale: The article references plasma-based genotypes and retrospective proviral DNA genotyping. Under the specified mapping, proviral DNA is categorized as PBMC, although the exact cellular preparation is not described.
+OTHERS: Kimi K3 QSP=Plasma, PBMC(X); GPT-4o FT=No(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Plasma(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='1431'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [plasma] ...ninferior efficacy and was well tolerated across phase 3/3b trials (FLAIR; ATLAS; ATLAS-2M) [3-10]. Confirmed virologic failure (CVF; 2 con­ secutive plasma HIV-1 RNA measurements ≥200 copies/mL) occurred in ∼1% (n = 19/1651) of participants in phase 3/3b clinical trials through week 48 of CAB + RPV thera...
+
+=== [66] PMID 37593123  QID 11 (List) ------------------------------
+Q: What type of samples were sequenced?
+HUMAN : Plasma
+MODEL : Not applicable   [main_text] quote-in-pdf=yes
+  evidence : “These sequences were procured from both the National Center for AIDS/STD Control and Prevention, China CDC and the HIV sequence databases of the Los Alamos National Laboratory (https://www.hiv.lanl.gov/, retrieved December 30, 2022).” “Data verification steps
+  rationale: The article analyzes existing sequence records rather than reporting new sequencing of patient specimens. Therefore, the specified applicability rule requires Not applicable; the original specimen types are also not stated.
+OTHERS: Kimi K3 QSP=Not applicable(X); GPT-4o FT=No(X); GPT-4o QSP=Not reported(X); GPT-4o FT+QSP=Not reported(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [67] PMID 37817087  QID 11 (List) ------------------------------
+Q: What type of samples were sequenced?
+HUMAN : Serum, Plasma, DBS
+MODEL : Plasma; dried serum/plasma spots   [main_text] quote-in-pdf=yes
+  evidence : “Some laboratories send the sample material on a filter paper (Whatman 903) as dried serum or plasma spots.” “Viral RNA was isolated from the sample material (serum, plasma or spot elution) using the automated Biomerieux EasyMag platform.”
+  rationale: The Methods on page 2 report plasma, serum and dried serum/plasma spots. Serum is included under Plasma according to the requested categorization; the dried specimens are specifically serum/plasma spots rather than whole-blood spots.
+OTHERS: Kimi K3 QSP=Plasma(X); GPT-4o FT=Plasma; Serum; DBS(ok); GPT-4o QSP=Plasma, Serum(ok); GPT-4o FT+QSP=Plasma, Serum, DBS(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='4559'
+  PDF near HUMAN answer: [serum] ...his context, a nationwide network of approximately 70 lab­ oratories [17] reporting 50-60% of all new HIV diagno­ ses in the country submit plasma or serum to the RKI along with the report form for a case. Some laboratories send the sample material on a filter paper (Whatman 903) as dried serum or plasma... | [plasma] ...gens. In this context, a nationwide network of approximately 70 lab­ oratories [17] reporting 50-60% of all new HIV diagno­ ses in the country submit plasma or serum to the RKI along with the report form for a case. Some laboratories send the sample material on a filter paper (Whatman 903) as dried serum ...
+  PDF near MODEL answer: [plasma] ...gens. In this context, a nationwide network of approximately 70 lab­ oratories [17] reporting 50-60% of all new HIV diagno­ ses in the country submit plasma or serum to the RKI along with the report form for a case. Some laboratories send the sample material on a filter paper (Whatman 903) as dried serum ... | [dried] ...ubmit plasma or serum to the RKI along with the report form for a case. Some laboratories send the sample material on a filter paper (Whatman 903) as dried serum or plasma spots. Before genotyping, RNA was extracted from these dried spots as previously described [15]. Sample processing, genotypic determi...
+
+=== [68] PMID 38314093  QID 11 (List) ------------------------------
+Q: What type of samples were sequenced?
+HUMAN : Serum
+MODEL : Plasma   [main_text] quote-in-pdf=yes
+  evidence : “To elucidate the HIV-1 genotype drug resistance characteristics in HIV-infected people of Meizhou, serum samples from 37 untreated patients [29 men (78%); 8 women (22%)] obtained from Meizhou People’s Hospital were included.” “In brief, cDNA containing the pr
+  rationale: Section 3.3, page 4, explicitly identifies serum specimens for the sequenced patients. Following the requested classification, serum-derived viral sequences are categorized as Plasma.
+OTHERS: Kimi K3 QSP=Plasma (serum)(ok); GPT-4o FT=Plasma(X); GPT-4o QSP=Blood(X); GPT-4o FT+QSP=Serum(ok)
+  all-models-wrong=False  agree-with-model=['GPT-4o FT']
+  model said Q1='Yes' Q5='37'
+  PDF near HUMAN answer: [serum] ...ing male. Strikingly, 90% of the cases were found to be in the middle to late stages of infection based on CD4+ T cell counts. Among the 30 different serum antibody profiles examined, reactivity with seven bands (p24, p31, gp41, p51, p66, gp120, and gp160) emerged as the most commonly observed WB pattern...
+  PDF near MODEL answer: [plasma] ...AIDS in this region. However, the current drug resistance detection method still has some limitations, the absence of drug-resistant virus strains in plasma cannot be completely sure that there are no drug-resistant virus strains in HIV-infected people, which is a direction for our researchers to study in...
+
+=== [69] PMID 31988104  QID 12 (Boolean) ------------------------------
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=yes
+  evidence : “Recombinant mutant HIV-1 viruses were created either by site directed mutagenesis (SDM) of wild-type HIV-1 DNA, or by direct PCR of ART-experienced patient isolates (8).” “Patient-derived (PD) mutants were cloned from clinical plasma samples.”
+  rationale: The Methods on page 9 identify ART-experienced patients, and Table 4 on page 7 identifies plasma samples. Under the specified rule, plasma-derived sequences from ART-experienced individuals qualify as Yes, although individual virological-failure histories are 
+OTHERS: Kimi K3 QSP=Yes(X); GPT-4o FT=No(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Not reported(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='14'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [70] PMID 36795586  QID 12 (Boolean) ------------------------------
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=partial
+  evidence : “Targeted HIV genotype testing was only sporadically available on a limited basis for CAHLIV failing second-line ART, and these results did not include information on DTG resistance.” “The average number of HIV genotype results per year per COE was 12 (range, 
+  rationale: The genotyped population is explicitly described as children and adolescents failing second-line ART.
+OTHERS: Kimi K3 QSP=Not applicable(ok); GPT-4o FT=No(ok); GPT-4o QSP=No(ok); GPT-4o FT+QSP=No(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='Not reported'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [71] PMID 36931676  QID 12 (Boolean) ------------------------------
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN : Yes
+MODEL : Not applicable   [main_text] quote-in-pdf=partial
+  evidence : “Sönnerborg et al have also studied HIV drug resistance, both transmitted and acquired, and the molecular HIV epidemiology.” “Among several key findings, an increase of transmitted drug resistance in the InfCareHIV cohort was reported.”
+  rationale: Page 6 summarizes earlier resistance studies rather than presenting new sequences from individuals with treatment failure. Under the no-sequence rule, this question is not applicable.
+OTHERS: Kimi K3 QSP=Yes(ok); GPT-4o FT=Yes(ok); GPT-4o QSP=Not reported(X); GPT-4o FT+QSP=No(X)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [72] PMID 37573167  QID 12 (Boolean) ------------------------------
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=yes
+  evidence : “At HIV-DNA GRT, individuals were under virological suppression for a median (IQR) of 3.7 (0.3-8.0) years, and were mainly under triple therapy (66.1%) based on PI, NNRTI or INSTI plus 2 NRTIs (Table 1).” “Around half of them (47.1%) achieved virological suppr
+  rationale: The supplied rule classifies sequencing after NRTI, NNRTI, PI or INSTI exposure as Yes. The participants meet that criterion, although these particular specimens were collected during virological suppression, not documented active failure.
+OTHERS: Kimi K3 QSP=Yes(X); GPT-4o FT=No(ok); GPT-4o QSP=No(ok); GPT-4o FT+QSP=No(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='1126'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [73] PMID 40400229  QID 12 (Boolean) ------------------------------
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN : Yes (PrEP)
+MODEL : No   [main_text] quote-in-pdf=NO
+  evidence : “A total of 54 out of 24 268 participants were newly diagnosed with HIV; 11 of the 54 were at baseline.” “Information on the first antiretroviral regimen started after HIV diagnosis was available for 33 of the 43 participants who seroconverted during the trial
+  rationale: The reported genotypes concern newly diagnosed infections, including infections after PrEP exposure, rather than virological failure during HIV treatment. The treatment regimens in Table 1 were initiated after diagnosis.
+OTHERS: Kimi K3 QSP=No(X); GPT-4o FT=Yes, the paper indicates that there were(ok); GPT-4o QSP=No(X); GPT-4o FT+QSP=Not reported(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP', 'GPT-4o QSP']
+  model said Q1='Yes' Q5='47'
+  PDF near HUMAN answer: [prep] ...S H O R T C O M M U N I C A T I O N HIV seroconversions and genotypic viral resistance profiles in the PrEP impact trial Andrea Cartier1 | Ana Milinkovic12 | Lisa Goodall3 | Borja Mora-Peris24 | Dana Ogaz5 | Adrian Palfreeman6 | Branca Pereira1 | Iain Reeve...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [74] PMID 40779404  QID 12 (Boolean) ------------------------------
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN : Unknown
+MODEL : Yes   [main_text] quote-in-pdf=yes
+  evidence : “All participants with preexisting K65R/N were VS at study start with median time on ART before study entry of 9.2 years (range 1.6–26.3 years).” “Before enrollment, participants had been treated with TFV (80.0%), INSTIs (50.0%), non-nucleoside RT inhibitors (
+  rationale: Yes under the specified rule that prior receipt of NRTIs, NNRTIs, PIs, or INSTIs with sequence generation qualifies. This should not be interpreted as documented failure at sampling: the participants were suppressed at baseline, and no on-study failure occurre
+OTHERS: Kimi K3 QSP=No(ok); GPT-4o FT=No, the paper does not report sequences (ok); GPT-4o QSP=No(ok); GPT-4o FT+QSP=No(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='2028'
+  PDF near HUMAN answer: [unknown] ... 11 - 16 including in partic- ipants with M184V/I, the effect of other nucleos(t)ide reverse transcriptase inhibitor (NRTI) resistance on B/F/ TAF is unknown. To date, no treatment emergent resis- tance has been observed in both clinical trials and a large observational study with B/F/TAF. There are case r...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [75] PMID 41088231  QID 12 (Boolean) ------------------------------
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=NO
+  evidence : “The patient 230794 obtained successful viral suppression with plasma viral load below the detection limit in 2025, therefore, we chose to harvest viral DNA from the whole blood sample.” “These findings suggested that the presence of the mutation L74I may not 
+  rationale: Yes under the supplied operational rule that includes sequences generated after receipt of NRTIs or INSTIs: the 2025 DNA sequences were obtained after ART exposure. Actual virological failure is not reported; the patient was successfully suppressed.
+OTHERS: Kimi K3 QSP=No(ok); GPT-4o FT=No, sequences were not obtained from ind(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=No(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='1'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [76] PMID 37910452  QID 13 (Boolean) ------------------------------
+Q: Were the patients in the study in a clinical trial?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=yes
+  evidence : “Study designs used include surveys [23–26,28,30,31,36,47–49], randomized control trials [27,50], and a prospective cohort [46].” “This systematic review and meta-analysis was aimed to synthesize available evidence on adherence to ART among HIV/AIDS patients i
+  rationale: Some participants in the reviewed studies were clinical-trial participants: page 5 identifies two randomized trials, and Table 1 on page 6 labels Nichols et al. and Dzansi as randomized clinical trials. This answer refers to those included populations; the pre
+OTHERS: Kimi K3 QSP=No(ok); GPT-4o FT=No(ok); GPT-4o QSP=No(ok); GPT-4o FT+QSP=No(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [77] PMID 37973713  QID 13 (Boolean) ------------------------------
+Q: Were the patients in the study in a clinical trial?
+HUMAN : Yes
+MODEL : No   [main_text] quote-in-pdf=yes
+  evidence : “We have conducted multi-center, prospective, observational, cross sectional study.” “The clinical trial received a positive opinion from the Bioethics Committee at the Medical University of Warsaw (Number of consent: AKBE/206/2020) and was registered on clini
+  rationale: Despite the authors’ use of 'clinical trial,' multicenter recruitment, and registration, the Methods explicitly define an observational, cross-sectional study. No experimental treatment assignment or randomization is described, so the observational-study class
+OTHERS: Kimi K3 QSP=No(X); GPT-4o FT=Yes(ok); GPT-4o QSP=Yes(ok); GPT-4o FT+QSP=No(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='117'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [78] PMID 40400229  QID 13 (Boolean) ------------------------------
+Q: Were the patients in the study in a clinical trial?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=partial
+  evidence : “The PrEP Impact trial was a prospective, open-label, single-arm, multicentre trial conducted at 157 Sexual Health Services (SHS) across England between Oct 13, 2017, and July 12, 2020.” “Eligible participants were aged 16 years or older, clinician-assessed to
+  rationale: The Methods explicitly describe participation in an open-label, single-arm, multicentre PrEP trial.
+OTHERS: Kimi K3 QSP=Yes(X); GPT-4o FT=Yes, the patients were part of the PrEP (X); GPT-4o QSP=Yes(X); GPT-4o FT+QSP=Yes(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP', 'GPT-4o QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='47'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [79] PMID 40431710  QID 13 (Boolean) ------------------------------
+Q: Were the patients in the study in a clinical trial?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=yes
+  evidence : “In 2003, in the context of the TMC-125 trial, ART was switched to didanosine (ddI), abacavir (ABC), tenofovir disoproxil (TDF), lopinavir/ritonavir (LPV/r), and etravirine (ETR).” “A DNA-based genotypic resistance assay on proviral DNA in 2015, within the fra
+  rationale: Although the publication is a case report rather than a trial report, this patient explicitly participated in clinical trials, including CN518 when proviral DNA genotyping was performed. Figure 1 also records placebo/raltegravir exposure.
+OTHERS: Kimi K3 QSP=No(ok); GPT-4o FT=Yes, the patient was enrolled in the Swi(X); GPT-4o QSP=No(ok); GPT-4o FT+QSP=Yes(X)
+  all-models-wrong=False  agree-with-model=['GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='1'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [80] PMID 31988104  QID 14 (Boolean) ------------------------------
+Q: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+HUMAN : 14
+MODEL : Yes   [main_text] quote-in-pdf=yes
+  evidence : “Recombinant mutant HIV-1 viruses were created either by site directed mutagenesis (SDM) of wild-type HIV-1 DNA, or by direct PCR of ART-experienced patient isolates (8).” “Patient-derived (PD) mutants were cloned from clinical plasma samples.”
+  rationale: The Methods on page 9 explicitly describe the patients contributing isolates as ART-experienced. Table 4 on page 7 reports the patient-derived RT mutation data.
+OTHERS: Kimi K3 QSP=Yes(X); GPT-4o FT=Yes(X); GPT-4o QSP=Yes(X); GPT-4o FT+QSP=Yes(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT', 'GPT-4o QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='14'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [81] PMID 36795586  QID 14 (Boolean) ------------------------------
+Q: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=partial
+  evidence : “Targeted HIV genotype testing was only sporadically available on a limited basis for CAHLIV failing second-line ART, and these results did not include information on DTG resistance.” “The average number of HIV genotype results per year per COE was 12 (range, 
+  rationale: The patients receiving targeted genotyping had failed second-line ART and therefore had previous ARV exposure.
+OTHERS: Kimi K3 QSP=No(ok); GPT-4o FT=No(ok); GPT-4o QSP=No(ok); GPT-4o FT+QSP=No(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='Not reported'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [82] PMID 36931676  QID 14 (Boolean) ------------------------------
+Q: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+HUMAN : Yes
+MODEL : No   [main_text] quote-in-pdf=partial
+  evidence : “Data on HIV-RNA levels (plasma and CSF), CD4 cell counts (absolute and percentage), drug resistance and previous and current ART are presented through a graphical system.” “Thus, data generated in clinical care are automatically ‘reused’ for research and deve
+  rationale: Page 4 describes existing treatment and resistance records. Although the cohort includes ART-experienced individuals, the paper does not report newly generated sequences from them; the specified no-sequence answer is No.
+OTHERS: Kimi K3 QSP=Yes(ok); GPT-4o FT=Yes(ok); GPT-4o QSP=Yes(ok); GPT-4o FT+QSP=Yes(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [83] PMID 37755428  QID 14 (Boolean) ------------------------------
+Q: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+HUMAN : No
+MODEL : Yes   [main_text] quote-in-pdf=partial
+  evidence : “The mean age of the infants was 8.2 months [95% confidence interval (CI) 7.3–9.2], and the majority (62.7%, 95% CI 54.3–70.3%) had experienced exposure to antiretroviral drugs for PMTCT.” “This infant was first diagnosed with HIV at 14 months of age and had r
+  rationale: Although described as ART-naive, the infants were not uniformly ARV-unexposed. The sequenced case infant explicitly received zidovudine-based postnatal prophylaxis before diagnosis, establishing prior ARV receipt.
+OTHERS: Kimi K3 QSP=Yes(X); GPT-4o FT=Yes(X); GPT-4o QSP=No(ok); GPT-4o FT+QSP=Yes(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP', 'GPT-4o FT', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='143'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [84] PMID 41088231  QID 14 (Boolean) ------------------------------
+Q: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+HUMAN :  No
+MODEL : Yes   [main_text] quote-in-pdf=partial
+  evidence : “The patient 230794 obtained successful viral suppression with plasma viral load below the detection limit in 2025, therefore, we chose to harvest viral DNA from the whole blood sample.” “By comparing the genetic sequences obtained in 2023 and 2025, it was fou
+  rationale: The initial 2023 specimen was obtained while ART-naïve, but the same patient was sequenced again in 2025 after receiving ART and achieving suppression.
+OTHERS: Kimi K3 QSP=Yes(X); GPT-4o FT=No, the paper does not report sequences (ok); GPT-4o QSP=No(ok); GPT-4o FT+QSP=No(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='1'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [85] PMID 35730213  QID 15 (List) ------------------------------
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN : NRTI, NNRTI, INSTI
+MODEL : None   [main_text] quote-in-pdf=partial
+  evidence : “We included adults enrolled at Butha-Buthe Government Hospital who transitioned from tenofovir disoproxil fumarate (TDF)/lamivudine (3TC)/EFV to TDF/3TC/DTG within first-line ART from 10 February until 15 December 2020.” “In this study within DO-REAL, we asse
+  rationale: Treatment regimens are described, but no HIV sequences from individuals are reported. The required answer is therefore None; this does not mean participants had no ARV exposure.
+OTHERS: Kimi K3 QSP=None(X); GPT-4o FT=No(X); GPT-4o QSP=NRTIs, NNRTIs(ok); GPT-4o FT+QSP=Not reported(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: [insti] .... Glass13 | Alain Amstutz135 | Nadine Tschumi13 | Jennifer M. Belus136 | Thomas Klimkait23 | Niklaus D. Labhardt135 1Swiss Tropical and Public Health Institute, Basel, Switzerland 2Molecular Virology Group, Department of Biomedicine, Basel, Switzerland 3University of Basel, Basel, Switzerland 4SolidarMed...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [86] PMID 36795586  QID 15 (List) ------------------------------
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN : Not reported
+MODEL : NRTIs; NNRTIs; PIs   [main_text] quote-in-pdf=yes
+  evidence : “Targeted HIV genotype testing was only sporadically available on a limited basis for CAHLIV failing second-line ART, and these results did not include information on DTG resistance.” “Single drug substitutions (SDS) were defined as an ART regimen change in wh
+  rationale: The article places targeted genotyping in patients failing second-line ART and identifies NRTI, NNRTI, and PI treatment in the cohort. These classes are consistent with the supplied historical second-line treatment inference rule. DTG use is not established as
+OTHERS: Kimi K3 QSP=None(ok); GPT-4o FT=No(ok); GPT-4o QSP=None(ok); GPT-4o FT+QSP=Not reported(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='Not reported'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [nrtis] ... real-world data. Open Forum Infect Dis. 2020;7:ofaa404. 36. Giacomelli A, Lai A, Franzetti M, et al; ARCA collaborative group. No impact of previous NRTIs resistance in HIV positive patients switched to DTG+2NRTIs under virological control: time of viral suppression makes the difference. Antiviral Res. ...
+
+=== [87] PMID 36931676  QID 15 (List) ------------------------------
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN : NRTI, NNRTI, PI, INSTI
+MODEL : None   [main_text] quote-in-pdf=yes
+  evidence : “Data include ART start and stop dates, ART regimen (including doses and mode of administration) and the reason for any change of drug regimens, prophylaxis of opportunistic infections and selected co-medications.” “Thus, data generated in clinical care are au
+  rationale: Pages 2 and 4 describe treatment information in the registry, but no newly sequenced patient group is reported. The prescribed answer is None when the paper does not report new patient sequences; this does not imply that cohort members were untreated.
+OTHERS: Kimi K3 QSP=NRTI, NNRTI, PI, INSTI(ok); GPT-4o FT=NRTI, INSTI, PI(ok); GPT-4o QSP=Not reported(X); GPT-4o FT+QSP=Not reported(X)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: [nrti] ...s and unique recombinant forms was also described.63 Sörstedt et al studied the effect of dolutegravir-­based treatment in PLHIV with pre-­ existing NRTI-­mutations and found a non-­inferior effect compared with protease inhibitor-­based regimens64 and has also explored viral blips during ART.58 Studie... | [insti] ...uthor affiliations 1Department of Infectious Diseases, Karolinska University Hospital, Stockholm, Sweden 2Department of Medicine Huddinge, Karolinska Institute, Stockholm, Sweden 3Department of Infectious Diseases/Venhälsan, Södersjukhuset, Stockholm, Sweden 4Department of Clinical Sciences, Lund Unive...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [88] PMID 37755428  QID 15 (List) ------------------------------
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN : Not reported
+MODEL : NRTIs   [main_text] quote-in-pdf=NO
+  evidence : “This infant was first diagnosed with HIV at 14 months of age and had received ZDV-based PNP.” “The infant’s mother had initiated ART (tenofovir/lamivudine/dolutegravir) 6 months before delivery.”
+  rationale: Zidovudine, explicitly administered to the sequenced infant as prophylaxis, is an NRTI. Maternal ART is distinguished from confirmed infant drug receipt; the article treats infant dolutegravir exposure through breastmilk as a possible mechanism rather than a d
+OTHERS: Kimi K3 QSP=NRTI(X); GPT-4o FT=NRTI, INSTI(X); GPT-4o QSP=NRTI, INSTIs(X); GPT-4o FT+QSP=NRTI, INSTI(X)
+  all-models-wrong=True  agree-with-model=[]
+  model said Q1='Yes' Q5='143'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [nrtis] ...PNP) [6-8]. Prior studies have shown high levels of resistance in ART-naive infants, especially to nonnucleoside reverse transcriptase inhibi- tors (NNRTIs) used for PNP and to nucleot(s)ides reverse transcriptase inhibitors (NRTIs) [9-11]. However, to the best of our knowledge, there is the first study ...
+
+=== [89] PMID 40839365  QID 15 (List) ------------------------------
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN : NRTI, NNRTI, INSTI
+MODEL : INSTIs   [main_text] quote-in-pdf=yes
+  evidence : “Dolutegravir (DTG)-based regimens (DBR) are now the most dispensed antiretroviral therapy (ART) for people living with HIV (PLHIV) in Sub-Saharan Africa.” “Eligible participants were PLHIV aged 15 years or older, on a DBR for at least 9 months, latest VL was 
+  rationale: Dolutegravir exposure establishes receipt of an INSTI. Other regimen components and prior drug classes are not specifically documented for the sequenced participants; resistance assessments for NRTIs, NNRTIs, and PIs do not by themselves establish receipt of t
+OTHERS: Kimi K3 QSP=NRTIs, INSTIs(ok); GPT-4o FT=Individuals received NRTIs, NNRTIs, PIs,(ok); GPT-4o QSP=INSTIs(X); GPT-4o FT+QSP=INSTIs(X)
+  all-models-wrong=False  agree-with-model=['GPT-4o QSP', 'GPT-4o FT+QSP']
+  model said Q1='Yes' Q5='288'
+  PDF near HUMAN answer: [nrti] ...ograms across Sub-Saharan Africa. In the tenofovir/lamivudine/efavirenz (TLE) era, the prevalence of non-nucleoside reverse-transcriptase inhibitor (NNRTI) resistance among PLHIV with viral nonsuppression varied from 50% to 80% at time of virologic failure. 7 The clear management pathway, as described i... | [nnrti] ...rograms across Sub-Saharan Africa. In the tenofovir/lamivudine/efavirenz (TLE) era, the prevalence of non-nucleoside reverse-transcriptase inhibitor (NNRTI) resistance among PLHIV with viral nonsuppression varied from 50% to 80% at time of virologic failure. 7 The clear management pathway, as described i...
+  PDF near MODEL answer: [instis] ...ly for NNRTIs 55.1% (113/204; 95% CI: 48.2% to 62.1%) followed by NRTIs 22.6% (46/204; 95% CI: 17.4% to 27.8%). The prevalence rates of major DRMs to INSTIs and PIs were low, 8.6% (18/212 95% CI: 5.3% to 11.9%) and 1.1% (95% CI: 0.0% to 2.6%), respectively. For resistance to individual NRTIs, prevalence o...
+
+=== [90] PMID 40974886  QID 15 (List) ------------------------------
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN : NRTI, NNRTI, PI, INSTI
+MODEL : NRTIs; INSTIs   [main_text] quote-in-pdf=partial
+  evidence : "Genotyping of protease, reverse transcriptase, and integrase from 3 bictegravir/emtricitabine/tenofovir alafenamide switch studies was included." "Baseline and Week 24 samples were available from study GS-US-380-4580; one participant from study GS-US-380-4449
+  rationale: The analysis includes post-switch Week 24 samples, supporting exposure to bictegravir (INSTI) and emtricitabine/tenofovir alafenamide (NRTIs) before those samples. Earlier individual regimens are not detailed; resistance to NNRTIs or PIs alone does not establi
+OTHERS: Kimi K3 QSP=NRTI, NNRTI, PI, INSTI(ok); GPT-4o FT=NRTI, NNRTI, PI, and INSTI were received(ok); GPT-4o QSP=Not reported(X); GPT-4o FT+QSP=INSTI, NRTI(X)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='Not reported'
+  PDF near HUMAN answer: [nrti] ...d 100 % detection; 159 (61 %) were detected 50 % of the time, with 58 (37 %) reported on the first test and Table 1 HIV-1 drug RAMs.a Drug class RAMs NRTI K65R/E/N, T69 insertions, K70E, L74V/I, Y115F, Q151M, M184V/I, TAMs (M41L, D67N, K70R, L210W, T215F/Y, K219E/N/Q/R) NNRTI L100I, K101E/P, K103N/S, V1... | [nnrti] ... drug RAMs.a Drug class RAMs NRTI K65R/E/N, T69 insertions, K70E, L74V/I, Y115F, Q151M, M184V/I, TAMs (M41L, D67N, K70R, L210W, T215F/Y, K219E/N/Q/R) NNRTI L100I, K101E/P, K103N/S, V106A/M, V108I, E138A/G/K/Q/R, V179L, Y181C/I/V, Y188C/H/L, G190A/E/Q/S, H221Y, P225H, F227C, M230I/L PI D30N, V32I, M46I/L,...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [91] PMID 41088231  QID 15 (List) ------------------------------
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN : None
+MODEL : NRTIs, INSTIs   [main_text] quote-in-pdf=NO
+  evidence : “These findings suggested that the presence of the mutation L74I may not affect the efficacy of bictegravir, emtricitabine and tenofovir alafenamide (BIC + FTC + TAF) combination treatment.” “The patient 230794 obtained successful viral suppression with plasma
+  rationale: Before the 2025 specimen was collected, the patient received bictegravir, an INSTI, and emtricitabine and tenofovir alafenamide, both NRTIs. No other patient treatment classes are documented.
+OTHERS: Kimi K3 QSP=NRTI, INSTI(X); GPT-4o FT=The individuals in the study had not rec(ok); GPT-4o QSP=None(ok); GPT-4o FT+QSP=None(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='1'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [nrtis] ...​/​h​i​v​d​b​/​b​ y​-​s​e​q​u​e​n​c​e​s​/) was used to analyse the protease ​i​n​h​i​b​i​ t​o​r​s (PIs), nucleoside reverse-transcription inhibitors (NRTIs), non-nucleoside reverse-transcription inhibi­ tors (NNRTIs), integrase strand transfer inhibitors (INS­ TIs) and drug resistance mutations (DRMs). T... | [instis] ...equences from China. Prediction of drug resistance mutations and tropism No major/accessory mutations conferring resistance to PIs, NRTIs, NNRTIs, or INSTIs were identified, there­ fore, the strain 230794 was susceptible to 26 drugs in four categories (as shown in Supplementary Table 2). How­ ever, the st...
+
+=== [92] PMID 35730213  QID 16 (List) ------------------------------
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN : EFV, DTG, TDF, 3TC
+MODEL : None   [main_text] quote-in-pdf=partial
+  evidence : “We included adults enrolled at Butha-Buthe Government Hospital who transitioned from tenofovir disoproxil fumarate (TDF)/lamivudine (3TC)/EFV to TDF/3TC/DTG within first-line ART from 10 February until 15 December 2020.” “In this study within DO-REAL, we asse
+  rationale: Although specific ARVs are named, there is no reported patient HIV sequencing to which prior drug exposure can be linked. The specified no-sequences rule requires None.
+OTHERS: Kimi K3 QSP=None(X); GPT-4o FT=No(X); GPT-4o QSP=Tenofovir disoproxil fumarate (TDF), lam(ok); GPT-4o FT+QSP=Not reported(X)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: [efv] ...r: REG-19-008 Abstract Introduction: HIV programmes across many countries in Africa have recently transitioned people living with HIV from efavirenz (EFV)- to dolu- tegravir (DTG)-containing antiretroviral therapy (ART). As both drugs are associated with neuropsychiatric adverse effects, this study ass... | [dtg] ...troduction: HIV programmes across many countries in Africa have recently transitioned people living with HIV from efavirenz (EFV)- to dolu- tegravir (DTG)-containing antiretroviral therapy (ART). As both drugs are associated with neuropsychiatric adverse effects, this study assessed the mental health a...
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [93] PMID 36851760  QID 16 (List) ------------------------------
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN : Not reported
+MODEL : Lamivudine (3TC); zidovudine (ZDV); abacavir (ABC); nevirapine (NVP); efavirenz (EFV); tenofovir disoproxil fumarate (TDF); emtricitabine (FTC); lopinavir; ritonavir   [table] quote-in-pdf=yes
+  evidence : “3TC + (ZDV or ABC) + NVP or EFV” “TDF + (3TC or FTC or ABC) + LPV/r” “Abbreviations: 3TC: Lamivudine, ZDV: Zidovidune, ABC: Abacavir, NVP: Nevirapine, EFV: Efavirenz, FTC: Emtricitabine, TDF: Tenofovir, LPV/r: Lopinavir/ritonavir, ND: No data available, NA: N
+  rationale: Table 1, page 4, lists these treatment regimens at enrollment for the 31 ART-treated children with successful sequences. The answer expands all named regimen drugs, including ritonavir used with lopinavir.
+OTHERS: Kimi K3 QSP=Lamivudine (3TC), zidovudine (ZDV), abac(X); GPT-4o FT=No(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Not reported(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='107'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [lamivudine] ... (%) **** 15 (34.1) 11 (35.5) 1.0000 Other polymorphism mutations, n (%) **** 38 (86.4) 17 (54.8) 0.0035 * Treated children only. Abbreviations: 3TC: Lamivudine, ZDV: Zidovidune, ABC: Abacavir, NVP: Nevirapine, EFV: Efavirenz, FTC: Emtricitabine, TDF: Tenofovir, LPV/r: Lopinavir/ritonavir, ND: No data availab... | [3tc] ...) RNA HIV-1 copies/mL, median (IQR) * ND 54000 (5543-170000) Duration of treatment, years, median (IQR) * NA 5 (3-7) Treatment at enrollment *, n (%) 3TC + (ZDV or ABC) + NVP or EFV NA 28 (90.3) TDF + (3TC or FTC or ABC) + LPV/r NA 3 (9.7) Subtypes, n (%) CRF02_AG 34 22 (71.0) 56/75 (74.7%) 0.5957 *** ...
+
+=== [94] PMID 36931676  QID 16 (List) ------------------------------
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN : DTG
+MODEL : None   [table] quote-in-pdf=partial
+  evidence : “Laboratory data (CD4 cell count and HIV-RNA viral loads) and data regarding antiretroviral therapy refer to latest available data unless otherwise stated.” “Individual data is generally updated at least every 6 months.”
+  rationale: Table 1 on pages 3–4 lists current or latest regimens, and Figure 2 on page 5 illustrates treatment histories, but neither establishes drug exposure before a new sequencing dataset reported in this paper. The no-patient-sequence rule requires None.
+OTHERS: Kimi K3 QSP=Abacavir (ABC), lamivudine (3TC), emtric(ok); GPT-4o FT=Dolutegravir(ok); GPT-4o QSP=Not reported(X); GPT-4o FT+QSP=Not reported(X)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='No' Q5='0'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: (no distinctive token found)
+
+=== [95] PMID 37573167  QID 16 (List) ------------------------------
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN : Not reported
+MODEL : Enfuvirtide, maraviroc, ritonavir   [table] quote-in-pdf=n/a
+  evidence : “EI: entry inhibitors (enfuvirtide, maraviroc)”. “PIb: ritonavir/cobicistat boosted protease inhibitors.”
+  rationale: The Table 1 footnote, page 2, names enfuvirtide and maraviroc as entry inhibitors and ritonavir as a PI booster. Other regimen components are reported only by class; cobicistat is a pharmacokinetic enhancer rather than an ARV, and drugs appearing only in refer
+OTHERS: Kimi K3 QSP=Enfuvirtide, maraviroc (all other treatm(X); GPT-4o FT=No(ok); GPT-4o QSP=Not reported(ok); GPT-4o FT+QSP=Not reported(ok)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='1126'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [enfuvirtide] ...isexuals, transsexuals and people for whom their sexual behav­ iour was not specified. cART: combined antiretroviral therapy; EI: entry in­ hibitors (enfuvirtide, maraviroc); INSTI: integrase strand-transfer inhibitors; IQR: interquartile range; NRTI: nucleos(t)ide reverse transcriptase inhibitors; NNRTI: non ... | [maraviroc] ...nssexuals and people for whom their sexual behav­ iour was not specified. cART: combined antiretroviral therapy; EI: entry in­ hibitors (enfuvirtide, maraviroc); INSTI: integrase strand-transfer inhibitors; IQR: interquartile range; NRTI: nucleos(t)ide reverse transcriptase inhibitors; NNRTI: non NRTI; PIb: ...
+
+=== [96] PMID 37574435  QID 16 (List) ------------------------------
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN : DTG, BIC, FTC, TAF
+MODEL : Lamivudine (3TC), emtricitabine (FTC), abacavir (ABC), zidovudine (AZT), tenofovir disoproxil fumarate (TDF), tenofovir alafenamide (TAF), efavirenz (EFV), nevirapine (NVP), rilpivirine (RPV), atazanavir (ATV), darunavir (DRV), lopinavir (LPV), ritonavir (RTV), dolutegravir (DTG), elvitegravir (EVG), raltegravir (RAL)   [table] quote-in-pdf=yes
+  evidence : “Abbreviations: 3TC, lamivudine; ABC, abacavir; ART, antiretroviral therapy; ATV, atazanavir; ATV/r, ritonavir-boosted atazanavir; AZT, zidovudine; DRV/c, cobicistat-boosted darunavir; DRV/r, ritonavir-boosted darunavir; DTG, dolutegravir; EFV, efavirenz; EVG/
+  rationale: Table 2 on page 6 lists these drugs in previous ART histories and pre-switch regimens. Bictegravir is reported as switch treatment rather than previous ART; the paper does not identify which switch-treatment group supplied the five follow-up genotypes and else
+OTHERS: Kimi K3 QSP=Lamivudine/emtricitabine (3TC/FTC), abac(X); GPT-4o FT=DTG, FTC, TAF, BIC, NRTI, NNRTI(ok); GPT-4o QSP=Not reported(X); GPT-4o FT+QSP=Not reported(X)
+  all-models-wrong=False  agree-with-model=[]
+  model said Q1='Yes' Q5='70'
+  PDF near HUMAN answer: [dtg] ...st international guidelines due to their high ge- netic barrier to emergence of antiretroviral resistance.1e3 After the introduction of dolutegravir (DTG), a second- generation INSTI with high genetic barrier, its efficacy as salvage therapy has been demonstrated when compared with PIs in randomized cl... | [bic] ... 2023; accepted 31 July 2023 Available online 4 August 2023 KEYWORDS Virologic failure; Salvage therapy; Nucleoside reverse- transcriptase inhibitor; Bictegravir; Dolutegravir; Abstract Background: Antiretroviral regimens containing a second-generation integrase strand-transfer inhibitor (INSTI) plus 2...
+  PDF near MODEL answer: [lamivudine] ...ion at week 48 (90.2% vs. 91.7%, respectively) among PWH with virologic failure while receiving an NNRTI plus tenofovir disoproxil fumarate (TDF) and lamivudine or emtricita- bine.67 With the findings of these two clinical trials, DTG plus 2 NRTIs are currently recommended for PWH who experience virologic fai... | [3tc] ..., AZT, TAF, DRV/r, DTG, EVG/c A62V, M184V ND TAF/FTC/EVG/c BIC 2060 Lost to follow-up after 6 months 2 XTC, ABC, AZT, LPV/r, DTG D67DN, M184MV ND ABC/3TC/DTG BIC 1200 virally re-suppressed 3 XTC, TAF, EVG/c D67DG ND TAF/FTC/EVG/c BIC 72100 virally re-suppressed 4 XTC, TDF, EFV, RPV A62AV, T69NT ND TDF/...
+
+=== [97] PMID 37755428  QID 16 (List) ------------------------------
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN : Not reported
+MODEL : Zidovudine (ZDV)   [main_text] quote-in-pdf=NO
+  evidence : “This infant was first diagnosed with HIV at 14 months of age and had received ZDV-based PNP.” “The infant’s mother had initiated ART (tenofovir/lamivudine/dolutegravir) 6 months before delivery.”
+  rationale: Zidovudine is the specifically named drug documented as administered to a sequenced infant before diagnosis. Tenofovir, lamivudine, and dolutegravir are documented as maternal treatment, not confirmed administration to the sequenced infants; drugs mentioned on
+OTHERS: Kimi K3 QSP=Zidovudine (ZDV)(X); GPT-4o FT=Tenofovir (TFV), Lamivudine (3TC), Dolut(X); GPT-4o QSP=Tenofovir, Lamivudine, Dolutegravir, Zid(X); GPT-4o FT+QSP=ZDV, TDF, 3TC, DTG(X)
+  all-models-wrong=True  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='143'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [zdv] ... of the M184V mutation and EFV/NVP resistance due to the K103N mutation. This infant was first diagnosed with HIVat 14 months of age and had received ZDV-based PNP. The infant's mother had initiated ART (tenofovir/ lamivudine/dolutegravir) 6 months before delivery. Infor- mation on the mother's prior A...
+
+=== [98] PMID 40779404  QID 16 (List) ------------------------------
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN : TFV (no other ARVs specified; Data in supplementary methods)
+MODEL : Tenofovir (TFV; formulation unspecified), dolutegravir, abacavir, lamivudine   [main_text] quote-in-pdf=yes
+  evidence : “Before enrollment, participants had been treated with TFV (80.0%), INSTIs (50.0%), non-nucleoside RT inhibitors (NNRTI; 45.0%), and PR inhibitors (PI; 75.0%) (Table 1).” “Switching to fixed-dose bictegravir, emtricitabine, and tenofovir alafenamide from dolut
+  rationale: Page 337 explicitly documents prior tenofovir exposure without specifying its formulation. Reference 15 on page 341 identifies dolutegravir, abacavir, and lamivudine as the pre-switch regimen for included Study 1844. Detailed individual treatment histories are
+OTHERS: Kimi K3 QSP=Tenofovir (TFV); individual prior drugs (X); GPT-4o FT=Participants received Tenofovir, INSTIs,(X); GPT-4o QSP=Not reported(X); GPT-4o FT+QSP=TDF/TAF, EFV, ETR, RPV, NVP, DTG, BIC, L(X)
+  all-models-wrong=True  agree-with-model=[]
+  model said Q1='Yes' Q5='2028'
+  PDF near HUMAN answer: [tfv] ...ro- viral treatment options for people with HIV-1 (PWH). Prior studies have demonstrated safety and efficacy of bictegravir/emtricitabine/ tenofovir (TFV) alafenamide [B/F/tenofovir alafenamide fumarate (TAF)] in PWH including in virologically suppressed (VS) individ- uals with M184V/I mutations in rev... | [other] ...6 studies ranged between 0% and 1.5%, with most participants (95%; n = 19/20) having K65R. Overall, K65R/N mutations were most commonly observed with other resistance-associated mutations (70.0%, n = 14/20), including M184V/I (45.0%, n = 9/20), and $1 thymidine analog mutations (30.0%, n = 6/20). All par...
+  PDF near MODEL answer: [tenofovir] ...BRIEF REPORT: CLINICAL SCIENCE Efficacy of Bictegravir/Emtricitabine/Tenofovir Alafenamide in Participants With Preexisting K65R/N in HIV-1 in Phase 2/ 3/3b Clinical Trials Archana V. Boopathy, PhD, Michelle L. D'Antoni, PhD, Kr... | [tfv] ...ro- viral treatment options for people with HIV-1 (PWH). Prior studies have demonstrated safety and efficacy of bictegravir/emtricitabine/ tenofovir (TFV) alafenamide [B/F/tenofovir alafenamide fumarate (TAF)] in PWH including in virologically suppressed (VS) individ- uals with M184V/I mutations in rev...
+
+=== [99] PMID 41088231  QID 16 (List) ------------------------------
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN : None
+MODEL : Bictegravir (BIC), emtricitabine (FTC), tenofovir alafenamide (TAF)   [main_text] quote-in-pdf=NO
+  evidence : “These findings suggested that the presence of the mutation L74I may not affect the efficacy of bictegravir, emtricitabine and tenofovir alafenamide (BIC + FTC + TAF) combination treatment.” “The patient 230794 obtained successful viral suppression with plasma
+  rationale: The Discussion on page 7 identifies the patient's regimen before the follow-up whole-blood specimen was sequenced.
+OTHERS: Kimi K3 QSP=bictegravir (BIC), emtricitabine (FTC), (X); GPT-4o FT=The individuals in the study had not rec(ok); GPT-4o QSP=None(ok); GPT-4o FT+QSP=None(ok)
+  all-models-wrong=False  agree-with-model=['Kimi K3 QSP']
+  model said Q1='Yes' Q5='1'
+  PDF near HUMAN answer: (no distinctive token found)
+  PDF near MODEL answer: [bictegravir] ... the HIV-1 RNA viral load below the detection limit. These findings suggested that the pres­ ence of the mutation L74I may not affect the efficacy of bictegravir, emtricitabine and tenofovir alafenamide (BIC + FTC + TAF) combination treatment. In a previous study of a large cohort of antiretroviral- naive indi... | [bic] ... the HIV-1 RNA viral load below the detection limit. These findings suggested that the pres­ ence of the mutation L74I may not affect the efficacy of bictegravir, emtricitabine and tenofovir alafenamide (BIC + FTC + TAF) combination treatment. In a previous study of a large cohort of antiretroviral- na...
