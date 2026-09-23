@@ -115,6 +115,8 @@ def self_inconsistent(rows: pd.DataFrame, model: str) -> set[tuple[str, int]]:
 
 
 def categorize(s: pd.Series) -> str:
+    if s.get("all_models_wrong"):
+        return "annotation ambiguous: every model (incl. fine-tuned GPT-4o) disagrees"
     if s.get("self_inconsistent"):
         return "model error: out-of-scope evidence (model itself said no patient sequences)"
     qid = int(s["QID"])
@@ -162,6 +164,13 @@ def main() -> int:
             for r in ans.itertuples(index=False):
                 evidence[(r.PMID, int(r.QID), spec.label)] = (r.Evidence, r.EvidenceLocation, r.Rationale)
 
+    # A row every model gets wrong - including the model fine-tuned on these annotations - points
+    # at an ambiguous question or annotation rather than a capability gap.
+    unanimous = {
+        (str(r["PMID"]), int(r["QID"]))
+        for _, r in rows.iterrows()
+        if all(r.get(f"{m} correct") == 0 for m in triaged)
+    }
     cache: dict[str, str] = {}
     out = []
     for model in triaged:
@@ -177,6 +186,7 @@ def main() -> int:
                 "Human Answer": r[config.REF_COL], "Model Answer": answer,
                 "Outcome": r[f"{model} outcome"],
                 "self_inconsistent": (str(r["PMID"]), int(r["QID"])) in inconsistent,
+                "all_models_wrong": (str(r["PMID"]), int(r["QID"])) in unanimous,
                 "models_agree": all(canonicalize_answer(answer) == canonicalize_answer(str(r[m])) for m in others),
                 "is_comparator": model in config.COMPARATORS,
                 "evidence_in_pdf": evidence_in_pdf(ev, text),

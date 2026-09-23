@@ -152,6 +152,22 @@ QID 10 - i.e. curators sometimes do record lab-construct sequencing details. On 
 every model scores worse on QID 9/10 (Astra 85%, Kimi 83%, GPT-4o FT 75%) than on the rest
 (95%, 95%, 83%). Report this as an annotation-consistency limitation, not a model failure alone.
 
+**Rows every model gets wrong (22 distinct rows in the pilot).** When all five models - including
+the GPT-4o fine-tuned on these very annotations - disagree with the annotation, the question or
+the annotation is usually the problem, not the models. `08_error_triage.py` flags these as
+`annotation ambiguous`. Example: PMID 31988104 (Gilead in-vitro study) tests site-directed mutants
+**and** 14 "patient-derived mutants ... cloned from clinical plasma samples" and reports their TAM
+profiles. The QSP rule says answer Yes when a paper "reported lists of mutations, directly from
+clinical samples", and No only if *only* lab strains/SDMs were studied - so every model answered
+Yes. The curators applied a stricter standard (were new patient sequences generated and reported?)
+and answered No, while still recording "RT" for QID 9 on the same paper. This is a third unstated
+convention: what counts as "reporting sequences".
+
+**Annotation data-entry errors.** A type check over all 150 papers x 16 questions found 3:
+QID 14 (Boolean) annotated "14" for PMID 31988104; QID 8 (Boolean) annotated "Not known" for
+PMID 41140464; QID 5 (Number) annotated "Not Reported" for PMID 28559249. The first is
+unanswerable as scored - no model can produce "14" for a yes/no question.
+
 **Two curator conventions the prompt never states**, both systematic rather than capability gaps:
 - QID 5: annotations count individuals *successfully sequenced*; the models count individuals
   *sampled* (16 rows).
