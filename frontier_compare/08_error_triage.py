@@ -148,7 +148,7 @@ def categorize(s: pd.Series) -> str:
 
 
 def main() -> int:
-    rows = pd.read_csv(config.RESULTS_DIR / "detailed_rows.csv", dtype={"PMID": str},
+    rows = pd.read_csv(config.WORK_DIR / "detailed_rows.csv", dtype={"PMID": str},
                        keep_default_na=False, na_values=[""])
     rows["QID"] = rows["QID"].astype(int)
     primary = [spec.label for spec in config.MODELS.values()
@@ -202,9 +202,9 @@ def main() -> int:
             out.append(rec)
 
     triage = pd.DataFrame(out).sort_values(["suggested_category", "PMID", "QID"])
-    triage.to_csv(config.RESULTS_DIR / "error_triage.csv", index=False)
+    triage.to_csv(config.WORK_DIR / "error_triage.csv", index=False)
     print(triage["suggested_category"].value_counts().to_string())
-    print(f"\nrows: {len(triage)}  ->  {config.RESULTS_DIR.relative_to(config.ROOT)}/error_triage.csv")
+    print(f"\nrows: {len(triage)}  ->  {config.WORK_DIR.relative_to(config.ROOT)}/error_triage.csv")
     return 0
 
 

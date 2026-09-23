@@ -20,7 +20,8 @@ PDF_DIR = FC_DIR / "pdfs"
 PDF_MANIFEST = FC_DIR / "data/pdf_manifest.csv"
 
 RUNS_DIR = FC_DIR / "runs"          # raw API responses, one JSONL per model x run
-RESULTS_DIR = FC_DIR / "results"
+RESULTS_DIR = FC_DIR / "results"    # final, reader-facing outputs
+WORK_DIR = FC_DIR / "work"          # pipeline intermediates (parsed answers, per-row scores, dossiers)
 FIGURES_DIR = FC_DIR / "figures"
 FAILURE_DIR = FC_DIR / "failure_modes"
 
@@ -29,8 +30,10 @@ TOTAL_QUESTIONS = 16
 
 # Cached GPT-4o conditions from the paper. NOTE: the paper's "GPT-4o" is gpt-4o-mini-2024-07-18.
 COMPARATORS = ["GPT-4o FT", "GPT-4o QSP", "GPT-4o FT+QSP"]
-# Best cached condition overall (full150 pooled accuracy/F1, eval/results/evaluation_metrics_full150.csv)
-PRIMARY_COMPARATOR = "GPT-4o FT"
+# Base comparator for Figure 4: every other model is tested against prompted GPT-4o, the same
+# prompt (QSP) the frontier models get. GPT-4o FT is the strongest cached condition.
+PRIMARY_COMPARATOR = "GPT-4o QSP"
+BEST_COMPARATOR = "GPT-4o FT"
 
 
 @dataclass(frozen=True)
@@ -131,4 +134,4 @@ def run_path(model_key: str, run_id: int) -> Path:
 
 
 def answers_path(model_key: str, run_id: int) -> Path:
-    return RESULTS_DIR / "answers" / f"{model_key}_run{run_id}.csv"
+    return WORK_DIR / "answers" / f"{model_key}_run{run_id}.csv"

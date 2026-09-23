@@ -128,7 +128,7 @@ def main() -> int:
 
     if ops_rows:
         ops = pd.DataFrame(ops_rows)
-        ops.to_csv(config.RESULTS_DIR / "ops_requests.csv", index=False)
+        ops.to_csv(config.WORK_DIR / "ops_requests.csv", index=False)
         print(ops.groupby(["model_key", "run_id", "json_status"]).size().to_string())
     else:
         print("No run files found under", config.RUNS_DIR)

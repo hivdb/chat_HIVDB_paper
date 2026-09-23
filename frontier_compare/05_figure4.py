@@ -1,82 +1,110 @@
 #!/usr/bin/env python3
-"""Updated Figure 4: accuracy, precision, recall, F1 for frontier models vs cached GPT-4o.
+"""Updated Figure 4 in the style of the paper's eval/figures/full150-bar-chart.png.
 
-Bars pool all PMID x QID rows, as in the paper's Figure 4 (--aggregation pooled, default), with
-95% row-bootstrap CIs; --aggregation macro plots the mean of the 16 per-QID values instead
-(no CIs). A star marks a BH-adjusted Wilcoxon p < 0.05 versus
-config.PRIMARY_COMPARATOR (the best cached GPT-4o condition).
+Same layout and styling constants as eval/plots.py: stacked accuracy / precision / recall / F1
+panels, bars pooled over all PMID x QID rows, value labels on bars, models grouped by family
+with bold family names below. The base comparator is GPT-4o QSP (config.PRIMARY_COMPARATOR),
+the same prompt the frontier models get. Brackets show BH-adjusted Wilcoxon p < 0.05 over the 16
+per-QID values against it (comparison_set "figure4" in results/statistical_tests.csv), as the
+paper's brackets do against each family's base model. Brackets are drawn here rather than by
+eval/plots.py, whose stacking is tuned for at most three brackets per panel.
 """
 
 from __future__ import annotations
 
-import argparse
 import sys
 from pathlib import Path
 
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt  # noqa: E402
+import pandas as pd  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from eval import plots  # noqa: E402
 from frontier_compare import config  # noqa: E402
 
-METRICS = [("accuracy", "Accuracy"), ("precision", "Precision"), ("recall", "Recall"), ("f1", "F1")]
-FRONTIER_COLORS = ["#2a78d6", "#eb6834"]            # categorical slots 1-2
-COMPARATOR_COLORS = ["#4d4d4a", "#8a8983", "#bdbcb4"]  # neutral steps: cached baselines recede
+GPT4O = "GPT-4o"
+# The paper's GPT-4o orange, plus one hue per frontier model
+FAMILY_COLORS = {GPT4O: "#ff7f0e", "GPT-6 Astra": "#1f77b4", "Kimi K3": "#9467bd"}
+# Paper convention: light = prompted without fine-tuning, dark = fine-tuned
+GPT4O_TINTS = {"QSP": 0.55, "FT": 0.0, "FT+QSP": 0.0}
+ORDER = [f"{GPT4O} QSP", f"{GPT4O} FT", f"{GPT4O} FT+QSP"]
+FAMILY_GAP = 0.7
+BRACKET_START, BRACKET_STEP, BRACKET_HEIGHT = 115.0, 17.0, 3.0
+Y_MAX = 185.0
+
+
+def family(model: str) -> str:
+    return next(f for f in FAMILY_COLORS if model.startswith(f))
+
+
+def p_label(p: float) -> str:
+    if p < 0.001:
+        return "p<0.001"
+    return f"p={p:.2f}" if p > 0.009 else f"p={p:.3f}"
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--aggregation", choices=["pooled", "macro"], default="pooled")
-    args = parser.parse_args()
-
     summary = pd.read_csv(config.RESULTS_DIR / "metrics_summary.csv")
-    tests = pd.read_csv(config.RESULTS_DIR / "pairwise_tests.csv")
-    comparators = [c for c in config.COMPARATORS if c in set(summary["model"])]
-    frontier = [m for m in summary["model"].unique() if m not in comparators]
-    models = frontier + comparators
-    colors = dict(zip(frontier, FRONTIER_COLORS)) | dict(zip(comparators, COMPARATOR_COLORS))
+    tests = pd.read_csv(config.RESULTS_DIR / "statistical_tests.csv")
+    frontier = [spec.label for spec in config.MODELS.values() if spec.label in set(summary["model"])]
+    models = [m for m in ORDER if m in set(summary["model"])] + frontier
+    values = summary.pivot(index="model", columns="metric", values="pooled") * 100
+    base = config.PRIMARY_COMPARATOR
+    fig4 = tests[(tests["comparison_set"] == "figure4") & (tests["test"] == "wilcoxon_qid")]
 
-    fig, ax = plt.subplots(figsize=(10, 5.2))
-    width = 0.8 / len(models)
-    x = np.arange(len(METRICS))
+    x, positions = 0.0, []
     for i, model in enumerate(models):
-        rows = summary[summary["model"] == model].set_index("metric").loc[[m for m, _ in METRICS]]
-        vals = rows[args.aggregation].to_numpy() * 100
-        pos = x - 0.4 + width * (i + 0.5)
-        yerr = None
-        if args.aggregation == "pooled":
-            yerr = np.vstack([vals - rows["pooled_ci_low"] * 100, rows["pooled_ci_high"] * 100 - vals])
-        ax.bar(pos, vals, width * 0.92, color=colors[model], label=model, yerr=yerr,
-               error_kw={"elinewidth": 1, "capsize": 2, "ecolor": "#3d3d3a"})
-        ink = "#1a1a19" if colors[model] == COMPARATOR_COLORS[-1] else "white"
-        tops = vals if yerr is None else vals + yerr[1]
-        for xp, v in zip(pos, vals):
-            ax.text(xp, 2, f"{v:.0f}", ha="center", va="bottom", fontsize=7, color=ink, rotation=90)
-        if model in frontier:
-            sig = tests[(tests["frontier"] == model) & (tests["comparator"] == config.PRIMARY_COMPARATOR)
-                        & (tests["test"] == "wilcoxon_qid")].set_index("metric")
-            for (metric, _), xp, top in zip(METRICS, pos, tops):
-                if metric in sig.index and sig.loc[metric, "p_bh"] < 0.05:
-                    ax.text(xp, min(top + 0.5, 101), "*", ha="center", fontsize=12, color="#1a1a19")
+        if i and family(model) != family(models[i - 1]):
+            x += FAMILY_GAP
+        positions.append(x)
+        x += plots.MODEL_SPACING
+    pos = dict(zip(models, positions))
+    colors = [plots._tint_color(FAMILY_COLORS[GPT4O], GPT4O_TINTS[m.split()[-1]]) if family(m) == GPT4O
+              else FAMILY_COLORS[family(m)] for m in models]
 
-    ax.set_xticks(x, [label for _, label in METRICS], fontsize=11)
-    ax.set_ylim(0, 105)
-    ax.set_ylabel("%" + (" (pooled over all paper × question pairs)" if args.aggregation == "pooled" else " (mean of 16 per-question values)"))
-    ax.yaxis.grid(True, color="#e5e4de", linewidth=0.8)
-    ax.set_axisbelow(True)
-    for side in ("top", "right"):
-        ax.spines[side].set_visible(False)
-    ax.legend(ncol=3, fontsize=9, frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.08))
-    ax.set_title(f"Frontier QSP vs cached GPT-4o (* BH p<0.05 vs {config.PRIMARY_COMPARATOR}, Wilcoxon over QIDs)",
-                 fontsize=10, loc="left")
-    fig.tight_layout()
+    fig, axes = plt.subplots(len(plots.METRIC_COLUMNS), 1, figsize=(14, 18), sharex=True,
+                             gridspec_kw={"hspace": 0.45})
+    for ax, (metric, label) in zip(axes, plots.METRIC_COLUMNS):
+        vals = [values.loc[m, metric] for m in models]
+        bars = ax.bar(positions, vals, color=colors, width=0.8)
+        for bar, v in zip(bars, vals):
+            ax.text(bar.get_x() + bar.get_width() / 2, v + 4, plots._round_half_up(v, 0),
+                    ha="center", va="bottom", fontsize=plots.BAR_LABEL_SIZE)
+        sig = fig4[(fig4["metric"] == metric) & (fig4["p_bh"] < 0.05)].copy()
+        sig["distance"] = sig["model"].map(lambda m: abs(pos[m] - pos[base]))
+        for level, r in enumerate(sig.sort_values("distance").itertuples()):
+            y = BRACKET_START + level * BRACKET_STEP
+            x0, x1 = pos[base], pos[r.model]
+            ax.plot([x0, x0, x1, x1], [y, y + BRACKET_HEIGHT, y + BRACKET_HEIGHT, y], color="black", linewidth=1)
+            ax.text((x0 + x1) / 2, y + BRACKET_HEIGHT + 1.5, p_label(r.p_bh), ha="center", va="bottom",
+                    fontsize=plots.ANNOTATION_FONT_SIZE)
+        ax.set_ylim(0, Y_MAX)
+        ax.set_yticks([0, 50, 100])
+        ax.set_ylabel(f"{label} (%)", fontsize=plots.AXIS_LABEL_SIZE)
+        ax.tick_params(axis="both", labelsize=plots.AXIS_TICK_SIZE)
+        ax.tick_params(axis="x", pad=plots.X_TICK_PAD)
+        ax.grid(axis="y", linestyle="--", alpha=0.3)
+        for side in ("top", "right"):
+            ax.spines[side].set_visible(False)
+
+    axes[-1].set_xticks(positions)
+    axes[-1].set_xticklabels([m.split()[-1] for m in models], rotation=plots.LABEL_ROTATION, ha="right",
+                             fontsize=plots.AXIS_TICK_SIZE)
+    for fam in dict.fromkeys(family(m) for m in models):
+        xs = [pos[m] for m in models if family(m) == fam]
+        axes[-1].text((min(xs) + max(xs)) / 2, -0.62, fam, ha="center", va="top", fontweight="bold",
+                      fontsize=plots.FAMILY_LABEL_SIZE, transform=axes[-1].get_xaxis_transform())
+    papers = int(summary["papers"].min())
+    fig.suptitle(f"Frontier models vs GPT-4o ({papers} papers)", fontsize=plots.TITLE_FONT_SIZE)
+    fig.subplots_adjust(bottom=0.12, top=0.93)
 
     config.FIGURES_DIR.mkdir(parents=True, exist_ok=True)
-    stem = config.FIGURES_DIR / f"figure4_frontier_{args.aggregation}"
-    fig.savefig(stem.with_suffix(".png"), dpi=300)
-    fig.savefig(stem.with_suffix(".tiff"), dpi=300, pil_kwargs={"compression": "tiff_lzw"})
-    print(f"Wrote {stem}.png/.tiff")
+    out = config.FIGURES_DIR / "figure4_frontier.png"
+    fig.savefig(out, dpi=300)
+    print(f"Wrote {out.relative_to(config.ROOT)}")
     return 0
 
 

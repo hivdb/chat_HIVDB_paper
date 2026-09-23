@@ -27,8 +27,8 @@ answer is scored first and a layer can only rescue a row, never break one:
 Metrics including them are the primary numbers (`pooled`); the unadjusted score is kept
 alongside as `pooled_strict` / `<model> correct_strict` for comparability with the paper.
 
-Outputs (results/): detailed_rows.csv, metrics_by_qid.csv, metrics_summary.csv,
-metrics_by_type.csv, pairwise_tests.csv, stability.csv (when >1 run exists).
+Outputs: results/metrics_summary.csv, results/metrics_by_qid.csv, results/statistical_tests.csv;
+work/detailed_rows.csv, work/metrics_by_type.csv, work/stability.csv (when >1 run exists).
 """
 
 from __future__ import annotations
@@ -266,7 +266,8 @@ def main() -> int:
                                       f"{model} correct_strict", f"{model} outcome",
                                       f"{model} correct_adjusted"]] = None
     config.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    df.to_csv(config.RESULTS_DIR / "detailed_rows.csv", index=False)
+    config.WORK_DIR.mkdir(parents=True, exist_ok=True)
+    df.to_csv(config.WORK_DIR / "detailed_rows.csv", index=False)
 
     # Per-QID metrics
     qid_rows = []
@@ -309,19 +310,23 @@ def main() -> int:
 
     # By question type (macro over the QIDs of that type)
     by_qid.groupby(["model", "Type"])[METRICS].mean().reset_index().to_csv(
-        config.RESULTS_DIR / "metrics_by_type.csv", index=False
+        config.WORK_DIR / "metrics_by_type.csv", index=False
     )
 
-    # Frontier vs each comparator: paired tests over the 16 per-QID values (paper Fig. 4 stats),
-    # plus exact McNemar on row correctness. BH within each (metric, test) slice.
+    # Paired tests over the 16 per-QID values (paper Fig. 4 stats), plus exact McNemar on row
+    # correctness. Two comparison sets, each its own BH family within every (metric, test) slice:
+    #   figure4  - every model vs the base comparator (GPT-4o QSP), the brackets in Figure 4
+    #   frontier - each frontier model vs each cached GPT-4o condition
+    pairs = [("figure4", m, config.PRIMARY_COMPARATOR) for m in models if m != config.PRIMARY_COMPARATOR]
+    pairs += [("frontier", m, c) for m, c in itertools.product(frontier, config.COMPARATORS)]
     test_rows = []
-    for f_model, comp in itertools.product(frontier, config.COMPARATORS):
+    for comparison_set, f_model, comp in pairs:
         a = by_qid[by_qid["model"] == f_model].sort_values("QID")
         b = by_qid[by_qid["model"] == comp].sort_values("QID")
         for metric in METRICS:
             x, y = a[metric].to_numpy(), b[metric].to_numpy()
             diff = x - y
-            base = {"frontier": f_model, "comparator": comp, "metric": metric, "mean_qid_diff": diff.mean(),
+            base = {"comparison_set": comparison_set, "model": f_model, "comparator": comp, "metric": metric, "mean_qid_diff": diff.mean(),
                     "wins": int((diff > 0).sum()), "losses": int((diff < 0).sum())}
             same = not np.any(diff != 0)
             test_rows.append({**base, "test": "wilcoxon_qid", "p_raw": 1.0 if same else wilcoxon(x, y).pvalue})
@@ -330,12 +335,12 @@ def main() -> int:
         fc, cc = df.loc[both, f"{f_model} correct"], df.loc[both, f"{comp} correct"]
         table = [[int(((fc == 1) & (cc == 1)).sum()), int(((fc == 1) & (cc == 0)).sum())],
                  [int(((fc == 0) & (cc == 1)).sum()), int(((fc == 0) & (cc == 0)).sum())]]
-        test_rows.append({"frontier": f_model, "comparator": comp, "metric": "accuracy", "test": "mcnemar_rows",
+        test_rows.append({"comparison_set": comparison_set, "model": f_model, "comparator": comp, "metric": "accuracy", "test": "mcnemar_rows",
                           "mean_qid_diff": fc.mean() - cc.mean(), "wins": table[0][1], "losses": table[1][0],
                           "p_raw": mcnemar(table, exact=True).pvalue})
     tests = pd.DataFrame(test_rows)
-    tests["p_bh"] = tests.groupby(["metric", "test"])["p_raw"].transform(lambda p: multipletests(p, method="fdr_bh")[1])
-    tests.to_csv(config.RESULTS_DIR / "pairwise_tests.csv", index=False)
+    tests["p_bh"] = tests.groupby(["comparison_set", "metric", "test"])["p_raw"].transform(lambda p: multipletests(p, method="fdr_bh")[1])
+    tests.to_csv(config.RESULTS_DIR / "statistical_tests.csv", index=False)
 
     # Run-to-run stability
     stab_rows = []
@@ -350,7 +355,7 @@ def main() -> int:
                           "rows_same_correctness": float((correct == correct[:, :1]).all(axis=1).mean()),
                           "rows_same_normalized_answer": float((answers == answers[:, :1]).all(axis=1).mean())})
     if stab_rows:
-        pd.DataFrame(stab_rows).to_csv(config.RESULTS_DIR / "stability.csv", index=False)
+        pd.DataFrame(stab_rows).to_csv(config.WORK_DIR / "stability.csv", index=False)
 
     print(summary.pivot(index="model", columns="metric", values="pooled").round(3).to_string())
     return 0

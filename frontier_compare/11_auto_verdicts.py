@@ -115,7 +115,7 @@ def main() -> int:
     pd.DataFrame(ann_rows).drop_duplicates(["PMID", "QID"]).to_csv(
         config.FC_DIR / "data/adjudication_auto.csv", index=False)
     pd.DataFrame(overrides).to_csv(config.FC_DIR / "data/adjudication_overrides_auto.csv", index=False)
-    Path(config.RESULTS_DIR / "needs_review.txt").write_text(
+    Path(config.WORK_DIR / "needs_review.txt").write_text(
         "\n".join(f"{p} {q} missed_by={n}" for p, q, n in needs_review), encoding="utf-8")
 
     print(f"auto annotation verdicts : {len(ann_rows)}")

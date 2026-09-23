@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Secondary analyses: error outcomes, question types, hard questions, ops metrics, failure-mode sheet.
 
-Reads results/detailed_rows.csv, metrics_by_qid.csv, metrics_by_type.csv, ops_requests.csv and
-writes secondary_*.csv plus failure_modes/labeling_sheet.csv. The labeling sheet lists every
+Reads work/detailed_rows.csv, results/metrics_by_qid.csv and work/ops_requests.csv, and writes
+results/operations.csv, work/secondary_*.csv and failure_modes/labeling_sheet.csv. The labeling sheet lists every
 row a frontier model got wrong, alongside the model's evidence/rationale and the GPT-4o FT
 answer, with blank columns for a curator to assign a failure mode from failure_modes/taxonomy.md.
 """
@@ -21,11 +21,11 @@ OUTCOMES = ["correct", "correct_partial_list", "FP", "FN_missed", "FN_wrong_valu
 
 
 def main() -> int:
-    rows = pd.read_csv(config.RESULTS_DIR / "detailed_rows.csv", dtype={"PMID": str}, keep_default_na=False)
+    rows = pd.read_csv(config.WORK_DIR / "detailed_rows.csv", dtype={"PMID": str}, keep_default_na=False)
     by_qid = pd.read_csv(config.RESULTS_DIR / "metrics_by_qid.csv")
     models = list(by_qid["model"].unique())
     frontier = [m for m in models if m not in config.COMPARATORS]
-    out = config.RESULTS_DIR
+    out = config.WORK_DIR
 
     # 1. Outcome distribution per model, overall and by question type
     dist = []
@@ -61,7 +61,7 @@ def main() -> int:
     pd.DataFrame(flips).to_csv(out / "secondary_flips_vs_comparator.csv", index=False)
 
     # 4. Operational metrics
-    ops_path = out / "ops_requests.csv"
+    ops_path = config.WORK_DIR / "ops_requests.csv"
     if ops_path.exists():
         ops = pd.read_csv(ops_path, dtype={"PMID": str})
         agg = ops.groupby("model_key").agg(
@@ -85,7 +85,7 @@ def main() -> int:
             label_to_key = {spec.label: key for key, spec in config.MODELS.items()}
             stab["model_key"] = stab["model"].map(label_to_key)
             agg = agg.join(stab.set_index("model_key").drop(columns="model"))
-        agg.reset_index().to_csv(out / "secondary_operational.csv", index=False)
+        agg.reset_index().to_csv(config.RESULTS_DIR / "operations.csv", index=False)
 
     # 5. Failure-mode labeling sheet (frontier errors only)
     ev_cols = ["Evidence", "EvidenceLocation", "Rationale"]
@@ -98,10 +98,10 @@ def main() -> int:
         ev = ans[["PMID", "QID", *[c for c in ev_cols if c in ans.columns]]]
         wrong = rows[rows[f"{spec.label} correct"].astype(int) == 0]
         sheet = wrong[["PMID", "QID", "Type", "Question", config.REF_COL, spec.label, f"{spec.label} outcome",
-                       config.PRIMARY_COMPARATOR, f"{config.PRIMARY_COMPARATOR} correct"]].rename(
+                       config.BEST_COMPARATOR, f"{config.BEST_COMPARATOR} correct"]].rename(
             columns={spec.label: "Model Answer", f"{spec.label} outcome": "Outcome",
-                     config.PRIMARY_COMPARATOR: "GPT-4o FT Answer",
-                     f"{config.PRIMARY_COMPARATOR} correct": "GPT-4o FT Correct"})
+                     config.BEST_COMPARATOR: f"{config.BEST_COMPARATOR} Answer",
+                     f"{config.BEST_COMPARATOR} correct": f"{config.BEST_COMPARATOR} Correct"})
         sheet = sheet.merge(ev, on=["PMID", "QID"], how="left").assign(
             Model=spec.label, failure_mode="", annotation_error="", notes="")
         sheets.append(sheet)
@@ -110,7 +110,7 @@ def main() -> int:
         pd.concat(sheets).to_csv(config.FAILURE_DIR / "labeling_sheet.csv", index=False)
         print(f"Failure-mode sheet: {sum(len(s) for s in sheets)} rows")
 
-    print("Wrote secondary_*.csv to", out.relative_to(config.ROOT))
+    print("Wrote work/secondary_*.csv and results/operations.csv")
     return 0
 
 

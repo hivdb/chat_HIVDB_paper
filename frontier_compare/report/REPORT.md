@@ -25,7 +25,13 @@
 | GPT-4o FT+QSP | 0.883 | 0.883 | 0.841 | 0.862 |
 | GPT-4o QSP | 0.846 | 0.835 | 0.806 | 0.820 |
 
-Wilcoxon over the 16 per-question values, BH-adjusted (`results/pairwise_tests.csv`):
+Figure: `figures/figure4_frontier.png` (paper style; brackets are BH-adjusted Wilcoxon p < 0.05 vs
+GPT-4o QSP, the same prompt the frontier models get). Against that base, both frontier models and
+both fine-tuned GPT-4o conditions are significantly better on accuracy, precision and F1; no
+model differs significantly on recall. Per-row answers: `results/detailed_evaluation.xlsx`.
+
+Frontier vs each GPT-4o condition, Wilcoxon over the 16 per-question values, BH-adjusted
+(`comparison_set = frontier` in `results/statistical_tests.csv`):
 
 | comparison | accuracy | F1 |
 |---|---|---|

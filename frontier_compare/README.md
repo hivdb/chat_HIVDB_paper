@@ -23,9 +23,11 @@ python frontier_compare/02_query_models.py --model gpt6-astra --run 1 --dry-run 
 python frontier_compare/02_query_models.py --model gpt6-astra --run 1  # one run per paper
 python frontier_compare/02_query_models.py --model kimi-k3    --run 1
 python frontier_compare/03_parse_responses.py                          # raw JSONL -> answers + ops table
-python frontier_compare/04_evaluate.py                                 # metrics, tests, stability
-python frontier_compare/05_figure4.py                                  # updated Figure 4 (pooled, as in the paper)
-python frontier_compare/06_secondary.py                                # error analysis, ops, failure-mode sheet
+python frontier_compare/04_evaluate.py --allow-subset                  # metrics and tests (149 papers answered by all)
+python frontier_compare/05_figure4.py                                  # updated Figure 4, paper style
+python frontier_compare/06_secondary.py                                # operations table, error analysis, failure-mode sheet
+python frontier_compare/07_detailed_evaluation.py                      # per-row workbook, as in the paper
+python frontier_compare/10_adjudicate.py --apply                       # adjudicated errors, summary and tests
 ```
 
 Or run `make -C frontier_compare all` after the query step.
@@ -38,14 +40,35 @@ OpenAI doesn't return cost; OpenRouter reports the billed cost per request.
 Concurrency defaults come from each model's `max_concurrency` in `config.py` (48 for GPT-6 Astra,
 whose account limit is 15k RPM / 40M TPM; 24 for Kimi K3). 429s honor `Retry-After`.
 
+### Where the outputs are
+
+`results/` holds only the final, reader-facing outputs:
+
+| File | Contents |
+|---|---|
+| `detailed_evaluation.xlsx` | Every PMID × QID row: human answer, and each model's answer and 1/0 correctness. The frontier equivalent of `eval/results/detailed_evaluation_full150.xlsx`. |
+| `metrics_summary.csv` | Pooled accuracy / precision / recall / F1 per model with 95% bootstrap CIs (the Figure 4 numbers), plus the strict and per-QID-mean variants |
+| `metrics_by_qid.csv` | The same four metrics per question, with TP/FP/TN/FN counts |
+| `statistical_tests.csv` | Paired tests, in three BH families (`comparison_set`): `figure4` = every model vs GPT-4o QSP (the figure's brackets); `frontier` = each frontier model vs each GPT-4o condition; `frontier_adjudicated` = the same after removing non-model errors |
+| `adjudicated_errors.csv` | Every error of every model with its adjudication verdict |
+| `adjudicated_summary.csv` | Per-model error breakdown and adjusted accuracy |
+| `operations.csv` | Per-model cost, latency, JSON validity, failures |
+
+`figures/figure4_frontier.png` is the updated Figure 4. Everything else is a pipeline
+intermediate in `work/`: parsed answers (`work/answers/`), per-row scores with every
+post-processing column (`work/detailed_rows.csv`), per-request operations, error triage,
+evidence dossiers, and the adjudication worksheets.
+
 | Step | Output |
 |---|---|
 | 01 | `data/pdf_manifest.csv` (status, pages, size, and hash per PMID) |
 | 02 | `runs/<model>/run<N>.jsonl`: raw response, latency, usage, and cost per request (resumable) |
-| 03 | `results/answers/<model>_run<N>.csv`, `results/ops_requests.csv` |
-| 04 | `results/detailed_rows.csv`, `metrics_by_qid.csv`, `metrics_summary.csv`, `metrics_by_type.csv`, `pairwise_tests.csv`, `stability.csv` |
-| 05 | `figures/figure4_frontier_pooled.{png,tiff}` (`--aggregation macro` for the per-QID mean) |
-| 06 | `results/secondary_*.csv`, `failure_modes/labeling_sheet.csv` |
+| 03 | `work/answers/<model>_run<N>.csv`, `work/ops_requests.csv` |
+| 04 | `results/metrics_summary.csv`, `metrics_by_qid.csv`, `statistical_tests.csv`; `work/detailed_rows.csv`, `work/metrics_by_type.csv` |
+| 05 | `figures/figure4_frontier.png` |
+| 06 | `results/operations.csv`, `work/secondary_*.csv`, `failure_modes/labeling_sheet.csv` |
+| 07 | `results/detailed_evaluation.xlsx` |
+| 08-11 | `work/error_triage.csv`, `work/dossier_*`, `work/adjudication_worksheet.*`, `results/adjudicated_*.csv` |
 
 ## Smoke test (2026-09-21)
 
@@ -128,7 +151,7 @@ Everything else defaults to **model error**. Results:
 | GPT-4o QSP | 366 | 255 (70%) | 72 | 39 | 0.846 | 0.877 | 0.893 |
 
 The ranking survives adjudication and Kimi vs GPT-4o FT stays non-significant (BH p = 0.13,
-`results/adjudicated_tests.csv`).
+`comparison_set = frontier_adjudicated` in `results/statistical_tests.csv`).
 
 **How much to trust these splits.** The rules are deliberately conservative: anything not matched
 by a rule counts as a model error. Hand-adjudicating GPT-6 Astra's 99 errors on the 79-paper
@@ -143,7 +166,7 @@ model's error rate is really the dataset. Manual verdicts for rows read individu
 quote and rationale, whether that quote is verbatim in the PDF, PDF context around both the human
 and model answers, what the other four models said, and whether the model contradicted its own
 QID 1/5. All 99 Astra error rows were then read and adjudicated one by one; verdicts and reasons
-are in `results/dossier_gpt6-astra.csv` and the workbook's "Adjudicated errors" sheet.
+are in `work/dossier_gpt6-astra.csv` and `results/adjudicated_errors.csv`.
 
 | Verdict | rows | share |
 |---|---|---|
@@ -174,7 +197,7 @@ Where each kind sits:
 `08_error_triage.py` classifies every frontier error using signals checkable against the PDF:
 does the model's quoted evidence actually occur in the text layer, how much of the human answer
 occurs anywhere in the PDF, do both models agree, is the paper a review, is the annotation itself
-hedged. Output: `results/error_triage.csv` (also an "Auto-triage" sheet in the workbook).
+hedged. Output: `work/error_triage.csv`.
 Suggestions only - nothing is applied to scoring.
 
 | Suggested cause | rows (of 110) |
@@ -331,7 +354,7 @@ which the curators' markdown conversion dropped. Each row records the accepted a
 and the source.
 
 Scoring is layered, never overwritten: `correct` uses the paper's scorer against the human answer
-only; `correct_adjusted` also accepts a listed alternative. Both appear in `detailed_rows.csv`,
+only; `correct_adjusted` also accepts a listed alternative. Both appear in `work/detailed_rows.csv`,
 and `metrics_summary.csv` carries `row_accuracy_adjusted`. Primary metrics and figures use the
 strict score. Alternatives apply to every model equally.
 
@@ -362,8 +385,11 @@ Seeded with one entry from the pilot: PMID 41130593 QID 7, where both frontier m
   paper) and paired t-test (also in S5) over the 16 per-QID values, with BH applied within each
   (metric, test) slice as in `eval/statistics.py`. Exact McNemar on row correctness is a
   sensitivity analysis.
-- **Primary comparator** is GPT-4o FT, the best cached condition (pooled accuracy 0.903, F1 0.883).
-  All three GPT-4o conditions are plotted.
+- **Base comparator in Figure 4** is GPT-4o QSP: the same prompt the frontier models get, so the
+  brackets answer "what does a frontier model add over prompted GPT-4o?". GPT-4o FT and FT+QSP are
+  tested against the same base, mirroring the paper's figure where each family's variants are
+  compared with its base model. Frontier vs GPT-4o FT (the strongest cached condition) is in the
+  `frontier` comparison set and in REPORT.md.
 - **Undefined precision/recall** (no positives) is set to 0, matching `eval/evaluation.py`.
 - **Reproducibility.** Kimi K3 is pinned to the first-party Moonshot AI endpoint with no
   fallbacks, because OpenRouter otherwise routes across about 20 hosts with fp4/fp8/bf16

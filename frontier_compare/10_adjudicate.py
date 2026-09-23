@@ -11,11 +11,12 @@ Adjudication has two layers, which is what makes ~1,200 error rows tractable:
      genuine error, defensible-but-different (borderline), or a scoring artifact? Recorded in
      data/adjudication_overrides.csv; anything not listed defaults to "model error".
 
-  --consolidate  writes results/adjudication_worksheet.txt: one block per distinct error row with
+  --consolidate  writes work/adjudication_worksheet.txt: one block per distinct error row with
                  every model's answer, the frontier models' evidence, and PDF context - the input
                  for layer A.
   --apply        joins the recorded verdicts onto every model's error rows and writes
-                 results/adjudicated_errors.csv plus a per-model summary.
+                 results/adjudicated_errors.csv, a per-model summary, and adjudicated tests in
+                 results/statistical_tests.csv.
 """
 
 from __future__ import annotations
@@ -24,7 +25,10 @@ import argparse
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
+from scipy.stats import wilcoxon
+from statsmodels.stats.multitest import multipletests
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from frontier_compare import config  # noqa: E402
@@ -44,7 +48,7 @@ def all_models(rows: pd.DataFrame) -> list[str]:
 
 
 def load_rows() -> pd.DataFrame:
-    rows = pd.read_csv(config.RESULTS_DIR / "detailed_rows.csv", dtype={"PMID": str},
+    rows = pd.read_csv(config.WORK_DIR / "detailed_rows.csv", dtype={"PMID": str},
                        keep_default_na=False, na_values=[""])
     rows["QID"] = rows["QID"].astype(int)
     return rows
@@ -95,9 +99,9 @@ def consolidate() -> int:
                       "all_models_wrong": len(missed) == len(models),
                       "annotation_verdict": "", "reason": ""})
 
-    out = config.RESULTS_DIR / "adjudication_worksheet.txt"
+    out = config.WORK_DIR / "adjudication_worksheet.txt"
     out.write_text("\n".join(blocks), encoding="utf-8")
-    pd.DataFrame(index).to_csv(config.RESULTS_DIR / "adjudication_worksheet.csv", index=False)
+    pd.DataFrame(index).to_csv(config.WORK_DIR / "adjudication_worksheet.csv", index=False)
     print(f"{len(index)} distinct error rows -> {out.relative_to(config.ROOT)}")
     return 0
 
@@ -157,7 +161,40 @@ def apply_verdicts() -> int:
     table = pd.DataFrame(summary)
     table.to_csv(config.RESULTS_DIR / "adjudicated_summary.csv", index=False)
     print(table.to_string(index=False))
+    write_adjudicated_tests(rows, adjudicated, models)
     return 0
+
+
+def write_adjudicated_tests(rows: pd.DataFrame, adjudicated: pd.DataFrame, models: list[str]) -> None:
+    """Re-run the frontier-vs-GPT-4o Wilcoxon on per-QID accuracy after removing non-model errors.
+
+    Upserted into results/statistical_tests.csv as comparison_set "frontier_adjudicated", its own
+    BH family, alongside the unadjudicated sets written by 04_evaluate.py.
+    """
+    excused = adjudicated[adjudicated["verdict"] != "model error"]
+    per_qid = {}
+    for model in models:
+        ok = rows[f"{model} correct"].astype(float)
+        keys = set(zip(excused.loc[excused["Model"] == model, "PMID"], excused.loc[excused["Model"] == model, "QID"]))
+        ok = ok.where(~pd.Series([k in keys for k in zip(rows["PMID"], rows["QID"])], index=rows.index), 1.0)
+        per_qid[model] = ok.groupby(rows["QID"]).mean().sort_index().to_numpy()
+    frontier = [m for m in models if m not in config.COMPARATORS]
+    out = []
+    for f_model in frontier:
+        for comp in config.COMPARATORS:
+            x, y = per_qid[f_model], per_qid[comp]
+            diff = x - y
+            out.append({"comparison_set": "frontier_adjudicated", "model": f_model, "comparator": comp,
+                        "metric": "accuracy", "mean_qid_diff": diff.mean(), "wins": int((diff > 0).sum()),
+                        "losses": int((diff < 0).sum()), "test": "wilcoxon_qid",
+                        "p_raw": 1.0 if not np.any(diff != 0) else wilcoxon(x, y).pvalue})
+    new = pd.DataFrame(out)
+    new["p_bh"] = multipletests(new["p_raw"], method="fdr_bh")[1]
+    path = config.RESULTS_DIR / "statistical_tests.csv"
+    tests = pd.read_csv(path)
+    tests = pd.concat([tests[tests["comparison_set"] != "frontier_adjudicated"], new], ignore_index=True)
+    tests.to_csv(path, index=False)
+    print(new[["model", "comparator", "mean_qid_diff", "p_bh"]].round(3).to_string(index=False))
 
 
 def main() -> int:

@@ -80,7 +80,7 @@ def main() -> int:
     parser.add_argument("--model", required=True)
     args = parser.parse_args()
 
-    rows = pd.read_csv(config.RESULTS_DIR / "detailed_rows.csv", dtype={"PMID": str},
+    rows = pd.read_csv(config.WORK_DIR / "detailed_rows.csv", dtype={"PMID": str},
                        keep_default_na=False, na_values=[""])
     rows["QID"] = rows["QID"].astype(int)
     model = args.model
@@ -127,9 +127,9 @@ def main() -> int:
                         "quote_in_pdf": quote_found(evidence, text), "all_models_wrong": all_wrong,
                         "verdict": "", "note": ""})
 
-    out_txt = config.RESULTS_DIR / f"dossier_{key}.txt"
+    out_txt = config.WORK_DIR / f"dossier_{key}.txt"
     out_txt.write_text("\n".join(lines), encoding="utf-8")
-    pd.DataFrame(records).to_csv(config.RESULTS_DIR / f"dossier_{key}.csv", index=False)
+    pd.DataFrame(records).to_csv(config.WORK_DIR / f"dossier_{key}.csv", index=False)
     print(f"{len(records)} error rows -> {out_txt.relative_to(config.ROOT)}")
     return 0
 
