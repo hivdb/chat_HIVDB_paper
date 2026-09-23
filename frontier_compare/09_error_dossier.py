@@ -80,9 +80,7 @@ def main() -> int:
     parser.add_argument("--model", required=True)
     args = parser.parse_args()
 
-    rows = pd.read_csv(config.WORK_DIR / "detailed_rows.csv", dtype={"PMID": str},
-                       keep_default_na=False, na_values=[""])
-    rows["QID"] = rows["QID"].astype(int)
+    rows = config.final_rows()
     model = args.model
     key = next((k for k, spec in config.MODELS.items() if spec.label == model), None)
     if key is None:  # cached GPT-4o comparator: answers only, no stored evidence/rationale

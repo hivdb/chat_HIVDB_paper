@@ -91,6 +91,10 @@ PMID,QID,Model,verdict,note
 36795586,6,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
 36851760,16,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
 36851760,16,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+36920025,10,GPT-6 Astra QSP,model error,no answer: the request for this paper was blocked by the provider
+36920025,2,GPT-6 Astra QSP,model error,no answer: the request for this paper was blocked by the provider
+36920025,3,GPT-6 Astra QSP,model error,no answer: the request for this paper was blocked by the provider
+36920025,9,GPT-6 Astra QSP,model error,no answer: the request for this paper was blocked by the provider
 36931676,11,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
 36931676,12,GPT-6 Astra QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
 36931676,12,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
@@ -322,3 +326,7 @@ PMID,QID,Model,verdict,note
 41093949,6,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
 41093949,7,GPT-4o QSP,model error,M2 cascade: the model's own QID 1 answer was wrong
 41112839,5,GPT-4o FT,annotation/convention,R6 QID 5 denominator: both 251 and 237 are stated in the paper
+41129268,2,GPT-4o FT,borderline,M1: annotation empty but the model's answer is in the PDF text
+41129268,5,GPT-6 Astra QSP,annotation/convention,R6 QID 5 denominator: both 428 and 333 are stated in the paper
+41130593,7,GPT-6 Astra QSP,borderline,M1: annotation empty but the model's answer is in the PDF text
+41130593,7,Kimi K3 QSP,borderline,M1: annotation empty but the model's answer is in the PDF text

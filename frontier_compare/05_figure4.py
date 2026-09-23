@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Updated Figure 4 in the style of the paper's eval/figures/full150-bar-chart.png.
+"""Updated Figure 4, in the style of the paper's eval/figures/full150-bar-chart.png.
 
 Same layout and styling constants as eval/plots.py: stacked accuracy / precision / recall / F1
 panels, bars pooled over all PMID x QID rows, value labels on bars, models grouped by family
@@ -51,7 +51,7 @@ def main() -> int:
     tests = pd.read_csv(config.RESULTS_DIR / "statistical_tests.csv")
     frontier = [spec.label for spec in config.MODELS.values() if spec.label in set(summary["model"])]
     models = [m for m in ORDER if m in set(summary["model"])] + frontier
-    values = summary.pivot(index="model", columns="metric", values="pooled") * 100
+    values = summary.pivot(index="model", columns="metric", values="value") * 100
     base = config.PRIMARY_COMPARATOR
     fig4 = tests[(tests["comparison_set"] == "figure4") & (tests["test"] == "wilcoxon_qid")]
 
@@ -98,12 +98,13 @@ def main() -> int:
         axes[-1].text((min(xs) + max(xs)) / 2, -0.62, fam, ha="center", va="top", fontweight="bold",
                       fontsize=plots.FAMILY_LABEL_SIZE, transform=axes[-1].get_xaxis_transform())
     papers = int(summary["papers"].min())
-    fig.suptitle(f"Frontier models vs GPT-4o ({papers} papers)", fontsize=plots.TITLE_FONT_SIZE)
+    fig.suptitle(f"Frontier models vs GPT-4o ({papers} papers)", fontsize=plots.TITLE_FONT_SIZE * 0.8)
     fig.subplots_adjust(bottom=0.12, top=0.93)
 
     config.FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     out = config.FIGURES_DIR / "figure4_frontier.png"
     fig.savefig(out, dpi=300)
+    plt.close(fig)
     print(f"Wrote {out.relative_to(config.ROOT)}")
     return 0
 

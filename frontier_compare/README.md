@@ -23,22 +23,30 @@ python frontier_compare/02_query_models.py --model gpt6-astra --run 1 --dry-run 
 python frontier_compare/02_query_models.py --model gpt6-astra --run 1  # one run per paper
 python frontier_compare/02_query_models.py --model kimi-k3    --run 1
 python frontier_compare/03_parse_responses.py                          # raw JSONL -> answers + ops table
-python frontier_compare/04_evaluate.py --allow-subset                  # metrics and tests (149 papers answered by all)
+python frontier_compare/04_evaluate.py                                 # metrics and tests (paper's evaluation + answer cleaning)
 python frontier_compare/05_figure4.py                                  # updated Figure 4, paper style
 python frontier_compare/06_secondary.py                                # operations table, error analysis, failure-mode sheet
 python frontier_compare/07_detailed_evaluation.py                      # per-row workbook, as in the paper
+python frontier_compare/08_error_triage.py                             # evidence-based signals per error
+python frontier_compare/11_auto_verdicts.py                            # rule-based adjudication -> data/adjudication*.csv
 python frontier_compare/10_adjudicate.py --apply                       # adjudicated errors, summary and tests
+python frontier_compare/12_table3.py                                   # the paper's Table 3, by question and by type
 ```
 
-Or run `make -C frontier_compare all` after the query step.
+### Evaluation
 
-Keys are read from `advanced-prompting/.env` (also `.env` or `frontier_compare/.env`):
-`OPENAI_API_KEY`, `OPENROUTER_API_KEY`. Model IDs can be overridden with `FC_GPT6_MODEL_ID` and
-`FC_KIMI_MODEL_ID`. GPT-6 Astra cost is computed from usage at published rates in `config.py`, since
-OpenAI doesn't return cost; OpenRouter reports the billed cost per request.
+One evaluation: the paper's scorer (`eval/normalize.py::human_answer_counts`) on all 150 papers,
+with answer cleaning as part of the evaluator (`answer_cleaning.py`: when a raw answer fails, it
+is re-scored with explanatory commentary stripped; it can rescue a row, never break one). GPT-6
+Astra's blocked request for PMID 36920025 is scored as 16 blank answers, as the paper scores
+missing answers. Cleaning runs for every model but only changes frontier rows (Astra 1, Kimi 5),
+so **the cached GPT-4o numbers reproduce the paper exactly**: pooled metrics and their bootstrap
+CIs equal `eval/figures/full150-bar-chart-confidence-intervals.csv` (the bootstrap draws follow
+the paper's model order: GPT-4o base, FT, FT+QSP, QSP), and the GPT-4o columns of
+`results/detailed_evaluation.xlsx` equal `eval/results/detailed_evaluation_full150.xlsx`.
 
-Concurrency defaults come from each model's `max_concurrency` in `config.py` (48 for GPT-6 Astra,
-whose account limit is 15k RPM / 40M TPM; 24 for Kimi K3). 429s honor `Retry-After`.
+Annotation problems (review papers, the QID 10 Sanger default, figure-only evidence, data-entry
+errors) do not change the scores; they are handled in the error adjudication (steps 08-11).
 
 ### Where the outputs are
 
@@ -46,15 +54,17 @@ whose account limit is 15k RPM / 40M TPM; 24 for Kimi K3). 429s honor `Retry-Aft
 
 | File | Contents |
 |---|---|
-| `detailed_evaluation.xlsx` | Every PMID × QID row: human answer, and each model's answer and 1/0 correctness. The frontier equivalent of `eval/results/detailed_evaluation_full150.xlsx`. |
-| `metrics_summary.csv` | Pooled accuracy / precision / recall / F1 per model with 95% bootstrap CIs (the Figure 4 numbers), plus the strict and per-QID-mean variants |
+| `detailed_evaluation.xlsx` | Sheet "All": every PMID × QID row with the human answer and each model's answer and 1/0 correctness, in the layout of `eval/results/detailed_evaluation_full150.xlsx`. "Answer cleaning": the 6 rows cleaning rescued. |
+| `metrics_summary.csv` | Pooled accuracy / precision / recall / F1 per model with 95% bootstrap CIs (the Figure 4 numbers), the value before cleaning, and the per-QID mean for reference |
 | `metrics_by_qid.csv` | The same four metrics per question, with TP/FP/TN/FN counts |
-| `statistical_tests.csv` | Paired tests, in three BH families (`comparison_set`): `figure4` = every model vs GPT-4o QSP (the figure's brackets); `frontier` = each frontier model vs each GPT-4o condition; `frontier_adjudicated` = the same after removing non-model errors |
+| `statistical_tests.csv` | Paired tests, in BH families by `comparison_set`: `figure4` = every model vs GPT-4o QSP (the figure's brackets); `frontier` = each frontier model vs each GPT-4o condition; `frontier_adjudicated` = the same after removing non-model errors |
+| `table3.xlsx` | The paper's Table 3 for this comparison: per-question precision and recall vs GPT-4o QSP with Fisher exact tests (BH within each question), for the questions where a model improves significantly ("Table 3"), every other question ("Table 3 complement", significant declines marked † / ‡), and the same test on counts pooled by question type. `12_table3.py --validate` reproduces the paper's current Table 3 exactly. |
 | `adjudicated_errors.csv` | Every error of every model with its adjudication verdict |
 | `adjudicated_summary.csv` | Per-model error breakdown and adjusted accuracy |
 | `operations.csv` | Per-model cost, latency, JSON validity, failures |
 
-`figures/figure4_frontier.png` is the updated Figure 4. Everything else is a pipeline
+`figures/figure4_frontier.png` is the updated Figure 4. The written report is `report/frontier-model-evals-09-23-26.docx`
+(edited by hand). Everything else is a pipeline
 intermediate in `work/`: parsed answers (`work/answers/`), per-row scores with every
 post-processing column (`work/detailed_rows.csv`), per-request operations, error triage,
 evidence dossiers, and the adjudication worksheets.
@@ -64,10 +74,11 @@ evidence dossiers, and the adjudication worksheets.
 | 01 | `data/pdf_manifest.csv` (status, pages, size, and hash per PMID) |
 | 02 | `runs/<model>/run<N>.jsonl`: raw response, latency, usage, and cost per request (resumable) |
 | 03 | `work/answers/<model>_run<N>.csv`, `work/ops_requests.csv` |
-| 04 | `results/metrics_summary.csv`, `metrics_by_qid.csv`, `statistical_tests.csv`; `work/detailed_rows.csv`, `work/metrics_by_type.csv` |
+| 04 | `results/metrics_summary.csv`, `metrics_by_qid.csv`, `statistical_tests.csv`; `work/detailed_rows.csv` (labels and correctness before and after cleaning), `work/metrics_by_type.csv` |
 | 05 | `figures/figure4_frontier.png` |
 | 06 | `results/operations.csv`, `work/secondary_*.csv`, `failure_modes/labeling_sheet.csv` |
 | 07 | `results/detailed_evaluation.xlsx` |
+| 12 | `results/table3.xlsx` |
 | 08-11 | `work/error_triage.csv`, `work/dossier_*`, `work/adjudication_worksheet.*`, `results/adjudicated_*.csv` |
 
 ## Smoke test (2026-09-21)
@@ -105,27 +116,31 @@ research letters or case reports.
 
 ## Results (full run, 150 papers, 2026-09-22)
 
-See `report/REPORT.md` for the written answers. Headline: 149 papers x 16 questions = 2,384 rows
-per model (PMID 36920025 excluded - GPT-6 Astra refuses it on policy grounds).
+| | accuracy (95% CI) | precision | recall | F1 |
+|---|---|---|---|---|
+| Kimi K3 | 92.2 (91.1-93.3) | 91.5 | 90.4 | 91.0 |
+| GPT-6 Astra | 91.0 (89.8-92.1) | 91.2 | 87.7 | 89.4 |
+| GPT-4o FT | 90.3 (89.1-91.5) | 92.1 | 84.9 | 88.3 |
+| GPT-4o FT+QSP | 88.0 (86.7-89.3) | 88.3 | 83.4 | 85.8 |
+| GPT-4o QSP | 84.5 (83.1-85.9) | 83.5 | 80.1 | 81.7 |
 
-| | accuracy | precision | recall | F1 | before post-processing |
-|---|---|---|---|---|---|
-| Kimi K3 | 0.927 | 0.917 | 0.914 | 0.915 | 0.920 |
-| GPT-6 Astra | 0.917 | 0.914 | 0.892 | 0.903 | 0.911 |
-| GPT-4o FT | 0.905 | 0.921 | 0.854 | 0.886 | 0.902 |
-| GPT-4o FT+QSP | 0.883 | 0.883 | 0.841 | 0.862 | 0.879 |
-| GPT-4o QSP | 0.846 | 0.835 | 0.806 | 0.820 | 0.844 |
-
-Both frontier models beat prompted GPT-4o significantly (BH p <= 0.047) and fine-tuned GPT-4o on
-the point estimate only (Kimi accuracy p = 0.077; Astra p = 0.64). Operationally: Astra
-$0.378/paper, 53 s median, 99% strict JSON, 1 policy refusal; Kimi $0.187/paper, 133 s median,
-95% strict JSON, 1 empty response (retried). Total spend $84.30.
+Against GPT-4o QSP (Figure 4, BH-adjusted Wilcoxon), both frontier models are significantly
+better on accuracy and precision, and Kimi K3 also on F1; no model differs significantly on
+recall, because the per-question test weights all 16 questions equally and GPT-4o QSP's
+over-answering of Yes gives it higher recall on several small Boolean questions (Table 3 shows
+the per-question recall gains on list questions). Kimi K3 also beats GPT-4o FT+QSP on accuracy
+(p = 0.017). Neither frontier model is distinguishable from GPT-4o FT (Kimi p = 0.11, Astra
+p = 0.96). Operationally: Astra $0.378/paper, 53 s median, 99% strict JSON, 1 policy block
+(HTTP 400, code `bio_policy`, "flagged for possible biological risk", on both requests for
+PMID 36920025; an exploratory prompt-variant request for the same paper succeeded, so the block
+is intermittent or prompt-dependent); Kimi $0.187/paper, 133 s median, 95% strict JSON, 1 empty
+response (retried). Total spend $84.30.
 
 ## Adjudication of every error, every model
 
 `09_error_dossier.py` builds a per-row evidence dossier (the model's quote checked verbatim
 against the PDF, PDF context around both answers, the other models' answers, self-consistency).
-`10_adjudicate.py` consolidates the 1,247 error rows into 625 distinct (PMID, QID) rows and
+`10_adjudicate.py` consolidates the error rows into distinct (PMID, QID) rows and
 applies verdicts in two layers - annotation soundness first (model-independent), then per-model
 classification. `11_auto_verdicts.py` applies the explicit rules:
 
@@ -133,25 +148,34 @@ classification. `11_auto_verdicts.py` applies the explicit rules:
 |---|---|
 | R1 type mismatch (Boolean annotated non-yes/no, Number with no number) | unanswerable |
 | R2 annotation hedges ("not stated", "uncertain", "(multicenter trial)", "8 and 10") | ambiguous |
-| R3 PDF is a systematic review / meta-analysis | annotation wrong |
+| R3 paper is a review / meta-analysis, from the list verified by reading (`data/review_papers.csv`) | annotation wrong |
 | R4 QID 10 annotated Sanger where the PDF never says Sanger | convention |
 | R5 all 5 models miss the row, incl. the fine-tuned GPT-4o | ambiguous |
 | R6 QID 5 where both the annotation's count and the model's count are stated in the paper | convention |
 | M1 annotation empty but the model's answer is in the PDF text | borderline |
 | M2 the model's own QID 1 answer was wrong (cascade) | model error |
 
-Everything else defaults to **model error**. Results:
+Everything else defaults to **model error**. `data/adjudication.csv` is the manual verdicts
+(`data/adjudication_manual.csv`) laid over the rule-based ones; `11_auto_verdicts.py` writes it.
+Results:
 
 | | errors | model error | annotation/convention | borderline | accuracy | excl. annotation | excl. all non-model |
 |---|---|---|---|---|---|---|---|
-| Kimi K3 | 175 | 89 (51%) | 59 | 27 | 0.927 | 0.951 | 0.963 |
-| GPT-6 Astra | 199 | 114 (57%) | 69 | 16 | 0.917 | 0.946 | 0.952 |
-| GPT-4o FT | 227 | 133 (59%) | 77 | 17 | 0.905 | 0.937 | 0.944 |
-| GPT-4o FT+QSP | 280 | 179 (64%) | 65 | 36 | 0.883 | 0.910 | 0.925 |
-| GPT-4o QSP | 366 | 255 (70%) | 72 | 39 | 0.846 | 0.877 | 0.893 |
+| Kimi K3 | 187 | 88 (47%) | 71 | 28 | 0.922 | 0.952 | 0.963 |
+| GPT-6 Astra | 216 | 118 (55%) | 81 | 17 | 0.910 | 0.944 | 0.951 |
+| GPT-4o FT | 233 | 139 (60%) | 76 | 18 | 0.903 | 0.935 | 0.942 |
+| GPT-4o FT+QSP | 288 | 182 (63%) | 70 | 36 | 0.880 | 0.909 | 0.924 |
+| GPT-4o QSP | 372 | 266 (72%) | 67 | 39 | 0.845 | 0.873 | 0.889 |
 
-The ranking survives adjudication and Kimi vs GPT-4o FT stays non-significant (BH p = 0.13,
+GPT-6 Astra's 4 wrong blank answers for the blocked paper count as model errors. The ranking
+survives adjudication and Kimi vs GPT-4o FT stays non-significant (BH p = 0.088,
 `comparison_set = frontier_adjudicated` in `results/statistical_tests.csv`).
+
+**R3 was corrected on 2026-09-23.** Its first version matched "systematic review",
+"meta-analysis" or "PRISMA" anywhere in the first 6,000 characters and fired on nine papers,
+five of which are primary studies that merely cite a meta-analysis (37976080, 37976185,
+40596906, 41057785, 41129268). Reading all nine found four real reviews (37880705, 37910452,
+40872801, 41140464), now listed with evidence in `data/review_papers.csv`.
 
 **How much to trust these splits.** The rules are deliberately conservative: anything not matched
 by a rule counts as a model error. Hand-adjudicating GPT-6 Astra's 99 errors on the 79-paper
@@ -283,7 +307,7 @@ Every model gains and the ranking is unchanged, so these issues do not create th
 but they do compress it, and roughly a quarter of all "errors" are not model errors.
 
 **Decisions taken after the pilot review (2026-09-22):**
-- The 10 proposed alternatives were approved and moved into `accepted_alternatives.csv`.
+- The 10 proposed alternatives were approved and moved into `accepted_alternatives.csv` (since removed from scoring; see "Annotation problems").
 - For PMID 40872801 both the annotated answers and the models' "No"/"Not applicable" now count.
 - The QID 10 Sanger default is handled in scoring (`convention_alternatives()` in
   `04_evaluate.py`): where the human answer says Sanger and the PDF never mentions it,
@@ -336,30 +360,26 @@ paper does not specify which"), or a commentary parenthetical ("X (paper states 
 Abbreviations such as "(3TC)" are preserved - a parenthetical is only dropped when it is wordy
 (>=4 words) or contains a hedge word.
 
-It is **non-destructive at scoring time**: `04_evaluate.py` scores the raw answer first and only
+It is part of the evaluator and **non-destructive at scoring time**: `04_evaluate.py` scores the raw answer first and only
 falls back to the cleaned form, so a rule can rescue a row but never break one. The rule that
 fired is recorded per row (`<model> cleaning_rule`, outcome `correct_after_cleaning`). The same
 rules run for every model, including the cached GPT-4o comparators.
 
-Effect on the 40-paper pilot: **3 rows, all Kimi K3** (accuracy 0.938 -> 0.942); zero for
-GPT-6 Astra and all three GPT-4o conditions. An earlier destructive variant (rewriting every
+Effect on the full run: 6 rows (Kimi K3 5, GPT-6 Astra 1, GPT-4o none). An earlier destructive variant (rewriting every
 answer before scoring) was rejected: it gained 3 rows and lost 3, because stripping a
 parenthetical sometimes removes the text the scorer was matching.
 
-## Annotation gaps: accepted alternatives
+## Annotation problems (handled in adjudication, not in the scores)
 
-`data/accepted_alternatives.csv` holds curator-approved alternative reference answers for rows
-where the annotation is known to be incomplete — typically evidence that exists only in a figure,
-which the curators' markdown conversion dropped. Each row records the accepted answer, the reason,
-and the source.
+An earlier version of the analysis accepted curator-approved alternative answers in the scores.
+They are now recorded as adjudication verdicts instead, so the scores stay the paper's:
 
-Scoring is layered, never overwritten: `correct` uses the paper's scorer against the human answer
-only; `correct_adjusted` also accepts a listed alternative. Both appear in `work/detailed_rows.csv`,
-and `metrics_summary.csv` carries `row_accuracy_adjusted`. Primary metrics and figures use the
-strict score. Alternatives apply to every model equally.
-
-Seeded with one entry from the pilot: PMID 41130593 QID 7, where both frontier models read
-"August 2021-September 2023" from a Figure 3 footnote while the annotation says "Not provided".
+- **Review papers annotated with primary-study details**: R3 with `data/review_papers.csv`
+  (40872801, 41140464, 37880705; 37910452 is annotated consistently), plus a manual verdict for
+  37880705 QID 1, which R3 does not cover.
+- **QID 10 Sanger default**: R4.
+- **41130593 QID 7** (years only in the Figure 3 footnotes) and **41091504 QID 8** (computational
+  paper annotated "Yes (site-directed mutants)"): manual verdicts in `data/adjudication_manual.csv`.
 
 ## Design decisions
 
@@ -375,21 +395,19 @@ Seeded with one entry from the pilot: PMID 41130593 QID 7, where both frontier m
   `strict` (parses as-is) and `lenient` (parses after stripping fences and prose). Answers use the
   lenient parse. Unparseable responses score as wrong, as missing answers did in the paper.
 - **Aggregation = the paper's Figure 4.** Bars pool all PMID × QID rows, with 95% CIs from a
-  row bootstrap (5,000 resamples, seed 42). This is what `eval/evaluation.py` plots and what
-  reproduces the paper's reported deltas (GPT-4o FT recall +11%; Llama-70B / 8B FT precision
-  +16% / +8%). The mean of the per-QID values does not reproduce them (e.g. +12% for 70B), so
-  it is kept only as a reference column. Checked: pooled values for the cached GPT-4o
-  conditions match `eval/figures/full150-bar-chart-confidence-intervals.csv` exactly, and CIs
-  agree to within 0.1 point.
+  row bootstrap (5,000 resamples, seed 42, one generator drawn in the paper's model order).
+  This is what `eval/evaluation.py` plots and what reproduces the paper's reported deltas. The
+  mean of the per-QID values does not reproduce them, so it is kept only as a reference column.
+  The cached GPT-4o values and CIs match the paper exactly.
 - **Tests = the paper's Fig. 4 statistics.** Wilcoxon signed-rank (primary, as stated in the
   paper) and paired t-test (also in S5) over the 16 per-QID values, with BH applied within each
-  (metric, test) slice as in `eval/statistics.py`. Exact McNemar on row correctness is a
+  (comparison set, metric, test) slice as in `eval/statistics.py`. Exact McNemar on row correctness is a
   sensitivity analysis.
 - **Base comparator in Figure 4** is GPT-4o QSP: the same prompt the frontier models get, so the
   brackets answer "what does a frontier model add over prompted GPT-4o?". GPT-4o FT and FT+QSP are
   tested against the same base, mirroring the paper's figure where each family's variants are
   compared with its base model. Frontier vs GPT-4o FT (the strongest cached condition) is in the
-  `frontier` comparison set and in REPORT.md.
+  `frontier` comparison set and in the report.
 - **Undefined precision/recall** (no positives) is set to 0, matching `eval/evaluation.py`.
 - **Reproducibility.** Kimi K3 is pinned to the first-party Moonshot AI endpoint with no
   fallbacks, because OpenRouter otherwise routes across about 20 hosts with fp4/fp8/bf16
@@ -397,24 +415,23 @@ Seeded with one entry from the pilot: PMID 41130593 QID 7, where both frontier m
 
 ## Open issues
 
-1. **46 PDFs need manual download.** See `data/pdfs_to_download.csv` and save each as
-   `frontier_compare/pdfs/<PMID>.pdf`, then re-run `01_pdf_manifest.py`. Ideally use the same
-   version the curators annotated.
-2. **GPT-6 Astra pricing** is not returned by the API, so cost is computed from token usage at the published rates ($10 / $1 cached / $50 per 1M tokens).
-3. **OpenRouter budget.** The key has a $50 cap. A single Kimi run over 150 papers is estimated at
-   $28–48 depending on reasoning length (input: 5.1M tokens, $15.35), so it is tight.
-4. **Confound: model vs input.** The cached GPT-4o runs used markdown, so frontier-vs-GPT-4o
-   differences mix model and modality effects. A cheap ablation is to run one frontier model on
-   the same markdown (`<PMID>.checked.md`) to separate the two.
-5. **Supplements.** Some human answers (accessions, long drug lists) come from supplementary
-   files. Decide whether to merge supplements into the PDFs. Either way, label such errors
-   `SUPPLEMENT`.
-6. **Contamination.** All 150 papers predate the frontier models' training cutoffs. Note this
-   in the report. The new-30 subset (2025 papers) is the least exposed.
+1. **Confound: model vs input.** The cached GPT-4o runs used markdown, so frontier-vs-GPT-4o
+   differences mix model and modality effects (41130593 QID 7 is a clear case). A cheap ablation
+   is to run one frontier model on the same markdown (`<PMID>.checked.md`) to separate the two.
+2. **Supplements.** Some human answers (accessions, long drug lists) come from supplementary
+   files that are not in the PDFs.
+3. **Annotation fixes to report to the curators**: the four review papers, the data-entry errors
+   (31988104 QID 14 "14", 41140464 QID 8 "Not known", 28559249 QID 5 "Not Reported"), and the
+   unstated conventions (QID 5 denominator, QID 10 Sanger default). Details in the report, section 2.
+4. **R6 (QID 5 denominator) is generous**: it excuses any larger model count that appears in the
+   paper, e.g. GPT-6 Astra's 5357 on 33855437 (annotated 6).
+5. **Contamination.** All 150 papers predate the frontier models' training cutoffs. The new-30
+   subset (2025 papers) is the least exposed.
+6. **GPT-6 Astra pricing** is not returned by the API, so cost is computed from token usage at the
+   published rates ($10 / $1 cached / $50 per 1M tokens).
 
 ## Deliverable
 
-`report/REPORT_TEMPLATE.md` answers four questions: do frontier models beat GPT-4o, on which
-questions, are the remaining errors scientifically meaningful, and is performance adequate for
-autonomous HIVDB entry or only curator-assisted review. The acceptance criteria for "autonomous"
-should be fixed **before** the results are seen.
+`report/frontier-model-evals-09-23-26.docx` answers the four study questions: do frontier models
+beat GPT-4o, on which questions, are the remaining errors scientifically meaningful, and is
+performance adequate for autonomous HIVDB entry or only curator-assisted review.

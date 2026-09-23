@@ -7,8 +7,10 @@ Rules for the annotation layer (per PMID x QID), each with a stated justificatio
                        Number question annotated with no number  -> unanswerable as scored.
   R2 hedged annotation The annotation itself flags uncertainty ("not stated", "unknown",
                        "(multicenter trial)", "(Review paper)")  -> ambiguous.
-  R3 review paper      The PDF is a systematic review / meta-analysis and the annotation records
-                       primary-study details  -> wrong (the QSP rules say reviews get No/None).
+  R3 review paper      The paper is a review / meta-analysis (verified by reading, listed in
+                       data/review_papers.csv) and a model missed a downstream question -> wrong
+                       (the QSP rules say reviews get No/None). An earlier keyword version of
+                       this rule also fired on 5 primary studies that merely cite a meta-analysis.
   R4 Sanger default    QID 10 annotated Sanger where the PDF never says Sanger  -> convention.
   R6 QID 5 denominator  The annotation's count and the model's count both appear in the PDF and
                        the model's is the larger -> convention. The paper states several counts
@@ -28,8 +30,10 @@ Rules for the per-model layer (only where the annotation is sound):
   M2 cascade           The model's own QID 1 answer was wrong and this is a downstream question
                        -> model error (its own inconsistency, not an annotation problem). M2 beats M1.
 
-Everything else defaults to "model error". Output: data/adjudication_auto.csv,
-data/adjudication_overrides_auto.csv and results/needs_review.txt for the flagged rows.
+Everything else defaults to "model error". Output: data/adjudication_auto.csv and
+data/adjudication_overrides_auto.csv; data/adjudication.csv (manual verdicts in
+data/adjudication_manual.csv take precedence over the rules) and data/adjudication_overrides.csv,
+which 10_adjudicate.py --apply reads; work/needs_review.txt for the flagged rows.
 """
 
 from __future__ import annotations
@@ -50,7 +54,6 @@ adjudicate = __import__("10_adjudicate")
 BOOL_OK = re.compile(r"^\s*(yes|no|not\s+(reported|applicable|provided|specified|stated)|n/?a|unknown|unclear)\b", re.I)
 HEDGE = re.compile(r"\b(not stated|not known|unknown|unclear|uncertain|assumed|presumed|multicenter|multicentre|review paper|supplementary)\b|\bor\b\s*\d|\d\s*and\s*\d", re.I)
 EMPTYISH = re.compile(r"^\s*(not\s+(reported|applicable|provided|specified|stated)|none|no|n/?a|0)\s*$", re.I)
-REVIEW = re.compile(r"systematic (literature )?review|meta-?analysis|PRISMA", re.I)
 SCOPE_QIDS = {4, 6, 7, 9, 10, 11, 12, 14, 15, 16}
 
 
@@ -58,6 +61,9 @@ def main() -> int:
     rows = adjudicate.load_rows()
     models = adjudicate.all_models(rows)
     cache: dict[str, str] = {}
+    reviews = config.review_pmids()
+    # papers a model returned no answers for at all (a blocked request), scored as blanks
+    unanswered = {(p, m) for m in models for p, g in rows.groupby("PMID") if g[m].isna().all()}
     ann_rows, overrides, needs_review = [], [], []
 
     for _, r in rows.iterrows():
@@ -75,7 +81,7 @@ def main() -> int:
             verdict, reason = "unanswerable", f"Number question annotated {human!r}"
         elif HEDGE.search(human):
             verdict, reason = "ambiguous", f"annotation hedges: {human!r}"
-        elif REVIEW.search(dossier.norm(text[:6000])) and qid != 1:
+        elif pmid in reviews and qid != 1:
             verdict, reason = "wrong", "PDF is a systematic review/meta-analysis; QSP rules say No/None"
         elif qid == 10 and "sanger" in human.lower() and "sanger" not in dossier.flat(text):
             verdict, reason = "convention", "annotation defaults to Sanger; the PDF never mentions it"
@@ -91,6 +97,10 @@ def main() -> int:
         # annotation looks sound: classify each model's miss
         for m in missed:
             answer = str(r[m])
+            if (pmid, m) in unanswered:
+                overrides.append({"PMID": pmid, "QID": qid, "Model": m, "verdict": "model error",
+                                  "note": "no answer: the request for this paper was blocked by the provider"})
+                continue
             same_paper = rows[(rows.PMID == pmid)]
             q1_row = same_paper[same_paper.QID == 1]
             q1_wrong = bool(len(q1_row)) and q1_row.iloc[0].get(f"{m} correct") == 0
@@ -112,9 +122,15 @@ def main() -> int:
                     overrides.append({"PMID": pmid, "QID": qid, "Model": m, "verdict": "borderline",
                                       "note": "M1: annotation empty but the model's answer is in the PDF text"})
 
-    pd.DataFrame(ann_rows).drop_duplicates(["PMID", "QID"]).to_csv(
-        config.FC_DIR / "data/adjudication_auto.csv", index=False)
+    auto = pd.DataFrame(ann_rows).drop_duplicates(["PMID", "QID"])
+    auto.to_csv(config.FC_DIR / "data/adjudication_auto.csv", index=False)
     pd.DataFrame(overrides).to_csv(config.FC_DIR / "data/adjudication_overrides_auto.csv", index=False)
+    pd.DataFrame(overrides).to_csv(config.FC_DIR / "data/adjudication_overrides.csv", index=False)
+    # data/adjudication.csv = manual verdicts, then rule-based ones for every other row
+    manual = pd.read_csv(config.FC_DIR / "data/adjudication_manual.csv", dtype={"PMID": str}, keep_default_na=False)
+    auto["PMID"] = auto["PMID"].astype(str)
+    pd.concat([manual, auto]).drop_duplicates(["PMID", "QID"], keep="first").to_csv(
+        config.FC_DIR / "data/adjudication.csv", index=False)
     Path(config.WORK_DIR / "needs_review.txt").write_text(
         "\n".join(f"{p} {q} missed_by={n}" for p, q, n in needs_review), encoding="utf-8")
 

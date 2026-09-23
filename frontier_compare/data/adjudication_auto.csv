@@ -1,12 +1,15 @@
 PMID,QID,annotation_verdict,reason
+19104010,10,convention,annotation defaults to Sanger; the PDF never mentions it
 31988104,1,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 31988104,14,unanswerable,Boolean question annotated '14'
+34516245,10,convention,annotation defaults to Sanger; the PDF never mentions it
 35913500,5,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 36454248,10,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 36645792,5,ambiguous,"annotation hedges: '120 * 76% = 95, or 120 or 129'"
 36645792,7,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 36659824,5,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 36660819,5,ambiguous,annotation hedges: '8 and 10'
+36694270,10,convention,annotation defaults to Sanger; the PDF never mentions it
 36706364,5,ambiguous,annotation hedges: '62 or 3'
 36851704,12,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 37071019,9,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
@@ -33,31 +36,26 @@ PMID,QID,annotation_verdict,reason
 37910452,7,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
 37938856,5,ambiguous,annotation hedges: '820 or 46'
 37957382,8,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
-37976080,12,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
-37976080,2,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
-37976080,3,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
-37976185,11,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
-37976185,12,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
-37976185,14,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
-37976185,9,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
 38005921,9,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 38058846,11,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 40391923,5,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 40400229,13,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 40431710,10,convention,annotation defaults to Sanger; the PDF never mentions it
 40431742,10,convention,annotation defaults to Sanger; the PDF never mentions it
-40596906,10,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
-40596906,11,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
 40596906,16,ambiguous,annotation hedges: 'Not stated'
-40596906,5,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
-40596906,7,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
 40779404,12,ambiguous,annotation hedges: 'Unknown'
 40779404,16,ambiguous,annotation hedges: 'TFV (no other ARVs specified; Data in supplementary methods)'
 40857111,10,ambiguous,annotation hedges: 'Not stated'
 40857111,5,ambiguous,annotation hedges: '7 (Uncertain)'
 40857111,6,ambiguous,annotation hedges: 'Not provided (multicenter trial)'
+40872801,10,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
+40872801,11,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
+40872801,12,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
+40872801,14,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
+40872801,15,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
 40872801,16,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
 40872801,5,ambiguous,annotation hedges: '0 (Review paper)'
+40872801,6,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
 40872801,7,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
 40872801,9,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
 40965168,1,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
@@ -69,19 +67,16 @@ PMID,QID,annotation_verdict,reason
 41012586,10,ambiguous,annotation hedges: 'Not stated'
 41012586,11,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 41012586,5,ambiguous,annotation hedges: '249 (uncertain)'
+41056006,10,convention,annotation defaults to Sanger; the PDF never mentions it
 41056006,5,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 41056006,6,ambiguous,annotation hedges: 'Not provided (multicenter trial)'
+41057785,10,ambiguous,annotation hedges: 'Sanger (not stated)'
 41057785,11,ambiguous,annotation hedges: 'Plasma (not stated)'
-41057785,16,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
-41057785,9,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
 41088231,8,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 41088231,9,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
+41091504,8,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 41093949,10,ambiguous,annotation hedges: 'Not stated'
 41112839,10,convention,annotation defaults to Sanger; the PDF never mentions it
-41129268,16,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
-41129268,2,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
-41129268,5,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
-41129268,9,wrong,PDF is a systematic review/meta-analysis; QSP rules say No/None
 41130593,5,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 41130593,6,ambiguous,annotation hedges: 'Not provided (multicenter trial)'
 41130593,8,ambiguous,all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)

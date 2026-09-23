@@ -1,8 +1,11 @@
 PMID,QID,annotation_verdict,reason
 38005921,2,ambiguous,"ML paper reuses PhenoSense fold-ratio data from a database; the QSP rule ('reports IC50/EC50/fold change') supports Yes, the curators applied a 'new data' standard"
 41056006,2,ambiguous,"PhenoSense Gag-Pro assay stated at study entry; the QSP rule ('describes a susceptibility assay') supports Yes, no numeric results are shown"
-40857111,2,ambiguous,"paper states participants underwent genotypic/phenotypic resistance analyses; no susceptibility values shown"
+40857111,2,ambiguous,paper states participants underwent genotypic/phenotypic resistance analyses; no susceptibility values shown
 37674678,3,ambiguous,"the quoted text is the journal's data-deposition policy statement, not evidence of an actual deposition"
 37878637,3,wrong,"GenBank accession numbers (OR259825 etc.) appear in a table; the QSP rule says accessions mean Yes, annotation says No"
-37376649,11,ambiguous,"paper says whole blood was used for the GenoSure Archive assay; annotation says PBMC"
-40779404,11,ambiguous,"paper says whole blood (proviral DNA); annotation says PBMC"
+37376649,11,ambiguous,paper says whole blood was used for the GenoSure Archive assay; annotation says PBMC
+40779404,11,ambiguous,paper says whole blood (proviral DNA); annotation says PBMC
+37880705,1,wrong,"systematic review of pretreatment drug resistance studies in Ethiopia (article type REVIEW); the QSP rule says reviews get No, the annotation says Yes and records pooled primary-study details"
+41130593,7,wrong,"study periods are stated in the Figure 3 footnotes (August 2021-September 2023; June 2021-December 2023); the annotation, made from a markdown conversion without figures, says 'Not provided'"
+41091504,8,wrong,"computational paper (molecular dynamics and machine learning on published protease data); the PDF never mentions cloning, site-directed mutagenesis or sequencing, yet the annotation says 'Yes (site-directed mutants)'"

@@ -21,7 +21,7 @@ OUTCOMES = ["correct", "correct_partial_list", "FP", "FN_missed", "FN_wrong_valu
 
 
 def main() -> int:
-    rows = pd.read_csv(config.WORK_DIR / "detailed_rows.csv", dtype={"PMID": str}, keep_default_na=False)
+    rows = config.final_rows().fillna({config.REF_COL: ""})
     by_qid = pd.read_csv(config.RESULTS_DIR / "metrics_by_qid.csv")
     models = list(by_qid["model"].unique())
     frontier = [m for m in models if m not in config.COMPARATORS]

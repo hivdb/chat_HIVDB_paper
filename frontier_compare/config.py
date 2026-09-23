@@ -104,7 +104,6 @@ PROVIDER_ENDPOINTS = {
 PROMPTS_DIR = FC_DIR / "prompts"
 # Curator-approved alternative answers (annotation gaps, e.g. evidence only in a figure).
 # Used only for the secondary "adjusted" scoring; the primary metrics never use them.
-ALTERNATIVES_PATH = FC_DIR / "data/accepted_alternatives.csv"
 
 QUESTION_TYPES = ["Boolean", "List", "Number"]
 # Questions the paper flagged as difficult; reported separately in the secondary analysis.
@@ -135,3 +134,23 @@ def run_path(model_key: str, run_id: int) -> Path:
 
 def answers_path(model_key: str, run_id: int) -> Path:
     return WORK_DIR / "answers" / f"{model_key}_run{run_id}.csv"
+
+
+REVIEW_PAPERS_PATH = FC_DIR / "data/review_papers.csv"
+
+
+def final_rows():
+    """work/detailed_rows.csv with QID as int, for the error analysis."""
+    import pandas as pd
+
+    rows = pd.read_csv(WORK_DIR / "detailed_rows.csv", dtype={"PMID": str},
+                       keep_default_na=False, na_values=[""])
+    rows["QID"] = rows["QID"].astype(int)
+    return rows
+
+
+def review_pmids() -> set[str]:
+    """Papers verified by reading to be reviews / meta-analyses (data/review_papers.csv)."""
+    import pandas as pd
+
+    return set(pd.read_csv(REVIEW_PAPERS_PATH, dtype={"PMID": str})["PMID"])

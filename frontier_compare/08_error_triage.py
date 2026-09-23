@@ -36,7 +36,6 @@ HEDGE_PAT = re.compile(r"\((?:[^()]*\b(?:not stated|not specified|unclear|assume
 NONTEXT_EVIDENCE = {"figure", "table", "supplement", "not_found"}
 STOP = {"not", "reported", "provided", "applicable", "none", "no", "yes", "and", "or", "the", "of",
         "in", "for", "with", "study", "paper", "data", "specified", "stated", "available"}
-REVIEW_PAT = re.compile(r"systematic (literature )?review|meta-?analysis|PRISMA", re.I)
 
 
 def norm_text(text: str) -> str:
@@ -148,9 +147,8 @@ def categorize(s: pd.Series) -> str:
 
 
 def main() -> int:
-    rows = pd.read_csv(config.WORK_DIR / "detailed_rows.csv", dtype={"PMID": str},
-                       keep_default_na=False, na_values=[""])
-    rows["QID"] = rows["QID"].astype(int)
+    rows = config.final_rows()
+    reviews = config.review_pmids()
     primary = [spec.label for spec in config.MODELS.values()
                if not spec.is_variant and f"{spec.label} correct" in rows.columns]
     # Cached GPT-4o comparators are triaged too, so the error analysis covers every model. They
@@ -191,7 +189,7 @@ def main() -> int:
                 "is_comparator": model in config.COMPARATORS,
                 "evidence_in_pdf": evidence_in_pdf(ev, text),
                 "human_answer_in_pdf": tokens_in_pdf(str(r[config.REF_COL]), text),
-                "review_paper": bool(REVIEW_PAT.search(text[:6000])),
+                "review_paper": r["PMID"] in reviews,
                 "cleanup_would_pass": bool(rule), "cleanup_rule": rule, "cleaned_answer": cleaned,
                 "annotation_hedge": bool(HEDGE_PAT.search(str(r[config.REF_COL]))),
                 "negation_tail": bool(contains_negation(answer) and not is_empty_token(canonicalize_answer(answer))),

@@ -35,6 +35,7 @@ GPT-6 Astra QSP,36659824,5,Number,How many individuals had samples obtained for 
 GPT-6 Astra QSP,36660819,11,List,What type of samples were sequenced?,Not reported,"Plasma, PBMC",ok,borderline,M1: annotation empty but the model's answer is in the PDF text
 GPT-6 Astra QSP,36660819,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ok,model error,
 GPT-6 Astra QSP,36660819,5,Number,How many individuals had samples obtained for HIV sequencing?,8 and 10,14,ambiguous,annotation/convention,ambiguous: annotation hedges: '8 and 10'
+GPT-6 Astra QSP,36694270,10,List,What method was used for sequencing?,Sanger sequencing,Not reported,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-6 Astra QSP,36738248,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Not reported,Yes,ok,model error,
 GPT-6 Astra QSP,36779485,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,ok,model error,
 GPT-6 Astra QSP,36779485,11,List,What type of samples were sequenced?,Plasma,Not applicable,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
@@ -53,6 +54,10 @@ GPT-6 Astra QSP,36795586,6,List,From which countries were the sequenced samples 
 GPT-6 Astra QSP,36851704,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-6 Astra QSP,36851704,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI, INSTI",Not reported,ok,model error,
 GPT-6 Astra QSP,36851760,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not reported,Lamivudine (3TC); zidovudine (ZDV); abacavir (ABC); nevirapine (NVP); efavirenz (EFV); tenofovir disoproxil fumarate (TDF); emtricitabine (FTC); lopinavir; ritonavir,ok,borderline,M1: annotation empty but the model's answer is in the PDF text
+GPT-6 Astra QSP,36920025,10,List,What method was used for sequencing?,Illumina sequencing,,ok,model error,no answer: the request for this paper was blocked by the provider
+GPT-6 Astra QSP,36920025,2,Boolean,Does the paper report in vitro drug susceptibility data?,Yes,,ok,model error,no answer: the request for this paper was blocked by the provider
+GPT-6 Astra QSP,36920025,3,Boolean,Were sequences from the paper made publicly available?,Yes,,ok,model error,no answer: the request for this paper was blocked by the provider
+GPT-6 Astra QSP,36920025,9,List,Which HIV genes were reported to have been sequenced?,PR,,ok,model error,no answer: the request for this paper was blocked by the provider
 GPT-6 Astra QSP,36931676,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,ok,model error,
 GPT-6 Astra QSP,36931676,11,List,What type of samples were sequenced?,"Plasma, CSF, PBMC",Not applicable,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
 GPT-6 Astra QSP,36931676,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes,Not applicable,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
@@ -122,7 +127,7 @@ GPT-6 Astra QSP,37817087,11,List,What type of samples were sequenced?,"Serum, Pl
 GPT-6 Astra QSP,37823653,9,List,Which HIV genes were reported to have been sequenced?,"NFLG, Envelope",Env,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-6 Astra QSP,37878637,3,Boolean,Were sequences from the paper made publicly available?,No,Yes,wrong,annotation/convention,"wrong: GenBank accession numbers (OR259825 etc.) appear in a table; the QSP rule says accessions mean Yes, annotation says No"
 GPT-6 Astra QSP,37878637,4,List,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported,OR259825; OR259967; OR259851; OR259781,ok,borderline,M1: annotation empty but the model's answer is in the PDF text
-GPT-6 Astra QSP,37880705,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,ok,model error,
+GPT-6 Astra QSP,37880705,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,wrong,annotation/convention,"wrong: systematic review of pretreatment drug resistance studies in Ethiopia (article type REVIEW); the QSP rule says reviews get No, the annotation says Yes and records pooled primary-study details"
 GPT-6 Astra QSP,37880705,10,List,What method was used for sequencing?,Not reported,Sanger sequencing,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 GPT-6 Astra QSP,37880705,5,Number,How many individuals had samples obtained for HIV sequencing?,1070,0,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 GPT-6 Astra QSP,37880705,6,List,From which countries were the sequenced samples obtained?,Ethiopia,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
@@ -138,7 +143,7 @@ GPT-6 Astra QSP,37957382,8,Boolean,Were samples cloned prior to sequencing?,Yes,
 GPT-6 Astra QSP,37957382,9,List,Which HIV genes were reported to have been sequenced?,"Full genome, NFLG","PR, RT, IN, CA, Env",ok,model error,
 GPT-6 Astra QSP,37973713,13,Boolean,Were the patients in the study in a clinical trial?,Yes,No,ok,model error,
 GPT-6 Astra QSP,37973713,6,List,From which countries were the sequenced samples obtained?,"Ukraine, Poland",Poland,ok,model error,
-GPT-6 Astra QSP,37976080,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-6 Astra QSP,37976080,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,ok,model error,
 GPT-6 Astra QSP,38005921,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ambiguous,annotation/convention,"ambiguous: ML paper reuses PhenoSense fold-ratio data from a database; the QSP rule ('reports IC50/EC50/fold change') supports Yes, the curators applied a 'new data' standard"
 GPT-6 Astra QSP,38005921,3,Boolean,Were sequences from the paper made publicly available?,Yes,No,ok,model error,
 GPT-6 Astra QSP,38005921,9,List,Which HIV genes were reported to have been sequenced?,Not reported,"PR, RT",ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
@@ -166,6 +171,14 @@ GPT-6 Astra QSP,40839365,15,List,Which drug classes were received by individuals
 GPT-6 Astra QSP,40839365,5,Number,How many individuals had samples obtained for HIV sequencing?,212,288,ok,annotation/convention,R6 QID 5 denominator: both 288 and 212 are stated in the paper
 GPT-6 Astra QSP,40857111,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ambiguous,annotation/convention,ambiguous: paper states participants underwent genotypic/phenotypic resistance analyses; no susceptibility values shown
 GPT-6 Astra QSP,40857111,5,Number,How many individuals had samples obtained for HIV sequencing?,7 (Uncertain),241,ambiguous,annotation/convention,ambiguous: annotation hedges: '7 (Uncertain)'
+GPT-6 Astra QSP,40872801,10,List,What method was used for sequencing?,Sanger,Not reported,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-6 Astra QSP,40872801,11,List,What type of samples were sequenced?,Plasma,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-6 Astra QSP,40872801,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-6 Astra QSP,40872801,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-6 Astra QSP,40872801,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI",None,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-6 Astra QSP,40872801,6,List,From which countries were the sequenced samples obtained?,Tanzania,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-6 Astra QSP,40872801,7,List,From what years were the sequenced samples obtained?,2004-2021,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-6 Astra QSP,40872801,9,List,Which HIV genes were reported to have been sequenced?,"RT, PR",Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 GPT-6 Astra QSP,40938120,5,Number,How many individuals had samples obtained for HIV sequencing?,1048,1260,ok,annotation/convention,R6 QID 5 denominator: both 1260 and 1048 are stated in the paper
 GPT-6 Astra QSP,40938996,8,Boolean,Were samples cloned prior to sequencing?,Yes  ,Not applicable,ok,model error,
 GPT-6 Astra QSP,40938996,9,List,Which HIV genes were reported to have been sequenced?,"RT, IN, NC, Env","PR, RT, IN, CA, Env",ok,model error,
@@ -178,9 +191,11 @@ GPT-6 Astra QSP,40974886,5,Number,How many individuals had samples obtained for 
 GPT-6 Astra QSP,41004608,9,List,Which HIV genes were reported to have been sequenced?,Whole genome,"PR, RT, IN, CA, Env",ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-6 Astra QSP,41012586,11,List,What type of samples were sequenced?,Plasma (presumably),Plasma,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-6 Astra QSP,41023944,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI,NNRTI,INSTI",INSTIs,ok,model error,
+GPT-6 Astra QSP,41056006,10,List,What method was used for sequencing?,Sanger,Not reported,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-6 Astra QSP,41056006,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ambiguous,annotation/convention,"ambiguous: PhenoSense Gag-Pro assay stated at study entry; the QSP rule ('describes a susceptibility assay') supports Yes, no numeric results are shown"
 GPT-6 Astra QSP,41056006,5,Number,How many individuals had samples obtained for HIV sequencing?,10,182,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-6 Astra QSP,41056006,6,List,From which countries were the sequenced samples obtained?,Not provided (multicenter trial),United States; Dominican Republic,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not provided (multicenter trial)'
+GPT-6 Astra QSP,41057785,10,List,What method was used for sequencing?,Sanger (not stated),Not reported,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Sanger (not stated)'
 GPT-6 Astra QSP,41088231,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,ok,model error,
 GPT-6 Astra QSP,41088231,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?, No,Yes,ok,model error,
 GPT-6 Astra QSP,41088231,15,List,Which drug classes were received by individuals in the study before sample sequencing?,None,"NRTIs, INSTIs",ok,borderline,M1: annotation empty but the model's answer is in the PDF text
@@ -188,11 +203,13 @@ GPT-6 Astra QSP,41088231,16,List,Which drugs were received by individuals in the
 GPT-6 Astra QSP,41088231,8,Boolean,Were samples cloned prior to sequencing?,Yes,Not applicable,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-6 Astra QSP,41088231,9,List,Which HIV genes were reported to have been sequenced?,Whole genome,"PR, RT, IN, CA, Env",ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-6 Astra QSP,41091504,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ok,model error,
+GPT-6 Astra QSP,41091504,8,Boolean,Were samples cloned prior to sequencing?,Yes (site-directed mutants),Not applicable,wrong,annotation/convention,"wrong: computational paper (molecular dynamics and machine learning on published protease data); the PDF never mentions cloning, site-directed mutagenesis or sequencing, yet the annotation says 'Yes (site-directed mutants)'"
 GPT-6 Astra QSP,41093949,10,List,What method was used for sequencing?,Not stated,Sanger sequencing,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not stated'
 GPT-6 Astra QSP,41093949,8,Boolean,Were samples cloned prior to sequencing?,Yes,Not applicable,ok,model error,
-GPT-6 Astra QSP,41129268,5,Number,How many individuals had samples obtained for HIV sequencing?,333,428,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-6 Astra QSP,41129268,5,Number,How many individuals had samples obtained for HIV sequencing?,333,428,ok,annotation/convention,R6 QID 5 denominator: both 428 and 333 are stated in the paper
 GPT-6 Astra QSP,41130593,5,Number,How many individuals had samples obtained for HIV sequencing?,64,77,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-6 Astra QSP,41130593,6,List,From which countries were the sequenced samples obtained?,Not provided (multicenter trial),South Africa,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not provided (multicenter trial)'
+GPT-6 Astra QSP,41130593,7,List,From what years were the sequenced samples obtained?,Not provided,2021–2023,wrong,borderline,M1: annotation empty but the model's answer is in the PDF text
 GPT-6 Astra QSP,41130593,8,Boolean,Were samples cloned prior to sequencing?,Yes (single genome),Not applicable,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-6 Astra QSP,41140464,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 GPT-6 Astra QSP,41140464,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
@@ -311,7 +328,7 @@ Kimi K3 QSP,37823653,9,List,Which HIV genes were reported to have been sequenced
 Kimi K3 QSP,37872202,10,List,What method was used for sequencing?,Not reported,Sanger sequencing,ok,borderline,M1: annotation empty but the model's answer is in the PDF text
 Kimi K3 QSP,37878637,3,Boolean,Were sequences from the paper made publicly available?,No,Yes,wrong,annotation/convention,"wrong: GenBank accession numbers (OR259825 etc.) appear in a table; the QSP rule says accessions mean Yes, annotation says No"
 Kimi K3 QSP,37878637,4,List,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported,"OR259781, OR259825, OR259851, OR259967",ok,borderline,M1: annotation empty but the model's answer is in the PDF text
-Kimi K3 QSP,37880705,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,ok,model error,
+Kimi K3 QSP,37880705,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,wrong,annotation/convention,"wrong: systematic review of pretreatment drug resistance studies in Ethiopia (article type REVIEW); the QSP rule says reviews get No, the annotation says Yes and records pooled primary-study details"
 Kimi K3 QSP,37880705,10,List,What method was used for sequencing?,Not reported,Sanger sequencing,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 Kimi K3 QSP,37880705,5,Number,How many individuals had samples obtained for HIV sequencing?,1070,0,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 Kimi K3 QSP,37880705,6,List,From which countries were the sequenced samples obtained?,Ethiopia,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
@@ -344,6 +361,14 @@ Kimi K3 QSP,40596906,16,List,Which drugs were received by individuals in the stu
 Kimi K3 QSP,40779404,16,List,Which drugs were received by individuals in the study before sample sequencing?,TFV (no other ARVs specified; Data in supplementary methods),"Tenofovir (TFV); individual prior drugs otherwise only in unavailable supplement. All participants received the study drug regimen bictegravir (BIC), emtricitabine (FTC), and tenofovir alafenamide (TAF) after baseline sampling.",ambiguous,annotation/convention,ambiguous: annotation hedges: 'TFV (no other ARVs specified; Data in supplementary methods)'
 Kimi K3 QSP,40857111,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ambiguous,annotation/convention,ambiguous: paper states participants underwent genotypic/phenotypic resistance analyses; no susceptibility values shown
 Kimi K3 QSP,40857111,5,Number,How many individuals had samples obtained for HIV sequencing?,7 (Uncertain),241,ambiguous,annotation/convention,ambiguous: annotation hedges: '7 (Uncertain)'
+Kimi K3 QSP,40872801,10,List,What method was used for sequencing?,Sanger,Not reported,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+Kimi K3 QSP,40872801,11,List,What type of samples were sequenced?,Plasma,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+Kimi K3 QSP,40872801,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+Kimi K3 QSP,40872801,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+Kimi K3 QSP,40872801,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI",None,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+Kimi K3 QSP,40872801,6,List,From which countries were the sequenced samples obtained?,Tanzania,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+Kimi K3 QSP,40872801,7,List,From what years were the sequenced samples obtained?,2004-2021,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+Kimi K3 QSP,40872801,9,List,Which HIV genes were reported to have been sequenced?,"RT, PR",Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 Kimi K3 QSP,40938120,5,Number,How many individuals had samples obtained for HIV sequencing?,1048,"1,260",ok,annotation/convention,R6 QID 5 denominator: both 1260 and 1048 are stated in the paper
 Kimi K3 QSP,40938996,8,Boolean,Were samples cloned prior to sequencing?,Yes  ,Not applicable,ok,model error,
 Kimi K3 QSP,40965168,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
@@ -356,23 +381,28 @@ Kimi K3 QSP,40974886,5,Number,How many individuals had samples obtained for HIV 
 Kimi K3 QSP,41004608,5,Number,How many individuals had samples obtained for HIV sequencing?,1182,1106,ok,model error,
 Kimi K3 QSP,41004608,9,List,Which HIV genes were reported to have been sequenced?,Whole genome,"PR, RT, IN, Env",ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 Kimi K3 QSP,41012586,11,List,What type of samples were sequenced?,Plasma (presumably),Not reported,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
+Kimi K3 QSP,41056006,10,List,What method was used for sequencing?,Sanger,Not reported,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 Kimi K3 QSP,41056006,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ambiguous,annotation/convention,"ambiguous: PhenoSense Gag-Pro assay stated at study entry; the QSP rule ('describes a susceptibility assay') supports Yes, no numeric results are shown"
 Kimi K3 QSP,41056006,5,Number,How many individuals had samples obtained for HIV sequencing?,10,182,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 Kimi K3 QSP,41056006,6,List,From which countries were the sequenced samples obtained?,Not provided (multicenter trial),"USA, Dominican Republic",ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not provided (multicenter trial)'
 Kimi K3 QSP,41056006,7,List,From what years were the sequenced samples obtained?,Not provided,2019–2020,ok,borderline,M1: annotation empty but the model's answer is in the PDF text
+Kimi K3 QSP,41057785,10,List,What method was used for sequencing?,Sanger (not stated),Not reported,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Sanger (not stated)'
 Kimi K3 QSP,41088231,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?, No,Yes,ok,model error,
 Kimi K3 QSP,41088231,15,List,Which drug classes were received by individuals in the study before sample sequencing?,None,"NRTI, INSTI",ok,borderline,M1: annotation empty but the model's answer is in the PDF text
 Kimi K3 QSP,41088231,16,List,Which drugs were received by individuals in the study before sample sequencing?,None,"bictegravir (BIC), emtricitabine (FTC), tenofovir alafenamide (TAF)",ok,borderline,M1: annotation empty but the model's answer is in the PDF text
 Kimi K3 QSP,41088231,8,Boolean,Were samples cloned prior to sequencing?,Yes,Not applicable,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 Kimi K3 QSP,41088231,9,List,Which HIV genes were reported to have been sequenced?,Whole genome,"PR, RT, IN, Env",ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
+Kimi K3 QSP,41091504,8,Boolean,Were samples cloned prior to sequencing?,Yes (site-directed mutants),Not applicable,wrong,annotation/convention,"wrong: computational paper (molecular dynamics and machine learning on published protease data); the PDF never mentions cloning, site-directed mutagenesis or sequencing, yet the annotation says 'Yes (site-directed mutants)'"
 Kimi K3 QSP,41093949,10,List,What method was used for sequencing?,Not stated,Sanger sequencing,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not stated'
 Kimi K3 QSP,41093949,8,Boolean,Were samples cloned prior to sequencing?,Yes,Not applicable,ok,model error,
 Kimi K3 QSP,41130593,5,Number,How many individuals had samples obtained for HIV sequencing?,64,77,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
+Kimi K3 QSP,41130593,7,List,From what years were the sequenced samples obtained?,Not provided,2021–2023,wrong,borderline,M1: annotation empty but the model's answer is in the PDF text
 Kimi K3 QSP,41130593,8,Boolean,Were samples cloned prior to sequencing?,Yes (single genome),Not applicable,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 Kimi K3 QSP,41140464,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 Kimi K3 QSP,41140464,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 Kimi K3 QSP,41140464,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI, INSTI",None,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 Kimi K3 QSP,41140464,6,List,From which countries were the sequenced samples obtained?,Tanzania,Not applicable,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o FT,19104010,10,List,What method was used for sequencing?,Sanger,No,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-4o FT,19104010,9,List,Which HIV genes were reported to have been sequenced?,IN,No,ok,model error,
 GPT-4o FT,21115794,9,List,Which HIV genes were reported to have been sequenced?,IN,No,ok,model error,
 GPT-4o FT,23749954,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ok,model error,
@@ -491,8 +521,8 @@ GPT-4o FT,37938856,9,List,Which HIV genes were reported to have been sequenced?,
 GPT-4o FT,37946329,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not reported,"NVP, ETR, ABC, 3TC, DTG, ATV, LPV, RAL, SQV",ok,model error,
 GPT-4o FT,37957382,11,List,What type of samples were sequenced?,"Plasma, PBMC",Plasma,ok,model error,
 GPT-4o FT,37957382,8,Boolean,Were samples cloned prior to sequencing?,Yes,No,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
-GPT-4o FT,37976185,11,List,What type of samples were sequenced?,Plasma,No,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
-GPT-4o FT,37976185,9,List,Which HIV genes were reported to have been sequenced?,RT,No,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o FT,37976185,11,List,What type of samples were sequenced?,Plasma,No,ok,model error,
+GPT-4o FT,37976185,9,List,Which HIV genes were reported to have been sequenced?,RT,No,ok,model error,
 GPT-4o FT,37993493,5,Number,How many individuals had samples obtained for HIV sequencing?,33,600,ok,annotation/convention,R6 QID 5 denominator: both 600 and 33 are stated in the paper
 GPT-4o FT,38005921,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,ok,model error,
 GPT-4o FT,38005921,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ambiguous,annotation/convention,"ambiguous: ML paper reuses PhenoSense fold-ratio data from a database; the QSP rule ('reports IC50/EC50/fold change') supports Yes, the curators applied a 'new data' standard"
@@ -528,7 +558,7 @@ GPT-4o FT,40431710,16,List,Which drugs were received by individuals in the study
 GPT-4o FT,40431742,10,List,What method was used for sequencing?,Sanger  ,The paper used a PCR-based method for sequencing the HIV-1 pol gene fragments.,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-4o FT,40431742,5,Number,How many individuals had samples obtained for HIV sequencing?,1677,Samples from 1667 individuals were included in the mutation analysis.,ok,model error,
 GPT-4o FT,40490983,16,List,Which drugs were received by individuals in the study before sample sequencing?,"AZT, 3TC, TDF, ABC, EFV, NVP, LPV, RTV, ATV (RTV is for boosting)","The paper mentioned specific drugs such as atazanavir/ritonavir and lopinavir/ritonavir received prior to sequencing. The NRTIs lamivudine, zidovudine, and tenofovir were received before sequencing",ok,model error,
-GPT-4o FT,40596906,11,List,What type of samples were sequenced?,Plasma,The sequenced samples were clinical specimens from mother-child pairs with confirmed vertical transmission of HIV-1.,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o FT,40596906,11,List,What type of samples were sequenced?,Plasma,The sequenced samples were clinical specimens from mother-child pairs with confirmed vertical transmission of HIV-1.,ok,model error,
 GPT-4o FT,40596906,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not stated,"Individuals in the study received zidovudine (ZDV), lamivudine (3TC), nevirapine (NVP), lopinavir/ritonavir, and efavirenz (EFV) before sample sequencing.",ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not stated'
 GPT-4o FT,40713598,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,"HIV drug resistance (HIVDR) was retrospectively characterized among 20 children and adolescents with HIV with virologic failure on non-nucleoside reverse transcriptase inhibitor (NNRTI)-based therapy, and virologic response in those switched to dolutegravir (DTG)-based therapy described.",ok,model error,
 GPT-4o FT,40763144,16,List,Which drugs were received by individuals in the study before sample sequencing?,"AZT, ABC, 3TC, TDF, ATV, LPV, RTV, DTG","The study involved participants on various ART regimens including TDF/3TC/DTG, AZT/3TC/DTG, ABC/3TC/DTG, ABC/3TC/LPVr, TDF/3TC/ATVr, AZT/3TC/ATVr, and others before sample sequencing.",ok,model error,
@@ -541,6 +571,8 @@ GPT-4o FT,40857111,11,List,What type of samples were sequenced?,Plasma,The paper
 GPT-4o FT,40857111,16,List,Which drugs were received by individuals in the study before sample sequencing?,"TAF, FTC, TDF, 3TC, DTG, BIC","The drugs received include bictegravir, emtricitabine, tenofovir alafenamide, dolutegravir, and tenofovir disoproxil fumarate.",ok,model error,
 GPT-4o FT,40857111,5,Number,How many individuals had samples obtained for HIV sequencing?,7 (Uncertain),The paper mentions resistance testing data for 22 participants.,ambiguous,annotation/convention,ambiguous: annotation hedges: '7 (Uncertain)'
 GPT-4o FT,40872801,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes the paper reports HIV sequences from patient samples.,ok,borderline,M1: annotation empty but the model's answer is in the PDF text
+GPT-4o FT,40872801,10,List,What method was used for sequencing?,Sanger,The paper does not specify the exact sequencing method used.,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o FT,40872801,11,List,What type of samples were sequenced?,Plasma,The paper does not specify the type of clinical samples sequenced.,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 GPT-4o FT,40872801,16,List,Which drugs were received by individuals in the study before sample sequencing?,None,"The drugs received by individuals in the study include TDF, 3TC, DTG, FTC, AZT, and LPV/r.",wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 GPT-4o FT,40872801,5,Number,How many individuals had samples obtained for HIV sequencing?,0 (Review paper),A total of 9685 individuals had samples obtained for HIV sequencing.,ambiguous,annotation/convention,ambiguous: annotation hedges: '0 (Review paper)'
 GPT-4o FT,40872801,7,List,From what years were the sequenced samples obtained?,2004-2021,"The sequenced samples were obtained from studies published up to 2024, covering various years including 2005-2021.",wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
@@ -574,23 +606,26 @@ GPT-4o FT,41012586,9,List,Which HIV genes were reported to have been sequenced?,
 GPT-4o FT,41023944,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI,NNRTI,INSTI","Individuals received NRTIs, NNRTIs, and PIs before sample sequencing.",ok,model error,
 GPT-4o FT,41023944,16,List,Which drugs were received by individuals in the study before sample sequencing?,DTG (no other ARVs specified),"Specific drugs like Tenofovir, Lamivudine, Emtricitabine, Efavirenz were received by individuals in the study before sample sequencing.",ok,model error,
 GPT-4o FT,41029850,4,List,What were the GenBank accession numbers for sequenced HIV isolates?,"PQ893197, PQ893192, OQ985810, OR259747 and PQ893191 & submission ID: 2961867) ","PQ893197, PQ893192, OQ985810, OQ259747, and PQ893191.",ok,model error,
+GPT-4o FT,41056006,10,List,What method was used for sequencing?,Sanger,The paper does not specify the exact sequencing method used.,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-4o FT,41056006,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, INSTI, CAI","Participants received drugs from the NRTI, integrase inhibitor, and fusion inhibitor classes.",ok,model error,
 GPT-4o FT,41056006,5,Number,How many individuals had samples obtained for HIV sequencing?,10,"182 participants received at least one dose of study drug, and those who met virologic failure criteria were included in the resistance analysis population.",ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-4o FT,41056006,6,List,From which countries were the sequenced samples obtained?,Not provided (multicenter trial),The sequenced samples were obtained from the USA and the Dominican Republic.,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not provided (multicenter trial)'
 GPT-4o FT,41056006,7,List,From what years were the sequenced samples obtained?,Not provided,The samples were obtained between 22 November 2019 and 27 August 2020.,ok,borderline,M1: annotation empty but the model's answer is in the PDF text
+GPT-4o FT,41057785,10,List,What method was used for sequencing?,Sanger (not stated),The paper does not specify the method used for sequencing.,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Sanger (not stated)'
 GPT-4o FT,41057785,11,List,What type of samples were sequenced?,Plasma (not stated),The paper does not specify the type of clinical specimens sequenced.,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Plasma (not stated)'
-GPT-4o FT,41057785,16,List,Which drugs were received by individuals in the study before sample sequencing?,"ABC, AZT, D4T, TDF, ETR, NVP, EFV, LPV, DRV/r, DTG","Specific drugs received included AZT, TDF, D4T, and TDF.",wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
-GPT-4o FT,41057785,9,List,Which HIV genes were reported to have been sequenced?,"RT,PR,IN","The paper discusses mutations in several HIV genes, including those conferring resistance.",wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o FT,41057785,16,List,Which drugs were received by individuals in the study before sample sequencing?,"ABC, AZT, D4T, TDF, ETR, NVP, EFV, LPV, DRV/r, DTG","Specific drugs received included AZT, TDF, D4T, and TDF.",ok,model error,
+GPT-4o FT,41057785,9,List,Which HIV genes were reported to have been sequenced?,"RT,PR,IN","The paper discusses mutations in several HIV genes, including those conferring resistance.",ok,model error,
 GPT-4o FT,41088231,8,Boolean,Were samples cloned prior to sequencing?,Yes,"No, samples were not cloned prior to sequencing.",ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-4o FT,41088231,9,List,Which HIV genes were reported to have been sequenced?,Whole genome,"The sequenced genes include the near full-length genome (NFLG), specifically mentioning regions of vif and env genes, and the pol gene.",ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
+GPT-4o FT,41091504,8,Boolean,Were samples cloned prior to sequencing?,Yes (site-directed mutants),The paper does not mention whether samples were cloned prior to sequencing.,wrong,annotation/convention,"wrong: computational paper (molecular dynamics and machine learning on published protease data); the PDF never mentions cloning, site-directed mutagenesis or sequencing, yet the annotation says 'Yes (site-directed mutants)'"
 GPT-4o FT,41091504,9,List,Which HIV genes were reported to have been sequenced?,PR,The paper does not report specific HIV genes that were sequenced.,ok,model error,
 GPT-4o FT,41093949,10,List,What method was used for sequencing?,Not stated,Sanger sequencing was used.,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not stated'
 GPT-4o FT,41093949,6,List,From which countries were the sequenced samples obtained?,Not applicable.,The samples were obtained from China and the United States.,ok,model error,
 GPT-4o FT,41093949,7,List,From what years were the sequenced samples obtained?,Not applicable.,The samples were obtained from 1978 to 2023.,ok,model error,
 GPT-4o FT,41112839,10,List,What method was used for sequencing?,Sanger,Big Dye Terminator v3.1 and ABI 3100 Avant sequencer were used for sequencing.,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-4o FT,41112839,5,Number,How many individuals had samples obtained for HIV sequencing?,237,Samples were obtained from 251 individuals for HIV sequencing.,ok,annotation/convention,R6 QID 5 denominator: both 251 and 237 are stated in the paper
-GPT-4o FT,41129268,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,"Yes, the paper reports in vitro drug susceptibility data.",wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
-GPT-4o FT,41129268,9,List,Which HIV genes were reported to have been sequenced?,"RT, PR, IN","The study focused on sequences relevant to drug resistance, particularly in the context of integrase inhibitors, protease inhibitors, NRTIs, NNRTIs, and integrase inhibitors.",wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o FT,41129268,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,"Yes, the paper reports in vitro drug susceptibility data.",ok,borderline,M1: annotation empty but the model's answer is in the PDF text
+GPT-4o FT,41129268,9,List,Which HIV genes were reported to have been sequenced?,"RT, PR, IN","The study focused on sequences relevant to drug resistance, particularly in the context of integrase inhibitors, protease inhibitors, NRTIs, NNRTIs, and integrase inhibitors.",ok,model error,
 GPT-4o FT,41130593,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, CAI",NRTIs and INSTIs were received by individuals in the study.,ok,model error,
 GPT-4o FT,41130593,16,List,Which drugs were received by individuals in the study before sample sequencing?,"TDF, TAF, FTC, LEN","Specific drugs mentioned include emtricitabine, tenofovir, and dolutegravir, lamivudine.",ok,model error,
 GPT-4o FT,41130593,5,Number,How many individuals had samples obtained for HIV sequencing?,64,Samples were obtained from a total of 54 individuals in the PURPOSE 1 and PURPOSE 2 trials.,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
@@ -625,6 +660,7 @@ GPT-4o QSP,32601157,9,List,Which HIV genes were reported to have been sequenced?
 GPT-4o QSP,33855437,11,List,What type of samples were sequenced?,Not reported,PBMC,ok,model error,
 GPT-4o QSP,33855437,6,List,From which countries were the sequenced samples obtained?,"Canada, Ethiopia",Ethiopia,ok,model error,
 GPT-4o QSP,34516245,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,ok,model error,
+GPT-4o QSP,34516245,10,List,What method was used for sequencing?,Sanger sequencing,Not reported,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-4o QSP,34516245,11,List,What type of samples were sequenced?,Not reported,Supernatants,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
 GPT-4o QSP,34516245,8,Boolean,Were samples cloned prior to sequencing?,Yes,Not reported,ok,model error,
 GPT-4o QSP,35730213,13,Boolean,Were the patients in the study in a clinical trial?,No,Yes,ok,model error,
@@ -815,9 +851,9 @@ GPT-4o QSP,37966701,6,List,From which countries were the sequenced samples obtai
 GPT-4o QSP,37966701,7,List,From what years were the sequenced samples obtained?,Not reported,2021–2022,ok,borderline,M1: annotation empty but the model's answer is in the PDF text
 GPT-4o QSP,37973713,3,Boolean,Were sequences from the paper made publicly available?,No,Yes,ok,model error,
 GPT-4o QSP,37973713,6,List,From which countries were the sequenced samples obtained?,"Ukraine, Poland","Ukraine, Belarus, Georgia, Kazakhstan",ok,model error,
-GPT-4o QSP,37976080,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
-GPT-4o QSP,37976080,3,Boolean,Were sequences from the paper made publicly available?,No,Yes,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
-GPT-4o QSP,37976185,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o QSP,37976080,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ok,model error,
+GPT-4o QSP,37976080,3,Boolean,Were sequences from the paper made publicly available?,No,Yes,ok,model error,
+GPT-4o QSP,37976185,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,ok,model error,
 GPT-4o QSP,37993493,16,List,Which drugs were received by individuals in the study before sample sequencing?,"TDF, 3TC, DTG, ABC, LPV, ATV, EFV","Tenofovir, Lamivudine, Dolutegravir",ok,model error,
 GPT-4o QSP,37993493,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ok,model error,
 GPT-4o QSP,37993493,5,Number,How many individuals had samples obtained for HIV sequencing?,33,600,ok,annotation/convention,R6 QID 5 denominator: both 600 and 33 are stated in the paper
@@ -874,6 +910,7 @@ GPT-4o QSP,40400229,14,Boolean,Does the paper report HIV sequences from individu
 GPT-4o QSP,40400229,15,List,Which drug classes were received by individuals in the study before sample sequencing?,RT,None,ok,model error,
 GPT-4o QSP,40400229,16,List,Which drugs were received by individuals in the study before sample sequencing?,"TDF, FTC",None,ok,model error,
 GPT-4o QSP,40400229,9,List,Which HIV genes were reported to have been sequenced?,"RT,IN",Not reported,ok,model error,
+GPT-4o QSP,40431710,10,List,What method was used for sequencing?,Sanger,Not reported,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-4o QSP,40431710,16,List,Which drugs were received by individuals in the study before sample sequencing?,"AZT, ddI, d4T, 3TC, ABC, TDF, TAF, DLV, ETR, DOR, IDV, RTV, NFV, LPV, ATV, DRV, EVG, DTG, FOS","AZT, 3TC, ddI, ABC, TDF, RTV, DRV, ETR, DTG, BIC, DOR",ok,model error,
 GPT-4o QSP,40431710,7,List,From what years were the sequenced samples obtained?,2006-2024,1994–2023,ok,model error,
 GPT-4o QSP,40431742,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ok,model error,
@@ -881,11 +918,11 @@ GPT-4o QSP,40431742,5,Number,How many individuals had samples obtained for HIV s
 GPT-4o QSP,40490983,16,List,Which drugs were received by individuals in the study before sample sequencing?,"AZT, 3TC, TDF, ABC, EFV, NVP, LPV, RTV, ATV (RTV is for boosting)","Efavirenz, Nevirapine, Atazanavir/Ritonavir, Lopinavir/Ritonavir",ok,model error,
 GPT-4o QSP,40490983,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ok,model error,
 GPT-4o QSP,40573423,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ok,model error,
-GPT-4o QSP,40596906,10,List,What method was used for sequencing?,Sanger,Not reported,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
-GPT-4o QSP,40596906,11,List,What type of samples were sequenced?,Plasma,Not reported,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o QSP,40596906,10,List,What method was used for sequencing?,Sanger,Not reported,ok,model error,
+GPT-4o QSP,40596906,11,List,What type of samples were sequenced?,Plasma,Not reported,ok,model error,
 GPT-4o QSP,40596906,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not stated,"Zidovudine (ZDV), Lamivudine (3TC), Nevirapine (NVP), Efavirenz (EFV)",ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not stated'
-GPT-4o QSP,40596906,5,Number,How many individuals had samples obtained for HIV sequencing?,30,15,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
-GPT-4o QSP,40596906,7,List,From what years were the sequenced samples obtained?,2007-2022,2021–2023,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o QSP,40596906,5,Number,How many individuals had samples obtained for HIV sequencing?,30,15,ok,model error,
+GPT-4o QSP,40596906,7,List,From what years were the sequenced samples obtained?,2007-2022,2021–2023,ok,model error,
 GPT-4o QSP,40713598,16,List,Which drugs were received by individuals in the study before sample sequencing?,"ABC, 3TC, AZT (ZDV), NVP, EFV",Not reported,ok,model error,
 GPT-4o QSP,40763144,16,List,Which drugs were received by individuals in the study before sample sequencing?,"AZT, ABC, 3TC, TDF, ATV, LPV, RTV, DTG",Not reported,ok,model error,
 GPT-4o QSP,40779404,11,List,What type of samples were sequenced?,PBMC,Not reported,ambiguous,annotation/convention,ambiguous: paper says whole blood (proviral DNA); annotation says PBMC
@@ -900,6 +937,7 @@ GPT-4o QSP,40857111,16,List,Which drugs were received by individuals in the stud
 GPT-4o QSP,40857111,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ambiguous,annotation/convention,ambiguous: paper states participants underwent genotypic/phenotypic resistance analyses; no susceptibility values shown
 GPT-4o QSP,40857111,5,Number,How many individuals had samples obtained for HIV sequencing?,7 (Uncertain),208,ambiguous,annotation/convention,ambiguous: annotation hedges: '7 (Uncertain)'
 GPT-4o QSP,40872801,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,ok,model error,
+GPT-4o QSP,40872801,10,List,What method was used for sequencing?,Sanger,Not reported,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 GPT-4o QSP,40872801,16,List,Which drugs were received by individuals in the study before sample sequencing?,None,"3TC, FTC, AZT, TDF",wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 GPT-4o QSP,40872801,5,Number,How many individuals had samples obtained for HIV sequencing?,0 (Review paper),9685,ambiguous,annotation/convention,ambiguous: annotation hedges: '0 (Review paper)'
 GPT-4o QSP,40938996,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,ok,model error,
@@ -934,6 +972,7 @@ GPT-4o QSP,41012586,9,List,Which HIV genes were reported to have been sequenced?
 GPT-4o QSP,41023944,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI,NNRTI,INSTI",Not reported,ok,model error,
 GPT-4o QSP,41023944,16,List,Which drugs were received by individuals in the study before sample sequencing?,DTG (no other ARVs specified),Not reported,ok,model error,
 GPT-4o QSP,41056006,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,ok,model error,
+GPT-4o QSP,41056006,10,List,What method was used for sequencing?,Sanger,Not reported,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-4o QSP,41056006,11,List,What type of samples were sequenced?,Plasma,Not reported,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
 GPT-4o QSP,41056006,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes,No,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
 GPT-4o QSP,41056006,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
@@ -944,10 +983,12 @@ GPT-4o QSP,41056006,5,Number,How many individuals had samples obtained for HIV s
 GPT-4o QSP,41056006,6,List,From which countries were the sequenced samples obtained?,Not provided (multicenter trial),"USA, Dominican Republic",ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not provided (multicenter trial)'
 GPT-4o QSP,41056006,7,List,From what years were the sequenced samples obtained?,Not provided,2019–2020,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
 GPT-4o QSP,41056006,9,List,Which HIV genes were reported to have been sequenced?,CA,Not reported,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
+GPT-4o QSP,41057785,10,List,What method was used for sequencing?,Sanger (not stated),Not reported,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Sanger (not stated)'
 GPT-4o QSP,41057785,11,List,What type of samples were sequenced?,Plasma (not stated),Not reported,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Plasma (not stated)'
-GPT-4o QSP,41057785,16,List,Which drugs were received by individuals in the study before sample sequencing?,"ABC, AZT, D4T, TDF, ETR, NVP, EFV, LPV, DRV/r, DTG","AZT, TDF, Efavirenz",wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o QSP,41057785,16,List,Which drugs were received by individuals in the study before sample sequencing?,"ABC, AZT, D4T, TDF, ETR, NVP, EFV, LPV, DRV/r, DTG","AZT, TDF, Efavirenz",ok,model error,
 GPT-4o QSP,41088231,8,Boolean,Were samples cloned prior to sequencing?,Yes,No,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-4o QSP,41088231,9,List,Which HIV genes were reported to have been sequenced?,Whole genome,"Pol, Env",ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
+GPT-4o QSP,41091504,8,Boolean,Were samples cloned prior to sequencing?,Yes (site-directed mutants),Not reported,wrong,annotation/convention,"wrong: computational paper (molecular dynamics and machine learning on published protease data); the PDF never mentions cloning, site-directed mutagenesis or sequencing, yet the annotation says 'Yes (site-directed mutants)'"
 GPT-4o QSP,41091504,9,List,Which HIV genes were reported to have been sequenced?,PR,Not reported,ok,model error,
 GPT-4o QSP,41093949,1,Boolean,Does the paper report HIV sequences from patient samples?,No (Published sequences only),Yes,ok,model error,
 GPT-4o QSP,41093949,10,List,What method was used for sequencing?,Not stated,Sanger sequencing,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not stated'
@@ -955,9 +996,9 @@ GPT-4o QSP,41093949,11,List,What type of samples were sequenced?,None,PBMC,ok,mo
 GPT-4o QSP,41093949,5,Number,How many individuals had samples obtained for HIV sequencing?,0,10605,ok,model error,
 GPT-4o QSP,41093949,6,List,From which countries were the sequenced samples obtained?,Not applicable.,"China, United States",ok,model error,M2 cascade: the model's own QID 1 answer was wrong
 GPT-4o QSP,41093949,7,List,From what years were the sequenced samples obtained?,Not applicable.,1978–2023,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
-GPT-4o QSP,41129268,16,List,Which drugs were received by individuals in the study before sample sequencing?,"AZT, 3TC, TDF, ABC, EFV, NVP, LPV/r, DTG",Not reported,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
-GPT-4o QSP,41129268,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
-GPT-4o QSP,41129268,9,List,Which HIV genes were reported to have been sequenced?,"RT, PR, IN","NRTI, NNRTI, PI, INSTI",wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o QSP,41129268,16,List,Which drugs were received by individuals in the study before sample sequencing?,"AZT, 3TC, TDF, ABC, EFV, NVP, LPV/r, DTG",Not reported,ok,model error,
+GPT-4o QSP,41129268,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ok,model error,
+GPT-4o QSP,41129268,9,List,Which HIV genes were reported to have been sequenced?,"RT, PR, IN","NRTI, NNRTI, PI, INSTI",ok,model error,
 GPT-4o QSP,41130593,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, CAI",Not reported,ok,model error,
 GPT-4o QSP,41130593,16,List,Which drugs were received by individuals in the study before sample sequencing?,"TDF, TAF, FTC, LEN",Not reported,ok,model error,
 GPT-4o QSP,41130593,5,Number,How many individuals had samples obtained for HIV sequencing?,64,55,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
@@ -987,6 +1028,7 @@ GPT-4o FT+QSP,31988104,14,Boolean,Does the paper report HIV sequences from indiv
 GPT-4o FT+QSP,32601157,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,ok,model error,
 GPT-4o FT+QSP,32601157,10,List,What method was used for sequencing?,Not reported,NGS,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
 GPT-4o FT+QSP,33855437,9,List,Which HIV genes were reported to have been sequenced?,RT,Not reported,ok,model error,
+GPT-4o FT+QSP,34516245,10,List,What method was used for sequencing?,Sanger sequencing,Not reported,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-4o FT+QSP,34516245,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No,Yes,ok,model error,
 GPT-4o FT+QSP,34516245,15,List,Which drug classes were received by individuals in the study before sample sequencing?,Not reported,NRTI,ok,borderline,M1: annotation empty but the model's answer is in the PDF text
 GPT-4o FT+QSP,34516245,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not reported,"TDF, FTC",ok,model error,
@@ -1021,6 +1063,7 @@ GPT-4o FT+QSP,36660819,15,List,Which drug classes were received by individuals i
 GPT-4o FT+QSP,36660819,16,List,Which drugs were received by individuals in the study before sample sequencing?,"CAB, RPV",Not applicable,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
 GPT-4o FT+QSP,36660819,5,Number,How many individuals had samples obtained for HIV sequencing?,8 and 10,0,ambiguous,annotation/convention,ambiguous: annotation hedges: '8 and 10'
 GPT-4o FT+QSP,36660819,9,List,Which HIV genes were reported to have been sequenced?,"RT, IN",Not applicable,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
+GPT-4o FT+QSP,36694270,10,List,What method was used for sequencing?,Sanger sequencing,Not reported,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-4o FT+QSP,36694270,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, PI, NNRTI, INSTI",NRTIs,ok,model error,
 GPT-4o FT+QSP,36694270,16,List,Which drugs were received by individuals in the study before sample sequencing?,"3TC, TDF, EFV, LPV/r, EVG, ABC, DTG",Not reported,ok,model error,
 GPT-4o FT+QSP,36706364,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,ok,model error,
@@ -1139,7 +1182,7 @@ GPT-4o FT+QSP,37966701,7,List,From what years were the sequenced samples obtaine
 GPT-4o FT+QSP,37973713,13,Boolean,Were the patients in the study in a clinical trial?,Yes,No,ok,model error,
 GPT-4o FT+QSP,37973713,3,Boolean,Were sequences from the paper made publicly available?,No,Yes,ok,model error,
 GPT-4o FT+QSP,37973713,6,List,From which countries were the sequenced samples obtained?,"Ukraine, Poland",Poland,ok,model error,
-GPT-4o FT+QSP,37976185,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o FT+QSP,37976185,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,ok,model error,
 GPT-4o FT+QSP,37993493,5,Number,How many individuals had samples obtained for HIV sequencing?,33,600,ok,annotation/convention,R6 QID 5 denominator: both 600 and 33 are stated in the paper
 GPT-4o FT+QSP,38005921,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ambiguous,annotation/convention,"ambiguous: ML paper reuses PhenoSense fold-ratio data from a database; the QSP rule ('reports IC50/EC50/fold change') supports Yes, the curators applied a 'new data' standard"
 GPT-4o FT+QSP,38005921,9,List,Which HIV genes were reported to have been sequenced?,Not reported,"PR, RT",ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
@@ -1184,11 +1227,12 @@ GPT-4o FT+QSP,40431710,10,List,What method was used for sequencing?,Sanger,NGS,c
 GPT-4o FT+QSP,40431710,13,Boolean,Were the patients in the study in a clinical trial?,No,Yes,ok,model error,
 GPT-4o FT+QSP,40431710,16,List,Which drugs were received by individuals in the study before sample sequencing?,"AZT, ddI, d4T, 3TC, ABC, TDF, TAF, DLV, ETR, DOR, IDV, RTV, NFV, LPV, ATV, DRV, EVG, DTG, FOS","Zidovudine (AZT), Lamivudine (3TC), Abacavir (ABC), Tenofovir (TDF), Emtricitabine (FTC), Delavirdine (DLV), Efavirenz (EFV), Rilpivirine (RPV), Doravirine (DOR), Indinavir (IDV), Lopinavir (LPV), Atazanavir (ATV), Darunavir (DRV), Raltegravir (RAL), Dolutegravir (DTG), Bictegravir (BIC), Fostemsavir (FTR)",ok,model error,
 GPT-4o FT+QSP,40431710,7,List,From what years were the sequenced samples obtained?,2006-2024,"2015, 2022, 2023",ok,model error,
+GPT-4o FT+QSP,40431742,10,List,What method was used for sequencing?,Sanger  ,Not reported,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-4o FT+QSP,40431742,5,Number,How many individuals had samples obtained for HIV sequencing?,1677,1667,ok,model error,
 GPT-4o FT+QSP,40490983,16,List,Which drugs were received by individuals in the study before sample sequencing?,"AZT, 3TC, TDF, ABC, EFV, NVP, LPV, RTV, ATV (RTV is for boosting)","ATV/r, LPV/r",ok,model error,
 GPT-4o FT+QSP,40490983,9,List,Which HIV genes were reported to have been sequenced?,"RT, PR",Not reported,ok,model error,
 GPT-4o FT+QSP,40596906,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not stated,"Zidovudine (ZDV), Lamivudine (3TC), Nevirapine (NVP), Lopinavir/Ritonavir, Efavirenz (EFV)",ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not stated'
-GPT-4o FT+QSP,40596906,7,List,From what years were the sequenced samples obtained?,2007-2022,2021-2023,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o FT+QSP,40596906,7,List,From what years were the sequenced samples obtained?,2007-2022,2021-2023,ok,model error,
 GPT-4o FT+QSP,40713598,16,List,Which drugs were received by individuals in the study before sample sequencing?,"ABC, 3TC, AZT (ZDV), NVP, EFV","K103N, M184I/V",ok,model error,
 GPT-4o FT+QSP,40763144,16,List,Which drugs were received by individuals in the study before sample sequencing?,"AZT, ABC, 3TC, TDF, ATV, LPV, RTV, DTG",Not reported,ok,model error,
 GPT-4o FT+QSP,40779404,11,List,What type of samples were sequenced?,PBMC,Whole blood,ambiguous,annotation/convention,ambiguous: paper says whole blood (proviral DNA); annotation says PBMC
@@ -1200,7 +1244,9 @@ GPT-4o FT+QSP,40857111,2,Boolean,Does the paper report in vitro drug susceptibil
 GPT-4o FT+QSP,40857111,5,Number,How many individuals had samples obtained for HIV sequencing?,7 (Uncertain),208,ambiguous,annotation/convention,ambiguous: annotation hedges: '7 (Uncertain)'
 GPT-4o FT+QSP,40857111,6,List,From which countries were the sequenced samples obtained?,Not provided (multicenter trial),10,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not provided (multicenter trial)'
 GPT-4o FT+QSP,40872801,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,ok,model error,
+GPT-4o FT+QSP,40872801,10,List,What method was used for sequencing?,Sanger,Not reported,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 GPT-4o FT+QSP,40872801,5,Number,How many individuals had samples obtained for HIV sequencing?,0 (Review paper),9685,ambiguous,annotation/convention,ambiguous: annotation hedges: '0 (Review paper)'
+GPT-4o FT+QSP,40872801,7,List,From what years were the sequenced samples obtained?,2004-2021,Not reported,wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
 GPT-4o FT+QSP,40938120,5,Number,How many individuals had samples obtained for HIV sequencing?,1048,1260,ok,annotation/convention,R6 QID 5 denominator: both 1260 and 1048 are stated in the paper
 GPT-4o FT+QSP,40938996,10,List,What method was used for sequencing?,"Sanger, NGS",Not reported,ok,model error,
 GPT-4o FT+QSP,40938996,8,Boolean,Were samples cloned prior to sequencing?,Yes  ,Not applicable,ok,model error,
@@ -1225,16 +1271,19 @@ GPT-4o FT+QSP,41012586,6,List,From which countries were the sequenced samples ob
 GPT-4o FT+QSP,41012586,9,List,Which HIV genes were reported to have been sequenced?,"PR, RT, IN (presumably)",Not reported,ok,model error,M2 cascade: the model's own QID 1 answer was wrong
 GPT-4o FT+QSP,41023944,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI,NNRTI,INSTI",Not reported,ok,model error,
 GPT-4o FT+QSP,41023944,16,List,Which drugs were received by individuals in the study before sample sequencing?,DTG (no other ARVs specified),Not reported,ok,model error,
+GPT-4o FT+QSP,41056006,10,List,What method was used for sequencing?,Sanger,Not reported,convention,annotation/convention,convention: annotation defaults to Sanger; the PDF never mentions it
 GPT-4o FT+QSP,41056006,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,ok,model error,
 GPT-4o FT+QSP,41056006,5,Number,How many individuals had samples obtained for HIV sequencing?,10,182,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-4o FT+QSP,41056006,6,List,From which countries were the sequenced samples obtained?,Not provided (multicenter trial),"USA, Dominican Republic",ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not provided (multicenter trial)'
 GPT-4o FT+QSP,41056006,7,List,From what years were the sequenced samples obtained?,Not provided,2019–2020,ok,borderline,M1: annotation empty but the model's answer is in the PDF text
+GPT-4o FT+QSP,41057785,10,List,What method was used for sequencing?,Sanger (not stated),Not reported,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Sanger (not stated)'
 GPT-4o FT+QSP,41057785,11,List,What type of samples were sequenced?,Plasma (not stated),Not reported,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Plasma (not stated)'
-GPT-4o FT+QSP,41057785,16,List,Which drugs were received by individuals in the study before sample sequencing?,"ABC, AZT, D4T, TDF, ETR, NVP, EFV, LPV, DRV/r, DTG","ABC, AZT, TDF, FTC, LPV, RTV, d4T, DRV, RAL",wrong,annotation/convention,wrong: PDF is a systematic review/meta-analysis; QSP rules say No/None
+GPT-4o FT+QSP,41057785,16,List,Which drugs were received by individuals in the study before sample sequencing?,"ABC, AZT, D4T, TDF, ETR, NVP, EFV, LPV, DRV/r, DTG","ABC, AZT, TDF, FTC, LPV, RTV, d4T, DRV, RAL",ok,model error,
 GPT-4o FT+QSP,41088231,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,ok,model error,
 GPT-4o FT+QSP,41088231,8,Boolean,Were samples cloned prior to sequencing?,Yes,No,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-4o FT+QSP,41088231,9,List,Which HIV genes were reported to have been sequenced?,Whole genome,Pol,ambiguous,annotation/convention,ambiguous: all 5 models disagree with the annotation (incl. fine-tuned GPT-4o)
 GPT-4o FT+QSP,41091504,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,ok,model error,
+GPT-4o FT+QSP,41091504,8,Boolean,Were samples cloned prior to sequencing?,Yes (site-directed mutants),Not reported,wrong,annotation/convention,"wrong: computational paper (molecular dynamics and machine learning on published protease data); the PDF never mentions cloning, site-directed mutagenesis or sequencing, yet the annotation says 'Yes (site-directed mutants)'"
 GPT-4o FT+QSP,41093949,10,List,What method was used for sequencing?,Not stated,Sanger sequencing,ambiguous,annotation/convention,ambiguous: annotation hedges: 'Not stated'
 GPT-4o FT+QSP,41093949,6,List,From which countries were the sequenced samples obtained?,Not applicable.,"China, United States",ok,model error,
 GPT-4o FT+QSP,41093949,7,List,From what years were the sequenced samples obtained?,Not applicable.,1978–2023,ok,model error,

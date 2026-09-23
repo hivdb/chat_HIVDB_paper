@@ -48,9 +48,7 @@ def all_models(rows: pd.DataFrame) -> list[str]:
 
 
 def load_rows() -> pd.DataFrame:
-    rows = pd.read_csv(config.WORK_DIR / "detailed_rows.csv", dtype={"PMID": str},
-                       keep_default_na=False, na_values=[""])
-    rows["QID"] = rows["QID"].astype(int)
+    rows = config.final_rows()
     return rows
 
 
