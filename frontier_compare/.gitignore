@@ -1,3 +1,6 @@
 # Publisher PDFs (copyrighted) and API keys stay local
 pdfs/
 .env
+
+# Excel lock files created while a workbook is open
+~$*
