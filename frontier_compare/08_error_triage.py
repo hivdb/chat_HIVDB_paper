@@ -43,6 +43,7 @@ def norm_text(text: str) -> str:
     text = unicodedata.normalize("NFKD", text)
     text = text.replace("’", "'").replace("“", '"').replace("”", '"')
     text = text.replace("ﬁ", "fi").replace("ﬂ", "fl").replace("–", "-").replace("—", "-")
+    text = re.sub(r"(?<=\d),(?=\d)", "", text)  # 57,902 -> 57902 so counts match the annotation
     return re.sub(r"[^a-z0-9 ]", " ", re.sub(r"\s+", " ", text.lower())).strip()
 
 

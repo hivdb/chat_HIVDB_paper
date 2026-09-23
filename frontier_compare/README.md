@@ -80,39 +80,32 @@ PubMed title appears in the first two pages (8 initial mismatches were ligature/
 Report:" artifacts, checked by hand). 1,606 pages total. Short PDFs (2–4 pages) are complete
 research letters or case reports.
 
-## Pilot (40 papers, 2026-09-22)
+## Pilot (80 papers attempted, 79 scored, 2026-09-22)
 
-Stratified random sample: 20 original120 + 20 new30 (the first 10 from seed 0, 30 more from
-seed 1). 39 papers x 16 questions = 624 rows scored; PMID 36920025 is excluded because
-GPT-6 Astra refuses it (see below). Reasoning-effort variants were only run on the first 10.
+Three random draws from the 150 (seeds 0, 1, 2), 79 papers x 16 questions = 1,264 rows.
+PMID 36920025 is excluded: GPT-6 Astra refuses it on policy grounds (see below).
+Metrics include both post-processing layers, applied to every model.
 
-| | papers | accuracy | precision | recall | F1 | adj. acc. |
-|---|---|---|---|---|---|---|
-| Kimi K3 | 39 | 0.918 | 0.939 | 0.884 | 0.911 | 0.920 |
-| GPT-6 Astra (Q5 convention v2) | 39 | 0.915 | 0.935 | 0.881 | 0.907 | 0.917 |
-| GPT-6 Astra | 39 | 0.905 | 0.915 | 0.881 | 0.898 | 0.907 |
-| GPT-4o FT | 39 | 0.886 | 0.941 | 0.810 | 0.870 | 0.886 |
-| GPT-4o FT+QSP | 39 | 0.877 | 0.913 | 0.816 | 0.862 | 0.877 |
-| GPT-4o QSP | 39 | 0.841 | 0.874 | 0.776 | 0.822 | 0.841 |
+| | accuracy | precision | recall | F1 | before post-processing |
+|---|---|---|---|---|---|
+| Kimi K3 | **0.934** | 0.920 | 0.929 | 0.924 | 0.922 |
+| GPT-6 Astra | 0.922 | 0.916 | 0.901 | 0.909 | 0.911 |
+| GPT-4o FT | 0.903 | 0.931 | 0.839 | 0.883 | 0.899 |
+| GPT-4o FT+QSP | 0.881 | 0.887 | 0.832 | 0.859 | 0.876 |
+| GPT-4o QSP | 0.843 | 0.840 | 0.788 | 0.813 | 0.839 |
 
-The gap narrowed as the sample grew (Kimi 0.931 -> 0.918; GPT-4o FT 0.862 -> 0.886). **No
-comparison is significant**: Wilcoxon over the 16 per-QID values vs GPT-4o FT gives BH-adjusted
-p >= 0.11 for every frontier model and metric (best: Kimi accuracy, raw p = 0.051). The consistent
-pattern is recall: every frontier model gains recall (+0.06 to +0.07 mean per-QID) and gives up
-precision, and Kimi beats GPT-4o FT on 6 of 16 questions while losing only 1.
+**First significant result.** Kimi K3 beats GPT-4o FT on accuracy: Wilcoxon over the 16 per-QID
+values, +0.031 mean per-QID, better on 11 of 16 questions, raw p = 0.041, **BH-adjusted
+p = 0.049**. Its F1 (p = 0.10) and recall (p = 0.20) are not significant, and no GPT-6 Astra
+comparison is (best: recall, p = 0.20). The stable pattern remains recall: both frontier models
+gain recall (+0.03 to +0.05 mean per-QID) and give up precision against GPT-4o FT's 0.931.
 
-**Operational (40 requests per model):** Astra $0.38/paper, 51 s median, 39/40 strict JSON;
-Kimi $0.19/paper, 131 s median, 37/40 strict JSON (3 needed fence-stripping, 0 unparseable).
+**Operational (80 requests per model, cumulative pilot spend $44):**
 
-**Policy refusal.** `gpt-6-astra` returns HTTP 400 "flagged for possible biological risk" for
-PMID 36920025 (eLife, selection of HIV-1 for resistance to fifth-generation protease inhibitors).
-Reproducible with the base prompt; the same paper succeeded under the Q5-variant prompt, so the
-filter is not deterministic across requests. Kimi K3 answered it normally. Failed requests
-produce no answer rows (they are an operational failure in `ops_requests.csv`, not 16 wrong
-answers), and the PMID drops out of the evaluated set for every model.
-
-At 39 papers the Q5 prompt edit no longer separates from the base prompt on QID 5 itself
-(29/39 both) but still gains overall (+0.01 accuracy, +0.02 precision), which is within noise.
+| | cost/paper | median latency | strict-valid JSON | failures |
+|---|---|---|---|---|
+| GPT-6 Astra | $0.37 | 52 s | 99% | 1 policy refusal |
+| Kimi K3 | $0.19 | 125 s | 94% (5 needed fence-stripping) | 0 |
 
 ## Annotation issues and evaluation artifacts (40-paper pilot)
 
