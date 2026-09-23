@@ -132,13 +132,17 @@ primary-study details ("Sanger", "Plasma") whose words appear **zero** times in 
 every frontier model 8 of 16 rows. Note GPT-4o QSP/FT+QSP score 12/16 on this paper: producing
 plausible detail matches a wrong annotation, so the error rewards the weaker behaviour.
 
-**Out-of-scope evidence on lab-only papers (17 rows, 8 papers).** Both frontier models sometimes
+**Out-of-scope evidence on lab-only papers (47 rows across all five models; 17 frontier).** Both frontier models sometimes
 answer QID 9/10 from text describing *laboratory constructs* rather than patient samples. Example:
 PMID 30803972 - both models correctly answer "No" to QID 1 and "0" to QID 5, then cite a table
 footnote ("The integrase-encoding region of each plasmid clone was confirmed by automated Sanger
 DNA sequencing") for QID 10. The quote is real and the models read the table correctly; it just
 describes pNL4-3/pROD9 clones, not patient material. This is the lab-vs-clinical failure mode, and
-a counter-example to "PDF access always helps": the extra table text caused the error.
+a counter-example to "PDF access always helps": the extra table text caused the error. It is not
+frontier-specific - GPT-4o FT answers "IN" on the same row, and the failure is in fact *more*
+common for the cached comparators (30 rows) than for the frontier models (17), because
+`08_error_triage.py` now triages every model, not just the frontier ones (evidence-based signals
+are blank for the cached answers, which have no stored evidence).
 
 A consistency rule (force "Not reported" on QID 4/6/7/9/10/11 when the model itself said there
 were no patient sequences) was measured and **rejected**: Astra +6/-17, Kimi +8/-16,

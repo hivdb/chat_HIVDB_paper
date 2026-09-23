@@ -151,6 +151,9 @@ def main() -> int:
     rows["QID"] = rows["QID"].astype(int)
     primary = [spec.label for spec in config.MODELS.values()
                if not spec.is_variant and f"{spec.label} correct" in rows.columns]
+    # Cached GPT-4o comparators are triaged too, so the error analysis covers every model. They
+    # have no stored evidence/rationale, so the evidence_in_pdf signal is blank for their rows.
+    triaged = primary + [c for c in config.COMPARATORS if f"{c} correct" in rows.columns]
     evidence = {}
     for key, spec in config.MODELS.items():
         path = config.answers_path(key, 1)
@@ -161,7 +164,7 @@ def main() -> int:
 
     cache: dict[str, str] = {}
     out = []
-    for model in primary:
+    for model in triaged:
         inconsistent = self_inconsistent(rows[rows[model].notna()], model)
         for _, r in rows[rows[f"{model} correct"] == 0].iterrows():  # 'correct' already includes accepted answers
             text = pdf_text(r["PMID"], cache)
@@ -175,6 +178,7 @@ def main() -> int:
                 "Outcome": r[f"{model} outcome"],
                 "self_inconsistent": (str(r["PMID"]), int(r["QID"])) in inconsistent,
                 "models_agree": all(canonicalize_answer(answer) == canonicalize_answer(str(r[m])) for m in others),
+                "is_comparator": model in config.COMPARATORS,
                 "evidence_in_pdf": evidence_in_pdf(ev, text),
                 "human_answer_in_pdf": tokens_in_pdf(str(r[config.REF_COL]), text),
                 "review_paper": bool(REVIEW_PAT.search(text[:6000])),
