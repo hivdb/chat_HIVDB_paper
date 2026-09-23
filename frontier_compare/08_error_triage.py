@@ -140,7 +140,7 @@ def main() -> int:
     cache: dict[str, str] = {}
     out = []
     for model in primary:
-        for _, r in rows[rows[f"{model} correct"] == 0].iterrows():
+        for _, r in rows[rows[f"{model} correct"] == 0].iterrows():  # 'correct' already includes accepted answers
             text = pdf_text(r["PMID"], cache)
             answer = str(r[model])
             ev, loc, rat = evidence.get((r["PMID"], int(r["QID"]), model), ("", "", ""))

@@ -77,46 +77,9 @@ MODELS: dict[str, ModelSpec] = {
         price_cached_in=1.0,
         max_concurrency=48,  # account limit: 15k RPM / 40M TPM
     ),
-    # Same model at higher reasoning effort. Supported: low/medium/high/xhigh; "medium" is the
-    # API default and measured identical to the default run (~145 reasoning tokens/paper),
-    # so the informative comparison is "high" (~3.3k reasoning tokens).
-    "gpt6-astra-high": ModelSpec(
-        key="gpt6-astra-high",
-        label="GPT-6 Astra QSP (high effort)",
-        provider="openai",
-        model_id=os.environ.get("FC_GPT6_MODEL_ID", "gpt-6-astra"),
-        price_in=10.0,
-        price_out=50.0,
-        price_cached_in=1.0,
-        reasoning_effort="high",
-        max_concurrency=48,
-        is_variant=True,
-    ),
-    # Q5 counting-convention probe: the QSP prompt with only its Question 5 block replaced.
-    "gpt6-astra-q5": ModelSpec(
-        key="gpt6-astra-q5",
-        label="GPT-6 Astra QSP (Q5 convention)",
-        provider="openai",
-        model_id=os.environ.get("FC_GPT6_MODEL_ID", "gpt-6-astra"),
-        price_in=10.0,
-        price_out=50.0,
-        price_cached_in=1.0,
-        max_concurrency=48,
-        is_variant=True,
-        prompt_variant="q5_convention",
-    ),
-    "gpt6-astra-q5v2": ModelSpec(
-        key="gpt6-astra-q5v2",
-        label="GPT-6 Astra QSP (Q5 convention v2)",
-        provider="openai",
-        model_id=os.environ.get("FC_GPT6_MODEL_ID", "gpt-6-astra"),
-        price_in=10.0,
-        price_out=50.0,
-        price_cached_in=1.0,
-        max_concurrency=48,
-        is_variant=True,
-        prompt_variant="q5_convention_v2",
-    ),
+    # Prompt/effort variants were probed during the pilot and are NOT part of the study:
+    # the protocol keeps the paper's prompt unchanged for every model. Their runs are kept in
+    # runs/_variants_archive/ and their findings are in the README.
     "kimi-k3": ModelSpec(
         key="kimi-k3",
         label="Kimi K3 QSP",

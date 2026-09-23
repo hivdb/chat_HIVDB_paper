@@ -30,6 +30,36 @@
 - Operational fit: cost per paper, latency, invalid-JSON rate (`results/secondary_operational.csv`).
 - Recommendation per question group.
 
+## Limitations of prompting without curator guidelines
+
+The QSP prompt is the paper's, unchanged, for every model. Two curator conventions are not in it,
+and no prompted model can infer them. Both were measured on the 40-paper pilot:
+
+- **QID 5 (how many individuals):** the annotations count individuals whose sequencing *succeeded
+  and is reported in this paper*; the models count individuals *sampled*, which the question text
+  equally supports. 16 error rows. A one-line prompt clause raised QID 5 from 5/10 to 7/10 on the
+  first 10 papers but did not separate from the base prompt at 39 papers; it was not adopted, and
+  no prompt variant is part of the study.
+- **QID 10 (sequencing method):** the annotations default to "Sanger" for standard genotypic
+  resistance testing even where the paper never says so - one annotation reads "Sanger (not
+  stated)". Handled in scoring instead: where the PDF never mentions Sanger, "Not reported" is
+  accepted for every model.
+
+This is an argument about what a fine-tuned model buys: GPT-4o FT learned these conventions from
+the training annotations, while a prompted model can only follow what the prompt says. State it
+as a limitation of the comparison, and as an argument for curator-assisted review over autonomous
+entry until such conventions are written down.
+
+## Annotation quality
+
+Accepted alternative answers (`data/accepted_alternatives.csv`, applied to every model) cover rows
+where the annotation is wrong or incomplete. The primary metrics include them; the unadjusted
+score is reported alongside as `pooled_strict`. Report:
+- how many rows were adjusted and why (review paper, figure-only evidence, curation convention),
+- that the effect is asymmetric: it raises frontier models more than GPT-4o, because GPT-4o
+  sometimes matched a wrong annotation by producing plausible detail (e.g. 12/16 on the
+  mis-annotated review paper PMID 40872801, vs 8/16 for the frontier models).
+
 ## Caveats
 - Input modality differs from the cached GPT-4o runs (PDF vs markdown), so the headline comparison mixes model and input effects. See the markdown-ablation arm, if run.
 - The human annotations were made against the paper versions HIVDB curators used; supplements may not be in the PDF.

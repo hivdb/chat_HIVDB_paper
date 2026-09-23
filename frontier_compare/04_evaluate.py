@@ -3,7 +3,8 @@
 
 Per-row scoring reuses eval.normalize.human_answer_counts exactly as the paper does (partial
 list matches allowed for List questions). Aggregation follows the paper's Figure 4:
-  pooled - metrics over all PMID x QID rows, 95% CI from a row bootstrap (5000, seed 42), as in
+  pooled - PRIMARY. Metrics over all PMID x QID rows, including curator-accepted alternative
+           answers (see below). 95% CI from a row bootstrap (5000, seed 42), as in
            eval/evaluation.py::build_bar_chart_confidence_intervals. This reproduces the paper's
            reported deltas (e.g. GPT-4o FT recall +11%, Llama-70B FT precision +16%).
   macro  - unweighted mean of the 16 per-QID values (reported for reference only)
@@ -12,9 +13,12 @@ the paired t-test also in S5), BH-adjusted within each (metric, test) slice as i
 eval/statistics.py. Exact McNemar on row correctness is a sensitivity analysis.
 Cached GPT-4o comparators are re-scored on the same PMID subset as the frontier models.
 
-A curator-approved alternatives file (data/accepted_alternatives.csv) feeds a SECONDARY
-"adjusted" score for rows where the human annotation is known to be incomplete (e.g. evidence
-that exists only in a figure). Primary metrics never use it; both are reported.
+Accepted alternative answers come from two places and are applied to EVERY model equally:
+  - data/accepted_alternatives.csv: curator-approved answers for rows where the annotation is
+    wrong or incomplete (e.g. a review paper annotated as a primary study; figure-only evidence)
+  - convention_alternatives(): the QID 10 "Sanger by default" curation convention
+Metrics including them are the primary numbers (`pooled`); the unadjusted score is kept
+alongside as `pooled_strict` / `<model> correct_strict` for comparability with the paper.
 
 Outputs (results/): detailed_rows.csv, metrics_by_qid.csv, metrics_summary.csv,
 metrics_by_type.csv, pairwise_tests.csv, stability.csv (when >1 run exists).
@@ -29,6 +33,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pymupdf
 from scipy.stats import ttest_rel, wilcoxon
 from statsmodels.stats.contingency_tables import mcnemar
 from statsmodels.stats.multitest import multipletests
@@ -78,6 +83,37 @@ def attach_frontier(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str], dict[str
     return df, primary, runs
 
 
+# Curation conventions the QSP prompt never states. Each rule adds accepted answers for rows
+# that match it, for EVERY model, so the comparison stays symmetric.
+NOT_REPORTED_FORMS = ["Not reported", "Not specified", "Not stated"]
+
+
+def _pdf_mentions(pmid: str, needle: str, cache: dict[str, str]) -> bool:
+    if pmid not in cache:
+        path = config.PDF_DIR / f"{pmid}.pdf"
+        if not path.exists():
+            cache[pmid] = ""
+        else:
+            with pymupdf.open(path) as doc:
+                cache[pmid] = " ".join(page.get_text() for page in doc).lower()
+    return needle in cache[pmid]
+
+
+def convention_alternatives(df: pd.DataFrame) -> dict[tuple[str, int], list[tuple[str, str]]]:
+    """QID 10: curators record 'Sanger' for standard genotypic resistance testing even when the
+    paper never says so (one annotation reads 'Sanger (not stated)'). Where the human answer says
+    Sanger but the PDF never mentions it, 'Not reported' is equally defensible and is accepted."""
+    out: dict[tuple[str, int], list[tuple[str, str]]] = {}
+    cache: dict[str, str] = {}
+    reason = ("Curation convention: the annotation defaults to Sanger for standard genotypic "
+              "resistance testing, but the PDF never mentions Sanger, so 'Not reported' is "
+              "also accepted (applied to every model).")
+    for _, r in df[df["QID"] == 10].iterrows():
+        if "sanger" in str(r[config.REF_COL]).lower() and not _pdf_mentions(str(r["PMID"]), "sanger", cache):
+            out[(str(r["PMID"]), 10)] = [(form, reason) for form in NOT_REPORTED_FORMS]
+    return out
+
+
 def load_alternatives() -> dict[tuple[str, int], list[tuple[str, str]]]:
     """(PMID, QID) -> [(accepted answer, reason)] approved by a curator during error review."""
     if not config.ALTERNATIVES_PATH.exists():
@@ -89,13 +125,18 @@ def load_alternatives() -> dict[tuple[str, int], list[tuple[str, str]]]:
     return out
 
 
+CONVENTION_ALTERNATIVES: dict[tuple[str, int], list[tuple[str, str]]] = {}
+
+
 def score_rows(df: pd.DataFrame, model: str) -> pd.DataFrame:
     """Per-row confusion label, correctness, and an error-analysis outcome."""
     ref_norm = df[config.REF_COL].map(canonicalize_answer)
     pred_raw = df[model].fillna("")
     pred_norm = pred_raw.map(canonicalize_answer)
     alternatives = load_alternatives()
-    labels, correct, outcome, adjusted, alt_used = [], [], [], [], []
+    for key, value in CONVENTION_ALTERNATIVES.items():
+        alternatives.setdefault(key, []).extend(value)
+    labels, labels_adj, correct, outcome, adjusted, alt_used = [], [], [], [], [], []
     for pmid, qid, qtype, question, rr, rn, pr, pn in zip(
         df["PMID"], df["QID"], df["Type"], df["Question"], df[config.REF_COL], ref_norm, pred_raw, pred_norm
     ):
@@ -125,13 +166,19 @@ def score_rows(df: pd.DataFrame, model: str) -> pd.DataFrame:
                 if alt_ok:
                     ok_adj, used = True, reason
                     break
+        # An accepted answer turns a miss into a hit: fn -> tp, fp -> tn.
+        label_adj = label if ok_adj == ok else {"fn": "tp", "fp": "tn"}.get(label, label)
+        if ok_adj and not ok:
+            kind = "correct_accepted_answer"
         labels.append(label)
+        labels_adj.append(label_adj)
         correct.append(int(ok))
         outcome.append(kind)
         adjusted.append(int(ok_adj))
         alt_used.append(used)
-    return pd.DataFrame({"label": labels, "correct": correct, "outcome": outcome,
-                         "correct_adjusted": adjusted, "alternative_used": alt_used}, index=df.index)
+    return pd.DataFrame({"label": labels, "label_adjusted": labels_adj, "correct": correct,
+                         "outcome": outcome, "correct_adjusted": adjusted,
+                         "alternative_used": alt_used}, index=df.index)
 
 
 def metrics_from_counts(c: np.ndarray) -> dict[str, np.ndarray]:
@@ -175,6 +222,9 @@ def main() -> int:
         print(f"Only {len(pmids)}/{n_total} PMIDs answered by all primary frontier models. Re-run with --allow-subset.")
         return 1
     df = df[df["PMID"].isin(pmids)].reset_index(drop=True)
+    CONVENTION_ALTERNATIVES.update(convention_alternatives(df))
+    if CONVENTION_ALTERNATIVES:
+        print(f"Curation-convention alternatives applied to {len(CONVENTION_ALTERNATIVES)} rows (all models).")
     models = frontier + config.COMPARATORS
     print(f"Evaluating {len(models)} models on {len(pmids)} PMIDs x {config.TOTAL_QUESTIONS} QIDs")
 
@@ -185,9 +235,14 @@ def main() -> int:
         df[f"{model} label"], df[f"{model} correct"], df[f"{model} outcome"] = (
             scored["label"], scored["correct"], scored["outcome"]
         )
+        df[f"{model} label_strict"] = scored["label"]
+        df[f"{model} label"] = scored["label_adjusted"]      # primary: accepted answers included
+        df[f"{model} correct_strict"] = scored["correct"]
+        df[f"{model} correct"] = scored["correct_adjusted"]  # primary
         df[f"{model} correct_adjusted"] = scored["correct_adjusted"]
         df[f"{model} alternative_used"] = scored["alternative_used"]
-        df.loc[~scored_masks[model], [f"{model} label", f"{model} correct", f"{model} outcome",
+        df.loc[~scored_masks[model], [f"{model} label", f"{model} label_strict", f"{model} correct",
+                                      f"{model} correct_strict", f"{model} outcome",
                                       f"{model} correct_adjusted"]] = None
     config.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     df.to_csv(config.RESULTS_DIR / "detailed_rows.csv", index=False)
@@ -217,11 +272,12 @@ def main() -> int:
         pooled = metrics_from_counts(onehot.sum(axis=0))
         boot = metrics_from_counts(onehot[boot_idx].sum(axis=1))
         per_qid = metrics_from_counts(count_cube(model_rows, model_pmids, model).sum(axis=0))
-        adj_acc = float(model_rows[f"{model} correct_adjusted"].mean())
+        strict_onehot = np.stack([(model_rows[f"{model} label_strict"] == lab).to_numpy(int) for lab in LABELS], axis=1)
+        strict = metrics_from_counts(strict_onehot.sum(axis=0))
         for metric in METRICS:
             summary_rows.append(
                 {"model": model, "metric": metric, "papers": len(model_pmids), "rows": len(model_rows),
-                 "row_accuracy_adjusted": adj_acc if metric == "accuracy" else "",
+                 "pooled_strict": float(strict[metric]),
                  "pooled": float(pooled[metric]),
                  "pooled_ci_low": np.percentile(boot[metric], 2.5),
                  "pooled_ci_high": np.percentile(boot[metric], 97.5),

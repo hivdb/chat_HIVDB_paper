@@ -147,7 +147,7 @@ plausible detail matches a wrong annotation, so the error rewards the weaker beh
   papers involved contains the word "Sanger" (4 rows).
 
 **Evaluation artifacts are small.** Scoring an answer correct if *either* its raw or
-scaffolding-stripped form matches ("lenient OR", applied to every model) recovers **3 rows in
+scaffolding-stripped form matches (applied to every model) recovers **3 rows in
 total, all Kimi's** - caveats like "(paper states either Sanger sequencing or NGS)" that the
 scorer reads as a negation. Astra and all GPT-4o conditions gain nothing. A destructive cleanup
 (rewriting answers before scoring) is worse than useless: it gains 3 and loses 3, because stripping
@@ -169,9 +169,27 @@ all models or it flatters the comparator.
 Every model gains and the ranking is unchanged, so these issues do not create the frontier lead -
 but they do compress it, and roughly a quarter of all "errors" are not model errors.
 
-`data/proposed_alternatives.csv` holds 10 machine-proposed entries (the review paper, one
-figure-evidence row, one not-found row) for curator review. They are **not** in
-`accepted_alternatives.csv` and do not affect any metric until a curator moves them there.
+**Decisions taken after the pilot review (2026-09-22):**
+- The 10 proposed alternatives were approved and moved into `accepted_alternatives.csv`.
+- For PMID 40872801 both the annotated answers and the models' "No"/"Not applicable" now count.
+- The QID 10 Sanger default is handled in scoring (`convention_alternatives()` in
+  `04_evaluate.py`): where the human answer says Sanger and the PDF never mentions it,
+  "Not reported" is accepted too - for every model.
+- Accepted answers now feed the **primary** metrics; the unadjusted score is kept as
+  `pooled_strict` / `<model> correct_strict`.
+- **No prompt variants.** The protocol keeps the paper's prompt unchanged for every model. The
+  pilot's effort and Q5-wording probes are archived in `runs/_variants_archive/` and are not part
+  of the study; the conventions they exposed are reported as limitations instead.
+
+Pilot results with accepted answers applied (39 papers, 624 rows):
+
+| | accuracy | precision | recall | F1 | before accepted answers |
+|---|---|---|---|---|---|
+| Kimi K3 | 0.938 | 0.944 | 0.922 | 0.933 | 0.918 |
+| GPT-6 Astra | 0.925 | 0.922 | 0.918 | 0.920 | 0.905 |
+| GPT-4o FT | 0.894 | 0.942 | 0.827 | 0.880 | 0.886 |
+| GPT-4o FT+QSP | 0.886 | 0.915 | 0.837 | 0.874 | 0.877 |
+| GPT-4o QSP | 0.849 | 0.876 | 0.793 | 0.832 | 0.841 |
 
 ## Q5 counting convention (pilot follow-up)
 

@@ -123,11 +123,11 @@ def main() -> int:
     summary = pd.read_csv(config.RESULTS_DIR / "metrics_summary.csv")
     summary_wide = summary.pivot(index="model", columns="metric", values="pooled").round(4)
     scope = summary.drop_duplicates("model").set_index("model")[["papers", "rows"]]
-    adj = summary[summary["metric"] == "accuracy"].set_index("model")["row_accuracy_adjusted"]
+    adj = summary[summary["metric"] == "accuracy"].set_index("model")["pooled_strict"]
     counts = pd.DataFrame({
         m: rows.loc[rows[f"{m} outcome"] != "", f"{m} outcome"].value_counts() for m in all_models
     }).T.fillna(0).astype(int)
-    summary_wide = (summary_wide.join(scope).join(adj.rename("accuracy_adjusted").round(4))
+    summary_wide = (summary_wide.join(scope).join(adj.rename("accuracy_before_accepted_answers").round(4))
                     .join(counts).reset_index().rename(columns={"index": "model"}))
 
     by_q = rows.groupby(["QID", "Type", "Question"])[[f"{m} correct" for m in all_models]].sum(
@@ -176,7 +176,7 @@ def main() -> int:
         "Rows both frontier models got wrong; 'models agree with each other' = yes is the strongest annotation-error candidate.",
         "FP = said something where the human said none/no; FN_missed = said nothing/no where the human had content; FN_wrong_value = gave a different value",
         "The 'papers' column in Summary shows how many papers each model was scored on. Reasoning-effort variants were only run on the first 10 papers. A paper is scored only where every primary model returned a response (see Operations for failures/refusals).",
-        "accuracy_adjusted additionally accepts curator-approved alternative answers from data/accepted_alternatives.csv (annotation gaps, e.g. figure-only evidence). Primary metrics do not use them.",
+        "Metrics INCLUDE curator-accepted alternative answers (data/accepted_alternatives.csv plus the QID 10 Sanger convention), applied to every model equally. 'accuracy_before_accepted_answers' is the unadjusted score, kept for comparability with the paper.",
         "Machine-suggested cause per error, with checkable signals: evidence_in_pdf (the model's quoted evidence really occurs in the PDF text), human_answer_in_pdf (share of the human answer's words found in the PDF), models_agree, review_paper, annotation_hedge. Suggestions only - nothing is applied to scoring.",
     ]})
 
