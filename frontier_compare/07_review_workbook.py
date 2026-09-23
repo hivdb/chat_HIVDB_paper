@@ -11,7 +11,8 @@ Sheets:
                       human answer (the strongest annotation-error candidates)
   All answers       - every PMID x QID row with each model's answer and correctness
   Auto-triage       - every error row with PDF-derived signals and a suggested cause
-  Adjudicated errors- row-by-row verdicts from reading each error against its PDF (09_error_dossier)
+  Adjudication summary- per model: errors split into model error / annotation / borderline
+  Adjudicated errors - every error row for every model with its verdict and reason
   Operations        - per-request latency, tokens, cost, JSON validity
 
 Run after 04_evaluate.py:  python frontier_compare/07_review_workbook.py
@@ -159,13 +160,11 @@ def main() -> int:
     triage = (pd.read_csv(triage_path, dtype={"PMID": str}, keep_default_na=False)
               if triage_path.exists() else pd.DataFrame())
 
-    dossiers = []
-    for path in sorted(config.RESULTS_DIR.glob("dossier_*.csv")):
-        frame = pd.read_csv(path, dtype={"PMID": str}, keep_default_na=False)
-        frame.insert(0, "Model", next((spec.label for k, spec in config.MODELS.items()
-                                       if path.stem == f"dossier_{k}"), path.stem))
-        dossiers.append(frame)
-    adjudicated = pd.concat(dossiers) if dossiers else pd.DataFrame()
+    adj_path = config.RESULTS_DIR / "adjudicated_errors.csv"
+    adjudicated = (pd.read_csv(adj_path, dtype={"PMID": str}, keep_default_na=False)
+                   if adj_path.exists() else pd.DataFrame())
+    adj_summary_path = config.RESULTS_DIR / "adjudicated_summary.csv"
+    adj_summary = (pd.read_csv(adj_summary_path) if adj_summary_path.exists() else pd.DataFrame())
 
     ops_path = config.RESULTS_DIR / "ops_requests.csv"
     ops = pd.read_csv(ops_path, dtype={"PMID": str}) if ops_path.exists() else pd.DataFrame()
@@ -197,7 +196,8 @@ def main() -> int:
         sheets = {
             "Overview": overview, "Summary": summary_wide, "By question": by_q,
             "Errors to review": errors, "Both models wrong": agree,
-            "Auto-triage": triage, "Adjudicated errors": adjudicated,
+            "Adjudication summary": adj_summary, "Adjudicated errors": adjudicated,
+            "Auto-triage": triage,
             "All answers": all_answers, "Operations": ops,
         }
         for name, frame in sheets.items():

@@ -79,7 +79,8 @@ def main() -> int:
         model_key, run_id = run_file.parent.name, int(run_file.stem.removeprefix("run"))
         answer_rows = []
         for pmid, rec in latest_records(run_file).items():
-            parsed, json_status = parse_content(rec.get("content", "")) if rec.get("ok") else (None, "no_response")
+            has_content = bool((rec.get("content") or "").strip())
+            parsed, json_status = parse_content(rec["content"]) if (rec.get("ok") and has_content) else (None, "no_response")
             answers = extract_answers(parsed)
             usage = rec.get("usage") or {}
             ops_rows.append(
@@ -104,7 +105,7 @@ def main() -> int:
             # A failed request (transport error, or a provider policy refusal) contributes no
             # answer rows: it is an operational failure, reported via ops_requests.csv, not 16
             # wrong answers. The PMID then drops out of the evaluated set for every model.
-            if not rec.get("ok"):
+            if not rec.get("ok") or not has_content:
                 continue
             for qid in range(1, config.TOTAL_QUESTIONS + 1):
                 entry = answers.get(qid, {})

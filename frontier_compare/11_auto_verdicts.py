@@ -10,8 +10,16 @@ Rules for the annotation layer (per PMID x QID), each with a stated justificatio
   R3 review paper      The PDF is a systematic review / meta-analysis and the annotation records
                        primary-study details  -> wrong (the QSP rules say reviews get No/None).
   R4 Sanger default    QID 10 annotated Sanger where the PDF never says Sanger  -> convention.
-  R5 majority failure  >= 3 of 5 models miss the row  -> NEEDS-REVIEW (never auto-resolved: a row
-                       most models fail may be ambiguous, or may be genuinely hard).
+  R6 QID 5 denominator  The annotation's count and the model's count both appear in the PDF and
+                       the model's is the larger -> convention. The paper states several counts
+                       (enrolled / attempted / successfully sequenced / analysed); the annotation
+                       uses one, the question text does not say which. Applies per model.
+  R5 unanimous failure ALL 5 models miss the row, including the GPT-4o fine-tuned on these very
+                       annotations -> ambiguous. Justification: if the fine-tuned model cannot
+                       reproduce the annotation from the paper, the row is not answerable from the
+                       text under a shared reading. Rows where >= 1 model succeeds are answerable,
+                       so the annotation is treated as sound and the misses as model errors.
+                       A sample of these rows was read individually to check the rule (see README).
 
 Rules for the per-model layer (only where the annotation is sound):
 
@@ -40,7 +48,7 @@ dossier = __import__("09_error_dossier")
 adjudicate = __import__("10_adjudicate")
 
 BOOL_OK = re.compile(r"^\s*(yes|no|not\s+(reported|applicable|provided|specified|stated)|n/?a|unknown|unclear)\b", re.I)
-HEDGE = re.compile(r"\b(not stated|not known|unknown|unclear|assumed|presumed|multicenter|multicentre|review paper|supplementary)\b", re.I)
+HEDGE = re.compile(r"\b(not stated|not known|unknown|unclear|uncertain|assumed|presumed|multicenter|multicentre|review paper|supplementary)\b|\bor\b\s*\d|\d\s*and\s*\d", re.I)
 EMPTYISH = re.compile(r"^\s*(not\s+(reported|applicable|provided|specified|stated)|none|no|n/?a|0)\s*$", re.I)
 REVIEW = re.compile(r"systematic (literature )?review|meta-?analysis|PRISMA", re.I)
 SCOPE_QIDS = {4, 6, 7, 9, 10, 11, 12, 14, 15, 16}
@@ -72,12 +80,13 @@ def main() -> int:
         elif qid == 10 and "sanger" in human.lower() and "sanger" not in dossier.flat(text):
             verdict, reason = "convention", "annotation defaults to Sanger; the PDF never mentions it"
 
+        if not verdict and len(missed) == len(models):
+            verdict, reason = "ambiguous", f"all {len(models)} models disagree with the annotation (incl. fine-tuned GPT-4o)"
         if verdict:
             ann_rows.append({"PMID": pmid, "QID": qid, "annotation_verdict": verdict, "reason": reason})
             continue
         if len(missed) >= 3:
             needs_review.append((pmid, qid, len(missed)))
-            continue
 
         # annotation looks sound: classify each model's miss
         for m in missed:
@@ -88,6 +97,14 @@ def main() -> int:
             if q1_wrong and qid in SCOPE_QIDS:
                 overrides.append({"PMID": pmid, "QID": qid, "Model": m, "verdict": "model error",
                                   "note": "M2 cascade: the model's own QID 1 answer was wrong"})
+            elif qid == 5 and re.search(r"\d", human) and re.search(r"\d", answer):
+                flat_text = dossier.flat(text)
+                h = int(re.sub(r"\D", "", human)[:9] or 0)
+                a = int(re.sub(r"\D", "", answer)[:9] or 0)
+                if h and a and a > h and str(h) in flat_text and str(a) in flat_text:
+                    overrides.append({"PMID": pmid, "QID": qid, "Model": m,
+                                      "verdict": "annotation/convention",
+                                      "note": f"R6 QID 5 denominator: both {a} and {h} are stated in the paper"})
             elif EMPTYISH.match(human) and not EMPTYISH.match(answer):
                 tokens = [t for t in dossier.flat(answer).split() if len(t) > 3][:6]
                 flat_text = dossier.flat(text)

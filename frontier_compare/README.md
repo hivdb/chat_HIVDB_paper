@@ -80,34 +80,64 @@ PubMed title appears in the first two pages (8 initial mismatches were ligature/
 Report:" artifacts, checked by hand). 1,606 pages total. Short PDFs (2–4 pages) are complete
 research letters or case reports.
 
-## Pilot (80 papers attempted, 79 scored, 2026-09-22)
+## Results (full run, 150 papers, 2026-09-22)
 
-Three random draws from the 150 (seeds 0, 1, 2), 79 papers x 16 questions = 1,264 rows.
-PMID 36920025 is excluded: GPT-6 Astra refuses it on policy grounds (see below).
-Metrics include both post-processing layers, applied to every model.
+See `report/REPORT.md` for the written answers. Headline: 149 papers x 16 questions = 2,384 rows
+per model (PMID 36920025 excluded - GPT-6 Astra refuses it on policy grounds).
 
 | | accuracy | precision | recall | F1 | before post-processing |
 |---|---|---|---|---|---|
-| Kimi K3 | **0.934** | 0.920 | 0.929 | 0.924 | 0.922 |
-| GPT-6 Astra | 0.922 | 0.916 | 0.901 | 0.909 | 0.911 |
-| GPT-4o FT | 0.903 | 0.931 | 0.839 | 0.883 | 0.899 |
-| GPT-4o FT+QSP | 0.881 | 0.887 | 0.832 | 0.859 | 0.876 |
-| GPT-4o QSP | 0.843 | 0.840 | 0.788 | 0.813 | 0.839 |
+| Kimi K3 | 0.927 | 0.917 | 0.914 | 0.915 | 0.920 |
+| GPT-6 Astra | 0.917 | 0.914 | 0.892 | 0.903 | 0.911 |
+| GPT-4o FT | 0.905 | 0.921 | 0.854 | 0.886 | 0.902 |
+| GPT-4o FT+QSP | 0.883 | 0.883 | 0.841 | 0.862 | 0.879 |
+| GPT-4o QSP | 0.846 | 0.835 | 0.806 | 0.820 | 0.844 |
 
-**First significant result.** Kimi K3 beats GPT-4o FT on accuracy: Wilcoxon over the 16 per-QID
-values, +0.031 mean per-QID, better on 11 of 16 questions, raw p = 0.041, **BH-adjusted
-p = 0.049**. Its F1 (p = 0.10) and recall (p = 0.20) are not significant, and no GPT-6 Astra
-comparison is (best: recall, p = 0.20). The stable pattern remains recall: both frontier models
-gain recall (+0.03 to +0.05 mean per-QID) and give up precision against GPT-4o FT's 0.931.
+Both frontier models beat prompted GPT-4o significantly (BH p <= 0.047) and fine-tuned GPT-4o on
+the point estimate only (Kimi accuracy p = 0.077; Astra p = 0.64). Operationally: Astra
+$0.378/paper, 53 s median, 99% strict JSON, 1 policy refusal; Kimi $0.187/paper, 133 s median,
+95% strict JSON, 1 empty response (retried). Total spend $84.30.
 
-**Operational (80 requests per model, cumulative pilot spend $44):**
+## Adjudication of every error, every model
 
-| | cost/paper | median latency | strict-valid JSON | failures |
-|---|---|---|---|---|
-| GPT-6 Astra | $0.37 | 52 s | 99% | 1 policy refusal |
-| Kimi K3 | $0.19 | 125 s | 94% (5 needed fence-stripping) | 0 |
+`09_error_dossier.py` builds a per-row evidence dossier (the model's quote checked verbatim
+against the PDF, PDF context around both answers, the other models' answers, self-consistency).
+`10_adjudicate.py` consolidates the 1,247 error rows into 625 distinct (PMID, QID) rows and
+applies verdicts in two layers - annotation soundness first (model-independent), then per-model
+classification. `11_auto_verdicts.py` applies the explicit rules:
 
-## Row-by-row adjudication of every GPT-6 Astra error (99 rows)
+| rule | effect |
+|---|---|
+| R1 type mismatch (Boolean annotated non-yes/no, Number with no number) | unanswerable |
+| R2 annotation hedges ("not stated", "uncertain", "(multicenter trial)", "8 and 10") | ambiguous |
+| R3 PDF is a systematic review / meta-analysis | annotation wrong |
+| R4 QID 10 annotated Sanger where the PDF never says Sanger | convention |
+| R5 all 5 models miss the row, incl. the fine-tuned GPT-4o | ambiguous |
+| R6 QID 5 where both the annotation's count and the model's count are stated in the paper | convention |
+| M1 annotation empty but the model's answer is in the PDF text | borderline |
+| M2 the model's own QID 1 answer was wrong (cascade) | model error |
+
+Everything else defaults to **model error**. Results:
+
+| | errors | model error | annotation/convention | borderline | accuracy | excl. annotation | excl. all non-model |
+|---|---|---|---|---|---|---|---|
+| Kimi K3 | 175 | 89 (51%) | 59 | 27 | 0.927 | 0.951 | 0.963 |
+| GPT-6 Astra | 199 | 114 (57%) | 69 | 16 | 0.917 | 0.946 | 0.952 |
+| GPT-4o FT | 227 | 133 (59%) | 77 | 17 | 0.905 | 0.937 | 0.944 |
+| GPT-4o FT+QSP | 280 | 179 (64%) | 65 | 36 | 0.883 | 0.910 | 0.925 |
+| GPT-4o QSP | 366 | 255 (70%) | 72 | 39 | 0.846 | 0.877 | 0.893 |
+
+The ranking survives adjudication and Kimi vs GPT-4o FT stays non-significant (BH p = 0.13,
+`results/adjudicated_tests.csv`).
+
+**How much to trust these splits.** The rules are deliberately conservative: anything not matched
+by a rule counts as a model error. Hand-adjudicating GPT-6 Astra's 99 errors on the 79-paper
+subset gave 44% model errors, where the rules give 57%. So the rule-based numbers **under-count**
+annotation problems, and the "excl. annotation" columns are lower bounds on how much of each
+model's error rate is really the dataset. Manual verdicts for rows read individually are in
+`data/adjudication_manual.csv`; a sample of the rule-assigned rows was read to check the default.
+
+### Earlier hand-adjudication (GPT-6 Astra, 79-paper subset)
 
 `09_error_dossier.py` builds an evidence dossier per error row - the model's answer, evidence
 quote and rationale, whether that quote is verbatim in the PDF, PDF context around both the human

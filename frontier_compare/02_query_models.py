@@ -164,7 +164,7 @@ def completed_pmids(path: Path) -> set[str]:
     if path.exists():
         for line in path.read_text(encoding="utf-8").splitlines():
             rec = json.loads(line)
-            if rec.get("ok"):
+            if rec.get("ok") and (rec.get("content") or "").strip():
                 done.add(rec["pmid"])
     return done
 
@@ -200,6 +200,13 @@ async def call_once(
         if error is None and body is not None:
             choice = body["choices"][0]
             usage = body.get("usage") or {}
+            if not (choice["message"].get("content") or "").strip():
+                # HTTP 200 but the model produced no content (e.g. spent the budget on reasoning).
+                # Treat as a failed generation so it is retried rather than scored as 16 blanks.
+                record.update(attempts=attempt, error="empty content", status_code=status)
+                await asyncio.sleep(delay)
+                delay = min(delay * 2, 120)
+                continue
             record.update(
                 ok=True,
                 content=choice["message"].get("content") or "",

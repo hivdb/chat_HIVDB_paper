@@ -1,100 +1,200 @@
 n,PMID,QID,Type,Question,Human Answer,Model Answer,quote_in_pdf,all_models_wrong,verdict,note
-1,31988104,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,yes,True,annotation/convention,patient-derived clones reported; QSP rule says Yes; all 5 models agree
-2,36795586,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,partial,False,model error,genotype-testing availability is not sequence reporting; other 4 models correct
-3,36931676,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,yes,False,model error,cohort paper does report stored pol sequences; other models correct
-4,37593123,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,yes,False,annotation/convention,"sequences compiled from China CDC/LANL; QSP rule says No for database compilations, curators say Yes"
-5,36660819,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,yes,False,borderline,phenotypic resistance listed as an endpoint but no data shown
-6,37147875,2,Boolean,Does the paper report in vitro drug susceptibility data?,Yes,No,partial,False,borderline,susceptibility data attributed to a prior publication; 2 GPT-4o conditions also said Yes
-7,37340869,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,yes,False,model error,only a citation to methodology in a supplement; all other models said No
-8,38005921,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,partial,False,borderline,reuses PhenoSense fold-ratio data from a database; all 3 GPT-4o conditions also said Yes
-9,41056006,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,yes,False,borderline,PhenoSense Gag-Pro assay stated at study entry; QSP rule supports Yes
-10,41091504,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,yes,False,borderline,"enzyme Ki values reused from published data, not viral phenotyping"
-11,38005921,3,Boolean,Were sequences from the paper made publicly available?,Yes,No,yes,False,model error,datasets are provided in supplementary material; other models said Yes
-12,31988104,5,Number,How many individuals had samples obtained for HIV sequencing?,0,14,yes,False,annotation/convention,same boundary as row 1: 14 patient-derived clones vs annotation 0
-13,33855437,5,Number,How many individuals had samples obtained for HIV sequencing?,6,5357,yes,False,model error,"counted the 5357-person database prevalence analysis, not the 6 isolates sequenced"
-14,36597160,5,Number,How many individuals had samples obtained for HIV sequencing?,6,154,yes,False,model error,counted historical EHR genotypes rather than the study's own sequencing
-15,36659824,5,Number,How many individuals had samples obtained for HIV sequencing?,14,112,yes,True,annotation/convention,all 5 models wrong; annotation 14 vs the 112-person genotyped cohort
-16,36660819,5,Number,How many individuals had samples obtained for HIV sequencing?,8 and 10,14,yes,True,annotation/convention,annotation is '8 and 10' (two subgroup counts); all 5 models wrong
-17,37340869,5,Number,How many individuals had samples obtained for HIV sequencing?,1651,1431,yes,False,model error,counted the genotype-evaluable subset (1431) instead of 1651; Kimi correct
-18,37515146,5,Number,How many individuals had samples obtained for HIV sequencing?,379,391,yes,False,annotation/convention,QID 5 counting: 391 sampled vs 379 successfully sequenced
-19,37554471,5,Number,How many individuals had samples obtained for HIV sequencing?,1,0,yes,False,model error,case report with resistance data; answered 0
-20,37593123,5,Number,How many individuals had samples obtained for HIV sequencing?,57902,0,partial,False,annotation/convention,cascade from row 4; GPT-4o FT answered 57902
-21,37626789,5,Number,How many individuals had samples obtained for HIV sequencing?,551,110,n/a,True,annotation/convention,all 5 models wrong; annotation 551 vs 110 successfully amplified
-22,40713598,5,Number,How many individuals had samples obtained for HIV sequencing?,20,96,partial,False,annotation/convention,QID 5 counting: 96 attempted vs 20 sequenced
-23,40763144,5,Number,How many individuals had samples obtained for HIV sequencing?,295,363,NO,False,annotation/convention,QID 5 counting: 363 attempted vs 295 sequenced
-24,40839365,5,Number,How many individuals had samples obtained for HIV sequencing?,212,288,partial,False,annotation/convention,QID 5 counting: 213+75 genotyped groups vs annotation 212
-25,40938120,5,Number,How many individuals had samples obtained for HIV sequencing?,1048,1260,yes,False,annotation/convention,QID 5 counting: 1260 enrolled vs 1048 analysed
-26,40974886,5,Number,How many individuals had samples obtained for HIV sequencing?,223,Not reported,NO,False,model error,answered 'Not reported' though 241/223 are stated; FT+QSP got 223
-27,41056006,5,Number,How many individuals had samples obtained for HIV sequencing?,10,182,yes,True,annotation/convention,all 5 models wrong; annotation 10 vs 182 dosed participants
-28,41130593,5,Number,How many individuals had samples obtained for HIV sequencing?,64,77,yes,True,annotation/convention,all 5 models wrong; annotation 64 vs 77 tested
-29,36795586,6,List,From which countries were the sequenced samples obtained?,Not reported,Botswana; Eswatini; Lesotho; Malawi; Tanzania; Uganda,partial,False,model error,cascade from its own wrong QID 1=Yes; listed countries of care
-30,36931676,6,List,From which countries were the sequenced samples obtained?,Sweden,Not applicable,partial,False,model error,cascade from its own wrong QID 1=No; Sweden is stated
-31,37340869,6,List,From which countries were the sequenced samples obtained?,Not reported,Russia,partial,False,borderline,only Russia is named in the main text; annotation says Not reported
-32,37593123,6,List,From which countries were the sequenced samples obtained?,China,Not applicable,yes,False,annotation/convention,cascade from row 4
-33,37957382,6,List,From which countries were the sequenced samples obtained?,Not reported,United States,yes,False,borderline,USA inferred from the institution; annotation says Not reported
-34,37973713,6,List,From which countries were the sequenced samples obtained?,"Ukraine, Poland",Poland,partial,False,model error,"listed Poland only, missing Ukraine"
-35,38152686,6,List,From which countries were the sequenced samples obtained?,Not reported,Brazil,yes,False,borderline,Brazil inferred from the ethics committee; annotation says Not reported
-36,41056006,6,List,From which countries were the sequenced samples obtained?,Not provided (multicenter trial),United States; Dominican Republic,partial,True,annotation/convention,paper names USA + Dominican Republic; annotation hedges 'Not provided (multicenter trial)'; all 5 models wrong
-37,41130593,6,List,From which countries were the sequenced samples obtained?,Not provided (multicenter trial),South Africa,yes,False,borderline,South Africa is the only country named; annotation hedges
-38,36597160,7,List,From what years were the sequenced samples obtained?,2014,Not reported,partial,False,model error,answered 'Not reported' though 2014-2015 is stated; all other models correct
-39,37574435,7,List,From what years were the sequenced samples obtained?,2016-2022,Not reported,yes,False,model error,answered 'Not reported' though 2016-2022 is stated; all other models correct
-40,37593123,7,List,From what years were the sequenced samples obtained?,2004-2022,Not applicable,yes,False,annotation/convention,cascade from row 4
-41,31988104,8,Boolean,Were samples cloned prior to sequencing?,No,Yes,yes,False,annotation/convention,paper states PD mutants 'were cloned from clinical plasma samples'; annotation says No
-42,37957382,8,Boolean,Were samples cloned prior to sequencing?,Yes,Not applicable,yes,True,annotation/convention,all 5 models wrong; single-genome sequencing vs annotation 'Yes'
-43,40938996,8,Boolean,Were samples cloned prior to sequencing?,Yes  ,Not applicable,NO,False,model error,paper describes cloning into TOPO vector; answered 'Not applicable'
-44,41088231,8,Boolean,Were samples cloned prior to sequencing?,Yes,Not applicable,yes,True,annotation/convention,all 5 models wrong; near-endpoint dilution vs annotation 'Yes'
-45,41093949,8,Boolean,Were samples cloned prior to sequencing?,Yes,Not applicable,yes,False,model error,site-directed clones described; GPT-4o conditions answered Yes
-46,41130593,8,Boolean,Were samples cloned prior to sequencing?,Yes (single genome),Not applicable,yes,True,annotation/convention,all 5 models wrong; annotation 'Yes (single genome)'
-47,30803972,9,List,Which HIV genes were reported to have been sequenced?,Not reported,IN,yes,False,model error,"out-of-scope: integrase region of plasmid clones, not patient samples"
-48,37071019,9,List,Which HIV genes were reported to have been sequenced?,Not reported,IN,yes,True,annotation/convention,all 5 models wrong incl. fine-tuned; lab SDM validation only
-49,37823653,9,List,Which HIV genes were reported to have been sequenced?,"NFLG, Envelope",Env,yes,True,annotation/convention,"all 5 models wrong; annotation 'NFLG, Envelope' vs gp120/Env"
-50,37957382,9,List,Which HIV genes were reported to have been sequenced?,"Full genome, NFLG","PR, RT, IN, CA, Env",yes,False,model error,listed subgenes instead of near-full-length genome; GPT-4o FT correct
-51,38005921,9,List,Which HIV genes were reported to have been sequenced?,Not reported,"PR, RT",yes,True,annotation/convention,all 5 models wrong; ML paper on PR/RT sequences vs annotation 'Not reported'
-52,38427738,9,List,Which HIV genes were reported to have been sequenced?,"Gag, Pol, Env, Nef, vpu","PR, RT, IN, CA, Env",yes,False,model error,gene list mismatch; GPT-4o FT correct
-53,40938996,9,List,Which HIV genes were reported to have been sequenced?,"RT, IN, NC, Env","PR, RT, IN, CA, Env",partial,False,model error,gene list mismatch; Kimi and GPT-4o FT correct
-54,41004608,9,List,Which HIV genes were reported to have been sequenced?,Whole genome,"PR, RT, IN, CA, Env",yes,True,annotation/convention,all 5 models wrong; annotation 'Whole genome' vs listed subgenes
-55,41088231,9,List,Which HIV genes were reported to have been sequenced?,Whole genome,"PR, RT, IN, CA, Env",NO,True,annotation/convention,all 5 models wrong; annotation 'Whole genome' vs listed subgenes
-56,30803972,10,List,What method was used for sequencing?,Not reported,Sanger sequencing,yes,False,model error,out-of-scope: Sanger in a table footnote describes plasmid-clone confirmation
-57,38427738,10,List,What method was used for sequencing?,Not reported,Sanger sequencing,yes,False,model error,Sanger applies to lab constructs; GPT-4o conditions correct
-58,40431710,10,List,What method was used for sequencing?,Sanger,NGS,partial,False,annotation/convention,paper explicitly states NGS; annotation says Sanger
-59,41093949,10,List,What method was used for sequencing?,Not stated,Sanger sequencing,yes,True,annotation/convention,all 5 models wrong; annotation hedges 'Not stated'
-60,31988104,11,List,What type of samples were sequenced?,Not reported,Plasma,yes,False,annotation/convention,linked to row 1 boundary; plasma is stated for the PD clones
-61,36659824,11,List,What type of samples were sequenced?,Not reported,Plasma,partial,False,borderline,plasma inferred from routine genotyping; annotation says Not reported
-62,36660819,11,List,What type of samples were sequenced?,Not reported,"Plasma, PBMC",partial,False,borderline,plasma/PBMC inferred; annotation says Not reported
-63,36795586,11,List,What type of samples were sequenced?,Not reported,Plasma,yes,False,model error,cascade from its own wrong QID 1=Yes
-64,36931676,11,List,What type of samples were sequenced?,"Plasma, CSF, PBMC",Not applicable,NO,False,model error,cascade from its own wrong QID 1=No; other models listed the sample types
-65,37340869,11,List,What type of samples were sequenced?,Not reported,"Plasma, PBMC",partial,False,borderline,plasma/PBMC inferred; annotation says Not reported
-66,37593123,11,List,What type of samples were sequenced?,Plasma,Not applicable,yes,True,annotation/convention,cascade from row 4
-67,37817087,11,List,What type of samples were sequenced?,"Serum, Plasma, DBS",Plasma; dried serum/plasma spots,yes,False,scoring artifact,"'Plasma; dried serum/plasma spots' vs 'Serum, Plasma, DBS' - same content, DBS synonym not matched"
-68,38314093,11,List,What type of samples were sequenced?,Serum,Plasma,yes,False,borderline,answered Plasma where annotation says Serum; Kimi's 'Plasma (serum)' was accepted
-69,31988104,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,yes,False,annotation/convention,linked to row 1 boundary
-70,36795586,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,partial,False,model error,cascade from its own wrong QID 1=Yes
-71,36931676,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes,Not applicable,partial,False,model error,cascade from its own wrong QID 1=No
-72,37573167,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,yes,False,model error,answered Yes where annotation and 3 GPT-4o conditions say No
-73,40400229,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes (PrEP),No,NO,False,annotation/convention,annotation is 'Yes (PrEP)'; PrEP breakthrough is not failure on a treatment regimen
-74,40779404,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Unknown,Yes,yes,False,annotation/convention,annotation is 'Unknown' - not answerable as scored
-75,41088231,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,NO,False,model error,answered Yes; all other models correct
-76,37910452,13,Boolean,Were the patients in the study in a clinical trial?,No,Yes,yes,False,model error,answered Yes; all other models correct
-77,37973713,13,Boolean,Were the patients in the study in a clinical trial?,Yes,No,yes,False,model error,answered No; annotation and 2 GPT-4o conditions say Yes
-78,40400229,13,Boolean,Were the patients in the study in a clinical trial?,No,Yes,partial,True,annotation/convention,PrEP Impact trial is a trial; annotation says No; all 5 models wrong
-79,40431710,13,Boolean,Were the patients in the study in a clinical trial?,No,Yes,yes,False,model error,case report; answered Yes
-80,31988104,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,14,Yes,yes,True,annotation/convention,"annotation is '14' for a yes/no question - data-entry error, unanswerable"
-81,36795586,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No,Yes,partial,False,model error,cascade from its own wrong QID 1=Yes
-82,36931676,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,partial,False,model error,cascade from its own wrong QID 1=No
-83,37755428,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No,Yes,partial,False,borderline,annotation says No; Kimi and 2 GPT-4o conditions also said Yes
-84,41088231,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?, No,Yes,partial,False,model error,answered Yes; 3 other models correct
-85,35730213,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, INSTI",None,partial,False,model error,answered None though ART classes are described; GPT-4o QSP correct
-86,36795586,15,List,Which drug classes were received by individuals in the study before sample sequencing?,Not reported,NRTIs; NNRTIs; PIs,yes,False,model error,cascade from its own wrong QID 1=Yes
-87,36931676,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI, INSTI",None,yes,False,model error,cascade from its own wrong QID 1=No
-88,37755428,15,List,Which drug classes were received by individuals in the study before sample sequencing?,Not reported,NRTIs,NO,True,annotation/convention,all 5 models wrong; annotation 'Not reported'
-89,40839365,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, INSTI",INSTIs,yes,False,model error,incomplete class list (INSTIs only)
-90,40974886,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI, INSTI",NRTIs; INSTIs,partial,False,model error,incomplete class list
-91,41088231,15,List,Which drug classes were received by individuals in the study before sample sequencing?,None,"NRTIs, INSTIs",NO,False,model error,annotation 'None'; model listed the post-diagnosis regimen
-92,35730213,16,List,Which drugs were received by individuals in the study before sample sequencing?,"EFV, DTG, TDF, 3TC",None,partial,False,model error,answered None though drugs are described; GPT-4o QSP correct
-93,36851760,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not reported,Lamivudine (3TC); zidovudine (ZDV); abacavir (ABC); nevirapine (NVP); efavirenz (EFV); tenofovir disoproxil fumarate (TDF); emtricitabine (FTC); lopinavir; ritonavir,yes,False,borderline,drugs taken from a regimen table; annotation says Not reported
-94,36931676,16,List,Which drugs were received by individuals in the study before sample sequencing?,DTG,None,partial,False,model error,cascade from its own wrong QID 1=No; answered None
-95,37573167,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not reported,"Enfuvirtide, maraviroc, ritonavir",n/a,False,borderline,drugs taken from a table; annotation says Not reported
-96,37574435,16,List,Which drugs were received by individuals in the study before sample sequencing?,"DTG, BIC, FTC, TAF","Lamivudine (3TC), emtricitabine (FTC), abacavir (ABC), zidovudine (AZT), tenofovir disoproxil fumarate (TDF), tenofovir alafenamide (TAF), efavirenz (EFV), nevirapine (NVP), rilpivirine (RPV), atazanavir (ATV), darunavir (DRV), lopinavir (LPV), ritonavir (RTV), dolutegravir (DTG), elvitegravir (EVG), raltegravir (RAL)",yes,False,model error,over-inclusive list of all regimens rather than those before sequencing
-97,37755428,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not reported,Zidovudine (ZDV),NO,True,annotation/convention,all 5 models wrong; annotation 'Not reported'
-98,40779404,16,List,Which drugs were received by individuals in the study before sample sequencing?,TFV (no other ARVs specified; Data in supplementary methods),"Tenofovir (TFV; formulation unspecified), dolutegravir, abacavir, lamivudine",yes,True,annotation/convention,annotation notes 'Data in supplementary methods' - evidence not in the PDF
-99,41088231,16,List,Which drugs were received by individuals in the study before sample sequencing?,None,"Bictegravir (BIC), emtricitabine (FTC), tenofovir alafenamide (TAF)",NO,False,model error,"listed the regimen started after diagnosis, not before sequencing"
+1,28559249,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,yes,False,,
+2,31988104,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,yes,True,,
+3,35913500,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,partial,False,,
+4,36779485,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,yes,False,,
+5,36795586,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,partial,False,,
+6,36931676,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,yes,False,,
+7,37541705,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,partial,False,,
+8,37593123,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,yes,False,,
+9,37701387,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,partial,False,,
+10,37880705,1,Boolean,Does the paper report HIV sequences from patient samples?,Yes,No,yes,False,,
+11,40965168,1,Boolean,Does the paper report HIV sequences from patient samples?,No,Yes,partial,True,,
+12,36660819,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,yes,False,,
+13,36967989,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,yes,False,,
+14,36982978,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,yes,False,,
+15,37147875,2,Boolean,Does the paper report in vitro drug susceptibility data?,Yes,No,partial,False,,
+16,37340869,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,yes,False,,
+17,38005921,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,partial,False,,
+18,40857111,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,yes,False,,
+19,41056006,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,yes,False,,
+20,41091504,2,Boolean,Does the paper report in vitro drug susceptibility data?,No,Yes,yes,False,,
+21,37674678,3,Boolean,Were sequences from the paper made publicly available?,Yes,No,yes,False,,
+22,37878637,3,Boolean,Were sequences from the paper made publicly available?,No,Yes,n/a,False,,
+23,38005921,3,Boolean,Were sequences from the paper made publicly available?,Yes,No,yes,False,,
+24,37878637,4,List,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported,OR259825; OR259967; OR259851; OR259781,n/a,False,,
+25,38140553,4,List,What were the GenBank accession numbers for sequenced HIV isolates?,Not reported,All nucleotide sequences obtained in the study were deposited in the international database of the Los Alamos laboratory (Supplemental Table S4). Table S4: Access numbers of all analyzed HIV-1 sequences in the Los Alamos National Laboratory database (GenBank).,yes,False,,
+26,30053052,5,Number,How many individuals had samples obtained for HIV sequencing?,51,27,partial,False,,
+27,31988104,5,Number,How many individuals had samples obtained for HIV sequencing?,0,14,yes,False,,
+28,33855437,5,Number,How many individuals had samples obtained for HIV sequencing?,6,5357,yes,False,,
+29,35913500,5,Number,How many individuals had samples obtained for HIV sequencing?,51,Not reported,partial,True,,
+30,36597160,5,Number,How many individuals had samples obtained for HIV sequencing?,6,154,yes,False,,
+31,36659824,5,Number,How many individuals had samples obtained for HIV sequencing?,14,112,yes,True,,
+32,36660819,5,Number,How many individuals had samples obtained for HIV sequencing?,8 and 10,14,yes,True,,
+33,36779485,5,Number,How many individuals had samples obtained for HIV sequencing?,1649,0,yes,False,,
+34,37340869,5,Number,How many individuals had samples obtained for HIV sequencing?,1651,1431,yes,False,,
+35,37439411,5,Number,How many individuals had samples obtained for HIV sequencing?,9387,15369,partial,False,,
+36,37515146,5,Number,How many individuals had samples obtained for HIV sequencing?,379,391,yes,False,,
+37,37520425,5,Number,How many individuals had samples obtained for HIV sequencing?,25 or 30,Not reported,partial,False,,
+38,37546367,5,Number,How many individuals had samples obtained for HIV sequencing?,2074,3274,yes,False,,
+39,37554471,5,Number,How many individuals had samples obtained for HIV sequencing?,1,0,yes,False,,
+40,37593123,5,Number,How many individuals had samples obtained for HIV sequencing?,57902,0,partial,False,,
+41,37626789,5,Number,How many individuals had samples obtained for HIV sequencing?,551,110,n/a,True,,
+42,37880705,5,Number,How many individuals had samples obtained for HIV sequencing?,1070,0,partial,False,,
+43,37938856,5,Number,How many individuals had samples obtained for HIV sequencing?,820 or 46,Not reported,yes,False,,
+44,37946329,5,Number,How many individuals had samples obtained for HIV sequencing?,921,1078,yes,False,,
+45,38020274,5,Number,How many individuals had samples obtained for HIV sequencing?,311,Not reported,yes,False,,
+46,40391923,5,Number,How many individuals had samples obtained for HIV sequencing?,227,234,partial,True,,
+47,40713598,5,Number,How many individuals had samples obtained for HIV sequencing?,20,96,partial,False,,
+48,40763144,5,Number,How many individuals had samples obtained for HIV sequencing?,295,363,NO,False,,
+49,40839365,5,Number,How many individuals had samples obtained for HIV sequencing?,212,288,partial,False,,
+50,40857111,5,Number,How many individuals had samples obtained for HIV sequencing?,7 (Uncertain),241,partial,True,,
+51,40938120,5,Number,How many individuals had samples obtained for HIV sequencing?,1048,1260,yes,False,,
+52,40965168,5,Number,How many individuals had samples obtained for HIV sequencing?,0,24,yes,True,,
+53,40974886,5,Number,How many individuals had samples obtained for HIV sequencing?,223,Not reported,NO,False,,
+54,41056006,5,Number,How many individuals had samples obtained for HIV sequencing?,10,182,yes,True,,
+55,41129268,5,Number,How many individuals had samples obtained for HIV sequencing?,333,428,yes,False,,
+56,41130593,5,Number,How many individuals had samples obtained for HIV sequencing?,64,77,yes,True,,
+57,35913500,6,List,From which countries were the sequenced samples obtained?,Not Reported,United States,yes,False,,
+58,36779485,6,List,From which countries were the sequenced samples obtained?,South Africa,Not applicable,partial,False,,
+59,36795586,6,List,From which countries were the sequenced samples obtained?,Not reported,Botswana; Eswatini; Lesotho; Malawi; Tanzania; Uganda,partial,False,,
+60,36931676,6,List,From which countries were the sequenced samples obtained?,Sweden,Not applicable,partial,False,,
+61,36961945,6,List,From which countries were the sequenced samples obtained?,Not reported,United States,yes,False,,
+62,37340869,6,List,From which countries were the sequenced samples obtained?,Not reported,Russia,partial,False,,
+63,37541705,6,List,From which countries were the sequenced samples obtained?,"Botswana, South Africa, Thailand, and the U.S.",Not applicable,yes,False,,
+64,37593123,6,List,From which countries were the sequenced samples obtained?,China,Not applicable,yes,False,,
+65,37701387,6,List,From which countries were the sequenced samples obtained?,Italy,Not applicable,partial,False,,
+66,37880705,6,List,From which countries were the sequenced samples obtained?,Ethiopia,Not applicable,partial,False,,
+67,37957382,6,List,From which countries were the sequenced samples obtained?,Not reported,United States,yes,False,,
+68,37973713,6,List,From which countries were the sequenced samples obtained?,"Ukraine, Poland",Poland,partial,False,,
+69,38152686,6,List,From which countries were the sequenced samples obtained?,Not reported,Brazil,yes,False,,
+70,41056006,6,List,From which countries were the sequenced samples obtained?,Not provided (multicenter trial),United States; Dominican Republic,partial,True,,
+71,41130593,6,List,From which countries were the sequenced samples obtained?,Not provided (multicenter trial),South Africa,yes,False,,
+72,41140464,6,List,From which countries were the sequenced samples obtained?,Tanzania,Not applicable,NO,False,,
+73,35913500,7,List,From what years were the sequenced samples obtained?,2021-2022,Not reported,NO,False,,
+74,36597160,7,List,From what years were the sequenced samples obtained?,2014,Not reported,partial,False,,
+75,36645792,7,List,From what years were the sequenced samples obtained?,Not reported,2020–2021,partial,True,,
+76,37520425,7,List,From what years were the sequenced samples obtained?,"2016-2017, 2019-2020",2019–2021,partial,False,,
+77,37541705,7,List,From what years were the sequenced samples obtained?,2020-2021,Not applicable,yes,False,,
+78,37574435,7,List,From what years were the sequenced samples obtained?,2016-2022,Not reported,yes,False,,
+79,37593123,7,List,From what years were the sequenced samples obtained?,2004-2022,Not applicable,yes,False,,
+80,37701387,7,List,From what years were the sequenced samples obtained?,2020-2021,Not applicable,partial,False,,
+81,37880705,7,List,From what years were the sequenced samples obtained?,2003-2018,Not applicable,partial,False,,
+82,30053052,8,Boolean,Were samples cloned prior to sequencing?,No,Yes,yes,False,,
+83,31988104,8,Boolean,Were samples cloned prior to sequencing?,No,Yes,yes,False,,
+84,34516245,8,Boolean,Were samples cloned prior to sequencing?,Yes,Not applicable,yes,False,,
+85,37957382,8,Boolean,Were samples cloned prior to sequencing?,Yes,Not applicable,yes,True,,
+86,40938996,8,Boolean,Were samples cloned prior to sequencing?,Yes  ,Not applicable,NO,False,,
+87,41088231,8,Boolean,Were samples cloned prior to sequencing?,Yes,Not applicable,yes,True,,
+88,41093949,8,Boolean,Were samples cloned prior to sequencing?,Yes,Not applicable,yes,False,,
+89,41130593,8,Boolean,Were samples cloned prior to sequencing?,Yes (single genome),Not applicable,yes,True,,
+90,26311878,9,List,Which HIV genes were reported to have been sequenced?,Not reported,IN,yes,False,,
+91,27124362,9,List,Which HIV genes were reported to have been sequenced?,Not reported,RT,yes,False,,
+92,30803972,9,List,Which HIV genes were reported to have been sequenced?,Not reported,IN,yes,False,,
+93,37039023,9,List,Which HIV genes were reported to have been sequenced?,NFLG,"PR, RT, IN, Env",yes,False,,
+94,37071019,9,List,Which HIV genes were reported to have been sequenced?,Not reported,IN,yes,True,,
+95,37498738,9,List,Which HIV genes were reported to have been sequenced?,NFLG,PR; RT; IN; CA; Env,yes,False,,
+96,37541705,9,List,Which HIV genes were reported to have been sequenced?,RT,Not reported,partial,True,,
+97,37701387,9,List,Which HIV genes were reported to have been sequenced?,Not reported,"RT, IN",partial,False,,
+98,37823653,9,List,Which HIV genes were reported to have been sequenced?,"NFLG, Envelope",Env,yes,True,,
+99,37957382,9,List,Which HIV genes were reported to have been sequenced?,"Full genome, NFLG","PR, RT, IN, CA, Env",yes,False,,
+100,38005921,9,List,Which HIV genes were reported to have been sequenced?,Not reported,"PR, RT",yes,True,,
+101,38427738,9,List,Which HIV genes were reported to have been sequenced?,"Gag, Pol, Env, Nef, vpu","PR, RT, IN, CA, Env",yes,False,,
+102,40938996,9,List,Which HIV genes were reported to have been sequenced?,"RT, IN, NC, Env","PR, RT, IN, CA, Env",partial,False,,
+103,41004608,9,List,Which HIV genes were reported to have been sequenced?,Whole genome,"PR, RT, IN, CA, Env",yes,True,,
+104,41088231,9,List,Which HIV genes were reported to have been sequenced?,Whole genome,"PR, RT, IN, CA, Env",NO,True,,
+105,30803972,10,List,What method was used for sequencing?,Not reported,Sanger sequencing,yes,False,,
+106,36454248,10,List,What method was used for sequencing?,Not reported,Sanger sequencing,yes,True,,
+107,37880705,10,List,What method was used for sequencing?,Not reported,Sanger sequencing,partial,False,,
+108,38427738,10,List,What method was used for sequencing?,Not reported,Sanger sequencing,yes,False,,
+109,40431710,10,List,What method was used for sequencing?,Sanger,NGS,partial,False,,
+110,41093949,10,List,What method was used for sequencing?,Not stated,Sanger sequencing,yes,True,,
+111,31988104,11,List,What type of samples were sequenced?,Not reported,Plasma,yes,False,,
+112,35913500,11,List,What type of samples were sequenced?,Not reported,Plasma,yes,False,,
+113,36659824,11,List,What type of samples were sequenced?,Not reported,Plasma,partial,False,,
+114,36660819,11,List,What type of samples were sequenced?,Not reported,"Plasma, PBMC",partial,False,,
+115,36779485,11,List,What type of samples were sequenced?,Plasma,Not applicable,yes,False,,
+116,36795586,11,List,What type of samples were sequenced?,Not reported,Plasma,yes,False,,
+117,36931676,11,List,What type of samples were sequenced?,"Plasma, CSF, PBMC",Not applicable,NO,False,,
+118,37104815,11,List,What type of samples were sequenced?,"Whole Blood, Semen",Plasma; PBMC,yes,True,,
+119,37279764,11,List,What type of samples were sequenced?,Not reported,Plasma,yes,False,,
+120,37340869,11,List,What type of samples were sequenced?,Not reported,"Plasma, PBMC",partial,False,,
+121,37593123,11,List,What type of samples were sequenced?,Plasma,Not applicable,yes,True,,
+122,37817087,11,List,What type of samples were sequenced?,"Serum, Plasma, DBS",Plasma; dried serum/plasma spots,yes,False,,
+123,37938856,11,List,What type of samples were sequenced?,Not reported,Plasma,yes,False,,
+124,38058846,11,List,What type of samples were sequenced?,Not reported,Plasma,yes,True,,
+125,38314093,11,List,What type of samples were sequenced?,Serum,Plasma,yes,False,,
+126,40965168,11,List,What type of samples were sequenced?,Not applicable,Plasma,partial,True,,
+127,41012586,11,List,What type of samples were sequenced?,Plasma (presumably),Plasma,yes,True,,
+128,31988104,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,yes,False,,
+129,36738248,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Not reported,Yes,partial,False,,
+130,36779485,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes,Not applicable,yes,False,,
+131,36795586,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,partial,False,,
+132,36851704,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,yes,True,,
+133,36931676,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes,Not applicable,partial,False,,
+134,37039023,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,yes,False,,
+135,37272233,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,yes,False,,
+136,37376649,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,NO,False,,
+137,37498738,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,NO,False,,
+138,37515095,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,yes,False,,
+139,37537871,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes,Not reported,partial,False,,
+140,37573167,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,yes,False,,
+141,37585352,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,NO,False,,
+142,37914679,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes,No,partial,False,,
+143,37976080,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,yes,False,,
+144,38140553,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,yes,False,,
+145,40400229,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes (PrEP),No,NO,False,,
+146,40779404,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Unknown,Yes,yes,False,,
+147,41088231,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,No,Yes,NO,False,,
+148,41140464,12,Boolean,Were any sequences obtained from individuals with virological failure on a treatment regimen?,Yes,Not applicable,NO,True,,
+149,37910452,13,Boolean,Were the patients in the study in a clinical trial?,No,Yes,yes,False,,
+150,37938856,13,Boolean,Were the patients in the study in a clinical trial?,No,Yes,partial,False,,
+151,37973713,13,Boolean,Were the patients in the study in a clinical trial?,Yes,No,yes,False,,
+152,40400229,13,Boolean,Were the patients in the study in a clinical trial?,No,Yes,partial,True,,
+153,40431710,13,Boolean,Were the patients in the study in a clinical trial?,No,Yes,yes,False,,
+154,40965168,13,Boolean,Were the patients in the study in a clinical trial?,No,Yes,NO,True,,
+155,27009474,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,NO,False,,
+156,31988104,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,14,Yes,yes,True,,
+157,36779485,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,yes,False,,
+158,36795586,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No,Yes,partial,False,,
+159,36931676,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,partial,False,,
+160,37272233,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No,Yes,yes,True,,
+161,37537871,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,yes,False,,
+162,37541705,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,partial,False,,
+163,37755428,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No,Yes,partial,False,,
+164,38140553,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,No,Yes,yes,False,,
+165,41088231,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?, No,Yes,partial,False,,
+166,41140464,14,Boolean,Does the paper report HIV sequences from individuals who had previously received ARV drugs?,Yes,No,NO,True,,
+167,27009474,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, INSTI",None,NO,False,,
+168,35730213,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, INSTI",None,partial,False,,
+169,35913500,15,List,Which drug classes were received by individuals in the study before sample sequencing?,Not reported,"NRTIs, NNRTIs, PIs, INSTIs",yes,False,,
+170,36779485,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI",None,yes,False,,
+171,36795586,15,List,Which drug classes were received by individuals in the study before sample sequencing?,Not reported,NRTIs; NNRTIs; PIs,yes,False,,
+172,36851704,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI, INSTI",Not reported,yes,False,,
+173,36931676,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI, INSTI",None,yes,False,,
+174,37376649,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, INSTI",NRTIs,NO,False,,
+175,37498738,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, INSTI",INSTIs,partial,False,,
+176,37541705,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"PI, INSTI",None,yes,False,,
+177,37755428,15,List,Which drug classes were received by individuals in the study before sample sequencing?,Not reported,NRTIs,NO,True,,
+178,40839365,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, INSTI",INSTIs,yes,False,,
+179,40974886,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI, INSTI",NRTIs; INSTIs,partial,False,,
+180,41023944,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI,NNRTI,INSTI",INSTIs,yes,False,,
+181,41088231,15,List,Which drug classes were received by individuals in the study before sample sequencing?,None,"NRTIs, INSTIs",NO,False,,
+182,41140464,15,List,Which drug classes were received by individuals in the study before sample sequencing?,"NRTI, NNRTI, PI, INSTI",None,partial,True,,
+183,27009474,16,List,Which drugs were received by individuals in the study before sample sequencing?,"Tenofovir, Emtricitabine, Elvitegravir",None,NO,False,,
+184,35730213,16,List,Which drugs were received by individuals in the study before sample sequencing?,"EFV, DTG, TDF, 3TC",None,partial,False,,
+185,35913500,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not reported,"Tenofovir alafenamide (TAF), tenofovir disoproxil fumarate (TDF), emtricitabine (FTC), lamivudine (3TC), abacavir (ABC), bictegravir (BIC), dolutegravir (DTG), elvitegravir (ELV), darunavir (DRV), doravirine (DOR), rilpivirine (RPV), cabotegravir (CAB)",yes,False,,
+186,36779485,16,List,Which drugs were received by individuals in the study before sample sequencing?,RPV,None,yes,False,,
+187,36851760,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not reported,Lamivudine (3TC); zidovudine (ZDV); abacavir (ABC); nevirapine (NVP); efavirenz (EFV); tenofovir disoproxil fumarate (TDF); emtricitabine (FTC); lopinavir; ritonavir,yes,False,,
+188,36931676,16,List,Which drugs were received by individuals in the study before sample sequencing?,DTG,None,partial,False,,
+189,37376649,16,List,Which drugs were received by individuals in the study before sample sequencing?,"Lamivudine (3TC), Tenofovir (TAF), Dolutegravir (DTG)",Tenofovir alafenamide (TAF),NO,False,,
+190,37541705,16,List,Which drugs were received by individuals in the study before sample sequencing?,"LPV, DTG, RAL, ABC, 3TC",None,yes,True,,
+191,37546367,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not reported,"Nevirapine (NVP), efavirenz (EFV)",yes,False,,
+192,37573167,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not reported,"Enfuvirtide, maraviroc, ritonavir",n/a,False,,
+193,37574435,16,List,Which drugs were received by individuals in the study before sample sequencing?,"DTG, BIC, FTC, TAF","Lamivudine (3TC), emtricitabine (FTC), abacavir (ABC), zidovudine (AZT), tenofovir disoproxil fumarate (TDF), tenofovir alafenamide (TAF), efavirenz (EFV), nevirapine (NVP), rilpivirine (RPV), atazanavir (ATV), darunavir (DRV), lopinavir (LPV), ritonavir (RTV), dolutegravir (DTG), elvitegravir (EVG), raltegravir (RAL)",yes,False,,
+194,37632026,16,List,Which drugs were received by individuals in the study before sample sequencing?,"AZT, D4T, XTC, TDF, ATV, LPV, DRV","Abacavir (ABC); lamivudine (3TC) or emtricitabine (FTC), reported jointly as XTC; stavudine (d4T); zidovudine (AZT); tenofovir disoproxil fumarate (TDF); didanosine (ddI); atazanavir; lopinavir; ritonavir (booster); indinavir; nelfinavir",partial,True,,
+195,37755428,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not reported,Zidovudine (ZDV),NO,True,,
+196,38020274,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not reported,"Stavudine (d4T), lamivudine (3TC), nevirapine (NVP), ritonavir",yes,False,,
+197,40596906,16,List,Which drugs were received by individuals in the study before sample sequencing?,Not stated,"Zidovudine (ZDV), lamivudine (3TC), nevirapine (NVP), lopinavir, ritonavir, efavirenz (EFV)",NO,True,,
+198,40779404,16,List,Which drugs were received by individuals in the study before sample sequencing?,TFV (no other ARVs specified; Data in supplementary methods),"Tenofovir (TFV; formulation unspecified), dolutegravir, abacavir, lamivudine",yes,True,,
+199,41088231,16,List,Which drugs were received by individuals in the study before sample sequencing?,None,"Bictegravir (BIC), emtricitabine (FTC), tenofovir alafenamide (TAF)",NO,False,,

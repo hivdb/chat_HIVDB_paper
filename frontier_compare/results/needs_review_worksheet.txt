@@ -1,0 +1,1661 @@
+=== [5] PMID 31988104 QID 1 (Boolean) - missed by 5/5 ALL-MODELS-WRONG
+Q: Does the paper report HIV sequences from patient samples?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      Yes  X
+  GPT-4o FT        Yes  X
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Yes  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Recombinant mutant HIV-1 viruses were created either by site directed mutagenesis (SDM) of wild-type HIV-1 DNA, or by direct PCR of ART-experienced patient isolates (8).” “Patient-derived (PD) mutants were cloned from clinical plasma sampl
+  PDF near HUMAN: (none)
+
+=== [20] PMID 37541705 QID 1 (Boolean) - missed by 4/5 
+Q: Does the paper report HIV sequences from patient samples?
+HUMAN: Yes
+  GPT-6 Astra QSP  No  X
+  Kimi K3 QSP      No  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       Yes  ok
+  GPT-4o FT+QSP    No  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “All 51 ART-experienced participants, including the four with a known M184V mutation, maintained suppression (<200 copies per mL) through 24 weeks.” “Virologic suppression, adherence, tolerability (palatability and acceptability), lipid pro
+  PDF near HUMAN: (none)
+
+=== [23] PMID 37701387 QID 1 (Boolean) - missed by 4/5 
+Q: Does the paper report HIV sequences from patient samples?
+HUMAN: Yes
+  GPT-6 Astra QSP  No  X
+  Kimi K3 QSP      No  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       No  X
+  GPT-4o FT+QSP    Yes  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “B/F/TAF has been tested in observational or uncontrolled pilot studies (OPERA, RAINBOW), while a large randomized controlled trial is currently ongoing (LAPTOP).” “There were no changes in ART based on examination of the baseline genotype 
+  PDF near HUMAN: (none)
+
+=== [30] PMID 40872801 QID 1 (Boolean) - missed by 3/5 
+Q: Does the paper report HIV sequences from patient samples?
+HUMAN: No
+  GPT-6 Astra QSP  No  ok
+  Kimi K3 QSP      No  ok
+  GPT-4o FT        Yes the paper reports HIV sequences from patient samples.  X
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Yes  X
+  PDF near HUMAN: (none)
+
+=== [32] PMID 40965168 QID 1 (Boolean) - missed by 5/5 ALL-MODELS-WRONG
+Q: Does the paper report HIV sequences from patient samples?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      Yes  X
+  GPT-4o FT        Yes, the paper reports HIV-1 sequences from patient plasma samples.  X
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Yes  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “Patient plasma samples were obtained from studies GS-US-380-1490, GS-US-292-0104, GS-US-200-4334, and GS-US-200-4625.” “The initial determination of sample subtype based on pol sequencing was confirmed for 22 of the 24 samples based on cap
+  PDF near HUMAN: (none)
+
+=== [50] PMID 37147875 QID 2 (Boolean) - missed by 3/5 
+Q: Does the paper report in vitro drug susceptibility data?
+HUMAN: Yes
+  GPT-6 Astra QSP  No  X
+  Kimi K3 QSP      No  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       Yes  ok
+  GPT-4o FT+QSP    Yes  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “Retrospective baseline NGS was done using the MiSeq platform (Illumina, San Diego, CA, USA) and the data were analysed with PASeq software at two cut-offs (20% and 1%).” “These results demonstrated that the S230R substitution caused simila
+  PDF near HUMAN: (none)
+
+=== [69] PMID 38005921 QID 2 (Boolean) - missed by 4/5 
+Q: Does the paper report in vitro drug susceptibility data?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      No  ok
+  GPT-4o FT        Yes  X
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Yes  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “The experimental level of resistance provided in the dataset was determined using the Phenosense™ test system.” “To reduce noise, the FR values for duplicates were averaged.”
+  PDF near HUMAN: (none)
+
+=== [76] PMID 40857111 QID 2 (Boolean) - missed by 4/5 
+Q: Does the paper report in vitro drug susceptibility data?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      Yes  X
+  GPT-4o FT        The paper does not mention in vitro drug susceptibility data.  ok
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Yes  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Participants meeting these criteria, and with HIV-1 RNA ≥200 copies/mL at the confirmation visit or last visit on study drugs, underwent genotypic/phenotypic resistance analyses for PR/RT/IN.” “The viral isolate at Week 24 contained an eme
+  PDF near HUMAN: (none)
+
+=== [78] PMID 41056006 QID 2 (Boolean) - missed by 3/5 
+Q: Does the paper report in vitro drug susceptibility data?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      Yes  X
+  GPT-4o FT        No, the paper does not report in vitro drug susceptibility data.  ok
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    No  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Emergence of LEN resistance was an exploratory endpoint.” “HIV-1 capsid genotypic and phenotypic data were assessed at study entry using the GenoSure Gag-Pro and PhenoSense Gag-Pro assays (Monogram Biosciences).”
+  PDF near HUMAN: (none)
+
+=== [85] PMID 37674678 QID 3 (Boolean) - missed by 4/5 
+Q: Were sequences from the paper made publicly available?
+HUMAN: Yes
+  GPT-6 Astra QSP  No  X
+  Kimi K3 QSP      No  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       Yes  ok
+  GPT-4o FT+QSP    No  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “The authors acknowledge that the data presented in this study must be deposited and made publicly available in an acceptable repository, prior to publication.” “Frontiers cannot accept a manuscript that does not adhere to our open data pol
+  PDF near HUMAN: (none)
+
+=== [87] PMID 37878637 QID 3 (Boolean) - missed by 4/5 
+Q: Were sequences from the paper made publicly available?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      Yes  X
+  GPT-4o FT        No  ok
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Yes  X
+  GPT-6 Astra QSP evidence [table] (in pdf: n/a): “CME_125 (OR259825)” and “HDMB_015 (OR259967)”. “CNPS_029 (OR259851)” and “HDMF_009 (OR259781)”. “Accession number in GenBank”.
+  PDF near HUMAN: (none)
+
+=== [98] PMID 30053052 QID 5 (Number) - missed by 4/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 51
+  GPT-6 Astra QSP  27  X
+  Kimi K3 QSP      27  X
+  GPT-4o FT        51  ok
+  GPT-4o QSP       27  X
+  GPT-4o FT+QSP    24  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “Stored plasma samples from patients who were either therapy naive (n = 42) or had a virological treatment failure (n = 9) were randomly selected from the HIV cohort at Karolinska University Hospital, Stockholm, Sweden.” “Finally we obtaine
+  PDF near HUMAN: (none)
+
+=== [101] PMID 35913500 QID 5 (Number) - missed by 5/5 ALL-MODELS-WRONG
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 51
+  GPT-6 Astra QSP  Not reported  X
+  Kimi K3 QSP      6  X
+  GPT-4o FT        0  X
+  GPT-4o QSP       0  X
+  GPT-4o FT+QSP    0  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): "One patient had an N155H resistance mutation at baseline." "If an injection is delayed by 10 days or more, blood work for resistance testing is obtained in addition to viral load testing."
+  PDF near HUMAN: (none)
+
+=== [102] PMID 35945163 QID 5 (Number) - missed by 4/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 6
+  GPT-6 Astra QSP  7  ok
+  Kimi K3 QSP      35  X
+  GPT-4o FT        35  X
+  GPT-4o QSP       0  X
+  GPT-4o FT+QSP    35  X
+  Kimi K3 QSP evidence [main_text] (in pdf: NO): Efficacy and safety data were available for 35 people living with HIV-1 who received cabotegravir LA + rilpivirine LA through the compassionate use programme from February 2016 through July 2020. Eligible people living with HIV-1 were ... w
+  PDF near HUMAN: (none)
+
+=== [103] PMID 36597160 QID 5 (Number) - missed by 3/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 6
+  GPT-6 Astra QSP  154  X
+  Kimi K3 QSP      153  X
+  GPT-4o FT        6  ok
+  GPT-4o QSP       382  X
+  GPT-4o FT+QSP    16  ok
+  GPT-6 Astra QSP evidence [table] (in pdf: yes): "For the 314 patients with virologic success, 143 had a genotype available at baseline in the electronic health record (EHR); for the 13 patients with virologic failure, genotypes were available for 9, either available in the EHR or retrosp
+  PDF near HUMAN: (none)
+
+=== [105] PMID 36659824 QID 5 (Number) - missed by 5/5 ALL-MODELS-WRONG
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 14
+  GPT-6 Astra QSP  112  X
+  Kimi K3 QSP      112  X
+  GPT-4o FT        0  X
+  GPT-4o QSP       112  X
+  GPT-4o FT+QSP    112  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “At the baseline visit, samples were collected for routine testing, confirmation of HIV serology and HIV resistance genotyping.” “Thus, 112 were included in the ITT-FDA Snapshot analysis (see flow chart, Figure 1).”
+  PDF near HUMAN: (none)
+
+=== [106] PMID 36660819 QID 5 (Number) - missed by 5/5 ALL-MODELS-WRONG
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 8 and 10
+  GPT-6 Astra QSP  14  X
+  Kimi K3 QSP      14  X
+  GPT-4o FT        1045  X
+  GPT-4o QSP       0  X
+  GPT-4o FT+QSP    0  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Overall, 12 (2.3%) participants in the Q8W arm and 2 (0.4%) in the Q4W arm had CVF.” “Eight and 10 participants with CVF had treatment-emergent, resistance-associated mutations to RPV and integrase inhibitors, respectively.”
+  PDF near HUMAN: (none)
+
+=== [114] PMID 37340869 QID 5 (Number) - missed by 3/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 1651
+  GPT-6 Astra QSP  1431  X
+  Kimi K3 QSP      1651  ok
+  GPT-4o FT        0  X
+  GPT-4o QSP       1651  ok
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Across 3 studies, 1651 unique participants were included, 23/1651 (1.4%) of whom had CVF.” “CVF risk according to combinations of the baseline factors identified as significant predictors in both BFAs (RPV RAMs, HIV-1 subtype A6/A1, and BM
+  PDF near HUMAN: [1651] ...to include data beyond week 48, additional covariates, and additional participants. Methods. Pooled data from 1651 participants were used to explore dosing regimen (every 4 or every 8 weeks), demographic, viral, and pharmaco...
+
+=== [117] PMID 37520425 QID 5 (Number) - missed by 3/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 25 or 30
+  GPT-6 Astra QSP  Not reported  X
+  Kimi K3 QSP      16  X
+  GPT-4o FT        30  ok
+  GPT-4o QSP       14  X
+  GPT-4o FT+QSP    30  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “For patients with viremia at 12 months after starting DTG-based ART, blood plasma samples prior to treatment initiation were available for 25 of 30 (83%) patients.” “Of those, 14 of 25 (56%) samples were successfully PCR amplified and sequ
+  PDF near HUMAN: (none)
+
+=== [120] PMID 37554471 QID 5 (Number) - missed by 3/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 1
+  GPT-6 Astra QSP  0  X
+  Kimi K3 QSP      1  ok
+  GPT-4o FT        0  X
+  GPT-4o QSP       1  ok
+  GPT-4o FT+QSP    0  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “We present a case of successful achievement of undetectable HIV RNA viral load levels in an acquired immunodeficiency syndrome (AIDS) patient with long-standing virologic failure within two months of CAB/RPV LA initiation.” “He did harbour
+  PDF near HUMAN: (none)
+
+=== [122] PMID 37593123 QID 5 (Number) - missed by 3/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 57902
+  GPT-6 Astra QSP  0  X
+  Kimi K3 QSP      0  X
+  GPT-4o FT        57902  ok
+  GPT-4o QSP       57902  ok
+  GPT-4o FT+QSP    67939  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “These sequences were procured from both the National Center for AIDS/STD Control and Prevention, China CDC and the HIV sequence databases of the Los Alamos National Laboratory (https://www.hiv.lanl.gov/, retrieved December 30, 2022).” “The
+  PDF near HUMAN: [57902] ...sion of the National Free Antiretroviral Treatment Program's stages between 2004 and 2022. Results: Among the 57902 ART-naïve individuals infected with HIV, there was a notable decline in the prevalence of CRF01_AE, B, and C...
+
+=== [123] PMID 37626789 QID 5 (Number) - missed by 5/5 ALL-MODELS-WRONG
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 551
+  GPT-6 Astra QSP  110  X
+  Kimi K3 QSP      110  X
+  GPT-4o FT        0  X
+  GPT-4o QSP       554  X
+  GPT-4o FT+QSP    554  X
+  GPT-6 Astra QSP evidence [figure] (in pdf: n/a): “Not Supressed (≥1000 copies/ml) (N=118)” “HIVDR not done (N=8)” “HIVDR amplification successful (N=110)”
+  PDF near HUMAN: [551] ...g children on first-line antiretroviral therapy in Ethiopia. Method: A longitudinal study was conducted among 551 HIV-positive children (<15 years old) recruited between 2017 and 2019 at 40 antiretroviral treatment delivery...
+
+=== [128] PMID 37993493 QID 5 (Number) - missed by 3/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 33
+  GPT-6 Astra QSP  33  ok
+  Kimi K3 QSP      33  ok
+  GPT-4o FT        600  X
+  GPT-4o QSP       600  X
+  GPT-4o FT+QSP    600  X
+  PDF near HUMAN: (none)
+
+=== [129] PMID 38020274 QID 5 (Number) - missed by 3/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 311
+  GPT-6 Astra QSP  Not reported  X
+  Kimi K3 QSP      Not reported  X
+  GPT-4o FT        311  ok
+  GPT-4o QSP       311.  ok
+  GPT-4o FT+QSP    271  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Despite absence of statistical significance, decreasing rates (95% CI) of overall HIVDR of 54/56, 96.4% (87.5-99.6%); 88/96, 91.7% (84.2-96.3%); and 51/60, 85.0% (73.4-92.9%) from T1-T3 respectively were observed among participants in VF, 
+  PDF near HUMAN: [311] ...rofiling on immuno‐virological response and ADR among APHI. A cohort‐study was conducted from 2018‐2020 among 311 APHI receiving ART in Cameroon. Clinical, immunological and virological responses were measured at enrolment ...
+
+=== [131] PMID 38090027 QID 5 (Number) - missed by 3/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 5
+  GPT-6 Astra QSP  5  ok
+  Kimi K3 QSP      5  ok
+  GPT-4o FT        0  X
+  GPT-4o QSP       0  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: (none)
+
+=== [133] PMID 40391923 QID 5 (Number) - missed by 5/5 ALL-MODELS-WRONG
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 227
+  GPT-6 Astra QSP  234  X
+  Kimi K3 QSP      234  X
+  GPT-4o FT        Samples were obtained from 488 individuals for HIV sequencing.  X
+  GPT-4o QSP       234  X
+  GPT-4o FT+QSP    488  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “Of the 488 samples (420 plasma, 68 DBS samples), 234 (48%) had a VL >1000 copies/mL and underwent sequencing.” “IN sequencing was successful for 227 of 234 participants (97.0%), and PR/RT sequencing was successful for 217 of the 227 with I
+  PDF near HUMAN: [227] ...ingdom Dolutegravir resistance is an increasing concern. An analysis of the DTG RESIST study found that among 227 integrase sequences from 7 African countries (all non-B subtypes), 59 (26.0%) had at least 1 major drug resis...
+
+=== [135] PMID 40431742 QID 5 (Number) - missed by 4/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 1677
+  GPT-6 Astra QSP  1677  ok
+  Kimi K3 QSP      1667  X
+  GPT-4o FT        Samples from 1667 individuals were included in the mutation analysis.  X
+  GPT-4o QSP       1667  X
+  GPT-4o FT+QSP    1667  X
+  Kimi K3 QSP evidence [main_text] (in pdf: NO): A total of 1677 genotypes from PLWHA classified as ART-naïve were recorded... For the mutation analysis, 1667 genotypes were included, as 10 did not have available results. (Abstract: 'Samples from 1667 PLWHA were analyzed.')
+  PDF near HUMAN: [1677] ... the research involved no direct patient contact. 3. Results 3.1. Study Population Characteristics A total of 1677 genotypes from PLWHA classified as ART-naïve were recorded. The demographic, clinical, and immuno-virologica...
+
+=== [140] PMID 40857111 QID 5 (Number) - missed by 5/5 ALL-MODELS-WRONG
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 7 (Uncertain)
+  GPT-6 Astra QSP  241  X
+  Kimi K3 QSP      241  X
+  GPT-4o FT        The paper mentions resistance testing data for 22 participants.  X
+  GPT-4o QSP       208  X
+  GPT-4o FT+QSP    208  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “One hundred and twenty-two participants received DTG+F/TDF in the randomized phase.” “In total, 208 participants received ≥1 dose of B/F/TAF in either phase and had ≥1 on-treatment, postbaseline HIV-1 RNA and HBV DNA result; 119 of these p
+  PDF near HUMAN: (none)
+
+=== [142] PMID 40938120 QID 5 (Number) - missed by 4/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 1048
+  GPT-6 Astra QSP  1260  X
+  Kimi K3 QSP      1,260  X
+  GPT-4o FT        Samples were obtained from 1,260 individuals.  X
+  GPT-4o QSP       1,048  ok
+  GPT-4o FT+QSP    1260  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “In this study, we enrolled 1,260 newly diagnosed HIV-infected individuals.” “Among them, 1,159 pol gene sequences were successfully amplified.” “Venous blood samples (10 mL) were collected from each participant.”
+  PDF near HUMAN: [1048] ...models were employed to identify factors associated with PDR and to cluster the molecular network. A total of 1048 eligible pol sequences were analyzed. The over­ all prevalence of PDR was 8.4%, with non-nucleoside reverse t...
+
+=== [143] PMID 40965168 QID 5 (Number) - missed by 5/5 ALL-MODELS-WRONG
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 0
+  GPT-6 Astra QSP  24  X
+  Kimi K3 QSP      24  X
+  GPT-4o FT        The paper involved 24 patient samples for HIV sequencing.  X
+  GPT-4o QSP       24  X
+  GPT-4o FT+QSP    24  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Twenty-four clinical isolates with non-B or B HIV-1 subtype were assessed for their in vitro susceptibility to LEN and their potential to develop resistance to LEN in viral breakthrough experiments.” “The gag-protease DNA fragment from a t
+  PDF near HUMAN: (none)
+
+=== [144] PMID 40974886 QID 5 (Number) - missed by 4/5 
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 223
+  GPT-6 Astra QSP  Not reported  X
+  Kimi K3 QSP      241  X
+  GPT-4o FT        241 individuals had samples obtained for HIV sequencing.  X
+  GPT-4o QSP       241  X
+  GPT-4o FT+QSP    223  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: NO): "Overall, 241 participants (35 from GS-US-380-4449, 93 from GS-US-380-4030, and 113 from GS-US-380-4580) were included, with genotype reports collected from March 1997 to March 2019." "Overall, from 70 participants (12 from GS-US-380-4449, 
+  PDF near HUMAN: [223] ...ting was the number of times the mutation was detected per number of assays run (2-4 replicates). Results: In 223 participants, of 262 RAMs tracked longitudinally over 2 timepoints, 39 % (103/262) had 100 % detection and 61...
+
+=== [147] PMID 41056006 QID 5 (Number) - missed by 5/5 ALL-MODELS-WRONG
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 10
+  GPT-6 Astra QSP  182  X
+  Kimi K3 QSP      182  X
+  GPT-4o FT        182 participants received at least one dose of study drug, and those who met virologic fai  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    182  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “HIV-1 capsid genotypic and phenotypic data were assessed at study entry using the GenoSure Gag-Pro and PhenoSense Gag-Pro assays (Monogram Biosciences).” “No LEN resistance-associated mutations (RAMs) were detected in baseline samples.” “O
+  PDF near HUMAN: (none)
+
+=== [151] PMID 41130593 QID 5 (Number) - missed by 5/5 ALL-MODELS-WRONG
+Q: How many individuals had samples obtained for HIV sequencing?
+HUMAN: 64
+  GPT-6 Astra QSP  77  X
+  Kimi K3 QSP      77  X
+  GPT-4o FT        Samples were obtained from a total of 54 individuals in the PURPOSE 1 and PURPOSE 2 trials  X
+  GPT-4o QSP       55  X
+  GPT-4o FT+QSP    52  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Non–study drug resistance was detected in 20 of the 60 P1 participants tested for resistance.” “Non–study drug resistance was detected in two of 17 participants from P2 and included the NNRTI resistance-associated substitution K103N (n=2) 
+  PDF near HUMAN: (none)
+
+=== [168] PMID 37541705 QID 6 (List) - missed by 3/5 
+Q: From which countries were the sequenced samples obtained?
+HUMAN: Botswana, South Africa, Thailand, and the U.S.
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Not applicable  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       Botswana, South Africa, Thailand, U.S.  ok
+  GPT-4o FT+QSP    Botswana, South Africa, Thailand, U.S.  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Children with HIV less than 12 years of age and weighing 6 to <40 kg were eligible.” “Participants were recruited from study sites in Botswana, South Africa, Thailand, and the U.S.”
+  PDF near HUMAN: [botswana] ...ospital/Faculty of Associated Medical Sciences, Chiang Mai University, Chiang Mai, Thailand (TR Cressey PhD); Botswana Harvard AIDS Institute Partnership, Gaborone, Botswana (GR Masheto MD); Perinatal HIV Research Unit, Universi...
+
+=== [170] PMID 37593123 QID 6 (List) - missed by 3/5 
+Q: From which countries were the sequenced samples obtained?
+HUMAN: China
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Not applicable  X
+  GPT-4o FT        China  ok
+  GPT-4o QSP       China  ok
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “The primary aim of this broad-scale study was to examine the alterations in HIV-1 subtypes/sub-subtypes and TDR among ART-naïve HIV-infected individuals in China spanning the period 2004 to 2022.” “A total of 57,902 HIV-1 pol gene region s
+  PDF near HUMAN: [china] ...s in HIV-1 Subtypes/Sub-Subtypes, and Transmitted Drug Resistance Among ART-Naïve HIV-Infected Individuals - China, 2004-2022 Xiu Liu1; Dong Wang1; Jing Hu1; Chang Song1; Lingjie Liao1; Yi Feng1; Dan Li1; Hui Xing1; Yuhua Ru...
+
+=== [173] PMID 37701387 QID 6 (List) - missed by 3/5 
+Q: From which countries were the sequenced samples obtained?
+HUMAN: Italy
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Not applicable  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       Italy  ok
+  GPT-4o FT+QSP    Italy  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “Rainbow was a pilot, single-center, single-arm, prospective, phase IV, clinical trial conducted in a tertiary care Italian hospital from the 1st of May 2020 to the 31st of December 2021.” “A total of 440 participants will be recruited from
+  PDF near HUMAN: [italy] ...epartment of Infectious Diseases, National Institute for Infectious Diseases Lazzaro Spallanzani IRCCS, Rome, Italy Article received 25 June 2023, accepted 31 July 2023 Corresponding author Andrea Antinori E-mail: andrea.anti...
+
+=== [174] PMID 37775947 QID 6 (List) - missed by 4/5 
+Q: From which countries were the sequenced samples obtained?
+HUMAN: South America, Africa, USA, Asia, Australia, Europe
+  GPT-6 Astra QSP  Australia; United States. Additional countries in Africa, Asia, Europe, and South America   ok
+  Kimi K3 QSP      Not reported (multi-country study; only regions of enrollment given: Africa, Asia, Austral  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  Kimi K3 QSP evidence [table] (in pdf: NO): Region of enrollment: Africa 139 (10.1%), Asia 85 (6.2%), Australia 45 (3.3%), Europe 596 (43.2%), South America 355 (25.7%), USA 160 (11.6%).
+  PDF near HUMAN: [south] ...4Stanford University, Palo Alto, CA, USA 5North Bristol NHS Trust, UK 6The Kirby Institute, University of New South Wales, Sydney, Australia 7Virus Research and Development Laboratory, Virus and Microbiological Special Diagno...
+
+=== [178] PMID 37957382 QID 6 (List) - missed by 3/5 
+Q: From which countries were the sequenced samples obtained?
+HUMAN: Not reported
+  GPT-6 Astra QSP  United States  X
+  Kimi K3 QSP      United States  X
+  GPT-4o FT        No  ok
+  GPT-4o QSP       Not reported  ok
+  GPT-4o FT+QSP    United States  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “A participant with non-suppressible viremia enrolled in the HIV Eradication and Latency (HEAL) cohort, a biorepository of Brigham and Women’s Hospital, was included as a part of eight NSVs.” “The study was approved by the Mass General Brig
+  PDF near HUMAN: (none)
+
+=== [180] PMID 37973713 QID 6 (List) - missed by 4/5 
+Q: From which countries were the sequenced samples obtained?
+HUMAN: Ukraine, Poland
+  GPT-6 Astra QSP  Poland  X
+  Kimi K3 QSP      Poland  X
+  GPT-4o FT        Poland, Ukraine, Belarus, Georgia, Kazakhstan  ok
+  GPT-4o QSP       Ukraine, Belarus, Georgia, Kazakhstan  X
+  GPT-4o FT+QSP    Poland  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “The site of the recruitment of the cohorts were six clinical centers in Poland (two centers in Warsaw and one center in each city: Olsztyn, Lublin, Łódź and Rzeszów), all in the closest regions to the Polish–Ukrainian border, which cover t
+  PDF near HUMAN: [ukraine] ...shed online: 16 November 2023 © The Author(s) 2023 Abstract In recent years, especially as a result of war in Ukraine, enormous movements of migration to Poland from eastern European countries have been reported, including peop...
+
+=== [184] PMID 38090027 QID 6 (List) - missed by 3/5 
+Q: From which countries were the sequenced samples obtained?
+HUMAN: Italy
+  GPT-6 Astra QSP  Italy  ok
+  Kimi K3 QSP      Italy  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: [italy] ... Antonella Castagna12, Nicola Gianotti 1 1Infectious Diseases Unit, San Raffaele Scientific Institute, Milan, Italy; 2Infectious Diseases Unit, Vita Salute San Raffaele University, Milan, Italy Correspondence: Diana Canetti, ...
+
+=== [187] PMID 38152686 QID 6 (List) - missed by 3/5 
+Q: From which countries were the sequenced samples obtained?
+HUMAN: Not reported
+  GPT-6 Astra QSP  Brazil  X
+  Kimi K3 QSP      Brazil  X
+  GPT-4o FT        No  ok
+  GPT-4o QSP       Not reported  ok
+  GPT-4o FT+QSP    Brazil  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “This case was approved by the Research Ethics Committee of the São José Hospital of Infectious Diseases (HSJ) (CAAE: 61660022.0.0000.5044).” “The authors would like to acknowledge all the residents and staff of the Hospital São José de Doe
+  PDF near HUMAN: (none)
+
+=== [192] PMID 41093949 QID 6 (List) - missed by 3/5 
+Q: From which countries were the sequenced samples obtained?
+HUMAN: Not applicable.
+  GPT-6 Astra QSP  Not applicable  ok
+  Kimi K3 QSP      Not applicable  ok
+  GPT-4o FT        The samples were obtained from China and the United States.  X
+  GPT-4o QSP       China, United States  X
+  GPT-4o FT+QSP    China, United States  X
+  PDF near HUMAN: (none)
+
+=== [196] PMID 35913500 QID 7 (List) - missed by 4/5 
+Q: From what years were the sequenced samples obtained?
+HUMAN: 2021-2022
+  GPT-6 Astra QSP  Not reported  X
+  Kimi K3 QSP      2021–2022  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not applicable  X
+  GPT-4o FT+QSP    Not applicable  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: NO): "Of 51 patients who received injections between June 2021 and April 2022, our analytic sample with at least 2 follow-up injections consisted of 39 patients (Table 1)." "One patient had an N155H resistance mutation at baseline."
+  PDF near HUMAN: [2021] ... criteria were willingness to receive monthly injections and a reliable contact method. Results. Between June 2021 and April 2022, 51 patients initiated LAI-ART, with 39 receiving at least 2 follow-up injections by database ...
+
+=== [199] PMID 36645792 QID 7 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: From what years were the sequenced samples obtained?
+HUMAN: Not reported
+  GPT-6 Astra QSP  2020–2021  X
+  Kimi K3 QSP      2020–2021  X
+  GPT-4o FT        2020-2021  X
+  GPT-4o QSP       2020–2021  X
+  GPT-4o FT+QSP    2020-2021  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “Participants were recruited between 28 August 2020 and 10 November 2021.” “Baseline GART was performed retrospectively for all participants after completion of week 24 visits, on plasma samples stored at enrollment (with results not return
+  PDF near HUMAN: (none)
+
+=== [206] PMID 37541705 QID 7 (List) - missed by 3/5 
+Q: From what years were the sequenced samples obtained?
+HUMAN: 2020-2021
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Not applicable  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       2020–2021  ok
+  GPT-4o FT+QSP    2020–2021  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Participants were enrolled from September 9, 2020 through June 28, 2021.” “The last Week 24 study visit took place on December 14 2021.”
+  PDF near HUMAN: [2020] ...buted to the writing of the manuscript. RESULTS Study Population Participants were enrolled from September 9, 2020 through June 28, 2021. The last Week 24 study visit took place on December 14 2021. Sixty-nine children were ...
+
+=== [210] PMID 37701387 QID 7 (List) - missed by 3/5 
+Q: From what years were the sequenced samples obtained?
+HUMAN: 2020-2021
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Not applicable  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       2020–2021  ok
+  GPT-4o FT+QSP    2020–2021  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “Rainbow was a pilot, single-center, single-arm, prospective, phase IV, clinical trial conducted in a tertiary care Italian hospital from the 1st of May 2020 to the 31st of December 2021.” “The LAPTOP Study is currently still ongoing and th
+  PDF near HUMAN: [2020] ...rm, prospective, phase IV, clinical trial conducted in a tertiary care Italian hos- pital from the 1st of May 2020 to the 31st of Decem- ber 2021. 30 ART-naive participants (Table 1), pre- senting at HIV-1 diagnosis with an ...
+
+=== [223] PMID 41056006 QID 7 (List) - missed by 4/5 
+Q: From what years were the sequenced samples obtained?
+HUMAN: Not provided
+  GPT-6 Astra QSP  2019–2020 (baseline); follow-up sample-collection years not reported  ok
+  Kimi K3 QSP      2019–2020  X
+  GPT-4o FT        The samples were obtained between 22 November 2019 and 27 August 2020.  X
+  GPT-4o QSP       2019–2020  X
+  GPT-4o FT+QSP    2019–2020  X
+  Kimi K3 QSP evidence [main_text] (in pdf: yes): Between 22 November 2019 and 27 August 2020, 183 participants in CALIBRATE were randomly assigned to one of four TGs.
+  PDF near HUMAN: (none)
+
+=== [224] PMID 41093949 QID 7 (List) - missed by 3/5 
+Q: From what years were the sequenced samples obtained?
+HUMAN: Not applicable.
+  GPT-6 Astra QSP  Not applicable  ok
+  Kimi K3 QSP      Not applicable  ok
+  GPT-4o FT        The samples were obtained from 1978 to 2023.  X
+  GPT-4o QSP       1978–2023  X
+  GPT-4o FT+QSP    1978–2023  X
+  PDF near HUMAN: (none)
+
+=== [231] PMID 30053052 QID 8 (Boolean) - missed by 3/5 
+Q: Were samples cloned prior to sequencing?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      Yes  X
+  GPT-4o FT        No  ok
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    No  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Of these, 11 samples did not give any positive clones even after multiple efforts, and 13 were not replication competent.” “This is mainly due to the failure of cloning or non-functional viruses.”
+  PDF near HUMAN: (none)
+
+=== [233] PMID 34516245 QID 8 (Boolean) - missed by 3/5 
+Q: Were samples cloned prior to sequencing?
+HUMAN: Yes
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Not applicable  X
+  GPT-4o FT        Yes  ok
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Yes  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): "Clonal sequencing confirmed the identity of the P0 stock viruses." "A minimum of 20 clones from each sample were sequenced."
+  PDF near HUMAN: (none)
+
+=== [234] PMID 37957382 QID 8 (Boolean) - missed by 5/5 ALL-MODELS-WRONG
+Q: Were samples cloned prior to sequencing?
+HUMAN: Yes
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Not applicable  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       No  X
+  GPT-4o FT+QSP    No  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Extracted DNA was endpoint-diluted and subjected to near full-length sequencing (NFL-seq), as previously described.” “Extracted RNA was diluted to single viral genome levels to meet the criteria of single-genome sequencing of having no mor
+  PDF near HUMAN: (none)
+
+=== [237] PMID 40938996 QID 8 (Boolean) - missed by 4/5 
+Q: Were samples cloned prior to sequencing?
+HUMAN: Yes  
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Not applicable  X
+  GPT-4o FT        Yes  ok
+  GPT-4o QSP       No  X
+  GPT-4o FT+QSP    Not applicable  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: NO): “The full-length HIV-1 molecular clones pNL4-3 (87), pCH185 (88), and pCH077 (89) were used in this study.” “The PCR amplicon was purified and cloned into pCR-Blunt II-TOPO vector (Thermo Fisher Scientific) per the manufacturer’s instructio
+  PDF near HUMAN: (none)
+
+=== [238] PMID 41088231 QID 8 (Boolean) - missed by 5/5 ALL-MODELS-WRONG
+Q: Were samples cloned prior to sequencing?
+HUMAN: Yes
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Not applicable  X
+  GPT-4o FT        No, samples were not cloned prior to sequencing.  X
+  GPT-4o QSP       No  X
+  GPT-4o FT+QSP    No  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Two overlapping halves of the HIV-1 genome were subsequently amplified by nested polymerase chain reaction (PCR) by utilizing LA Taq (TaKaRa, China) with a near endpoint dilution method as described previously [19].” “Whether L74I in CRF02
+  PDF near HUMAN: (none)
+
+=== [240] PMID 41130593 QID 8 (Boolean) - missed by 5/5 ALL-MODELS-WRONG
+Q: Were samples cloned prior to sequencing?
+HUMAN: Yes (single genome)
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Not applicable  X
+  GPT-4o FT        No, samples were not cloned prior to sequencing.  X
+  GPT-4o QSP       No  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Phenotyping of the clinical isolates in the PURPOSE trials was not attempted; no susceptibility data were available.” “Genotypic CA resistance testing at Monogram was conducted using a next-generation sequencing platform (MiSeq; Illumina),
+  PDF near HUMAN: [single] ...ved samples for incident HIV-1 cases to determine the earliest date with evidence of HIV-1 acquisition. HIV-1 single-copy assay (SCA) testing was performed retrospectively on the Hologic Panther platform using a multiple repli...
+
+=== [242] PMID 21115794 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: IN
+  GPT-6 Astra QSP  PR, RT, IN  ok
+  Kimi K3 QSP      IN, RT  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: (none)
+
+=== [243] PMID 23749954 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: RT
+  GPT-6 Astra QSP  RT  ok
+  Kimi K3 QSP      RT  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: (none)
+
+=== [247] PMID 26311878 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: Not reported
+  GPT-6 Astra QSP  IN  X
+  Kimi K3 QSP      IN  X
+  GPT-4o FT        No  ok
+  GPT-4o QSP       Not reported  ok
+  GPT-4o FT+QSP    IN  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): "All plasmids were verified by sequencing." "The PCR products were then sequenced to detect the emergence of drug resistance mutations."
+  PDF near HUMAN: (none)
+
+=== [249] PMID 27124362 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: Not reported
+  GPT-6 Astra QSP  RT  X
+  Kimi K3 QSP      RT  X
+  GPT-4o FT        No  ok
+  GPT-4o QSP       RT  X
+  GPT-4o FT+QSP    Not applicable  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): "NNRTI resistant mutations in HIV-1 RT are described in supplemental information." "Using a single round HIV-1 infection assay, we tested RPV and DOR against a broad panel of NNRTI resistant mutants to determine their respective activities.
+  PDF near HUMAN: (none)
+
+=== [251] PMID 30803972 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: Not reported
+  GPT-6 Astra QSP  IN  X
+  Kimi K3 QSP      IN  X
+  GPT-4o FT        IN  X
+  GPT-4o QSP       Not reported  ok
+  GPT-4o FT+QSP    Not reported  ok
+  GPT-6 Astra QSP evidence [table] (in pdf: yes): “Wild type indicates virus stocks produced from the parental (nonmutated) copies of pNL4-3 and pROD9.” “The integrase-encoding region of each plasmid clone was confirmed by automated Sanger DNA sequencing.”
+  PDF near HUMAN: (none)
+
+=== [255] PMID 35913500 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: RT, IN
+  GPT-6 Astra QSP  RT, IN  ok
+  Kimi K3 QSP      RT, IN  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not applicable  X
+  GPT-4o FT+QSP    Not applicable  X
+  PDF near HUMAN: (none)
+
+=== [259] PMID 36659824 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: RT, IN
+  GPT-6 Astra QSP  RT, IN  ok
+  Kimi K3 QSP      RT, IN  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: (none)
+
+=== [261] PMID 36706364 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: RT, IN
+  GPT-6 Astra QSP  RT, IN  ok
+  Kimi K3 QSP      RT, IN  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    None  X
+  PDF near HUMAN: (none)
+
+=== [263] PMID 36967989 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: PR
+  GPT-6 Astra QSP  PR  ok
+  Kimi K3 QSP      PR  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       None  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: (none)
+
+=== [266] PMID 37039023 QID 9 (List) - missed by 4/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: NFLG
+  GPT-6 Astra QSP  PR, RT, IN, Env  X
+  Kimi K3 QSP      PR, RT, IN, Env  X
+  GPT-4o FT        Near full length genome  ok
+  GPT-4o QSP       PR, RT, IN, Env  X
+  GPT-4o FT+QSP    PR, RT, IN, Env  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Protease, reverse transcriptase, integrase and envelope regions are known to harbour antiretroviral resistance mutations, and all 86 study samples had at least one of these regions analysed.” “Seventy-two (83.7%) of them had all four regio
+  PDF near HUMAN: [nflg] ...f successful ART. Objectives: This study analysed the genetic composition of the HIV near full-length genome (NFLG) from ar­ chived proviruses of PLWH under successful ART, and determined the presence/frequency of drug resis...
+
+=== [267] PMID 37071019 QID 9 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: Not reported
+  GPT-6 Astra QSP  IN  X
+  Kimi K3 QSP      IN  X
+  GPT-4o FT        IN  X
+  GPT-4o QSP       IN  X
+  GPT-4o FT+QSP    IN  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): "Proper site-directed mutagenesis was validated by Sanger sequencing." "The pNL4.3-INBG118R and pNL4.3-INBR263K plasmids have been described elsewhere (14)."
+  PDF near HUMAN: (none)
+
+=== [269] PMID 37340869 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: RT
+  GPT-6 Astra QSP  RT, IN  ok
+  Kimi K3 QSP      RT, IN  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: (none)
+
+=== [270] PMID 37498738 QID 9 (List) - missed by 4/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: NFLG
+  GPT-6 Astra QSP  PR; RT; IN; CA; Env  X
+  Kimi K3 QSP      PR, RT, IN, Env  X
+  GPT-4o FT        Near full length genome  ok
+  GPT-4o QSP       Gag, Pol, Env  X
+  GPT-4o FT+QSP    Gag, Pol, Env  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Average pairwise diversity was calculated and longitudinally assessed for the 3 main genomic regions, for 139 (85%) samples for gag, 147 (90%) for pol, and 123 (75%) for env, as other samples contained deletions in the respective genes.” “
+  PDF near HUMAN: (none)
+
+=== [271] PMID 37541705 QID 9 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: RT
+  GPT-6 Astra QSP  Not reported  X
+  Kimi K3 QSP      Not applicable  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “All 51 ART-experienced participants, including the four with a known M184V mutation, maintained suppression (<200 copies per mL) through 24 weeks.” “Full treatment histories were not collected prior to entry; thus, there is a possibility o
+  PDF near HUMAN: (none)
+
+=== [272] PMID 37554471 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: RT
+  GPT-6 Astra QSP  PR, RT, IN  ok
+  Kimi K3 QSP      PR, RT, IN  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       None  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: (none)
+
+=== [276] PMID 37823653 QID 9 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: NFLG, Envelope
+  GPT-6 Astra QSP  Env  X
+  Kimi K3 QSP      Env  X
+  GPT-4o FT        Near full length genome  X
+  GPT-4o QSP       Env  X
+  GPT-4o FT+QSP    Env  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “This is a retrospective cross-sectional study utilizing already generated 6,078 HIV-1C sequences covering the entire gp120.” “We used Gene cutter tool (https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html) to extract the gp120
+  PDF near HUMAN: [envelope] ...variants with drug resistance mutations to currently used ARVs. Using 6030 HIV-1 sequences covering the HIV-1 envelope from PWH in Botswana who are antiretroviral therapy (ART) naïve as well as those who are failing ART, we exp...
+
+=== [280] PMID 37957382 QID 9 (List) - missed by 4/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: Full genome, NFLG
+  GPT-6 Astra QSP  PR, RT, IN, CA, Env  X
+  Kimi K3 QSP      Pol, PR, RT, IN, CA, Env  X
+  GPT-4o FT        Near full length genome  ok
+  GPT-4o QSP       Pol, Env  X
+  GPT-4o FT+QSP    Pol, Env  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Longitudinal single-genome sequencing of near-full-length proviruses and plasma HIV-1 pol-env RNA was performed.” “Plasma HIV-1 RNA sequencing of the 5′ leader/gag region of HIV-1 was performed to confirm the presence of these 5′ defects w
+  PDF near HUMAN: [full] ...rug Received: 7 March 2023 Accepted: 25 September 2023 Published online: 13 November 2023 Check for updates A full list of affiliations appears at the end of the paper. e-mail: jli@bwh.harvard.edu Nature Medicine | Volume 29...
+
+=== [282] PMID 38005921 QID 9 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: Not reported
+  GPT-6 Astra QSP  PR, RT  X
+  Kimi K3 QSP      PR, RT  X
+  GPT-4o FT        PR, RT  X
+  GPT-4o QSP       PR, RT  X
+  GPT-4o FT+QSP    PR, RT  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Both multi-n-grams and k-mers were computed based on the amino acid sequences of HIV enzymes: reverse transcriptase and protease.” “The amino acid sequences of 99 residues for HIV protease and 240 residues for reverse transcriptase were us
+  PDF near HUMAN: (none)
+
+=== [284] PMID 38058846 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: PR, RT, IN
+  GPT-6 Astra QSP  PR, RT, IN  ok
+  Kimi K3 QSP      PR, RT, IN  ok
+  GPT-4o FT        IN  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    IN  X
+  PDF near HUMAN: (none)
+
+=== [285] PMID 38090027 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: RT, IN
+  GPT-6 Astra QSP  PR, RT, IN  ok
+  Kimi K3 QSP      PR, RT, IN  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: (none)
+
+=== [288] PMID 38427738 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: Gag, Pol, Env, Nef, vpu
+  GPT-6 Astra QSP  PR, RT, IN, CA, Env  X
+  Kimi K3 QSP      Pol, CA, Env  X
+  GPT-4o FT        Gag, Pol, Env, Vpu  ok
+  GPT-4o QSP       Pol, Env  X
+  GPT-4o FT+QSP    Pol, Env, Nef  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “To identify the genetic changes in the viral genome responsible for DTG resistance, we extracted genomic DNA from the infected cells at a number of time points and performed sequencing analysis of gag, pol, env, and vpu.” “We did not ident
+  PDF near HUMAN: [gag] ...some PLWH experience virological failure in the absence of mutations in the target genes (7-11). Mutations in Gag and the envelope glycoprotein (Env) have been implicated in PI resist­ ance (12, 13). In vitro studies have r...
+
+=== [294] PMID 40938996 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: RT, IN, NC, Env
+  GPT-6 Astra QSP  PR, RT, IN, CA, Env  X
+  Kimi K3 QSP      CA (Gag/NC), PR, RT, IN, Env  ok
+  GPT-4o FT        Env, NC, IN  ok
+  GPT-4o QSP       NC, IN  X
+  GPT-4o FT+QSP    Not applicable  X
+  GPT-6 Astra QSP evidence [figure] (in pdf: partial): “At the time points indicated by the arrows, genomic DNA was extracted from the drug-treated cultures, and the Gag-Pol and Env-Nef coding regions were sequenced.” “Mutations detected at frequencies greater than 25% in the bulk sequencing ar
+  PDF near HUMAN: [env] ...tegration. We find that in primary peripheral blood mononuclear cells, HIV-­1 acquires mutations in the viral envelope glycoprotein, NC, and occasionally IN during selection for INSTI resistance. Notably, the selected NC an...
+
+=== [296] PMID 41004608 QID 9 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: Whole genome
+  GPT-6 Astra QSP  PR, RT, IN, CA, Env  X
+  Kimi K3 QSP      PR, RT, IN, Env  X
+  GPT-4o FT        The paper reports sequencing of the entire HIV genome, including nonintegrase genes.  X
+  GPT-4o QSP       Env, NC  X
+  GPT-4o FT+QSP    Env, NC  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “The complete genomic sequencing of HIV was performed using a previously described sequence capture method and the short read data were assembled into consensus whole genomes using Genomancer, an in-house viral genome assembly pipeline [20]
+  PDF near HUMAN: [whole] ...T) have been identified in vitro. Methods. Between 2015 and 2021, human immunodeficiency virus type 1 (HIV-1) whole genome sequencing was performed on samples from people with recently acquired HIV-1 in the United Kingdom. Se...
+
+=== [297] PMID 41012586 QID 9 (List) - missed by 3/5 
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: PR, RT, IN (presumably)
+  GPT-6 Astra QSP  PR, RT, IN  ok
+  Kimi K3 QSP      PR, RT, IN  ok
+  GPT-4o FT        The paper does not report sequencing of specific HIV genes.  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: (none)
+
+=== [300] PMID 41088231 QID 9 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: Which HIV genes were reported to have been sequenced?
+HUMAN: Whole genome
+  GPT-6 Astra QSP  PR, RT, IN, CA, Env  X
+  Kimi K3 QSP      PR, RT, IN, Env  X
+  GPT-4o FT        The sequenced genes include the near full-length genome (NFLG), specifically mentioning re  X
+  GPT-4o QSP       Pol, Env  X
+  GPT-4o FT+QSP    Pol  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: NO): “The NFLG sequence of 230794, which was 8260 nucleotides (nt) in length, was obtained and submitted to GenBank (accession number PV187006).” “The HIVdb program from the Stanford HIV Drug Resistance Database (https://hivdb.stanford.edu/hivdb
+  PDF near HUMAN: [whole] .... RNA was reverse transcribed to cDNA using the SuperScript III Sys­ tem. Proviral DNA was extracted from the whole-blood sample collected in 2025 with the Viral DNA Extrac­ tion Kit (Supbio, China). Two overlapping halves of...
+
+=== [308] PMID 36454248 QID 10 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: What method was used for sequencing?
+HUMAN: Not reported
+  GPT-6 Astra QSP  Sanger sequencing  X
+  Kimi K3 QSP      Sanger sequencing  X
+  GPT-4o FT        Sanger sequencing  X
+  GPT-4o QSP       Sanger sequencing  X
+  GPT-4o FT+QSP    Sanger sequencing  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “PCR amplicons were purified with illustraTM ExoProStarTM (Cytiva) and sequenced by Macrogen Inc.” “Lasergene software was used to assemble and manually edit the sequences.”
+  PDF near HUMAN: (none)
+
+=== [315] PMID 37498738 QID 10 (List) - missed by 4/5 
+Q: What method was used for sequencing?
+HUMAN: Sanger sequencing, Illumina sequencing
+  GPT-6 Astra QSP  NGS; Sanger sequencing  ok
+  Kimi K3 QSP      NGS  X
+  GPT-4o FT        NGS  X
+  GPT-4o QSP       NGS  X
+  GPT-4o FT+QSP    NGS  X
+  Kimi K3 QSP evidence [main_text] (in pdf: NO): For each sample, the PCR approach with a positive result was used for next-generation sequencing (NGS). ... Majority consensus sequences assembly from NGS reads was done with SmaltAlign.
+  PDF near HUMAN: [sanger] ...t threshold of 15% [45]. Transmitted DRMs were present in 19% (n = 8) of all 43 partic­ ipants as detected by Sanger sequencing in genotypic resistance test from initial plasma before undergoing cART. All transmit­ ted DRMs we...
+
+=== [342] PMID 36571282 QID 11 (List) - missed by 3/5 
+Q: What type of samples were sequenced?
+HUMAN: Plasma
+  GPT-6 Astra QSP  Plasma  ok
+  Kimi K3 QSP      Plasma  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: (none)
+
+=== [343] PMID 36659824 QID 11 (List) - missed by 3/5 
+Q: What type of samples were sequenced?
+HUMAN: Not reported
+  GPT-6 Astra QSP  Plasma  X
+  Kimi K3 QSP      Plasma  X
+  GPT-4o FT        No  ok
+  GPT-4o QSP       Not reported  ok
+  GPT-4o FT+QSP    Plasma  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “At the baseline visit, samples were collected for routine testing, confirmation of HIV serology and HIV resistance genotyping.” “In such cases, National French Guidelines also recommended performance of a resistance genotypic test and dete
+  PDF near HUMAN: (none)
+
+=== [344] PMID 36660819 QID 11 (List) - missed by 3/5 
+Q: What type of samples were sequenced?
+HUMAN: Not reported
+  GPT-6 Astra QSP  Plasma, PBMC  X
+  Kimi K3 QSP      Plasma; PBMC  X
+  GPT-4o FT        PBMC  X
+  GPT-4o QSP       Not applicable  ok
+  GPT-4o FT+QSP    Not applicable  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “The additional participant who had non–protocol-defined virologic failure at week 48 (Q8W) had no RAMs to RPV or INSTIs present from baseline peripheral blood mononuclear cells; the RPV RAM E138K and the integrase inhibitor mutation S230S/
+  PDF near HUMAN: (none)
+
+=== [347] PMID 36779485 QID 11 (List) - missed by 3/5 
+Q: What type of samples were sequenced?
+HUMAN: Plasma
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Plasma  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Plasma  ok
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Genotypic sequence data from 277 patients initiating ART and 1372 patients experiencing NNRTI-treatment failure were included for analysis as previously described [7].” “We acknowledge that our resistance data are not obtained from patient
+  PDF near HUMAN: (none)
+
+=== [352] PMID 37104815 QID 11 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: What type of samples were sequenced?
+HUMAN: Whole Blood, Semen
+  GPT-6 Astra QSP  Plasma; PBMC  X
+  Kimi K3 QSP      Plasma, PBMC  X
+  GPT-4o FT        Plasma; PBMC  X
+  GPT-4o QSP       Plasma  X
+  GPT-4o FT+QSP    Plasma, Blood  X
+  GPT-6 Astra QSP evidence [table] (in pdf: yes): “Description of resistance in 10 VFs at baseline and at failure” “RAM to current treatment at baseline in PBMCs” “RAM to current treatment at failure in PBMCs and plasma”
+  PDF near HUMAN: [blood] ...mutations to current ART (cART) were randomly assigned (1:1), with stratification by third agent class. Total blood samples for HIV DNA VL measurements and semen samples for seminal plasma VL evaluations were collected at D0 ...
+
+=== [353] PMID 37279764 QID 11 (List) - missed by 4/5 
+Q: What type of samples were sequenced?
+HUMAN: Not reported
+  GPT-6 Astra QSP  Plasma  X
+  Kimi K3 QSP      Plasma  X
+  GPT-4o FT        Plasma  X
+  GPT-4o QSP       Blood  X
+  GPT-4o FT+QSP    Not reported  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “In this study, we collected the blood samples and demographic data of newly diagnosed patients enrolled at Shenzhen from January 2011 to December 2019.” “All individuals were treatment naive at enrolment.”
+  PDF near HUMAN: (none)
+
+=== [354] PMID 37340869 QID 11 (List) - missed by 3/5 
+Q: What type of samples were sequenced?
+HUMAN: Not reported
+  GPT-6 Astra QSP  Plasma, PBMC  X
+  Kimi K3 QSP      Plasma, PBMC  X
+  GPT-4o FT        No  ok
+  GPT-4o QSP       Not reported  ok
+  GPT-4o FT+QSP    Plasma  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “Historical genotypic evidence of any major INSTI or NNRTI RAMs, excluding K103N in plasma, was exclusionary per the 2015 (FLAIR and ATLAS) and 2019 (ATLAS-2M) International Antiviral Society-USA (IAS-USA) guidelines (Supplementary Table 1)
+  PDF near HUMAN: (none)
+
+=== [355] PMID 37376649 QID 11 (List) - missed by 4/5 
+Q: What type of samples were sequenced?
+HUMAN: PBMC
+  GPT-6 Astra QSP  Whole blood; PBMC  ok
+  Kimi K3 QSP      Whole blood  X
+  GPT-4o FT        Whole Blood  X
+  GPT-4o QSP       Whole blood  X
+  GPT-4o FT+QSP    Whole blood  X
+  Kimi K3 QSP evidence [main_text] (in pdf: NO): Participants' baseline whole blood samples were used for the GenoSure Archive assay.
+  PDF near HUMAN: [pbmc] ....; Di Carlo, D.; Giannetti, A.; Forbici, F.; Bertoli, A.; Gori, C.; Fabeni, L.; et al. Resistance detected in PBMCs predicts virological rebound in HIV-1 suppressed patients switching treatment. J. Clin. Virol. 2018, 104, 61...
+
+=== [360] PMID 37593123 QID 11 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: What type of samples were sequenced?
+HUMAN: Plasma
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Not applicable  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “These sequences were procured from both the National Center for AIDS/STD Control and Prevention, China CDC and the HIV sequence databases of the Los Alamos National Laboratory (https://www.hiv.lanl.gov/, retrieved December 30, 2022).” “Dat
+  PDF near HUMAN: (none)
+
+=== [365] PMID 37938856 QID 11 (List) - missed by 4/5 
+Q: What type of samples were sequenced?
+HUMAN: Not reported
+  GPT-6 Astra QSP  Plasma  X
+  Kimi K3 QSP      Plasma  X
+  GPT-4o FT        No  ok
+  GPT-4o QSP       Plasma  X
+  GPT-4o FT+QSP    Plasma  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “HIV DRM testing was performed at the two accredited centralized laboratories in Kenya using Sanger sequencing for participants in the intervention group with VL ≥ 1000 copies/ml.” “In the intervention group, from enrolment up until 6 month
+  PDF near HUMAN: (none)
+
+=== [366] PMID 37957382 QID 11 (List) - missed by 3/5 
+Q: What type of samples were sequenced?
+HUMAN: Plasma, PBMC
+  GPT-6 Astra QSP  Plasma, PBMC  ok
+  Kimi K3 QSP      Plasma, PBMC  ok
+  GPT-4o FT        Plasma  X
+  GPT-4o QSP       Plasma  X
+  GPT-4o FT+QSP    Plasma  X
+  PDF near HUMAN: [plasma] .... Unraveling the mechanisms behind NSV would broaden our understanding of HIV-1 persistence. Here we analyzed plasma virus sequences in eight ART-treated individuals with NSV (88% male) and show that they are composed of large...
+
+=== [368] PMID 38058846 QID 11 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: What type of samples were sequenced?
+HUMAN: Not reported
+  GPT-6 Astra QSP  Plasma  X
+  Kimi K3 QSP      Plasma  X
+  GPT-4o FT        Plasma  X
+  GPT-4o QSP       Plasma  X
+  GPT-4o FT+QSP    Clinical samples  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): "Despite this, repeat VLs remained > 1000 copies/mm3." "At 22 weeks’ gestation, after 17 months on a DTG-based regimen, HIV drug resistance testing confirmed high-level DTG resistance (Table 1)."
+  PDF near HUMAN: (none)
+
+=== [373] PMID 38314093 QID 11 (List) - missed by 3/5 
+Q: What type of samples were sequenced?
+HUMAN: Serum
+  GPT-6 Astra QSP  Plasma  X
+  Kimi K3 QSP      Plasma (serum)  ok
+  GPT-4o FT        Plasma  X
+  GPT-4o QSP       Blood  X
+  GPT-4o FT+QSP    Serum  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “To elucidate the HIV-1 genotype drug resistance characteristics in HIV-infected people of Meizhou, serum samples from 37 untreated patients [29 men (78%); 8 women (22%)] obtained from Meizhou People’s Hospital were included.” “In brief, cD
+  PDF near HUMAN: [serum] ...ere found to be in the middle to late stages of infection based on CD4+ T cell counts. Among the 30 different serum antibody profiles examined, reactivity with seven bands (p24, p31, gp41, p51, p66, gp120, and gp160) emerged ...
+
+=== [376] PMID 40779404 QID 11 (List) - missed by 3/5 
+Q: What type of samples were sequenced?
+HUMAN: PBMC
+  GPT-6 Astra QSP  Whole blood, PBMC  ok
+  Kimi K3 QSP      Whole blood (proviral DNA); specimen type for historical RNA genotypes not reported  ok
+  GPT-4o FT        The paper mentions that whole blood samples were used for sequencing.  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Whole blood  X
+  PDF near HUMAN: [pbmc] ... been shown to provide decreased systemic exposure and subsequent high intracellular concentrations of TFV in PBMCs compared with TFV disoproxil fumarate (TDF), 31 and another being the high barrier to resistance provided by...
+
+=== [379] PMID 40965168 QID 11 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: What type of samples were sequenced?
+HUMAN: Not applicable
+  GPT-6 Astra QSP  Plasma  X
+  Kimi K3 QSP      Plasma  X
+  GPT-4o FT        The paper sequenced viral supernatants obtained from patient isolates.  X
+  GPT-4o QSP       Plasma  X
+  GPT-4o FT+QSP    Plasma  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “Patient plasma samples were obtained from studies GS-US-380-1490, GS-US-292-0104, GS-US-200-4334, and GS-US-200-4625.” “The plasma samples were from participants who were treatment naive to the capsid inhibitor class, had diverse HIV-1 sub
+  PDF near HUMAN: (none)
+
+=== [380] PMID 40974886 QID 11 (List) - missed by 3/5 
+Q: What type of samples were sequenced?
+HUMAN: PBMC (Whole blood OK)
+  GPT-6 Astra QSP  Plasma; PBMC; Whole blood  ok
+  Kimi K3 QSP      Whole blood, Plasma  X
+  GPT-4o FT        Whole blood and proviral DNA samples were sequenced.  ok
+  GPT-4o QSP       Whole blood  X
+  GPT-4o FT+QSP    Whole blood  X
+  Kimi K3 QSP evidence [main_text] (in pdf: yes): Retrospective proviral DNA genotyping of PR/RT/IN using GenoSure Archive (Monogram Biosciences, CA, USA) was performed on baseline whole blood samples and a subset of Week 24 samples. Participants had a median of 3 reports, most commonly RN
+  PDF near HUMAN: [pbmc] ...] D. Armenia, M. Zaccarelli, V. Borghi, W. Gennari, D. Di Carlo, A. Giannetti, et al., Resistance detected in PBMCs predicts virological rebound in HIV-1 suppressed patients switching treatment, J. Clin. Virol. 104 (2018) 61...
+
+=== [382] PMID 41012586 QID 11 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: What type of samples were sequenced?
+HUMAN: Plasma (presumably)
+  GPT-6 Astra QSP  Plasma  X
+  Kimi K3 QSP      Not reported  X
+  GPT-4o FT        The paper does not specify the type of samples sequenced.  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): "At baseline, the 4DR-PWHs in virological suppression (viremia < 50 copies/mL) were 23 (9.2%)." "Among the 249 PWH included in the study, 62 had no documented INSTI resistance but experienced virological failure while on an INSTI-based regi
+  PDF near HUMAN: (none)
+
+=== [388] PMID 35913500 QID 12 (Boolean) - missed by 3/5 
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN: Yes
+  GPT-6 Astra QSP  Yes  ok
+  Kimi K3 QSP      Yes  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       No  X
+  GPT-4o FT+QSP    No  X
+  PDF near HUMAN: (none)
+
+=== [395] PMID 36851704 QID 12 (Boolean) - missed by 5/5 ALL-MODELS-WRONG
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      Yes  X
+  GPT-4o FT        Yes  X
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Yes  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “All individuals enrolled in the study had an HIV viral load >1000 copies/mL.” “Prior ART for the treatment of HIV infection followed by treatment interruption of >3 months was the most commonly reported type of previous ARV drug exposure (
+  PDF near HUMAN: (none)
+
+=== [396] PMID 36931676 QID 12 (Boolean) - missed by 3/5 
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN: Yes
+  GPT-6 Astra QSP  Not applicable  X
+  Kimi K3 QSP      Yes  ok
+  GPT-4o FT        Yes  ok
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    No  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “Sönnerborg et al have also studied HIV drug resistance, both transmitted and acquired, and the molecular HIV epidemiology.” “Among several key findings, an increase of transmitted drug resistance in the InfCareHIV cohort was reported.”
+  PDF near HUMAN: (none)
+
+=== [404] PMID 37515095 QID 12 (Boolean) - missed by 4/5 
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      Yes  X
+  GPT-4o FT        Yes  X
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Not reported  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “The median time since HIV diagnosis was 8 years (range 1–22 years), the median time of ART was 4 years (range 0–15 years, with 7 individuals not undergoing ART), and the median time between diagnosis and ART initiation was 2 years (range 0
+  PDF near HUMAN: (none)
+
+=== [405] PMID 37537871 QID 12 (Boolean) - missed by 3/5 
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN: Yes
+  GPT-6 Astra QSP  Not reported  X
+  Kimi K3 QSP      Not reported  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       Yes  ok
+  GPT-4o FT+QSP    Yes  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “Notably, 2 cases harbored quasispecies with more than one class of DRMs, which could potentially lead to virological failure of first-line ARV therapy.” “Treatment modifications were recommended for these cases.” “However, both patients we
+  PDF near HUMAN: (none)
+
+=== [417] PMID 38140667 QID 12 (Boolean) - missed by 3/5 
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN: No
+  GPT-6 Astra QSP  Not applicable  ok
+  Kimi K3 QSP      Not applicable  ok
+  GPT-4o FT        Yes  X
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Yes  X
+  PDF near HUMAN: (none)
+
+=== [418] PMID 40400229 QID 12 (Boolean) - missed by 4/5 
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN: Yes (PrEP)
+  GPT-6 Astra QSP  No  X
+  Kimi K3 QSP      No  X
+  GPT-4o FT        Yes, the paper indicates that there were participants who experienced virological failure.  ok
+  GPT-4o QSP       No  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: NO): “A total of 54 out of 24 268 participants were newly diagnosed with HIV; 11 of the 54 were at baseline.” “Information on the first antiretroviral regimen started after HIV diagnosis was available for 33 of the 43 participants who seroconver
+  PDF near HUMAN: [prep] ...S H O R T C O M M U N I C A T I O N HIV seroconversions and genotypic viral resistance profiles in the PrEP impact trial Andrea Cartier1 | Ana Milinkovic12 | Lisa Goodall3 | Borja Mora-Peris24 | Dana Ogaz5 | Adrian Pa...
+
+=== [421] PMID 40974886 QID 12 (Boolean) - missed by 3/5 
+Q: Were any sequences obtained from individuals with virological failure on a treatment regimen?
+HUMAN: Yes
+  GPT-6 Astra QSP  Yes  ok
+  Kimi K3 QSP      Yes  ok
+  GPT-4o FT        No, the study included individuals without prior virological failure.  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    No  X
+  PDF near HUMAN: (none)
+
+=== [435] PMID 37973713 QID 13 (Boolean) - missed by 3/5 
+Q: Were the patients in the study in a clinical trial?
+HUMAN: Yes
+  GPT-6 Astra QSP  No  X
+  Kimi K3 QSP      No  X
+  GPT-4o FT        Yes  ok
+  GPT-4o QSP       Yes  ok
+  GPT-4o FT+QSP    No  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “We have conducted multi-center, prospective, observational, cross sectional study.” “The clinical trial received a positive opinion from the Bioethics Committee at the Medical University of Warsaw (Number of consent: AKBE/206/2020) and was
+  PDF near HUMAN: (none)
+
+=== [436] PMID 40400229 QID 13 (Boolean) - missed by 5/5 ALL-MODELS-WRONG
+Q: Were the patients in the study in a clinical trial?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      Yes  X
+  GPT-4o FT        Yes, the patients were part of the PrEP Impact trial.  X
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Yes  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “The PrEP Impact trial was a prospective, open-label, single-arm, multicentre trial conducted at 157 Sexual Health Services (SHS) across England between Oct 13, 2017, and July 12, 2020.” “Eligible participants were aged 16 years or older, c
+  PDF near HUMAN: (none)
+
+=== [437] PMID 40431710 QID 13 (Boolean) - missed by 3/5 
+Q: Were the patients in the study in a clinical trial?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      No  ok
+  GPT-4o FT        Yes, the patient was enrolled in the Swiss HIV Cohort Study and participated in the TMC-12  X
+  GPT-4o QSP       No  ok
+  GPT-4o FT+QSP    Yes  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “In 2003, in the context of the TMC-125 trial, ART was switched to didanosine (ddI), abacavir (ABC), tenofovir disoproxil (TDF), lopinavir/ritonavir (LPV/r), and etravirine (ETR).” “A DNA-based genotypic resistance assay on proviral DNA in 
+  PDF near HUMAN: (none)
+
+=== [438] PMID 40965168 QID 13 (Boolean) - missed by 5/5 ALL-MODELS-WRONG
+Q: Were the patients in the study in a clinical trial?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      Yes  X
+  GPT-4o FT        Yes, the paper mentions that the patient plasma samples were obtained from clinical studie  X
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Yes  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: NO): “Patient plasma samples were obtained from studies GS-US-380-1490, GS-US-292-0104, GS-US-200-4334, and GS-US-200-4625.” “HIV-1 subtype determination was based on the baseline protease/reverse transcriptase sequence of the participants that 
+  PDF near HUMAN: (none)
+
+=== [445] PMID 35913500 QID 14 (Boolean) - missed by 3/5 
+Q: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+HUMAN: Yes
+  GPT-6 Astra QSP  Yes  ok
+  Kimi K3 QSP      Yes  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       No  X
+  GPT-4o FT+QSP    Not applicable  X
+  PDF near HUMAN: (none)
+
+=== [448] PMID 36659824 QID 14 (Boolean) - missed by 3/5 
+Q: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+HUMAN: Yes
+  GPT-6 Astra QSP  Yes  ok
+  Kimi K3 QSP      Yes  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       No  X
+  GPT-4o FT+QSP    No  X
+  PDF near HUMAN: (none)
+
+=== [456] PMID 37272233 QID 14 (Boolean) - missed by 5/5 ALL-MODELS-WRONG
+Q: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      Yes  X
+  GPT-4o FT        Yes  X
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Yes  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “ART was administered to 6 patients within 12 days before testing for ARV- resistance mutations, and ART resistance was not detected in them.” “The first test results from each patient were collected, and the enrolled patients were then div
+  PDF near HUMAN: (none)
+
+=== [462] PMID 37537871 QID 14 (Boolean) - missed by 4/5 
+Q: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+HUMAN: Yes
+  GPT-6 Astra QSP  No  X
+  Kimi K3 QSP      Not reported  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       Unknown  X
+  GPT-4o FT+QSP    Yes  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “A total of 77 plasma samples, collected from 70 male and 7 female patients ages 18 to 68, were obtained from the Queen Mary Hospital in Hong Kong between 2002 and 2014 (Supplemental Table 1).” “Treatment modifications were recommended for 
+  PDF near HUMAN: (none)
+
+=== [466] PMID 37755428 QID 14 (Boolean) - missed by 4/5 
+Q: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+HUMAN: No
+  GPT-6 Astra QSP  Yes  X
+  Kimi K3 QSP      Yes  X
+  GPT-4o FT        Yes  X
+  GPT-4o QSP       No  ok
+  GPT-4o FT+QSP    Yes  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “The mean age of the infants was 8.2 months [95% confidence interval (CI) 7.3–9.2], and the majority (62.7%, 95% CI 54.3–70.3%) had experienced exposure to antiretroviral drugs for PMTCT.” “This infant was first diagnosed with HIV at 14 mon
+  PDF near HUMAN: (none)
+
+=== [473] PMID 38140667 QID 14 (Boolean) - missed by 3/5 
+Q: Does the paper report HIV sequences from individuals who had previously received ARV drugs?
+HUMAN: No
+  GPT-6 Astra QSP  No  ok
+  Kimi K3 QSP      No  ok
+  GPT-4o FT        Yes  X
+  GPT-4o QSP       Yes  X
+  GPT-4o FT+QSP    Yes  X
+  PDF near HUMAN: (none)
+
+=== [488] PMID 35730213 QID 15 (List) - missed by 4/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: NRTI, NNRTI, INSTI
+  GPT-6 Astra QSP  None  X
+  Kimi K3 QSP      None  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       NRTIs, NNRTIs  ok
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “We included adults enrolled at Butha-Buthe Government Hospital who transitioned from tenofovir disoproxil fumarate (TDF)/lamivudine (3TC)/EFV to TDF/3TC/DTG within first-line ART from 10 February until 15 December 2020.” “In this study wit
+  PDF near HUMAN: [insti] ...chumi13 | Jennifer M. Belus136 | Thomas Klimkait23 | Niklaus D. Labhardt135 1Swiss Tropical and Public Health Institute, Basel, Switzerland 2Molecular Virology Group, Department of Biomedicine, Basel, Switzerland 3University ...
+
+=== [493] PMID 36659824 QID 15 (List) - missed by 3/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: NRTI, INSTI
+  GPT-6 Astra QSP  NRTIs, INSTIs  ok
+  Kimi K3 QSP      NRTI, INSTI  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       None  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: [nrti] ...d particularly in PLWH receiving INSTIs.5621 Use of INSTIs was linked with more weight gain than were PIs or NNRTIs.22-23 Our results are consistent with previous reports in this predominantly young, male and Caucasian popul...
+
+=== [495] PMID 36694270 QID 15 (List) - missed by 3/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: NRTI, PI, NNRTI, INSTI
+  GPT-6 Astra QSP  NRTIs; NNRTIs; PIs; INSTIs; Entry inhibitors  ok
+  Kimi K3 QSP      NRTIs, NNRTIs, PIs, INSTIs, entry inhibitors (fusion inhibitors)  ok
+  GPT-4o FT        NRTI  X
+  GPT-4o QSP       NRTIs  X
+  GPT-4o FT+QSP    NRTIs  X
+  PDF near HUMAN: [nrti] ...d patients were 5/51 (9.8%) and 8/11 (72.7%), respectively. The type with the highest mutation frequency was NNRTI, and no mutation was found in INSTI. Multivariate analysis indicated that ARV treatment was associated with C...
+
+=== [499] PMID 36851704 QID 15 (List) - missed by 4/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: NRTI, NNRTI, PI, INSTI
+  GPT-6 Astra QSP  Not reported  X
+  Kimi K3 QSP      Not reported  X
+  GPT-4o FT        NRTI, NNRTI, PI, INSTI  ok
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Whole blood specimens were collected by venipuncture in EDTA-containing tubes from participants before initiating or reinitiating ART.” “Previous ARV drug exposure was classified as pre-exposure prophylaxis, post-exposure prophylaxis, prev
+  PDF near HUMAN: [nrti] ..., 490. https://doi.org/10.3390/v15020490 https://www.mdpi.com/journal/viruses Viruses 2023, 15, 490 2 of 11 (NNRTI) was reported from 2007 to 2016 [4]. Furthermore, significantly higher levels of NNRTI resistance (OR: 3.4, 9...
+
+=== [500] PMID 36931676 QID 15 (List) - missed by 3/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: NRTI, NNRTI, PI, INSTI
+  GPT-6 Astra QSP  None  X
+  Kimi K3 QSP      NRTI, NNRTI, PI, INSTI  ok
+  GPT-4o FT        NRTI, INSTI, PI  ok
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Data include ART start and stop dates, ART regimen (including doses and mode of administration) and the reason for any change of drug regimens, prophylaxis of opportunistic infections and selected co-medications.” “Thus, data generated in 
+  PDF near HUMAN: [nrti] ...described.63 Sörstedt et al studied the effect of dolutegravir-­based treatment in PLHIV with pre-­ existing NRTI-­mutations and found a non-­inferior effect compared with protease inhibitor-­based regimens64 and has also e...
+
+=== [508] PMID 37376649 QID 15 (List) - missed by 3/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: NRTI, INSTI
+  GPT-6 Astra QSP  NRTIs  X
+  Kimi K3 QSP      NRTI, NNRTI, PI, INSTI  ok
+  GPT-4o FT        NRTI, INSTI  ok
+  GPT-4o QSP       None  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: NO): “The TANGO study demonstrated that switching to a 2DR of DTG/3TC was non-inferior to continuing a tenofovir alafenamide-based regimen (TBR) in maintaining viral suppression in ART-experienced adults with HIV-1 through 144 weeks [3].” “Parti
+  PDF near HUMAN: [nrti] ...ction HIV-1 treatment guidelines traditionally recommended two nucleoside reverse tran- scriptase inhibitors (NRTIs) and a third core agent, currently an integrase strand transfer inhibitor (INSTI) or protease inhibitor (PI)...
+
+=== [512] PMID 37498738 QID 15 (List) - missed by 3/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: NRTI, INSTI
+  GPT-6 Astra QSP  INSTIs  X
+  Kimi K3 QSP      INSTI  X
+  GPT-4o FT        NRTI, NNRTI, PI, INSTI  ok
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    INSTI, NRTI  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “DTG belongs to the integrase strand transfer inhibitor (INSTI) drug class, has a favorable pharmacokinetic profile, and—most important—is highly potent with a high barrier to genetic resistance [27].” “In our randomized clinical trial (RCT
+  PDF near HUMAN: [insti] ...t Study (SHCS) 1Department of Infectious Diseases and Hospital Epidemiology, University Hospital Zurich; and 2Institute of Medical Virology, University of Zurich, Switzerland Human immunodeficiency virus type 1 (HIV-1) infect...
+
+=== [515] PMID 37541705 QID 15 (List) - missed by 4/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: PI, INSTI
+  GPT-6 Astra QSP  None  X
+  Kimi K3 QSP      None  X
+  GPT-4o FT        PI, INSTI  ok
+  GPT-4o QSP       NRTIs, PIs  X
+  GPT-4o FT+QSP    NNRTIs, INSTIs  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Most (54 [95%]) were treatment-experienced at entry and switched from a regimen containing lopinavir/ritonavir (38 [67%]), dolutegravir (8 [14%]), or raltegravir (7 [12%]) as the anchor medication (appendix p. 5).” “Full treatment historie
+  PDF near HUMAN: [insti] ...ees from ViiV Healthcare. JJK is employed at Merck. LZ, SW, YR received ViiV Healthcare funding paid to their institution. At his prior institution, DEY was an investigator on studies unrelated to HIV that were supported by A...
+
+=== [517] PMID 37554471 QID 15 (List) - missed by 4/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: Not reported
+  GPT-6 Astra QSP  None  ok
+  Kimi K3 QSP      NRTI, NNRTI, PI, INSTI  X
+  GPT-4o FT        NRTI, NNRTI, PI, INSTI  X
+  GPT-4o QSP       NRTIs, NNRTIs, PIs, INSTIs  X
+  GPT-4o FT+QSP    NRTI, NNRTI, PI, INSTI  X
+  Kimi K3 QSP evidence [main_text] (in pdf: yes): The patient had been prescribed etravirine 200 mg, dolutegravir 50 mg, darunavir 600 mg and ritonavir 100 mg ... He did harbour HIV drug resistance mutations on old resistance testing to tenofovir, lamivudine, emtricitabine, abacavir and ef
+  PDF near HUMAN: (none)
+
+=== [520] PMID 37755428 QID 15 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: Not reported
+  GPT-6 Astra QSP  NRTIs  X
+  Kimi K3 QSP      NRTI  X
+  GPT-4o FT        NRTI, INSTI  X
+  GPT-4o QSP       NRTI, INSTIs  X
+  GPT-4o FT+QSP    NRTI, INSTI  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: NO): “This infant was first diagnosed with HIV at 14 months of age and had received ZDV-based PNP.” “The infant’s mother had initiated ART (tenofovir/lamivudine/dolutegravir) 6 months before delivery.”
+  PDF near HUMAN: (none)
+
+=== [534] PMID 38314093 QID 15 (List) - missed by 3/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: Not reported
+  GPT-6 Astra QSP  None  ok
+  Kimi K3 QSP      None  ok
+  GPT-4o FT        NRTI, NNRTI  X
+  GPT-4o QSP       NRTIs, NNRTIs  X
+  GPT-4o FT+QSP    NRTI, NNRTI  X
+  PDF near HUMAN: (none)
+
+=== [537] PMID 40839365 QID 15 (List) - missed by 3/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: NRTI, NNRTI, INSTI
+  GPT-6 Astra QSP  INSTIs  X
+  Kimi K3 QSP      NRTIs, INSTIs  ok
+  GPT-4o FT        Individuals received NRTIs, NNRTIs, PIs, and INSTIs before sample sequencing.  ok
+  GPT-4o QSP       INSTIs  X
+  GPT-4o FT+QSP    INSTIs  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Dolutegravir (DTG)-based regimens (DBR) are now the most dispensed antiretroviral therapy (ART) for people living with HIV (PLHIV) in Sub-Saharan Africa.” “Eligible participants were PLHIV aged 15 years or older, on a DBR for at least 9 mo
+  PDF near HUMAN: [nrti] ... tenofovir/lamivudine/efavirenz (TLE) era, the prevalence of non-nucleoside reverse-transcriptase inhibitor (NNRTI) resistance among PLHIV with viral nonsuppression varied from 50% to 80% at time of virologic failure. 7 The ...
+
+=== [540] PMID 40974886 QID 15 (List) - missed by 3/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: NRTI, NNRTI, PI, INSTI
+  GPT-6 Astra QSP  NRTIs; INSTIs  X
+  Kimi K3 QSP      NRTI, NNRTI, PI, INSTI  ok
+  GPT-4o FT        NRTI, NNRTI, PI, and INSTI were received before sample sequencing.  ok
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    INSTI, NRTI  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): "Genotyping of protease, reverse transcriptase, and integrase from 3 bictegravir/emtricitabine/tenofovir alafenamide switch studies was included." "Baseline and Week 24 samples were available from study GS-US-380-4580; one participant from 
+  PDF near HUMAN: [nrti] ...ted 50 % of the time, with 58 (37 %) reported on the first test and Table 1 HIV-1 drug RAMs.a Drug class RAMs NRTI K65R/E/N, T69 insertions, K70E, L74V/I, Y115F, Q151M, M184V/I, TAMs (M41L, D67N, K70R, L210W, T215F/Y, K219E/...
+
+=== [542] PMID 41012586 QID 15 (List) - missed by 3/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: PI, INSTI, NRTI (presumably)
+  GPT-6 Astra QSP  NRTIs, NNRTIs, PIs, INSTIs  ok
+  Kimi K3 QSP      NRTIs, NNRTIs, PIs, INSTIs  ok
+  GPT-4o FT        The paper does not specify drug classes received by individuals prior to sequencing.  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: [insti] ...Unit, Careggi University Hospital, 50134 Florence, Italy 2 Infectious Diseases, IRCCS San Raffaele Scientific Institute, 20127 Milan, Italy 3 Department of Experimental and Clinical Medicine, University of Florence, 50134 Flo...
+
+=== [543] PMID 41023944 QID 15 (List) - missed by 4/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: NRTI,NNRTI,INSTI
+  GPT-6 Astra QSP  INSTIs  X
+  Kimi K3 QSP      INSTIs, NRTIs, NNRTIs  ok
+  GPT-4o FT        Individuals received NRTIs, NNRTIs, and PIs before sample sequencing.  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Only individuals on DTG-containing regimens at the time of resistance testing were included in this analysis.” “Among these agents, dolutegravir (DTG) has become the preferred option for first-line ART globally, supported by robust evidenc
+  PDF near HUMAN: [nrti] ...l DTG-resistant individuals who underwent testing for other drug classes (n = 9) also showed co-resistance to NRTIs and/or NNRTIs. Notably, high-level resistance emerged also in 6 failing participants having shifted to DTG w...
+
+=== [546] PMID 41130593 QID 15 (List) - missed by 3/5 
+Q: Which drug classes were received by individuals in the study before sample sequencing?
+HUMAN: NRTI, CAI
+  GPT-6 Astra QSP  NRTIs, INSTIs, Capsid inhibitors (CAIs)  ok
+  Kimi K3 QSP      NRTI, capsid inhibitor (CAI)  ok
+  GPT-4o FT        NRTIs and INSTIs were received by individuals in the study.  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    NRTI  X
+  PDF near HUMAN: [nrti] ... 3). Participant B had both M184M/I and K65K/R in RT and the non-nucleoside reverse transcriptase inhibitor (NNRTI) substitution Y188L. Adherence remained high through Week 8, when HIV-1 was detected (Figure 2; Supplementary...
+
+=== [553] PMID 35730213 QID 16 (List) - missed by 4/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: EFV, DTG, TDF, 3TC
+  GPT-6 Astra QSP  None  X
+  Kimi K3 QSP      None  X
+  GPT-4o FT        No  X
+  GPT-4o QSP       Tenofovir disoproxil fumarate (TDF), lamivudine (3TC), efavirenz (EFV)  ok
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: partial): “We included adults enrolled at Butha-Buthe Government Hospital who transitioned from tenofovir disoproxil fumarate (TDF)/lamivudine (3TC)/EFV to TDF/3TC/DTG within first-line ART from 10 February until 15 December 2020.” “In this study wit
+  PDF near HUMAN: [efv] ... programmes across many countries in Africa have recently transitioned people living with HIV from efavirenz (EFV)- to dolu- tegravir (DTG)-containing antiretroviral therapy (ART). As both drugs are associated with neuropsy...
+
+=== [558] PMID 36597160 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: TDF,FTC,EVG
+  GPT-6 Astra QSP  Tenofovir disoproxil fumarate (TDF), emtricitabine (FTC), abacavir (ABC), lamivudine (3TC)  ok
+  Kimi K3 QSP      Tenofovir disoproxil fumarate (TDF), emtricitabine (FTC), abacavir (ABC), lamivudine (3TC)  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: [tdf] ...y of switching to co-formulated elvitegravir, cobicistat, emtricitabine, tenofovir disoproxil fumarate (E/C/F/TDF) in patients with controlled HIV infection. Methods: We conducted a retrospective multicenter observational c...
+
+=== [559] PMID 36659824 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: BIC, FTC, TAF
+  GPT-6 Astra QSP  Bictegravir (BIC), emtricitabine (FTC), tenofovir alafenamide (TAF)  ok
+  Kimi K3 QSP      bictegravir (BIC), emtricitabine (FTC), tenofovir alafenamide (TAF)  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       None  X
+  GPT-4o FT+QSP    None  X
+  PDF near HUMAN: [bic] ...769-778 https://doi.org/10.1093/jac/dkad008 Advance Access publication 20 January 2023 Same-day initiation of bictegravir/emtricitabine/tenofovir alafenamide: Week 48 results of the FAST study-IMEA 055 Antoine Bachelard1, V...
+
+=== [561] PMID 36694270 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: 3TC, TDF, EFV, LPV/r, EVG, ABC, DTG
+  GPT-6 Astra QSP  Lamivudine (3TC); tenofovir disoproxil fumarate (TDF); efavirenz (EFV); lopinavir; ritonav  ok
+  Kimi K3 QSP      lamivudine (3TC), tenofovir disoproxil fumarate (TDF), efavirenz (EFV), lopinavir/ritonavi  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: [3tc] ...0 52 0 no CRF55_01B CRF55_01B 4.76 5.53 None None None None E138G, V179E E138G, V179E None None 6 F 44 26 8 8 3TC+TDF +EFV CRF07_BC CRF07_BC 4.16 5.69 None None None None V106M, V179D V106M, V179D None None 7 M 26 120 120 1...
+
+=== [563] PMID 36779485 QID 16 (List) - missed by 4/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: RPV
+  GPT-6 Astra QSP  None  X
+  Kimi K3 QSP      Not reported  X
+  GPT-4o FT        Rilpivirine  ok
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Genotypic sequence data from 277 patients initiating ART and 1372 patients experiencing NNRTI-treatment failure were included for analysis as previously described [7].” “Our retrospective analysis indicates that rilpivirine DRMs are common
+  PDF near HUMAN: [rpv] ... a risk factor for virological failure in patients treated with long-acting cabotegravir and rilpivirine (CAB/RPV LA). We investigated rilpi- virine cross-resistance in treatment-naive and experienced patients in South Afri...
+
+=== [566] PMID 36931676 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: DTG
+  GPT-6 Astra QSP  None  X
+  Kimi K3 QSP      Abacavir (ABC), lamivudine (3TC), emtricitabine (FTC), tenofovir disoproxil fumarate (TDF)  ok
+  GPT-4o FT        Dolutegravir  ok
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [table] (in pdf: partial): “Laboratory data (CD4 cell count and HIV-RNA viral loads) and data regarding antiretroviral therapy refer to latest available data unless otherwise stated.” “Individual data is generally updated at least every 6 months.”
+  PDF near HUMAN: (none)
+
+=== [574] PMID 37340869 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: CAB, RPV
+  GPT-6 Astra QSP  Cabotegravir (CAB), rilpivirine (RPV)  ok
+  Kimi K3 QSP      Cabotegravir (CAB), rilpivirine (RPV)  ok
+  GPT-4o FT        No  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: [cab] ...Expanded Multivariable Models to Assist Patient Selection for Long-Acting Cabotegravir + Rilpivirine Treatment: Clinical Utility of a Combination of Patient, Drug Concentration, and Viral...
+
+=== [576] PMID 37376649 QID 16 (List) - missed by 4/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: Lamivudine (3TC), Tenofovir (TAF), Dolutegravir (DTG)
+  GPT-6 Astra QSP  Tenofovir alafenamide (TAF)  X
+  Kimi K3 QSP      Tenofovir alafenamide (TAF)  X
+  GPT-4o FT        DTG, 3TC, TAF  ok
+  GPT-4o QSP       None  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: NO): “The TANGO study demonstrated that switching to a 2DR of DTG/3TC was non-inferior to continuing a tenofovir alafenamide-based regimen (TBR) in maintaining viral suppression in ART-experienced adults with HIV-1 through 144 weeks [3].” “Parti
+  PDF near HUMAN: [lamivudine] ...́rgolas Hernández-Mora, M.; et al. Assessing the Virologic Impact of Archived Resistance in the Dolutegravir/Lamivudine 2-Drug Regimen HIV-1 Switch Study TANGO through Week 144. Viruses 2023, 15, 1350. https://doi.org/ 10.3390/v1...
+
+=== [582] PMID 37541705 QID 16 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: LPV, DTG, RAL, ABC, 3TC
+  GPT-6 Astra QSP  None  X
+  Kimi K3 QSP      None  X
+  GPT-4o FT        Lopinavir (LPV), Dolutegravir (DTG), Raltegravir (RAL)  X
+  GPT-4o QSP       Lopinavir/ritonavir, dolutegravir, raltegravir  X
+  GPT-4o FT+QSP    Lopinavir/ritonavir, Dolutegravir, Raltegravir  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “Most (54 [95%]) were treatment-experienced at entry and switched from a regimen containing lopinavir/ritonavir (38 [67%]), dolutegravir (8 [14%]), or raltegravir (7 [12%]) as the anchor medication (appendix p. 5).” “The three treatment-naï
+  PDF near HUMAN: [dtg] ...eighing 6 to less than 25 kg received the dispersible tablet formulation (3-6 tablets once daily of ABC 60 mg/DTG 5 mg/3TC 30 mg dispersed in 15-20 mL of water; total dose dependent on weight) and those weighing 25 to less ...
+
+=== [583] PMID 37546367 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: Not reported
+  GPT-6 Astra QSP  Nevirapine (NVP), efavirenz (EFV)  X
+  Kimi K3 QSP      Efavirenz (EFV), nevirapine (NVP), lamivudine (3TC), emtricitabine (FTC)  X
+  GPT-4o FT        No  ok
+  GPT-4o QSP       FTC, 3TC, ABC, EFV, NVP  X
+  GPT-4o FT+QSP    Not reported  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “All mutations, except V179, reduced sensitivity to NVP and EFV, which were in accordance with the two NNRTI drugs selected in our first-line regimen.” “In this study, patients with a treatment duration below one year (33.33%) or using 2NRT
+  PDF near HUMAN: (none)
+
+=== [584] PMID 37554471 QID 16 (List) - missed by 4/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: Not reported
+  GPT-6 Astra QSP  None  ok
+  Kimi K3 QSP      Etravirine (ETR), dolutegravir (DTG), darunavir (DRV), ritonavir (RTV); prior exposure to   X
+  GPT-4o FT        Etravirine (ETR), Dolutegravir (DTG), Darunavir (DRV), Ritonavir (RTV), Tenofovir (TFV), L  X
+  GPT-4o QSP       Etravirine, Dolutegravir, Darunavir, Ritonavir  X
+  GPT-4o FT+QSP    Etravirine, dolutegravir, darunavir, ritonavir, emtricitabine, tenofovir alafenamide, trim  X
+  Kimi K3 QSP evidence [main_text] (in pdf: yes): The patient had been prescribed etravirine 200 mg, dolutegravir 50 mg, darunavir 600 mg and ritonavir 100 mg, all dosed twice daily by mouth ... He did harbour HIV drug resistance mutations on old resistance testing to tenofovir, lamivudine
+  PDF near HUMAN: (none)
+
+=== [586] PMID 37574435 QID 16 (List) - missed by 4/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: DTG, BIC, FTC, TAF
+  GPT-6 Astra QSP  Lamivudine (3TC), emtricitabine (FTC), abacavir (ABC), zidovudine (AZT), tenofovir disopro  X
+  Kimi K3 QSP      Lamivudine/emtricitabine (3TC/FTC), abacavir (ABC), zidovudine (AZT), tenofovir disoproxil  X
+  GPT-4o FT        DTG, FTC, TAF, BIC, NRTI, NNRTI  ok
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  GPT-6 Astra QSP evidence [table] (in pdf: yes): “Abbreviations: 3TC, lamivudine; ABC, abacavir; ART, antiretroviral therapy; ATV, atazanavir; ATV/r, ritonavir-boosted atazanavir; AZT, zidovudine; DRV/c, cobicistat-boosted darunavir; DRV/r, ritonavir-boosted darunavir; DTG, dolutegravir; 
+  PDF near HUMAN: [dtg] ... high ge- netic barrier to emergence of antiretroviral resistance.1e3 After the introduction of dolutegravir (DTG), a second- generation INSTI with high genetic barrier, its efficacy as salvage therapy has been demonstrated...
+
+=== [588] PMID 37632026 QID 16 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: AZT, D4T, XTC, TDF, ATV, LPV, DRV
+  GPT-6 Astra QSP  Abacavir (ABC); lamivudine (3TC) or emtricitabine (FTC), reported jointly as XTC; stavudin  X
+  Kimi K3 QSP      Zidovudine (AZT), stavudine (D4T), tenofovir (TDF), lamivudine/emtricitabine (3TC/FTC), ab  X
+  GPT-4o FT        NRTI (Nucleoside Reverse Transcriptase Inhibitor), including Abacavir (ABC), Zidovudine (A  X
+  GPT-4o QSP       Zidovudine (AZT), Tenofovir (TDF), Abacavir (ABC), Lamivudine/Emtricitabine (3TC/FTC)  X
+  GPT-4o FT+QSP    AZT; 3TC; FTC; TDF; ABC; EFV; NVP; ATV; LPV; DRV; RAL; DTG  X
+  GPT-6 Astra QSP evidence [table] (in pdf: partial): “IQR: interquartile range; SD: standard deviation; ART: antiretroviral therapy; ABC: abacavir; XTC: lamivudine or emtricitabine; D4T: stavudine; AZT: zidovudine; TDF: tenofovir; DDI: didanosine; ATV/r: atazanavir; LPV/r: lopinavir; IND: ind
+  PDF near HUMAN: [azt] ...erapeutic exposure, n (%) First-line ART regimens 575 (75.8%) First-line NRTI exposure - ABC + XTC 1 (0.2%) - AZT/D4T + XTC 166 (28.8%) - TDF + XTC 217 (37.6%) - * AZT/D4T + XTC and subsequently TDF + XTC 182 (31.5%) - Othe...
+
+=== [591] PMID 37755428 QID 16 (List) - missed by 5/5 ALL-MODELS-WRONG
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: Not reported
+  GPT-6 Astra QSP  Zidovudine (ZDV)  X
+  Kimi K3 QSP      Zidovudine (ZDV)  X
+  GPT-4o FT        Tenofovir (TFV), Lamivudine (3TC), Dolutegravir (DTG)  X
+  GPT-4o QSP       Tenofovir, Lamivudine, Dolutegravir, Zidovudine  X
+  GPT-4o FT+QSP    ZDV, TDF, 3TC, DTG  X
+  GPT-6 Astra QSP evidence [main_text] (in pdf: NO): “This infant was first diagnosed with HIV at 14 months of age and had received ZDV-based PNP.” “The infant’s mother had initiated ART (tenofovir/lamivudine/dolutegravir) 6 months before delivery.”
+  PDF near HUMAN: (none)
+
+=== [598] PMID 38020274 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: Not reported
+  GPT-6 Astra QSP  Stavudine (d4T), lamivudine (3TC), nevirapine (NVP), ritonavir  X
+  Kimi K3 QSP      Tenofovir (TDF), zidovudine (AZT), lamivudine (3TC), abacavir (ABC), lopinavir/ritonavir (  X
+  GPT-4o FT        No  ok
+  GPT-4o QSP       Tenofovir, Lamivudine, Dolutegravir.  X
+  GPT-4o FT+QSP    Not reported  ok
+  GPT-6 Astra QSP evidence [main_text] (in pdf: yes): “APHI with documented infection route; aged 10-19 years; receiving a standard reverse transcriptase inhibitor-based (RTI-based) first- or Ritonavir-boosted protease inhibitor-based (PI/r-based) second-line ART regimen for at least 6-months;
+  PDF near HUMAN: (none)
+
+=== [606] PMID 38314093 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: Not reported
+  GPT-6 Astra QSP  None  ok
+  Kimi K3 QSP      None  ok
+  GPT-4o FT        Efavirenz (EFV), Nevirapine (NVP), Zidovudine (AZT), Lamivudine (3TC)  X
+  GPT-4o QSP       Efavirenz, Nevirapine  X
+  GPT-4o FT+QSP    EFV, NVP, AZT, 3TC  X
+  PDF near HUMAN: (none)
+
+=== [608] PMID 40431710 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: AZT, ddI, d4T, 3TC, ABC, TDF, TAF, DLV, ETR, DOR, IDV, RTV, NFV, LPV, ATV, DRV, EVG, DTG, FOS
+  GPT-6 Astra QSP  Zidovudine (AZT), didanosine (ddI), stavudine (d4T), ritonavir (RTV), indinavir (IDV), lam  ok
+  Kimi K3 QSP      Zidovudine (AZT), didanosine (ddI), stavudine (d4T), lamivudine (3TC), abacavir (ABC), ten  ok
+  GPT-4o FT        Zidovudine (AZT), ritonavir (RTV), didanosine (ddI), abacavir (ABC), tenofovir disoproxil   X
+  GPT-4o QSP       AZT, 3TC, ddI, ABC, TDF, RTV, DRV, ETR, DTG, BIC, DOR  X
+  GPT-4o FT+QSP    Zidovudine (AZT), Lamivudine (3TC), Abacavir (ABC), Tenofovir (TDF), Emtricitabine (FTC),   X
+  PDF near HUMAN: [azt] ...s, HIV-1 viral load (VL) was 115000 copies/mL, with a nadir CD4+ cell count of 200 cells/μL (9%). Zidovudine (AZT) and ritonavir (RTV) were initiated about a year later. At that time, the only HIV-related complication was o...
+
+=== [609] PMID 40490983 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: AZT, 3TC, TDF, ABC, EFV, NVP, LPV, RTV, ATV (RTV is for boosting)
+  GPT-6 Astra QSP  Tenofovir disoproxil fumarate (TDF), lamivudine (3TC), zidovudine (AZT), abacavir (ABC), d  ok
+  Kimi K3 QSP      Tenofovir (TDF), lamivudine (3TC), zidovudine (AZT), abacavir (ABC), didanosine (DDI), efa  ok
+  GPT-4o FT        The paper mentioned specific drugs such as atazanavir/ritonavir and lopinavir/ritonavir re  X
+  GPT-4o QSP       Efavirenz, Nevirapine, Atazanavir/Ritonavir, Lopinavir/Ritonavir  X
+  GPT-4o FT+QSP    ATV/r, LPV/r  X
+  PDF near HUMAN: [azt] ... (41) 76 (100) 0 (0) LPV/r 143 (77) 32 (42) 111 (100) ART regimen at genotype TDF/3TC/ATV/r 56 (30) 56 (74) - AZT/3TC/ATV/r 17 (9) 17 (22) - Other ATV/r-containing regimenb 3 (2) 3 (4) - TDF/3TC/LPV/r 37 (20) - 37 (33) ABC/...
+
+=== [612] PMID 40763144 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: AZT, ABC, 3TC, TDF, ATV, LPV, RTV, DTG
+  GPT-6 Astra QSP  Abacavir (ABC); lamivudine (3TC); zidovudine (AZT); tenofovir disoproxil fumarate (TDF); d  ok
+  Kimi K3 QSP      Tenofovir (TDF), lamivudine (3TC), zidovudine (AZT), abacavir (ABC), dolutegravir (DTG), l  ok
+  GPT-4o FT        The study involved participants on various ART regimens including TDF/3TC/DTG, AZT/3TC/DTG  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: [azt] ...2) 104 (71.7) 41 (28.3) NRTI Anchor at time of sample collection ABC/3TC 87 (29.5) 67 (77.0) 20 (23.0) 0.041* AZT/3TC 78 (26.4) 64 (82.1) 14 (17.9) TDF/3TC 130 (44.1) 87 (66.9) 43 (33.1) Type of regimen at time of sample co...
+
+=== [615] PMID 40857111 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: TAF, FTC, TDF, 3TC, DTG, BIC
+  GPT-6 Astra QSP  Bictegravir (BIC), emtricitabine (FTC), tenofovir alafenamide (TAF), dolutegravir (DTG), t  ok
+  Kimi K3 QSP      bictegravir (BIC), emtricitabine (FTC), tenofovir alafenamide (TAF), dolutegravir (DTG), t  ok
+  GPT-4o FT        The drugs received include bictegravir, emtricitabine, tenofovir alafenamide, dolutegravir  X
+  GPT-4o QSP       None  X
+  GPT-4o FT+QSP    TDF, FTC, B/F/TAF, DTG  X
+  PDF near HUMAN: [taf] ... a Background: ALLIANCE is a phase 3 randomized study of bictegravir/emtricitabine/tenofovir alafenamide (B/F/TAF) versus dolutegravir + emtricitabine/tenofovir disoproxil fumarate (DTG+F/TDF) in treatment-naïve people wit...
+
+=== [619] PMID 41012586 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: DTG, DRV/r
+  GPT-6 Astra QSP  Raltegravir (RAL), elvitegravir (EVG), dolutegravir (DTG), darunavir (DRV; boosted)  ok
+  Kimi K3 QSP      dolutegravir (DTG), darunavir (DRV/b; boosted with ritonavir or cobicistat), raltegravir (  ok
+  GPT-4o FT        The paper does not provide specific drug names received by individuals before sequencing.  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: [dtg] ...group members are listed in the acknowledgment section. Abstract Background: Data on the use of dolutegravir (DTG) plus boosted darunavir (DRV/b) in people with 4-class drug-resistant HIV (4DR-PWH) are limited. This study a...
+
+=== [620] PMID 41023944 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: DTG (no other ARVs specified)
+  GPT-6 Astra QSP  Dolutegravir (DTG)  ok
+  Kimi K3 QSP      Dolutegravir (DTG)  ok
+  GPT-4o FT        Specific drugs like Tenofovir, Lamivudine, Emtricitabine, Efavirenz were received by indiv  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: [dtg] ...SL Roma 1, Rome, Italy 6Bambino Gesù Pediatric Hospital IRCCS, Rome, Italy Abstract Background Dolutegravir (DTG) is the anchor drug of the first-line agent for HIV treatment globally, including low- and middle-income coun...
+
+=== [625] PMID 41130593 QID 16 (List) - missed by 3/5 
+Q: Which drugs were received by individuals in the study before sample sequencing?
+HUMAN: TDF, TAF, FTC, LEN
+  GPT-6 Astra QSP  Lenacapavir (LEN), emtricitabine (FTC), tenofovir alafenamide (TAF), tenofovir disoproxil   ok
+  Kimi K3 QSP      lenacapavir (LEN), emtricitabine (FTC), tenofovir disoproxil fumarate (TDF), tenofovir ala  ok
+  GPT-4o FT        Specific drugs mentioned include emtricitabine, tenofovir, and dolutegravir, lamivudine.  X
+  GPT-4o QSP       Not reported  X
+  GPT-4o FT+QSP    Not reported  X
+  PDF near HUMAN: [tdf] ...is (PrEP). The PURPOSE trials assessed the efficacy of LEN and emtricitabine/tenofovir disoproxil fumarate (F/TDF) in cisgender women (PURPOSE 1; P1) and in cisgender men, transgender women, transgender men and gender nonbi...
