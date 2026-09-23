@@ -84,9 +84,14 @@ def main() -> int:
                        keep_default_na=False, na_values=[""])
     rows["QID"] = rows["QID"].astype(int)
     model = args.model
-    key = next(k for k, spec in config.MODELS.items() if spec.label == model)
-    answers = pd.read_csv(config.answers_path(key, 1), dtype={"PMID": str}, keep_default_na=False)
-    answers = answers.set_index(["PMID", "QID"])
+    key = next((k for k, spec in config.MODELS.items() if spec.label == model), None)
+    if key is None:  # cached GPT-4o comparator: answers only, no stored evidence/rationale
+        key = re.sub(r"[^a-z0-9]+", "-", model.lower()).strip("-")
+        answers = pd.DataFrame(columns=["PMID", "QID", "Evidence", "EvidenceLocation", "Rationale"])
+        answers = answers.set_index(["PMID", "QID"])
+    else:
+        answers = pd.read_csv(config.answers_path(key, 1), dtype={"PMID": str}, keep_default_na=False)
+        answers = answers.set_index(["PMID", "QID"])
     others = [c[:-8] for c in rows.columns if c.endswith(" correct") and c[:-8] != model]
 
     cache: dict[str, str] = {}
@@ -99,8 +104,9 @@ def main() -> int:
         evidence = str(ans["Evidence"]) if ans is not None else ""
         agree = [m for m in others if str(r[m]).strip().lower() == str(r[model]).strip().lower()]
         all_wrong = all(r.get(f"{m} correct") == 0 for m in others)
-        q1 = str(rows[(rows.PMID == pmid) & (rows.QID == 1)][model].iloc[0])
-        q5 = str(rows[(rows.PMID == pmid) & (rows.QID == 5)][model].iloc[0])
+        same_paper = rows[rows.PMID == pmid]
+        q1 = str(same_paper[same_paper.QID == 1][model].iloc[0]) if (same_paper.QID == 1).any() else ""
+        q5 = str(same_paper[same_paper.QID == 5][model].iloc[0]) if (same_paper.QID == 5).any() else ""
 
         lines.append(
             f"\n=== [{n}] PMID {pmid}  QID {qid} ({r['Type']}) {'-' * 30}\n"
