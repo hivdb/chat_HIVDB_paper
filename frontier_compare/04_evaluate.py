@@ -166,30 +166,37 @@ def main() -> int:
         print("No frontier answers found; run 02_query_models.py and 03_parse_responses.py first.")
         return 1
     all_cols = frontier + [c for cols in runs.values() for c in cols if c not in frontier]
-    answered = df.groupby("PMID")[frontier].apply(lambda g: g.notna().all().all())
+    variant_labels = {spec.label for spec in config.MODELS.values() if spec.is_variant}
+    primary_cols = [c for c in frontier if c not in variant_labels] or frontier
+    answered = df.groupby("PMID")[primary_cols].apply(lambda g: g.notna().all().all())
     pmids = sorted(answered[answered].index)
     n_total = df["PMID"].nunique()
     if len(pmids) < n_total and not args.allow_subset:
-        print(f"Only {len(pmids)}/{n_total} PMIDs answered by all frontier models. Re-run with --allow-subset.")
+        print(f"Only {len(pmids)}/{n_total} PMIDs answered by all primary frontier models. Re-run with --allow-subset.")
         return 1
     df = df[df["PMID"].isin(pmids)].reset_index(drop=True)
     models = frontier + config.COMPARATORS
     print(f"Evaluating {len(models)} models on {len(pmids)} PMIDs x {config.TOTAL_QUESTIONS} QIDs")
 
+    scored_masks: dict[str, pd.Series] = {}
     for model in models + [c for c in all_cols if c not in frontier]:
+        scored_masks[model] = df[model].notna() if model in df.columns else pd.Series(True, index=df.index)
         scored = score_rows(df, model)
         df[f"{model} label"], df[f"{model} correct"], df[f"{model} outcome"] = (
             scored["label"], scored["correct"], scored["outcome"]
         )
         df[f"{model} correct_adjusted"] = scored["correct_adjusted"]
         df[f"{model} alternative_used"] = scored["alternative_used"]
+        df.loc[~scored_masks[model], [f"{model} label", f"{model} correct", f"{model} outcome",
+                                      f"{model} correct_adjusted"]] = None
     config.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     df.to_csv(config.RESULTS_DIR / "detailed_rows.csv", index=False)
 
     # Per-QID metrics
     qid_rows = []
     for model in models:
-        for qid, grp in df.groupby("QID"):
+        model_rows = df[scored_masks[model]]
+        for qid, grp in model_rows.groupby("QID"):
             counts = np.array([(grp[f"{model} label"] == lab).sum() for lab in LABELS])
             m = metrics_from_counts(counts)
             qid_rows.append(
@@ -201,17 +208,19 @@ def main() -> int:
 
     # Summary: pooled (paper Fig. 4) with row-bootstrap CIs; macro mean of per-QID values for reference
     rng = np.random.default_rng(SEED)
-    boot_idx = rng.integers(0, len(df), size=(BOOTSTRAP_ITERATIONS, len(df)))
     summary_rows = []
     for model in models:
-        onehot = np.stack([(df[f"{model} label"] == lab).to_numpy(int) for lab in LABELS], axis=1)
+        model_rows = df[scored_masks[model]]
+        model_pmids = sorted(model_rows["PMID"].unique())
+        onehot = np.stack([(model_rows[f"{model} label"] == lab).to_numpy(int) for lab in LABELS], axis=1)
+        boot_idx = rng.integers(0, len(model_rows), size=(BOOTSTRAP_ITERATIONS, len(model_rows)))
         pooled = metrics_from_counts(onehot.sum(axis=0))
         boot = metrics_from_counts(onehot[boot_idx].sum(axis=1))
-        per_qid = metrics_from_counts(count_cube(df, pmids, model).sum(axis=0))
-        adj_acc = float(df[f"{model} correct_adjusted"].mean())
+        per_qid = metrics_from_counts(count_cube(model_rows, model_pmids, model).sum(axis=0))
+        adj_acc = float(model_rows[f"{model} correct_adjusted"].mean())
         for metric in METRICS:
             summary_rows.append(
-                {"model": model, "metric": metric,
+                {"model": model, "metric": metric, "papers": len(model_pmids), "rows": len(model_rows),
                  "row_accuracy_adjusted": adj_acc if metric == "accuracy" else "",
                  "pooled": float(pooled[metric]),
                  "pooled_ci_low": np.percentile(boot[metric], 2.5),
@@ -240,7 +249,8 @@ def main() -> int:
             same = not np.any(diff != 0)
             test_rows.append({**base, "test": "wilcoxon_qid", "p_raw": 1.0 if same else wilcoxon(x, y).pvalue})
             test_rows.append({**base, "test": "ttest_qid", "p_raw": 1.0 if same else ttest_rel(x, y).pvalue})
-        fc, cc = df[f"{f_model} correct"], df[f"{comp} correct"]
+        both = scored_masks[f_model] & scored_masks.get(comp, pd.Series(True, index=df.index))
+        fc, cc = df.loc[both, f"{f_model} correct"], df.loc[both, f"{comp} correct"]
         table = [[int(((fc == 1) & (cc == 1)).sum()), int(((fc == 1) & (cc == 0)).sum())],
                  [int(((fc == 0) & (cc == 1)).sum()), int(((fc == 0) & (cc == 0)).sum())]]
         test_rows.append({"frontier": f_model, "comparator": comp, "metric": "accuracy", "test": "mcnemar_rows",

@@ -64,7 +64,7 @@ def evidence_table() -> pd.DataFrame:
 def build_errors(rows: pd.DataFrame, models: list[str], ev: pd.DataFrame) -> pd.DataFrame:
     out = []
     for model in models:
-        wrong = rows[rows[f"{model} correct"].astype(int) == 0]
+        wrong = rows[rows[f"{model} correct"] == 0]
         for _, r in wrong.iterrows():
             out.append({
                 "PMID": r["PMID"], "QID": r["QID"], "Type": r["Type"], "Question": r["Question"],
@@ -109,27 +109,34 @@ def main() -> int:
     if not rows_path.exists():
         print("Run 04_evaluate.py first.")
         return 1
-    rows = pd.read_csv(rows_path, dtype={"PMID": str}, keep_default_na=False)
+    rows = pd.read_csv(rows_path, dtype={"PMID": str}, keep_default_na=False, na_values=[""])
     rows["QID"] = rows["QID"].astype(int)
+    for col in [c for c in rows.columns if c.endswith((" correct", " correct_adjusted"))]:
+        rows[col] = pd.to_numeric(rows[col], errors="coerce").astype("Int64")
+    for col in [c for c in rows.columns if not c.endswith((" correct", " correct_adjusted"))]:
+        rows[col] = rows[col].fillna("")
     models = frontier_labels(rows)
     all_models = models + [c for c in config.COMPARATORS if c in rows.columns]
     ev = evidence_table()
 
     summary = pd.read_csv(config.RESULTS_DIR / "metrics_summary.csv")
     summary_wide = summary.pivot(index="model", columns="metric", values="pooled").round(4)
+    scope = summary.drop_duplicates("model").set_index("model")[["papers", "rows"]]
+    adj = summary[summary["metric"] == "accuracy"].set_index("model")["row_accuracy_adjusted"]
     counts = pd.DataFrame({
-        m: rows[f"{m} outcome"].value_counts() for m in all_models
+        m: rows.loc[rows[f"{m} outcome"] != "", f"{m} outcome"].value_counts() for m in all_models
     }).T.fillna(0).astype(int)
-    summary_wide = summary_wide.join(counts).reset_index().rename(columns={"index": "model"})
+    summary_wide = (summary_wide.join(scope).join(adj.rename("accuracy_adjusted").round(4))
+                    .join(counts).reset_index().rename(columns={"index": "model"}))
 
-    by_q = rows.groupby(["QID", "Type", "Question"])[[f"{m} correct" for m in all_models]].apply(
-        lambda g: g.astype(int).sum()).rename(columns=lambda c: c.replace(" correct", "")).reset_index()
+    by_q = rows.groupby(["QID", "Type", "Question"])[[f"{m} correct" for m in all_models]].sum(
+        min_count=1).rename(columns=lambda c: c.replace(" correct", "")).reset_index()
     by_q.insert(3, "papers", rows.groupby(["QID", "Type", "Question"]).size().values)
 
     errors = build_errors(rows, models, ev)
 
     primary = frontier_labels(rows, primary_only=True)
-    agree = rows[[all(rows.loc[i, f"{m} correct"] == 0 for m in primary) for i in rows.index]].copy() if primary else rows.iloc[0:0]
+    agree = rows[[all(rows.loc[i, f"{m} correct"] == 0 for m in primary) for i in rows.index]].copy() if primary else rows.iloc[0:0]  # NaN != 0, so unanswered rows drop out
     if not agree.empty:
         agree = agree[["PMID", "QID", "Type", "Question", config.REF_COL, *models,
                        *[c for c in config.COMPARATORS if c in rows.columns]]]
@@ -140,7 +147,9 @@ def main() -> int:
         agree["notes"] = ""
 
     all_answers = rows[["PMID", "QID", "Type", "Question", config.REF_COL,
-                        *[c for m in all_models for c in (m, f"{m} correct", f"{m} outcome")]]]
+                        *[c for m in all_models
+                          for c in (m, f"{m} correct", f"{m} outcome", f"{m} alternative_used")
+                          if c in rows.columns]]]
 
     ops_path = config.RESULTS_DIR / "ops_requests.csv"
     ops = pd.read_csv(ops_path, dtype={"PMID": str}) if ops_path.exists() else pd.DataFrame()
@@ -149,6 +158,7 @@ def main() -> int:
         "Papers evaluated", "Questions per paper", "Rows scored", "Frontier models", "Comparators",
         "Prompt", "Input", "Scorer", "Aggregation", "",
         "How to use: 'Errors to review'", "Verdict column", "'Both models wrong' sheet", "Note on outcomes",
+        "Coverage", "Adjusted accuracy",
     ], "Detail": [
         rows["PMID"].nunique(), rows["QID"].nunique(), len(rows), "; ".join(models),
         "; ".join(c for c in config.COMPARATORS if c in rows.columns),
@@ -160,6 +170,8 @@ def main() -> int:
         "Pick from the dropdown: " + " | ".join(VERDICTS),
         "Rows both frontier models got wrong; 'models agree with each other' = yes is the strongest annotation-error candidate.",
         "FP = said something where the human said none/no; FN_missed = said nothing/no where the human had content; FN_wrong_value = gave a different value",
+        "The 'papers' column in Summary shows how many papers each model was scored on. Reasoning-effort variants were only run on the first 10 papers. A paper is scored only where every primary model returned a response (see Operations for failures/refusals).",
+        "accuracy_adjusted additionally accepts curator-approved alternative answers from data/accepted_alternatives.csv (annotation gaps, e.g. figure-only evidence). Primary metrics do not use them.",
     ]})
 
     config.RESULTS_DIR.mkdir(parents=True, exist_ok=True)

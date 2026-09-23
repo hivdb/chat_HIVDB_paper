@@ -4,8 +4,10 @@
 JSON validity is recorded at two levels so the invalid-JSON rate is not hidden by cleanup:
   strict  - the message content parses as-is with json.loads
   lenient - parses after stripping markdown fences / surrounding prose
-Answers are taken from the lenient parse; unparseable responses yield blank answers
-(scored as wrong, same as a missing answer in the paper pipeline).
+Answers are taken from the lenient parse; a response that arrived but cannot be parsed yields
+blank answers (scored as wrong, as a missing answer was in the paper pipeline). A request that
+never returned a response (transport failure or provider policy refusal) yields no rows at all
+and is reported only in ops_requests.csv.
 """
 
 from __future__ import annotations
@@ -99,6 +101,11 @@ def main() -> int:
                     "served_model": rec.get("served_model"),
                 }
             )
+            # A failed request (transport error, or a provider policy refusal) contributes no
+            # answer rows: it is an operational failure, reported via ops_requests.csv, not 16
+            # wrong answers. The PMID then drops out of the evaluated set for every model.
+            if not rec.get("ok"):
+                continue
             for qid in range(1, config.TOTAL_QUESTIONS + 1):
                 entry = answers.get(qid, {})
                 answer_rows.append(
