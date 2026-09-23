@@ -95,7 +95,28 @@ def cleanup_pass(row: pd.Series, answer: str) -> tuple[str, str]:
     return "", ""
 
 
+SCOPE_QIDS = {4, 6, 7, 9, 10, 11}  # details that only exist if patient samples were sequenced
+
+
+def self_inconsistent(rows: pd.DataFrame, model: str) -> set[tuple[str, int]]:
+    """Rows where the model said no patient sequences (QID 1 = No, or QID 5 = 0) yet still named
+    sequencing details - typically lab-construct text read as if it described patient samples."""
+    flagged: set[tuple[str, int]] = set()
+    for pmid, grp in rows.groupby("PMID"):
+        answers = {int(r["QID"]): str(r[model]).strip().lower() for _, r in grp.iterrows()}
+        says_none = answers.get(1, "").startswith("no") or answers.get(5, "") in {"0", "none"}
+        if not says_none:
+            continue
+        for qid in SCOPE_QIDS:
+            value = answers.get(qid, "")
+            if value and not re.match(r"^(no|none|not\b|n/?a)", value):
+                flagged.add((str(pmid), qid))
+    return flagged
+
+
 def categorize(s: pd.Series) -> str:
+    if s.get("self_inconsistent"):
+        return "model error: out-of-scope evidence (model itself said no patient sequences)"
     qid = int(s["QID"])
     model_says_nothing = str(s["Model Answer"]).strip().lower() in {"no", "none", "not applicable", "not reported", "0"}
     if s["review_paper"] and model_says_nothing:
@@ -141,6 +162,7 @@ def main() -> int:
     cache: dict[str, str] = {}
     out = []
     for model in primary:
+        inconsistent = self_inconsistent(rows[rows[model].notna()], model)
         for _, r in rows[rows[f"{model} correct"] == 0].iterrows():  # 'correct' already includes accepted answers
             text = pdf_text(r["PMID"], cache)
             answer = str(r[model])
@@ -151,6 +173,7 @@ def main() -> int:
                 "PMID": r["PMID"], "QID": r["QID"], "Type": r["Type"], "Model": model,
                 "Human Answer": r[config.REF_COL], "Model Answer": answer,
                 "Outcome": r[f"{model} outcome"],
+                "self_inconsistent": (str(r["PMID"]), int(r["QID"])) in inconsistent,
                 "models_agree": all(canonicalize_answer(answer) == canonicalize_answer(str(r[m])) for m in others),
                 "evidence_in_pdf": evidence_in_pdf(ev, text),
                 "human_answer_in_pdf": tokens_in_pdf(str(r[config.REF_COL]), text),

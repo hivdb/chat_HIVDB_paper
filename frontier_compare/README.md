@@ -132,6 +132,22 @@ primary-study details ("Sanger", "Plasma") whose words appear **zero** times in 
 every frontier model 8 of 16 rows. Note GPT-4o QSP/FT+QSP score 12/16 on this paper: producing
 plausible detail matches a wrong annotation, so the error rewards the weaker behaviour.
 
+**Out-of-scope evidence on lab-only papers (17 rows, 8 papers).** Both frontier models sometimes
+answer QID 9/10 from text describing *laboratory constructs* rather than patient samples. Example:
+PMID 30803972 - both models correctly answer "No" to QID 1 and "0" to QID 5, then cite a table
+footnote ("The integrase-encoding region of each plasmid clone was confirmed by automated Sanger
+DNA sequencing") for QID 10. The quote is real and the models read the table correctly; it just
+describes pNL4-3/pROD9 clones, not patient material. This is the lab-vs-clinical failure mode, and
+a counter-example to "PDF access always helps": the extra table text caused the error.
+
+A consistency rule (force "Not reported" on QID 4/6/7/9/10/11 when the model itself said there
+were no patient sequences) was measured and **rejected**: Astra +6/-17, Kimi +8/-16,
+GPT-4o FT +4/-23. The reason is the annotations themselves: of the 26 pilot papers annotated
+"no patient sequences" (QID 1 = No), 9 still record genes for QID 9 and 5 record a method for
+QID 10 - i.e. curators sometimes do record lab-construct sequencing details. On those papers
+every model scores worse on QID 9/10 (Astra 85%, Kimi 83%, GPT-4o FT 75%) than on the rest
+(95%, 95%, 83%). Report this as an annotation-consistency limitation, not a model failure alone.
+
 **Two curator conventions the prompt never states**, both systematic rather than capability gaps:
 - QID 5: annotations count individuals *successfully sequenced*; the models count individuals
   *sampled* (16 rows).
